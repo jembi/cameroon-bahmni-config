@@ -25,7 +25,6 @@
     "config": {
         "hideConditions": false,
         "enableRadiologyOrderOptions":["Urgent","NeedsPrint"],
-        "enableLabOrderOptions":["Urgent", "NeedsPrint"],
         "quickPrints":false,
         "networkConnectivity" : {
             "showNetworkStatusMessage": false,
@@ -44,9 +43,18 @@
                 "ID_Number": {
                     "required" : true
                 },
-                "Co-morbidites": {
-                    "excludeFrom": ["HIV Program"]
+		"Co-morbidites": {
+                    "excludeFrom": ["PTME / PMTCT Program"]
                 },
+		"Prophylaxy": {
+                    "excludeFrom": ["TB Program","HIV Program"]
+                },
+		"PMTCT Visit Stage":{
+       		    "excludeFrom": ["TB Program","HIV Program"]
+		},
+                "PCR":{
+       		    "excludeFrom": ["TB Program","HIV Program"]
+		},
                 "Doctor": {
                     "excludeFrom": ["TB Program"]
                 }

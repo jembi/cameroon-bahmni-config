@@ -19,8 +19,11 @@
         "config" : {
             "patientInformation": {
                 "additionalPatientInformation": {
+                    "order": 1,
                     "title": "Additional Patient Information",
                     "attributes": [
+                        "contactPerson",
+                        "N°Telephone du patient",
                         "distanceFromCenter",
                         "isUrban",
                         "cluster",
@@ -32,7 +35,7 @@
                 },
                 "hidden": {
                     "attributes": [
-                        "primaryContact"
+                        "class"
                     ]
                 },
                 "defaults":  {
@@ -40,6 +43,7 @@
                     "landHolding": 2
                 }
             },
+       	    "readOnlyExtraIdentifiers": [""],
             "addressHierarchy": {
                 "showAddressFieldsTopDown": false,
                 "strictAutocompleteFromLevel": "stateProvince"
@@ -50,13 +54,12 @@
             },
 
             "autoCompleteFields":["familyName", "caste"],
-            "defaultIdentifierPrefix": "GAN",
-            "defaultVisitType": "OPD",
+            "defaultIdentifierPrefix": "HCV",
+            "defaultVisitType": "Consultations Internes / IPD",
             "searchByIdForwardUrl": "/patient/{{patientUuid}}",
             "showMiddleName": true,
             "showLastName": true,
             "isLastNameMandatory": true,
-            "showSaveConfirmDialog": false,
             "showBirthTime": true,
             "showCasteSameAsLastNameCheckbox": false,
             "printOptions": [
@@ -83,7 +86,7 @@
             ],
             "conceptSetUI": {
                 "REGISTRATION FEES": {
-                    "required": true,
+                    "required": false,
                     "label": "Fee"
                 },
                 "FHS": {
@@ -94,23 +97,18 @@
                 }
             },
             "fieldValidation" : {
-                "primaryContact" : {"pattern" : "[0-9]{8,10}", "errorMessage" : "Should be 12 characters starting with 91 (country code)"},
-                "landHolding" : {"pattern" : "[0-9]{0,3}", "errorMessage" : "Should be between 1 to 999 acres"},
-                "familyName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
-                "givenName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
-                "middleName" : {"pattern" : "[a-zA-Z]{0,}", "errorMessage" : "Should contain characters"},
-                "address1" : {"pattern" : "[a-zA-Z0-9\\s]{2,}", "errorMessage" : "Should contain at least 2 characters"}
+                "primaryContact" : {"pattern" : "[0-9]{0,}", "errorMessage" : "Should be 12 characters starting with 91 (country code)"},
+                "landHolding" : {"pattern" : "[0-9]{0,}", "errorMessage" : "Should be between 1 to 999 acres"},
+                "familyName" : {"pattern" : "*", "errorMessage" : "Should contain characters familly name"},
+                "givenName" : {"pattern" : "*", "errorMessage" : "Should contain characters given name"},
+                "middleName" : {"pattern" : "*", "errorMessage" : "Should contain characters middle name"},
+                "address1" : {"pattern" : "*", "errorMessage" : "Should contain 3 characters"}
             },
             "patientSearch": {
                 "address": {
-                    "label": "Rural Ward",
-                    "placeholder": "Enter ward",
+                    "label": "Localité/Location",
+                    "placeholder": "Entrer la localité / Enter the Location",
                     "field": "address2"
-                },
-                "customAttributes": {
-                    "label": "रुग्णाचे नाव",
-                    "placeholder": "रुग्णाचे नाव",
-                    "fields": ["givenNameLocal", "middleNameLocal", "familyNameLocal"]
                 }
             }
         }

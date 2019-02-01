@@ -157,8 +157,8 @@
                 "dashboardConfig":{  
                     "title":null,
                     "numberOfVisits":6,
-                    "showChart":false,
-                    "showTable":true,
+                    "showChart":true,
+                    "showTable":false,
                     "showNormalLabResults": true,
                     "showCommentsExpanded": true,
                     "showAccessionNotes": true,
@@ -433,7 +433,7 @@
             },
             "growthChart":{  
                 "type":"observationGraph",
-                "translationKey": "DASHBOARD_TITLE_GROWTH_CHART",
+                "title":"Growth Chart",
                 "config":{  
                     "yAxisConcepts":[  
                         "Weight"
@@ -445,7 +445,7 @@
             },
             "BP":{  
                 "type":"observationGraph",
-                "translationKey": "DASHBOARD_TITLE_BLOOD_PRESSURE",
+                "title":"BP",
                 "config":{  
                     "yAxisConcepts":[  
                         "Systolic Data",
@@ -458,7 +458,7 @@
             },
             "weight/BMI":{  
                 "type":"observationGraph",
-                "translationKey": "DASHBOARD_TITLE_WEIGHT_BMI",
+                "title":"Weight/BMI",
                 "config":{  
                     "yAxisConcepts":[  
                         "Weight",
@@ -471,7 +471,7 @@
             },
             "diabetes/BloodSugar":{  
                 "type":"observationGraph",
-                "translationKey": "DASHBOARD_TITLE_DIABETES_BLOOD_SUGAR",
+                "title":"Diabetes/Blood Sugar",
                 "config":{  
                     "yAxisConcepts":[  
                         "Blood Sugar Fasting",
@@ -484,7 +484,7 @@
             },
             "observationGraph":{  
                 "type":"observationGraph",
-                "translationKey": "DASHBOARD_TITLE_PULSE",
+                "title":"Pulse",
                 "config":{  
                     "yAxisConcepts":[  
                         "Pulse Data"

@@ -39,17 +39,6 @@
     "order": 4,
     "requiredPrivilege": "app:adt"
   },
-  "bahmniIpd": {
-    "id": "bahmni.ipd",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-    "translationKey": "MODULE_LABEL_BED_MANAGEMENT_KEY",
-    "label": "InPatient",
-    "url": "../bedmanagement/#/home",
-    "icon": "fa-bed",
-    "order": 7,
-    "requiredPrivilege": "app:adt"
-  },
   "radiologyDocumentUpload": {
     "id": "bahmni.radiology.document.upload",
     "extensionPointId": "org.bahmni.home.dashboard",
@@ -100,16 +89,16 @@
     "order": 8,
     "requiredPrivilege": "app:reports"
   },
-  "bahmniOT": {
-    "id": "bahmni.ot",
+  "appointments": {
+    "id": "bahmni.appointments",
     "extensionPointId": "org.bahmni.home.dashboard",
     "type": "link",
-    "translationKey": "Operation Theatre",
-    "url": "../ot/",
-    "icon": "fa-hospital-o",
-    "order": 9,
-    "requiredPrivilege": "app:ot"
-  }, 
+    "translationKey": "MODULE_LABEL_APOOINTMENTS_KEY",
+    "url": "../../openmrs/appointmentschedulingui/home.page",
+    "icon": "fa fa-calendar",
+    "order": 11,
+    "requiredPrivilege": "App: appointmentschedulingui.home"
+  },
   "implementerInterface": {
     "id": "bahmni.implementer.interface",
     "extensionPointId": "org.bahmni.home.dashboard",

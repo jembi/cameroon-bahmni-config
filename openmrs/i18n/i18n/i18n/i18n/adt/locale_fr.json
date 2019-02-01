@@ -1,0 +1,23 @@
+{
+  "MODULE_LABEL_ALL_KEY": "Tous",
+  "MODULE_LABEL_TO_DISCHARGE_KEY": "A Libérer",
+  "MODULE_LABEL_ADMITTED_KEY": "Admis(es)",
+  "MODULE_LABEL_TO_ADMIT_KEY": "A Admettre",
+
+  "CONSULTATION_PAGE_KEY" :"Consultation",
+  "PROGRAM_MANAGEMENT_PAGE_KEY":"Page de Gestion des Programmes",
+  "DISCHARGE_SUMMARY_PAGE_KEY":"Résumé des libérations",
+  "PATIENT_ADT_PAGE_KEY":"ADT du Patient",
+  "PATIENT_DASHBOARD_KEY":"Tableau de bord du Patient",
+  "PATIENT_VISIT_PAGE_KEY":"Page des Visites du Patient",
+  "HOME_DASHBOARD_KEY":"Tableau de Bord",
+
+  "DASHBOARD_TITLE_VITALS_KEY":"Paramètres Vitaux",
+  "DASHBOARD_TITLE_PATIENT_INFORMATION_KEY": "Informations du Patient",
+  "DISCHARGE_SUMMARY_ADMISSION_DETAILS_KEY": "Détails d'Admission",
+  "DASHBOARD_TITLE_NAVIGATION_LINKS_CONTROL_KEY": "Controle des Liens de Navigation",
+  "DASHBOARD_TITLE_DIAGNOSIS_KEY": "Diagnostiques",
+  "DASHBOARD_TITLE_ADMISSION_DETAILS_KEY": "Details d'Admission",
+  "DASHBOARD_TITLE_DISPOSITION_KEY": "Disposition",
+  "DASHBOARD_TAB_GENERAL_KEY": "Général"
+}

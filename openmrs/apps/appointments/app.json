@@ -8,7 +8,6 @@
     }
   ],
   "config": {
-    "minCharLengthToTriggerPatientSearch": 3,
     "enableSpecialities": true,
     "startOfWeek": 2,
     "weekStart": "isoWeek",
@@ -46,10 +45,6 @@
     "allowedActionsByStatus": {
       "Scheduled": ["CheckedIn", "Missed", "Cancelled"],
       "CheckedIn": ["Completed", "Missed", "Cancelled"]
-    },
-    "colorsForListView": {
-      "Missed": "#fceab6",
-      "Cancelled": "#fcb6b6"
     }
   }
 }
