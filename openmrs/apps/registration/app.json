@@ -108,7 +108,7 @@
                 "address": {
                     "label": "Localité/Location",
                     "placeholder": "Entrer la localité / Enter the Location",
-                    "field": "address2"
+                    "field": "address6"
                 }
             }
         }
