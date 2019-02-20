@@ -18,7 +18,7 @@ addons:
   - provider: script
     script: ssh bahmni_support@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config/;git pull;'
     on:
-      branch: staging
+      branch: COMRS-118
 
 notifications:
   email: false
