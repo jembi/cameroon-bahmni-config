@@ -1,0 +1,24 @@
+before_install:
+  # decrypting the encrypted SSH private key and adding the key to the current ssh-agent to make any SSH-based command agnostic to the private key location
+  - openssl aes-256-cbc -K $encrypted_47733f2c6cc3_key -iv $encrypted_47733f2c6cc3_iv -in .deploy_key.enc -out /tmp/deploy_key -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/deploy_key
+  - ssh-add /tmp/deploy_key
+
+addons:
+  ssh_known_hosts:
+    - cmr-dev.jembi.org
+    - cmr-staging.jembi.org
+
+ deploy:
+  - provider: script
+    script: ssh bahmni_support@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config/;git pull;'
+    on:
+      branch: COMRS-118
+  - provider: script
+    script: ssh bahmni_support@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config/;git pull;'
+    on:
+      branch: staging
+
+notifications:
+  email: false
