@@ -10,10 +10,10 @@ addons:
   - cmr-staging.jembi.org
 deploy:
 - provider: script
-  script: ssh bahmni_support@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config/;git pull;'
+  script: ssh bahmni@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config;git pull;'
   on:
-    branch: dev
+    branch: COMRS-128
 - provider: script
-  script: ssh bahmni_support@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config/;git pull;'
+  script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config;git pull;'
   on:
     branch: staging
