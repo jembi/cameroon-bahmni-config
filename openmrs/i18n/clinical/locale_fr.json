@@ -99,5 +99,9 @@
   "LOCATION_WOMEN_WARD_ROOM": "Hospitalisations Femmes",
   "LOCATION_MEN_WARD_ROOM": "Hospitalisations Hommes",
   "LOCATION_VIP_WARD_ROOM": "Salle VIP",
-  "LOCATION_MATERNITY_WARD_ROOM": "Suite de Couche"
+  "LOCATION_MATERNITY_WARD_ROOM": "Suite de Couche",
+  "RETROSPECTIVE_POPUP_LOCATION_LABEL": "Emplacement",
+  "RETROSPECTIVE_POPUP_ON_BEHALF_LABEL": "Capturer information en tant que",
+  "RETROSPECTIVE_POPUP_DATA_FOR_LABEL": "Capturer information pour la date du",
+  "OKAY_LABEL": "OK"
 }
