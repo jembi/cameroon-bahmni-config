@@ -106,9 +106,9 @@
             },
             "patientSearch": {
                 "address": {
-                    "label": "Localité/Location",
-                    "placeholder": "Entrer la localité / Enter the Location",
-                    "field": "address2"
+                    "label": "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY",
+                    "placeholder": "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY",
+                    "field": "address1"
                 }
             }
         }
