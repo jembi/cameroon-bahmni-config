@@ -111,10 +111,10 @@
                     "field": "address1"
                 }, 
                 "customAttributes": {
-                        "label": "REGISTRATION_SEARCH_PHONE_NUMBER",
-                        "placeholder": "REGISTRATION_SEARCH_PHONE_NUMBER",
-                        "fields": ["REGISTRATION_SEARCH_PHONE_NUMBER"]
-                      }
+                    "label": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                    "placeholder": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                    "fields": ["PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"]
+                }
             }
         }
 }
