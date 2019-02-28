@@ -1,120 +1,136 @@
 {
-        "id": "bahmni.registration",
-        "instanceOf":"bahmni.template.registration",
-        "description": "Bahmni Patient Registration App",
-        "extensionPoints": [
-            {
-                "id": "org.bahmni.registration.patient.search.result.action",
-                "description": "Bahmni Patient Search Result Action"
+    "id": "bahmni.registration",
+    "instanceOf": "bahmni.template.registration",
+    "description": "Bahmni Patient Registration App",
+    "extensionPoints": [{
+            "id": "org.bahmni.registration.patient.search.result.action",
+            "description": "Bahmni Patient Search Result Action"
+        },
+        {
+            "id": "org.bahmni.registration.patient.next",
+            "description": "After Bahmni Patient Registration, forward url configuration"
+        }
+    ],
+    "contextModel": [
+        "patientUuid",
+        "activeVisitUuid"
+    ],
+    "config": {
+        "patientInformation": {
+            "additionalPatientInformation": {
+                "order": 1,
+                "title": "Additional Patient Information",
+                "attributes": [
+                    "contactPerson",
+                    "N°Telephone du patient",
+                    "distanceFromCenter",
+                    "isUrban",
+                    "cluster",
+                    "RationCard",
+                    "familyIncome",
+                    "debt",
+                    "cluster"
+                ]
+            },
+            "hidden": {
+                "attributes": [
+                    "class"
+                ]
+            },
+            "defaults": {
+                "class": "General",
+                "landHolding": 2
+            }
+        },
+        "readOnlyExtraIdentifiers": [""],
+        "addressHierarchy": {
+            "showAddressFieldsTopDown": false,
+            "strictAutocompleteFromLevel": "stateProvince"
+        },
+        "relationshipTypeMap": {
+            "Doctor": "provider",
+            "Parent": "patient"
+        },
+
+        "autoCompleteFields": ["familyName", "caste"],
+        "defaultIdentifierPrefix": "HCV",
+        "defaultVisitType": "Consultations Internes / IPD",
+        "searchByIdForwardUrl": "/patient/{{patientUuid}}",
+        "showMiddleName": true,
+        "showLastName": true,
+        "isLastNameMandatory": true,
+        "showBirthTime": true,
+        "showCasteSameAsLastNameCheckbox": false,
+        "printOptions": [{
+                "translationKey": "REGISTRATION_PRINT_REG_CARD_LOCAL_KEY",
+                "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print_local.html",
+                "shortcutKey": "l"
             },
             {
-                "id": "org.bahmni.registration.patient.next",
-                "description": "After Bahmni Patient Registration, forward url configuration"
+                "translationKey": "REGISTRATION_PRINT_REG_CARD_KEY",
+                "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
+                "shortcutKey": "p"
+            },
+            {
+                "translationKey": "REGISTRATION_PRINT_SUPPLEMENTAL_PAPER",
+                "templateUrl": "/bahmni_config/openmrs/apps/registration/supplementalPaperLayout/print.html",
+                "shortcutKey": "r"
+            },
+            {
+                "translationKey": "REGISTRATION_PRINT_WITH_BARCODE",
+                "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/printWithBarcode.html",
+                "shortcutKey": "c"
             }
         ],
-        "contextModel": [
-            "patientUuid",
-            "activeVisitUuid"
-        ],
-        "config" : {
-            "patientInformation": {
-                "additionalPatientInformation": {
-                    "order": 1,
-                    "title": "Additional Patient Information",
-                    "attributes": [
-                        "contactPerson",
-                        "N°Telephone du patient",
-                        "distanceFromCenter",
-                        "isUrban",
-                        "cluster",
-                        "RationCard",
-                        "familyIncome",
-                        "debt",
-                        "cluster"
-                    ]
-                },
-                "hidden": {
-                    "attributes": [
-                        "class"
-                    ]
-                },
-                "defaults":  {
-                    "class": "General",
-                    "landHolding": 2
-                }
+        "conceptSetUI": {
+            "REGISTRATION FEES": {
+                "required": false,
+                "label": "Fee"
             },
-       	    "readOnlyExtraIdentifiers": [""],
-            "addressHierarchy": {
-                "showAddressFieldsTopDown": false,
-                "strictAutocompleteFromLevel": "stateProvince"
+            "FHS": {
+                "buttonSelect": true
             },
-            "relationshipTypeMap": {
-                "Doctor":"provider",
-                "Parent":"patient"
+            "defaults": {
+                "FHS": "Present"
+            }
+        },
+        "fieldValidation": {
+            "primaryContact": {
+                "pattern": "[0-9]{0,}",
+                "errorMessage": "Should be 12 characters starting with 91 (country code)"
             },
-
-            "autoCompleteFields":["familyName", "caste"],
-            "defaultIdentifierPrefix": "HCV",
-            "defaultVisitType": "Consultations Internes / IPD",
-            "searchByIdForwardUrl": "/patient/{{patientUuid}}",
-            "showMiddleName": true,
-            "showLastName": true,
-            "isLastNameMandatory": true,
-            "showBirthTime": true,
-            "showCasteSameAsLastNameCheckbox": false,
-            "printOptions": [
-                {
-                    "translationKey": "REGISTRATION_PRINT_REG_CARD_LOCAL_KEY",
-                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print_local.html",
-                    "shortcutKey": "l"
-                },
-                {
-                    "translationKey": "REGISTRATION_PRINT_REG_CARD_KEY",
-                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/print.html",
-                    "shortcutKey": "p"
-                },
-                {
-                    "translationKey": "REGISTRATION_PRINT_SUPPLEMENTAL_PAPER",
-                    "templateUrl": "/bahmni_config/openmrs/apps/registration/supplementalPaperLayout/print.html",
-                    "shortcutKey": "r"
-                },
-                {
-                    "translationKey": "REGISTRATION_PRINT_WITH_BARCODE",
-                    "templateUrl": "/bahmni_config/openmrs/apps/registration/registrationCardLayout/printWithBarcode.html",
-                    "shortcutKey": "c"
-                }
-            ],
-            "conceptSetUI": {
-                "REGISTRATION FEES": {
-                    "required": false,
-                    "label": "Fee"
-                },
-                "FHS": {
-                    "buttonSelect": true
-                },
-                "defaults":{
-                    "FHS": "Present"
-                }
+            "landHolding": {
+                "pattern": "[0-9]{0,}",
+                "errorMessage": "Should be between 1 to 999 acres"
             },
-            "fieldValidation" : {
-                "primaryContact" : {"pattern" : "[0-9]{0,}", "errorMessage" : "Should be 12 characters starting with 91 (country code)"},
-                "landHolding" : {"pattern" : "[0-9]{0,}", "errorMessage" : "Should be between 1 to 999 acres"},
-                "familyName" : {"pattern" : "*", "errorMessage" : "Should contain characters familly name"},
-                "givenName" : {"pattern" : "*", "errorMessage" : "Should contain characters given name"},
-                "middleName" : {"pattern" : "*", "errorMessage" : "Should contain characters middle name"},
-                "address1" : {"pattern" : "*", "errorMessage" : "Should contain 3 characters"}
+            "familyName": {
+                "pattern": "*",
+                "errorMessage": "Should contain characters familly name"
             },
-            "patientSearch": {
-                "address": {
-                    "label": "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY",
-                    "placeholder": "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY",
-                    "field": "address1"
-                }, 
-                "customAttributes": {
-                        "label": "REGISTRATION_SEARCH_PHONE_NUMBER",
-                        "placeholder": "REGISTRATION_SEARCH_PHONE_NUMBER",
-                        "fields": ["REGISTRATION_SEARCH_PHONE_NUMBER"]
-                      }
+            "givenName": {
+                "pattern": "*",
+                "errorMessage": "Should contain characters given name"
+            },
+            "middleName": {
+                "pattern": "*",
+                "errorMessage": "Should contain characters middle name"
+            },
+            "address1": {
+                "pattern": "*",
+                "errorMessage": "Should contain 3 characters"
+            }
+        },
+        "patientSearch": {
+            "address": {
+                "label": "Rural Ward",
+                "placeholder": "Enter ward",
+                "field": "address2"
+            },
+            "customAttributes": {
+                "label": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                "placeholder": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                "fields": ["PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"]
             }
         }
+    }
 }
