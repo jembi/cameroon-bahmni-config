@@ -109,7 +109,12 @@
                     "label": "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY",
                     "placeholder": "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY",
                     "field": "address1"
-                }
+                }, 
+                "customAttributes": {
+                        "label": "REGISTRATION_SEARCH_PHONE_NUMBER",
+                        "placeholder": "REGISTRATION_SEARCH_PHONE_NUMBER",
+                        "fields": ["REGISTRATION_SEARCH_PHONE_NUMBER"]
+                      }
             }
         }
 }
