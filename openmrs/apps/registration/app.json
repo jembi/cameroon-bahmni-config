@@ -35,7 +35,13 @@
                 },
                 "hidden": {
                     "attributes": [
-                        "class"
+                        "class",
+                        "caste",
+                        "primaryContact",
+                        "secondaryContact",
+                        "secondaryIdentifier",
+                        "primaryRelative",
+                        "landHolding"
                     ]
                 },
                 "defaults":  {
