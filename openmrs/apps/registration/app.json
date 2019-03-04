@@ -60,7 +60,7 @@
             "showMiddleName": true,
             "showLastName": true,
             "isLastNameMandatory": true,
-            "showBirthTime": true,
+            "showBirthTime": false,
             "showCasteSameAsLastNameCheckbox": false,
             "printOptions": [
                 {
