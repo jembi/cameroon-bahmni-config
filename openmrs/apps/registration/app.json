@@ -41,7 +41,8 @@
                         "secondaryContact",
                         "secondaryIdentifier",
                         "primaryRelative",
-                        "landHolding"
+                        "landHolding",
+                        "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"
                     ]
                 },
                 "defaults":  {
