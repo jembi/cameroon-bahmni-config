@@ -42,7 +42,7 @@
                         "secondaryIdentifier",
                         "primaryRelative",
                         "landHolding",
-                        "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"
+                        "phoneNumber"
                     ]
                 },
                 "defaults":  {
@@ -120,7 +120,7 @@
                 "customAttributes": {
                     "label": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
                     "placeholder": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
-                    "fields": ["PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"]
+                    "fields": ["phoneNumber"]
                 }
             }
         }
