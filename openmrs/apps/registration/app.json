@@ -59,7 +59,7 @@
                 "Parent":"patient"
             },
 
-            "autoCompleteFields":["familyName", "caste"],
+            "autoCompleteFields":["familyName"],
             "defaultIdentifierPrefix": "HCV",
             "defaultVisitType": "Consultations Internes / IPD",
             "searchByIdForwardUrl": "/patient/{{patientUuid}}",
