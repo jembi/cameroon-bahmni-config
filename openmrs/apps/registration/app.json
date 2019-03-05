@@ -35,7 +35,14 @@
                 },
                 "hidden": {
                     "attributes": [
-                        "class"
+                        "class",
+                        "caste",
+                        "primaryContact",
+                        "secondaryContact",
+                        "secondaryIdentifier",
+                        "primaryRelative",
+                        "landHolding",
+                        "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"
                     ]
                 },
                 "defaults":  {
@@ -53,14 +60,14 @@
                 "Parent":"patient"
             },
 
-            "autoCompleteFields":["familyName", "caste"],
+            "autoCompleteFields":["familyName"],
             "defaultIdentifierPrefix": "HCV",
             "defaultVisitType": "Consultations Internes / IPD",
             "searchByIdForwardUrl": "/patient/{{patientUuid}}",
             "showMiddleName": true,
             "showLastName": true,
             "isLastNameMandatory": true,
-            "showBirthTime": true,
+            "showBirthTime": false,
             "showCasteSameAsLastNameCheckbox": false,
             "printOptions": [
                 {
@@ -109,6 +116,11 @@
                     "label": "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY",
                     "placeholder": "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY",
                     "field": "address1"
+                }, 
+                "customAttributes": {
+                    "label": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                    "placeholder": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                    "fields": ["PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"]
                 }
             }
         }
