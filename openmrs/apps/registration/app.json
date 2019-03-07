@@ -27,7 +27,13 @@
                         "secondaryIdentifier",
                         "primaryRelative",
                         "landHolding",
-                        "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER"
+                        "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
+                        "distanceFromCenter",
+                        "isUrban",
+                        "cluster",
+                        "RationCard",
+                        "familyIncome",
+                        "debt"
                     ]
                 },
                 "defaults":  {
