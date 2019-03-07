@@ -18,21 +18,6 @@
         ],
         "config" : {
             "patientInformation": {
-                "additionalPatientInformation": {
-                    "order": 1,
-                    "title": "Additional Patient Information",
-                    "attributes": [
-                        "contactPerson",
-                        "N°Telephone du patient",
-                        "distanceFromCenter",
-                        "isUrban",
-                        "cluster",
-                        "RationCard",
-                        "familyIncome",
-                        "debt",
-                        "cluster"
-                    ]
-                },
                 "hidden": {
                     "attributes": [
                         "class",
