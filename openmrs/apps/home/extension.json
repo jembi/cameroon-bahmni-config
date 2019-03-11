@@ -128,6 +128,16 @@
     "icon": "fa fa-calendar",
     "order": 14,
     "requiredPrivilege": "app:appointments"
+  },
+  "openMRSReports": {
+    "id": "bahmni.openmrs.reports",
+    "extensionPointId": "org.bahmni.home.dashboard",
+    "type": "link",
+    "translationKey": "OpenMRS Reports",
+    "url": "/openmrs/module/reporting/dashboard/index.form",
+    "icon": "icon-bahmni-reports",
+    "order": 15,
+    "requiredPrivilege": "app:reports"
   }
 
 }
