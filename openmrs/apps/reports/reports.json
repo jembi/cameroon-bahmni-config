@@ -1,5 +1,35 @@
 {
-    "visitReport10": {
+    "pecgReport": {
+        "name": "PECG Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/template/pecg.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator1_test_a.sql"
+                    }
+                },
+                {
+                    "name": "Report2",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator2_test_b.sql"
+                    }
+                },
+                {
+                    "name": "Report3",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator3_ARV_treatement.sql"
+                    }
+                }
+            ]
+        }
+
+    },"visitReport10": {
         "name": "Visit Report",
         "type": "visits",
         "config": {
@@ -61,15 +91,6 @@
                 "PHARMACY VISIT",
                 "OPD"
             ]
-        }
-    },
-
-    "NumberARTinitiationThisMonth": {
-        "name": "PECG Report",
-        "type": "MRSGeneric",
-        "config": {
-            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/ARV_treatement.sql",
-             "macroTemplatePath" : "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/template/pecg.xls"
         }
     },
 
