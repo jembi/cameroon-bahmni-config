@@ -139,14 +139,14 @@ min(QUERY.greater_than_or_equalTo_50F) AS '>=50 F'
                 distinct p.person_id,
                 pp.date_enrolled as 'date_enrolled'
             from obs o 
-            inner join concept_name cn on o.concept_id=cn.concept_id and cn.name like '%Date de début de traitement ARV%' 
+            inner join concept_name cn on o.concept_id=cn.concept_id and cn.name like '%Date de début de traitement ARV%' or cn.name like '%ARV treatment start date%'
             and cn.concept_name_type = 'FULLY_SPECIFIED' 
             and cast(o.value_datetime AS DATE) between date '#startDate#'AND '#endDate#'
             join person p on p.person_id = o.person_id and p.voided=0 
             inner join obs obs1 on o.obs_group_id=obs1.obs_id
             inner join obs obs2 on obs2.obs_id=obs1.obs_group_id 
             inner join obs obs3 on obs3.obs_id=obs2.obs_group_id 
-            inner join concept_name cn2 on obs3.concept_id=cn2.concept_id and cn2.name like '%FICHE DU PATIENT AVEC VIH - ADULTE%' 
+            inner join concept_name cn2 on obs3.concept_id=cn2.concept_id and cn2.name like '%FICHE DU PATIENT AVEC VIH - ADULTE%' or cn2.name like '%ADULT HIV PATIENT FORM%' 
             and cn2.concept_name_type = 'FULLY_SPECIFIED'
             join 
             concept c
@@ -361,14 +361,14 @@ min(QUERY.greater_than_or_equalTo_50F) AS '>=50 F'
                 pp.date_enrolled as 'date_enrolled'
             from person p inner join 
             obs o2 on p.person_id = o2.person_id and p.voided=0 
-            inner join concept_name cn5 on o2.concept_id=cn5.concept_id and cn5.name like '%Date de début de traitement ARV%' 
+            inner join concept_name cn5 on o2.concept_id=cn5.concept_id and cn5.name like '%Date de début de traitement ARV%' or cn5.name like '%ARV treatment start date%' 
             and cn5.concept_name_type = 'FULLY_SPECIFIED'
             and cast(o2.value_datetime AS DATE) between date '#startDate#'AND '#endDate#'
             inner join obs obs4 on o2.obs_group_id=obs4.obs_id
             inner join obs obs5 on obs5.obs_id=obs4.obs_group_id 
             inner join obs obs6 on obs6.obs_id=obs5.obs_group_id 
             inner join obs obs7 on obs7.obs_id=obs6.obs_group_id 
-            inner join concept_name cn4 on obs7.concept_id=cn4.concept_id and cn4.name like '%FICHE DU PATIENT AVEC VIH - ENFANT%' 
+            inner join concept_name cn4 on obs7.concept_id=cn4.concept_id and cn4.name like '%FICHE DU PATIENT AVEC VIH - ENFANT%' or cn4.name like '%CHILD HIV PATIENT FORM%' 
             and cn4.concept_name_type = 'FULLY_SPECIFIED'
             join 
             concept c
@@ -583,13 +583,13 @@ min(QUERY.greater_than_or_equalTo_50F) AS '>=50 F'
                 pp.date_enrolled as 'date_enrolled'
             from person p inner join 
             obs o3 on p.person_id = o3.person_id and p.voided=0 
-            inner join concept_name cn6 on o3.concept_id=cn6.concept_id and cn6.name like "%Si traitement ARV antérieur\; Date début%"
+            inner join concept_name cn6 on o3.concept_id=cn6.concept_id and cn6.name like "%Si traitement ARV antérieur\; Date début%" or cn6.name like "%If anterior ARV treatment\; Start date%"
             and cn6.concept_name_type = 'FULLY_SPECIFIED'
             and cast(o3.value_datetime AS DATE) between date '#startDate#'AND '#endDate#' 
             inner join obs obs8 on o3.obs_group_id=obs8.obs_id
             inner join obs obs9 on obs9.obs_id=obs8.obs_group_id 
             inner join obs obs10 on obs10.obs_id=obs9.obs_group_id 
-            inner join concept_name cn7 on obs10.concept_id=cn7.concept_id and cn7.name like '%FICHE DU PATIENT AVEC VIH - ADULTE%' 
+            inner join concept_name cn7 on obs10.concept_id=cn7.concept_id and cn7.name like '%FICHE DU PATIENT AVEC VIH - ADULTE%' or cn7.name like "%ADULT HIV PATIENT FORM%" 
             and cn7.concept_name_type = 'FULLY_SPECIFIED'
             join 
             concept c
@@ -803,13 +803,13 @@ min(QUERY.greater_than_or_equalTo_50F) AS '>=50 F'
                 pp.date_enrolled as 'date_enrolled'
             from person p inner join 
             obs o4 on p.person_id = o4.person_id and p.voided=0            
-            inner join concept_name cn8 on o4.concept_id=cn8.concept_id and cn8.name like "%Date d\'initiation%" 
+            inner join concept_name cn8 on o4.concept_id=cn8.concept_id and cn8.name like "%Date d\'initiation%"  or cn8.name like "%Initiation date%" 
             and cn8.concept_name_type = 'FULLY_SPECIFIED' 
             and cast(o4.value_datetime AS DATE) between date '#startDate#'AND '#endDate#'
             inner join obs obs11 on o4.obs_group_id=obs11.obs_id
             inner join obs obs12 on obs12.obs_id=obs11.obs_group_id 
             inner join obs obs13 on obs13.obs_id=obs12.obs_group_id 
-            inner join concept_name cn9 on obs13.concept_id=cn9.concept_id and cn9.name like '%FICHE DU PATIENT AVEC VIH - ENFANT%' 
+            inner join concept_name cn9 on obs13.concept_id=cn9.concept_id and cn9.name like '%FICHE DU PATIENT AVEC VIH - ENFANT%' or cn9.name like '%CHILD HIV PATIENT FORM%' 
             and cn9.concept_name_type = 'FULLY_SPECIFIED'
             join 
             concept c
