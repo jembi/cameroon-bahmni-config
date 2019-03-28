@@ -139,7 +139,17 @@
             join
                 patient_program_attribute ppa 
                     on ppa.patient_program_id=pp.patient_program_id     
-                    and cast(ppa.value_reference AS DATE) between '#startDate#'AND '#endDate#'    
+                    and cast(ppa.value_reference AS DATE) between '#startDate#'AND '#endDate#'   
+            join
+                  obs o
+                  on o.person_id=p.person_id and o.voided=0
+                  and cast(o.obs_datetime AS DATE) between '#startDate#'AND '#endDate#'   
+            join 
+                  concept c
+                  on c.concept_id=o.concept_id and c.retired=0
+            join concept_name cn 
+                  on cn.concept_id=c.concept_id and cn.voided=0 and concept_name_type ='FULLY_SPECIFIED' 
+                  and cn.name ='Dispensed'
             join
                 program_attribute_type pat 
                     on pat.program_attribute_type_id = ppa.attribute_type_id 
@@ -214,4 +224,3 @@
                 ListOfpatient.date_enrolled) >= 50 
                 AND p.gender = 'F'                THEN '>= 50 Yrs F'             
             END     ) AS Sub_query      ;
-    
