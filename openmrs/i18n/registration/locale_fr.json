@@ -89,5 +89,6 @@
   "RELATIONSHIP_GRANDPARENT": "Grandparent [FR]",
   "RELATIONSHIP_CAREGIVER": "Caregiver [FR]",
   "RELATIONSHIP_AUNT_UNCLE": "Aunt/Uncle [FR]",
-  "RELATIONSHIP_OTHER": "Autre"
+  "RELATIONSHIP_OTHER": "Autre",
+  "RELATIONSHIP_SPOUSE": "époux"
 }
