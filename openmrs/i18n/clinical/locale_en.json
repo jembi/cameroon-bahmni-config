@@ -113,5 +113,8 @@
   "RELATIONSHIP_CAREGIVER": "Caregiver",
   "RELATIONSHIP_AUNT_UNCLE": "Aunt/Uncle",
   "RELATIONSHIP_OTHER": "Other",
-  "RELATIONSHIP_SPOUSE": "Spouse"
+  "RELATIONSHIP_SPOUSE": "Spouse",
+  "GENDER_MALE":"Male",
+  "GENDER_FEMALE":"Female",
+  "GENDER_OTHER":"Other"
 }

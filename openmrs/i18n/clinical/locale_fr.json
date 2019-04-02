@@ -117,5 +117,8 @@
   "RETROSPECTIVE_POPUP_ON_BEHALF_LABEL": "Capturer information en tant que",
   "RETROSPECTIVE_POPUP_DATA_FOR_LABEL": "Capturer information pour la date du",
   "OKAY_LABEL": "OK",
-  "RELATIONSHIP_SPOUSE": "Époux"
+  "RELATIONSHIP_SPOUSE": "Époux",
+  "GENDER_MALE":"Mâle",
+  "GENDER_FEMALE":"Femelle",
+  "GENDER_OTHER":"Autre"
 }

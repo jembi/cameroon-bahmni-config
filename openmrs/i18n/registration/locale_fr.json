@@ -91,5 +91,8 @@
   "RELATIONSHIP_CAREGIVER": "Soignant",
   "RELATIONSHIP_AUNT_UNCLE": "Tante/Oncle",
   "RELATIONSHIP_OTHER": "Autre",
-  "RELATIONSHIP_SPOUSE": "Époux"
+  "RELATIONSHIP_SPOUSE": "Époux",
+  "GENDER_MALE":"Mâle",
+  "GENDER_FEMALE":"Femelle",
+  "GENDER_OTHER":"Autre"
 }
