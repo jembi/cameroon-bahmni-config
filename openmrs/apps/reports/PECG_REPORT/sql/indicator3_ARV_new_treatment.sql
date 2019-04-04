@@ -1,4 +1,4 @@
- /*D3. Number of new PLWHA placed 
+/*D3. Number of new PLWHA placed                   
         on ARV who took treatment in the month*/ SELECT
             /*Pivoting the table*/     'Number of new PLWHA placed on ARV who took treatment in the month' AS '-'  ,
             SUM(lessThan1yrMale) AS '<1 M',
@@ -16,211 +16,222 @@
             SUM(25To49yrMale) AS '25-49 M',
             SUM(25To49yrFemale) AS '25-49 F',
             SUM(GrtThanequalto50Male) AS '>=50 M',
-            SUM(GrtThanequalto50Female) AS '>=50 F'     
+            SUM(GrtThanequalto50Female) AS '>=50 F'               
     FROM
         (     SELECT
             'Number of new PLWHA placed on ARV who took treatment in the month',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) < 1 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) < 1                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS 'lessThan1yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) < 1 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) < 1                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS 'lessThan1yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 1 AND 4 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 1 AND 4                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '1To4yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 1 AND 4 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 1 AND 4                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '1To4yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 5 AND 9 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 5 AND 9                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '5To9yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 5 AND 9 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 5 AND 9                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '5To9yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 10 AND 14 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 10 AND 14                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '10To14yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 10 AND 14 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 10 AND 14                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '10To14yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 15 AND 19 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 15 AND 19                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '15To19yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 15 AND 19 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 15 AND 19                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '15To19yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 20 AND 24 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 20 AND 24                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '20To24yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 20 AND 24 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 20 AND 24                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '20To24yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 25 AND 49 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 25 AND 49                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS '25To49yrMale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 25 AND 49 
-                AND p.gender = 'F'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) BETWEEN 25 AND 49                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
             END AS '25To49yrFemale',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) >= 50 
-                AND p.gender = 'M'          THEN COUNT(1)  
+                ListOfpatient.date_enrolled) >= 50                                   
+                AND p.gender = 'M'          THEN COUNT(1)                            
             END AS 'GrtThanequalto50Male',
-            CASE 
+            CASE                                   
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) >= 50 
-                AND p.gender = 'F'          THEN COUNT(1)  
-            END AS 'GrtThanequalto50Female'     
+                ListOfpatient.date_enrolled) >= 50                                   
+                AND p.gender = 'F'          THEN COUNT(1)                            
+            END AS 'GrtThanequalto50Female'                       
         FROM
-            (              select
-                distinct p.person_id,
-                pp.date_enrolled  
+            (            select
+                distinct pn.given_name ,
+                pn.person_id,
+                pp.date_enrolled             
             from
-                person_name pn     
+                person_name pn              
             join
-                person p 
-                    on p.person_id = pn.person_id  
-                    and p.voided=0    
+                person p                      
+                    on p.person_id = pn.person_id
+                    and p.voided=0                
             join
-                patient_program pp 
-                    on pp.patient_id=p.person_id 
-                    and pp.voided=0 
-                    and pp.date_completed is null    
-                    and cast(pp.date_enrolled AS DATE) between '#startDate#'AND '#endDate#'    
+                orders ord                      
+                    on ord.patient_id = p.person_id              
             join
-                program pr 
-                    on pr.program_id=pp.program_id 
-                    and pr.name like '%HIV Program%'    
+                concept_name cn                      
+                    on cn.concept_id = ord.concept_id               
+            join
+                patient_program pp                      
+                    on pp.patient_id=p.person_id                      
+                    and pp.voided=0                      
+                    and pp.date_completed is null                      
+                    and  cast(pp.date_enrolled as DATE) between '#startDate#'AND '#endDate#'               
+            join
+                program pr                      
+                    on pr.program_id = pp.program_id                      
+                    and pr.name LIKE '%HIV PROGRAM%'   
             join
                 patient_program_attribute ppa 
                     on ppa.patient_program_id=pp.patient_program_id     
                     and cast(ppa.value_reference AS DATE) between '#startDate#'AND '#endDate#'   
-            join
+             join
                   obs o
                   on o.person_id=p.person_id and o.voided=0
-                  and cast(o.obs_datetime AS DATE) between '#startDate#'AND '#endDate#'   
-            join 
-                  concept c
-                  on c.concept_id=o.concept_id and c.retired=0
-            join concept_name cn 
-                  on cn.concept_id=c.concept_id and cn.voided=0 and concept_name_type ='FULLY_SPECIFIED' 
-                  and cn.name ='Dispensed'
-            join
+                  and cast(o.obs_datetime AS DATE) between '#startDate#'AND '#endDate#'         
+             join
                 program_attribute_type pat 
                     on pat.program_attribute_type_id = ppa.attribute_type_id 
-                    and pat.name like 'Date%'              ) AS ListOfpatient            
+                    and pat.name like 'Date%'                        
+            where
+                cn.name LIKE '%Tenofovir%'                   
+                OR cn.name LIKE '%Zidovudine%'                  
+                OR cn.name LIKE '%Lamivudine%'                  
+                OR cn.name LIKE '%Abacavir%'                   
+                OR cn.name LIKE '%Efavirenz%'                  
+                OR cn.name LIKE '%Nevirapine%'                  
+                OR cn.name LIKE '%Lopinavir%'                  
+                OR cn.name LIKE '%Atazanavir%'                  
+                OR cn.name LIKE '%Ritonavir%'     ) AS ListOfpatient                              
         INNER JOIN
-            person p 
-                ON p.person_id = ListOfpatient.person_id            
+            person p                                   
+                ON p.person_id = ListOfpatient.person_id                              
         GROUP BY
-            CASE                
+            CASE                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) < 1 
-                AND p.gender = 'M'                THEN '< 1 Yr M'                
+                ListOfpatient.date_enrolled) < 1                                   
+                AND p.gender = 'M'                THEN '< 1 Yr M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) < 1 
-                AND p.gender = 'F'                THEN '< 1 Yr F'                
+                ListOfpatient.date_enrolled) < 1                                   
+                AND p.gender = 'F'                THEN '< 1 Yr F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 1 AND 4 
-                AND p.gender = 'M'                THEN '1-4 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 1 AND 4                                   
+                AND p.gender = 'M'                THEN '1-4 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 1 AND 4 
-                AND p.gender = 'F'                THEN '1-4 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 1 AND 4                                   
+                AND p.gender = 'F'                THEN '1-4 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 5 AND 9 
-                AND p.gender = 'M'                THEN '5-9 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 5 AND 9                                   
+                AND p.gender = 'M'                THEN '5-9 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 5 AND 9 
-                AND p.gender = 'F'                THEN '5-9 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 5 AND 9                                   
+                AND p.gender = 'F'                THEN '5-9 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 10 AND 14 
-                AND p.gender = 'M'                THEN '10-14 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 10 AND 14                                   
+                AND p.gender = 'M'                THEN '10-14 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 10 AND 14 
-                AND p.gender = 'F'                THEN '10-14 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 10 AND 14                                   
+                AND p.gender = 'F'                THEN '10-14 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 15 AND 19 
-                AND p.gender = 'M'                THEN '15-19 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 15 AND 19                                   
+                AND p.gender = 'M'                THEN '15-19 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 15 AND 19 
-                AND p.gender = 'F'                THEN '15-19 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 15 AND 19                                   
+                AND p.gender = 'F'                THEN '15-19 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 20 AND 24 
-                AND p.gender = 'M'                THEN '20-24 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 20 AND 24                                   
+                AND p.gender = 'M'                THEN '20-24 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 20 AND 24 
-                AND p.gender = 'F'                THEN '20-24 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 20 AND 24                                   
+                AND p.gender = 'F'                THEN '20-24 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 25 AND 49 
-                AND p.gender = 'M'                THEN '25-49 Yrs M'                
+                ListOfpatient.date_enrolled) BETWEEN 25 AND 49                                   
+                AND p.gender = 'M'                THEN '25-49 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) BETWEEN 25 AND 49 
-                AND p.gender = 'F'                THEN '25-49 Yrs F'                
+                ListOfpatient.date_enrolled) BETWEEN 25 AND 49                                   
+                AND p.gender = 'F'                THEN '25-49 Yrs F'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) >= 50 
-                AND p.gender = 'M'                THEN '>= 50 Yrs M'                
+                ListOfpatient.date_enrolled) >= 50                                   
+                AND p.gender = 'M'                THEN '>= 50 Yrs M'                                                  
                 WHEN timestampdiff(YEAR,
                 p.birthdate,
-                ListOfpatient.date_enrolled) >= 50 
-                AND p.gender = 'F'                THEN '>= 50 Yrs F'             
+                ListOfpatient.date_enrolled) >= 50                                   
+                AND p.gender = 'F'                THEN '>= 50 Yrs F'                                       
             END     ) AS Sub_query      ;
