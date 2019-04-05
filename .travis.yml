@@ -17,3 +17,7 @@ deploy:
   script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout staging;git pull;'
   on:
     branch: staging
+- provider: script
+  script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config/scripts;chmod +x install-report.sh;./install-report.sh;'
+  on:
+    branch: COM-171
