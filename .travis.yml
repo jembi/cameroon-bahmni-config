@@ -10,14 +10,10 @@ addons:
   - cmr-staging.jembi.org
 deploy:
 - provider: script
-  script: ssh bahmni@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout dev;git pull;'
+  script: ssh bahmni@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout dev;git pull;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/report_util_functions.sql;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/indicator_functions.sql;'
   on:
     branch: dev
 - provider: script
-  script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout staging;git pull;'
+  script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout staging;git pull;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/report_util_functions.sql;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/indicator_functions.sql;'
   on:
     branch: staging
-- provider: script
-  script: ssh bahmni@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout COM-171;git pull;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/report_util_functions.sql;mysql -u root -ppassword openmrs < openmrs/apps/reports/PECG_REPORT/sql/indicator_functions.sql;'
-  on:
-    branch: COM-171
