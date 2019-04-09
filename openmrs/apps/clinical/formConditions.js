@@ -30,8 +30,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	 */
 	'Circumstances of screening': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var autres = formFieldValues['Circumstances of screening'];
-		if(autres == "Other") {
+		var other = formFieldValues['Circumstances of screening'];
+		if (other == "Other") {
 			conditions.show.push("If other specify")
 		} else {
 			conditions.hide.push("If other specify")
@@ -40,8 +40,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Opportunistic disease': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var oui = formFieldValues['Opportunistic disease'];
-		if(oui == "Yes") {
+		var yes = formFieldValues['Opportunistic disease'];
+		if (yes == "Yes") {
 			conditions.show.push("If yes specify")
 		} else {
 			conditions.hide.push("If yes specify")
@@ -50,8 +50,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Tuberculosis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var oui = formFieldValues['Tuberculosis'];
-		if(oui == "Yes") {
+		var yes = formFieldValues['Tuberculosis'];
+		if (yes == "Yes") {
 			conditions.show.push("If yes, specify start date");
 			conditions.show.push("End date of treatment");
 		} else {
@@ -62,8 +62,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Alcohol consumption': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var oui = formFieldValues['Alcohol consumption'];
-		if(oui == "Yes") {
+		var yes = formFieldValues['Alcohol consumption'];
+		if (yes == "Yes") {
 			conditions.show.push("If yes, type of alcohol");
 			conditions.show.push("Frequency of alcohol consumption");
 		} else {
@@ -74,8 +74,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'ATCD prescription ARV': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var oui = formFieldValues['ATCD prescription ARV'];
-		if(oui == "Yes") {
+		var yes = formFieldValues['ATCD prescription ARV'];
+		if (yes == "Yes") {
 			conditions.show.push("If previous ARV treatment; start date");
 			conditions.show.push("End Date");
 			conditions.show.push("Health Facility");
@@ -94,8 +94,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Medication allergy': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var oui = formFieldValues['Medication allergy'];
-		if(oui == "Yes") {
+		var yes = formFieldValues['Medication allergy'];
+		if (yes == "Yes") {
 			conditions.show.push("If yes specify allergy");
 		} else {
 			conditions.hide.push("If yes specify allergy");
