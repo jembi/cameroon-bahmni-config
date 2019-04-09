@@ -109,9 +109,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		} 
 		return conditions;
 	},
-	'General health': function(formName, formFieldValues) {
+	'Review (General health)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var abnormal = formFieldValues['General health'];
+		var abnormal = formFieldValues['Review (General health)'];
 		if (abnormal === "Abnormal") {
 			conditions.show.push("Tiredness");
 			conditions.show.push("Fatigue (General health)");
@@ -131,9 +131,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
-	'Ear, Nose, Mouth, Throat': function(formName, formFieldValues) {
+	'Review (Ear, Nose, Mouth, Throat)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var abnormal = formFieldValues['Ear, Nose, Mouth, Throat'];
+		var abnormal = formFieldValues['Review (Ear, Nose, Mouth, Throat)'];
 		if (abnormal === "Abnormal") {
 			conditions.show.push("Difficulty With Hearing");
 			conditions.show.push("Rhinorrhea");
