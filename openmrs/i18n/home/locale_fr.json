@@ -29,7 +29,7 @@
     "LOCATION_POST_NATAL_CARE": "Consultations Prénatales",
     "LOCATION_SPECIALIZED_CONSULTATIONS": "Consultations spécialisées",
     "LOCATION_DENTAL_MEDECINE": "Medecine Dentaire",
-    "LOCATION_LITTLE_SURGERY": "Petite Churigie",
+    "LOCATION_MINOR_SURGERY": "Chirurgie mineure",
     "LOCATION_DERMATOLOGY": "Dermatologie",
     "LOCATION_PHYSIOTHERAPY": "Kinésithérapie",
     "LOCATION_STOMATOLOGY": "Stomatologie",
@@ -41,5 +41,11 @@
     "LOCATION_WOMEN_WARD_ROOM": "Hospitalisations Femmes",
     "LOCATION_MEN_WARD_ROOM": "Hospitalisations Hommes",
     "LOCATION_VIP_WARD_ROOM": "Salle VIP",
-    "LOCATION_MATERNITY_WARD_ROOM": "Suite de Couche"
+    "LOCATION_MATERNITY_WARD_ROOM": "Suite de Couche",
+    "LOCATION_CARDIOLOGY": "Cardiologie",
+    "LOCATION_DELIVERY": "D'accouchement",
+    "LOCATION_DENTISTRY" : "Dentisterie",
+    "LOCATION_GYNAECOLOGY" : "Gynécologie",
+    "LOCATION_OPTHALMOLOGY" : "Ophtalmologie",
+    "LOCATION_RADIOLOGY" : "Radiologie"
 }

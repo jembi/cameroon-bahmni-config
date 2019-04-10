@@ -87,7 +87,6 @@
   "LOCATION_POST_NATAL_CARE": "Post Natal Care",
   "LOCATION_SPECIALIZED_CONSULTATIONS": "Specialized Consultations",
   "LOCATION_DENTAL_MEDECINE": "Dental Medecine",
-  "LOCATION_LITTLE_SURGERY": "Little Surgery",
   "LOCATION_DERMATOLOGY": "Dermatology",
   "LOCATION_PHYSIOTHERAPY": "Physiotherapy",
   "LOCATION_STOMATOLOGY": "Stomatology",
@@ -116,5 +115,12 @@
   "RELATIONSHIP_SPOUSE": "Spouse",
   "GENDER_MALE":"Male",
   "GENDER_FEMALE":"Female",
-  "GENDER_OTHER":"Other"
+  "GENDER_OTHER":"Other",
+  "LOCATION_MINOR_SURGERY": "Minor Surgery",
+  "LOCATION_CARDIOLOGY": "Cardiology",
+  "LOCATION_DELIVERY": "Delivery",
+  "LOCATION_DENTISTRY" : "Dentistry",
+  "LOCATION_GYNAECOLOGY" : "Gynaecology",
+  "LOCATION_OPTHALMOLOGY" : "Opthalmology",
+  "LOCATION_RADIOLOGY" : "Radiology"
 }
