@@ -10,6 +10,20 @@
         "order": 1,
         "requiredPrivilege": "View Patients"
     },
+    "nutritionalValues":{
+        "id": "bahmni.registration.conceptSetGroup.nutritionalLevels",
+        "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+        "type": "config",
+        "extensionParams": {
+        "conceptName": "Nutritional Values",
+        "translationKey": "NUTRITIONAL_VALUES_LOCALE_KEY",
+        "conceptNames": ["Height", "Weight", "BMI Data", "BMI Status Data"],
+        "required":true,
+        "showLatest": true
+        },
+        "order": 1,
+        "requiredPrivilege": "Edit Visits"
+    },
     "createNew":{
         "id": "bahmni.registration.navigation.patient.create",
         "extensionPointId": "org.bahmni.registration.navigation",
