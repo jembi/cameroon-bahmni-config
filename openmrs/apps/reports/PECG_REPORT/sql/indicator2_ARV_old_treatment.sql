@@ -1,0 +1,18 @@
+SELECT 'Number of old PLWHA on ARV who came for treatment in the month' AS '-'  ,
+            0 AS '<1 M',
+            0 AS '<1 F',
+            0 AS '1-4 M',
+            0 AS '1-4 F',
+            0 AS '5-9 M',
+            0 AS '5-9 F',
+            0 AS '10-14 M',
+            0 AS '10-14 F',
+            0 AS '15-19 M',
+            0 AS '15-19 F',
+            0 AS '20-24 M',
+            0 AS '20-24 F',
+            0 AS '25-49 M',
+            0 AS '25-49 F',
+            0 AS '>=50 M',
+            0 AS '>=50 F'     
+    FROM person;
