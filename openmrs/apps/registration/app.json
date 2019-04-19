@@ -100,7 +100,8 @@
                 "familyName" : {"pattern" : "*", "errorMessage" : "Should contain characters familly name"},
                 "givenName" : {"pattern" : "*", "errorMessage" : "Should contain characters given name"},
                 "middleName" : {"pattern" : "*", "errorMessage" : "Should contain characters middle name"},
-                "address1" : {"pattern" : "*", "errorMessage" : "Should contain 3 characters"}
+                "address1" : {"pattern" : "*", "errorMessage" : "Should contain 3 characters"},
+                "2042b38a-fbee-4d58-812e-496022130419" : {"pattern" : "[0-9]{0,}", "errorMessage" : "Should only be numbers"}
             },
             "patientSearch": {
                 "address": {
