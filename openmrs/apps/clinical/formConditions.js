@@ -405,7 +405,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Vaginal Cervical smear Epithelial cells per field': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};		
-		var value = formFieldValues['Vaginal Cervical smear Leucocytes per field'];
+		var value = formFieldValues['Vaginal Cervical smear Epithelial cells per field'];
 		if (value && value !== "") {		
 			conditions.show.push("Vaginal Cervical smear Epithelial cells per field Test Date");
 		} else {		
@@ -525,7 +525,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Urethral smear Trichomonas vaginalis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urethral smear Leucocytes (WBC)'];
+		var value = formFieldValues['Urethral smear Trichomonas vaginalis'];
 		if (value && value !== "") {	
 			conditions.show.push("Urethral smear Trichomonas vaginalis Test Date");
 		} else {	
@@ -1825,7 +1825,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'HDL': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['HDL '];
+		var value = formFieldValues['HDL'];
 		if (value && value !== "") {	
 			conditions.show.push("HDL Test Date");
 		} else {	
