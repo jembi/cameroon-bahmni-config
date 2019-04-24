@@ -1813,13 +1813,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Total cholesterol': function(formName, formFieldValues) {
+	'Lipid profile Total cholesterol': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Total cholesterol'];
+		var value = formFieldValues['Lipid profile Total cholesterol'];
 		if (value && value !== "") {	
-			conditions.show.push("Total cholesterol Test Date");
+			conditions.show.push("Lipid profile Total cholesterol Test Date");
 		} else {	
-			conditions.hide.push("Total cholesterol Test Date");
+			conditions.hide.push("Lipid profile Total cholesterol Test Date");
 		}	
 		return conditions;	
 	},
@@ -1833,13 +1833,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Triglycerides': function(formName, formFieldValues) {
+	'Lipid profile Triglycerides': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Triglycerides'];
+		var value = formFieldValues['Lipid profile Triglycerides'];
 		if (value && value !== "") {	
-			conditions.show.push("Triglycerides Test Date");
+			conditions.show.push("Lipid profile Triglycerides Test Date");
 		} else {	
-			conditions.hide.push("Triglycerides Test Date");
+			conditions.hide.push("Lipid profile Triglycerides Test Date");
 		}	
 		return conditions;	
 	},
