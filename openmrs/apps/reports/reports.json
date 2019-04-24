@@ -30,7 +30,7 @@
                     "name": "Report4",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_Not_Available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_not_available.sql"
                     }
                 },
                 {
@@ -38,6 +38,97 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator5_1st_line_ARV_protocol.sql"
+                    }
+                },
+                {
+                    "name": "Report6",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report7",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator7_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report8",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator8_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report9",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator9_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report10",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator10_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report11",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report12",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator12_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report13",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator13_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report14",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator14_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report15",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator15_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report16",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator16_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report17",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator17_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report18",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator18_not_available.sql"
                     }
                 }
             ]
