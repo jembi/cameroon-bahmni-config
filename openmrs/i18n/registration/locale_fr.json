@@ -32,6 +32,7 @@
   "REGISTRATION_LABEL_PHONE_NUMBER": "Numéro de Téléphone",
   "FEE_INFORMATION_LOCALE_KEY": "Frais d'Information",
   "NUTRITIONAL_VALUES_LOCALE_KEY": "Valeurs Nutritionnelles",
+  "OTHER_VISIT_INFORMATION_LOCALE_KEY": "Autres informations de visite",
   "REGISTRATION_PRINT_WITH_BARCODE": "Impression avec <u>C</u>ode Barre",
   "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY": "Quartier",
   "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY": "Saisissez le Nom du Quartier",
