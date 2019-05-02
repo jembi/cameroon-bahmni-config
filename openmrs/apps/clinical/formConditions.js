@@ -77,14 +77,14 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var yes = formFieldValues['ATCD prescription ARV'];
 		if (yes == "Yes full name") {
 			conditions.show.push("If previous ARV treatment; start date");
-			conditions.show.push("End Date");
+			conditions.show.push("End date");
 			conditions.show.push("Health Facility");
 			conditions.show.push("Circumstances of previous ARV treatment");
 			conditions.show.push("Prescribed ARV drug");
 			conditions.show.push("Treatment still in progress");
 		} else {
 			conditions.hide.push("If previous ARV treatment; start date");
-			conditions.hide.push("End Date");
+			conditions.hide.push("End date");
 			conditions.hide.push("Health Facility");
 			conditions.hide.push("Circumstances of previous ARV treatment");
 			conditions.hide.push("Prescribed ARV drug");
@@ -1945,6 +1945,198 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Skin snip Test Date");
 		}	
 		return conditions;	
+	},
+	/**
+	 * Handling conditions for PATIENT WITH HIV - CHILD INITIAL form
+	 */
+	'Opportunist Infections': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Opportunist Infections'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Opportunist Infection duration?");
+			conditions.show.push("Opportunist Infection complications?");
+			conditions.show.push("Opportunist Infection treatment?");
+		} else {	
+			conditions.hide.push("Opportunist Infection duration?");
+			conditions.hide.push("Opportunist Infection complications?");
+			conditions.hide.push("Opportunist Infection treatment?");
+		}	
+		return conditions;	
+	},
+	'Opportunist Infections': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Opportunist Infections'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Opportunist Infection duration?");
+			conditions.show.push("Opportunist Infection complications?");
+			conditions.show.push("Opportunist Infection treatment?");
+		} else {	
+			conditions.hide.push("Opportunist Infection duration?");
+			conditions.hide.push("Opportunist Infection complications?");
+			conditions.hide.push("Opportunist Infection treatment?");
+		}	
+		return conditions;	
+	},
+	'Chronic diarrhea': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Chronic diarrhea'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Chronic diarrhea duration?");
+			conditions.show.push("Chronic diarrhea complications?");
+			conditions.show.push("Chronic diarrhea treatment?");
+		} else {	
+			conditions.hide.push("Chronic diarrhea duration?");
+			conditions.hide.push("Chronic diarrhea complications?");
+			conditions.hide.push("Chronic diarrhea treatment?");
+		}	
+		return conditions;	
+	},
+	'Chronic Cough': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Chronic Cough'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Chronic Cough duration?");
+			conditions.show.push("Chronic Cough complications?");
+			conditions.show.push("Chronic Cough treatment?");
+		} else {	
+			conditions.hide.push("Chronic Cough duration?");
+			conditions.hide.push("Chronic Cough complications?");
+			conditions.hide.push("Chronic Cough treatment?");
+		}	
+		return conditions;	
+	},
+	'Shingles': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Shingles'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Shingles duration?");
+			conditions.show.push("Shingles complications?");
+			conditions.show.push("Shingles treatment?");
+		} else {	
+			conditions.hide.push("Shingles duration?");
+			conditions.hide.push("Shingles complications?");
+			conditions.hide.push("Shingles treatment?");
+		}	
+		return conditions;	
+	},
+	'Hepatitis B?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Hepatitis B?'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Hepatitis B duration?");
+			conditions.show.push("Hepatitis B complications?");
+			conditions.show.push("Hepatitis B treatment?");
+		} else {	
+			conditions.hide.push("Hepatitis B duration?");
+			conditions.hide.push("Hepatitis B complications?");
+			conditions.hide.push("Hepatitis B treatment?");
+		}	
+		return conditions;	
+	},
+	'Hepatitis C': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Hepatitis C'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Hepatitis C duration?");
+			conditions.show.push("Hepatitis C complications?");
+			conditions.show.push("Hepatitis C treatment?");
+		} else {	
+			conditions.hide.push("Hepatitis C duration?");
+			conditions.hide.push("Hepatitis C complications?");
+			conditions.hide.push("Hepatitis C treatment?");
+		}	
+		return conditions;	
+	},
+	'Diabetes?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		if (formName === "PATIENT WITH HIV - CHILD INITIAL") {
+			var value = formFieldValues['Diabetes?'];
+			if (value === "Yes full name") {	
+				conditions.show.push("Diabetes duration?");
+				conditions.show.push("Diabetes complications?");
+				conditions.show.push("Diabetes treatment?");
+			} else {	
+				conditions.hide.push("Diabetes duration?");
+				conditions.hide.push("Diabetes complications?");
+				conditions.hide.push("Diabetes treatment?");
+			}	
+		}
+		return conditions;	
+	},
+	'Other prescriptions': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Other prescriptions'];
+		if (value === "Yes full name") {	
+			conditions.show.push("If yes specify");
+		} else {	
+			conditions.hide.push("If yes specify");
+		}	
+		return conditions;	
+	},
+	'Recent TB contact': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Recent TB contact'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Contact with?");
+		} else {	
+			conditions.hide.push("Contact with?");
+		}	
+		return conditions;	
+	},
+	'Contact with?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Contact with?'];
+		if (value === "Other") {	
+			conditions.show.push("If other specify");
+		} else {	
+			conditions.hide.push("If other specify");
+		}	
+		return conditions;	
+	},
+	'Multiple pregnancy': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Multiple pregnancy'];
+		if (value === "Yes full name") {	
+			conditions.show.push("If yes, Order at Birth");
+		} else {	
+			conditions.hide.push("If yes, Order at Birth");
+		}	
+		return conditions;	
+	},
+	'Complications': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Complications'];
+		console.log(value);
+		if (value === "Premature rupture of the membranes") {	
+			conditions.show.push("If Premature Membrane Rupture, Duration (in hours)");
+		} else {	
+			conditions.hide.push("If Premature Membrane Rupture, Duration (in hours)");
+		}
+		if (value === "Other complications") {	
+			conditions.show.push("If other complications, specify");
+		} else {	
+			conditions.hide.push("If other complications, specify");
+		}
+		return conditions;	
+	},
+	'Presentation': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Presentation'];
+		if (value === "Other") {	
+			conditions.show.push("If other presentation, specify");
+		} else {	
+			conditions.hide.push("If other presentation, specify");
+		}	
+		return conditions;	
+	},
+	'Entry Point': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Entry Point'];
+		if (value === "Other") {	
+			conditions.show.push("If other specify");
+		} else {	
+			conditions.hide.push("If other specify");
+		}	
+		return conditions;	
 	}
-
 };
