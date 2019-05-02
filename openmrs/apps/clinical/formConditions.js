@@ -2138,5 +2138,78 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("If other specify");
 		}	
 		return conditions;	
-	}
+	},
+	/**
+	 * Handling conditions for CHILD EXPOSED TO HIV form
+	 */
+	'PCR 1': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PCR 1'];
+		if (value === "Yes full name") {	
+			conditions.show.push("PCR 1 sample date");
+			conditions.show.push("PCR 1 result");
+			conditions.show.push("PCR 1 result date");
+		} else {	
+			conditions.hide.push("PCR 1 sample date");
+			conditions.hide.push("PCR 1 result");
+			conditions.hide.push("PCR 1 result date");
+		}	
+		return conditions;	
+	},
+	'PCR 2': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PCR 2'];
+		if (value === "Yes full name") {	
+			conditions.show.push("PCR 2 sample date");
+			conditions.show.push("PCR 2 result");
+			conditions.show.push("PCR 2 result date");
+		} else {	
+			conditions.hide.push("PCR 2 sample date");
+			conditions.hide.push("PCR 2 result");
+			conditions.hide.push("PCR 2 result date");
+		}	
+		return conditions;	
+	},
+	'PCR 3': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PCR 3'];
+		if (value === "Yes full name") {	
+			conditions.show.push("PCR 3 sample date");
+			conditions.show.push("PCR 3 result");
+			conditions.show.push("PCR 3 result date");
+		} else {	
+			conditions.hide.push("PCR 3 sample date");
+			conditions.hide.push("PCR 3 result");
+			conditions.hide.push("PCR 3 result date");
+		}	
+		return conditions;	
+	},
+	'Rapid Test 1 (9 to 18 months)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Rapid Test 1 (9 to 18 months)'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Rapid Test 1 sample date");
+			conditions.show.push("Rapid Test 1 result");
+			conditions.show.push("Rapid Test 1 result date");
+		} else {	
+			conditions.hide.push("Rapid Test 1 sample date");
+			conditions.hide.push("Rapid Test 1 result");
+			conditions.hide.push("Rapid Test 1 result date");
+		}	
+		return conditions;	
+	},
+	'Rapid Test 2 (>/= 18 MOIS)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Rapid Test 2 (>/= 18 MOIS)'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Rapid Test 2 sample date");
+			conditions.show.push("Rapid Test 2 result");
+			conditions.show.push("Rapid Test 2 result date");
+		} else {	
+			conditions.hide.push("Rapid Test 2 sample date");
+			conditions.hide.push("Rapid Test 2 result");
+			conditions.hide.push("Rapid Test 2 result date");
+		}	
+		return conditions;	
+	},
 };
