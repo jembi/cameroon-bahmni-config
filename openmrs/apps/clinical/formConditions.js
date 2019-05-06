@@ -2133,9 +2133,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Path of transmission'];
 		if (value === "Other routes") {
-			conditions.show.push("If other specify");
+			conditions.show.push("If other routes specify");
 		} else {	
-			conditions.hide.push("If other specify");
+			conditions.hide.push("If other routes specify");
 		}	
 		return conditions;	
 	},
