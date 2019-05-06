@@ -269,6 +269,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Skin, Hair And Breast)'];
 		if (abnormal === "Abnormal") {
+			conditions.show.push("Rash?");
 			conditions.show.push("Itching?");
 			conditions.show.push("Hair Loss?");
 			conditions.show.push("Hair Increase?");
@@ -277,6 +278,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Breast Mass?");
 			conditions.show.push("Breast Change?");
 		} else {
+			conditions.hide.push("Rash?");
 			conditions.hide.push("Itching?");
 			conditions.hide.push("Hair Loss?");
 			conditions.hide.push("Hair Increase?");
