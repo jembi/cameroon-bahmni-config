@@ -2103,6 +2103,64 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'History of Tuberculosis': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['History of Tuberculosis'];
+		if (value === "Yes full name") {	
+			// conditions.show.push("Treatment start date"); FIXME 'Treatment start date' can't be found
+			conditions.show.push("If Yes");
+			conditions.show.push("End date");
+		} else {	
+			// conditions.hide.push("Treatment start date");
+			conditions.hide.push("If Yes");
+			conditions.hide.push("End date");
+		}	
+		return conditions;	
+	},
+	'ARV treatment': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['ARV treatment'];
+		if (value === "Yes full name") {	
+			conditions.show.push("If Yes since");
+			conditions.show.push("Specify the protocol");
+		} else {	
+			conditions.hide.push("If Yes since");
+			conditions.hide.push("Specify the protocol");
+		}	
+		return conditions;	
+	},
+	'Path of transmission': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Path of transmission'];
+		if (value === "Other routes") {
+			conditions.show.push("If other specify");
+		} else {	
+			conditions.hide.push("If other specify");
+		}	
+		return conditions;	
+	},
+	'Exposure to ARVs other than PMTCT?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Exposure to ARVs other than PMTCT?'];
+		if (value === "Yes") {
+			conditions.show.push("If yes, select ARV used");
+		} else {	
+			conditions.hide.push("If yes, select ARV used");
+		}	
+		return conditions;	
+	},
+	'Normal?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Normal?'];
+		if (value === "No full name") {
+			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)");
+			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)");
+		} else {	
+			conditions.hide.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)");
+			conditions.hide.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)");
+		}	
+		return conditions;	
+	},
 	'Complications': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Complications'];
