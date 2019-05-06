@@ -24,7 +24,33 @@ Bahmni.ConceptSet.FormConditions.rules = {
                 disable: ["Posture"]
             }
         }
-    },
+	},
+	/**
+	 * Handling conditions for PATIENT WITH HIV - CHILD FOLLOW UP FORM
+	 */
+	'Normal nutrition': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var other = formFieldValues['Normal nutrition'];
+		console.log(other)
+		if (other == "False") {
+			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 DS, Severe if <- 3 SD)")
+			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 DS, Severe if <- 3 DS)")
+		} else {
+			conditions.hide.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 DS, Severe if <- 3 SD)")
+			conditions.hide.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 DS, Severe if <- 3 DS)")
+		}
+		return conditions;
+	},
+	'Adherence': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var other = formFieldValues['Adherence'];
+		if (other !== "Good") {
+			conditions.show.push("Probable cause of non-compliance")
+		} else {
+			conditions.hide.push("Probable cause of non-compliance")
+		}
+		return conditions;
+	},
 	/**
 	 * Handling conditions for PATIENT WITH HIV - ADULT INITIAL form
 	 */
