@@ -44,7 +44,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Adherence': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var other = formFieldValues['Adherence'];
-		if (other !== "Good") {
+		if (other !== "Good" && other) {
 			conditions.show.push("Probable cause of non-compliance")
 		} else {
 			conditions.hide.push("Probable cause of non-compliance")
