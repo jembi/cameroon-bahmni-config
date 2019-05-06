@@ -2107,11 +2107,11 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['History of Tuberculosis'];
 		if (value === "Yes full name") {	
-			// conditions.show.push("Treatment start date"); FIXME 'Treatment start date' can't be found
+			conditions.show.push("Treatment start date");
 			conditions.show.push("If Yes");
 			conditions.show.push("End date");
 		} else {	
-			// conditions.hide.push("Treatment start date");
+			conditions.hide.push("Treatment start date");
 			conditions.hide.push("If Yes");
 			conditions.hide.push("End date");
 		}	
