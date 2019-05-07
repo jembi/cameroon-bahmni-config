@@ -269,6 +269,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Skin, Hair And Breast)'];
 		if (abnormal === "Abnormal") {
+			conditions.show.push("Rash?");
 			conditions.show.push("Itching?");
 			conditions.show.push("Hair Loss?");
 			conditions.show.push("Hair Increase?");
@@ -277,6 +278,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Breast Mass?");
 			conditions.show.push("Breast Change?");
 		} else {
+			conditions.hide.push("Rash?");
 			conditions.hide.push("Itching?");
 			conditions.hide.push("Hair Loss?");
 			conditions.hide.push("Hair Increase?");
@@ -2107,11 +2109,11 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['History of Tuberculosis'];
 		if (value === "Yes full name") {	
-			// conditions.show.push("Treatment start date"); FIXME 'Treatment start date' can't be found
+			conditions.show.push("Treatment start date");
 			conditions.show.push("If Yes");
 			conditions.show.push("End date");
 		} else {	
-			// conditions.hide.push("Treatment start date");
+			conditions.hide.push("Treatment start date");
 			conditions.hide.push("If Yes");
 			conditions.hide.push("End date");
 		}	
@@ -2133,9 +2135,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Path of transmission'];
 		if (value === "Other routes") {
-			conditions.show.push("If other specify");
+			conditions.show.push("If other routes specify");
 		} else {	
-			conditions.hide.push("If other specify");
+			conditions.hide.push("If other routes specify");
 		}	
 		return conditions;	
 	},
