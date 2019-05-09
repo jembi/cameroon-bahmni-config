@@ -7,15 +7,11 @@
                 <tr>
                     <td class="logo">
                         <p>
-                            <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/images/bahmni-icon.png" style="width: 12mm; height: 12mm; "/>
+                            <img src="/bahmni_config/openmrs/apps/registration/registrationCardLayout/images/hospital-logo.png" style="width: 12mm; height: 12mm; margin-left: 10mm;"/>
                         </p>
                     </td>
                     <td class="print-table-right-header">
-                        <h3 class="print-center">Bahmni Hospital</h3>
-                    </td>
-                    <td class="registrationCard-photo">
-                        <img ng-src="{{patient.image}}" style="width: 20mm; height: 20mm; "
-                             onerror="this.onerror=null;this.src='../images/blank.jpeg';"/>
+                        <h3 class="print-center">{{ "REGISTRATION_HOSPITAL_NAME" | translate }}</h3>
                     </td>
                 </tr>
             </table>
@@ -23,7 +19,7 @@
                 <tbody>
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">Registration Date</span>
+                        <span class="hindi-text">{{ "REGISTRATION_DATE" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.registrationDate | bahmniDate}} </td>
@@ -31,7 +27,7 @@
             
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">Full Name</span>
+                        <span class="hindi-text">{{ "REGISTRATION_PATIENT_NAME" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
                     <td>
@@ -40,14 +36,14 @@
                 </tr>
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">Age</span>
+                        <span class="hindi-text">{{ "REGISTRATION_AGE" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.age | age}} </td>
                 </tr>
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">Gender</span>
+                        <span class="hindi-text">{{ "REGISTRATION_GENDER" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.gender}} </td>
@@ -55,14 +51,26 @@
             
                 <tr>
                     <td class="registrationCard-details-name">
-                        <span class="hindi-text">Village</span>
+                        <span class="hindi-text">{{ "REGISTRATION_ADDRESS" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
-                    <td>{{patient.address.cityVillage}} </td>
+                    <td>{{patient.address.address3}} </td>
                 </tr>
             
                 <tr>
+                    <td class="registrationCard-details-name">
+                        <span class="hindi-text">{{ "REGISTRATION_TELEPHONE" | translate }}</span>
+                    </td>
+                    <td class="registrationCard-details-seperator"> :  </td>
+                    <td>{{patient.PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER}} </td>
+                </tr>
+                </tbody>
+                </table>
+                <table class="registrationCard-details">
+                    <tbody>
+               <tr>
                 <td>
+                <p>{{ "REGISTRATION_PATIENT_ID" | translate }}</p>
                 <img id="barcode"
                      jsbarcode-value="{{patient.primaryIdentifier.identifier}}"
                      jsbarcode-width="3"
