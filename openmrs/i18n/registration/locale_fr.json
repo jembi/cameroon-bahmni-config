@@ -101,6 +101,19 @@
   "LOCATION_DENTISTRY" : "Dentisterie",
   "LOCATION_GYNAECOLOGY" : "Gynécologie",
   "LOCATION_OPTHALMOLOGY" : "Ophtalmologie",
-  "LOCATION_RADIOLOGY" : "Radiologie"
-  
+  "LOCATION_RADIOLOGY" : "Radiologie",
+  "VISIT_TYPE_ANC": "CPN",
+  "VISIT_TYPE_ART": "UPEC",
+  "VISIT_TYPE_CARDIOLOGY": "Cardiologie",
+  "VISIT_TYPE_DELIVERY": "D'accouchement",
+  "VISIT_TYPE_DENTISTRY": "Dentisterie",
+  "VISIT_TYPE_EMERGENCY": "Urgence",
+  "VISIT_TYPE_GYNECOLOGY": "Gynécologie",
+  "VISIT_TYPE_LABORATORY": "Laboratoire",
+  "VISIT_TYPE_MATERNITY": "Maternite",
+  "VISIT_TYPE_MINOR_SURGERY": "Petite Churigie",
+  "VISIT_TYPE_OPD": "Consultations Externes",
+  "VISIT_TYPE_OPHTHALMOLOGY": "Ophtalmologie",
+  "VISIT_TYPE_PEDIATRIC": "Pediatrie",
+  "VISIT_TYPE_RADIOLOGY": "Radiologie"
 }
