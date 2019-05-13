@@ -1,5 +1,5 @@
 SELECT
-    'Number of PLWHA  on 1st line protocol who took treatment in the Month' AS 'Title',
+    'Number of PLWHA  on 2nd line protocol who took treatment in the Month' AS 'Title',
     PECG_Indicator6('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
     PECG_Indicator6('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
     PECG_Indicator6('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',
