@@ -136,6 +136,9 @@
             "Accepted Family Planning methods": {
                 "multiSelect": true
             },
+            "Appointment date": {
+                "allowFutureDates": true
+            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [

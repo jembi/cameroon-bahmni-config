@@ -30,7 +30,7 @@
                     "name": "Report4",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_Not_Available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_total_no_of_ARV.sql"
                     }
                 },
                 {
@@ -44,14 +44,14 @@
                     "name": "Report6",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_2nd_line_ARV_protocol.sql"
                     }
                 },
                 {
                     "name": "Report7",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator7_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator7_3rd_line_ARV_protocol.sql"
                     }
                 },
                 {

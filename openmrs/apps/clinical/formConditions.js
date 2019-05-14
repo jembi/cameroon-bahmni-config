@@ -30,14 +30,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	 */
 	'Normal nutrition': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var other = formFieldValues['Normal nutrition'];
-		console.log(other)
-		if (other == "False") {
-			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 DS, Severe if <- 3 SD)")
-			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 DS, Severe if <- 3 DS)")
+		var value = formFieldValues['Normal nutrition'];
+		if (value === "Yes full name") {
+			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)")
+			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)")
 		} else {
-			conditions.hide.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 DS, Severe if <- 3 SD)")
-			conditions.hide.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 DS, Severe if <- 3 DS)")
+			conditions.hide.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)")
+			conditions.hide.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)")
 		}
 		return conditions;
 	},
@@ -2177,22 +2176,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Normal?': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Normal?'];
-		if (value === "No full name") {
-			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)");
-			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)");
-		} else {	
-			conditions.hide.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)");
-			conditions.hide.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)");
-		}	
-		return conditions;	
-	},
 	'Complications': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Complications'];
-		console.log(value);
 		if (value === "Premature rupture of the membranes") {	
 			conditions.show.push("If Premature Membrane Rupture, Duration (in hours)");
 		} else {	
