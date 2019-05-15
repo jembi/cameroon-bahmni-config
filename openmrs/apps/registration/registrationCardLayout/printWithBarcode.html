@@ -11,7 +11,7 @@
                         </p>
                     </td>
                     <td class="print-table-right-header">
-                        <h3 class="print-center">{{ "REGISTRATION_HOSPITAL_NAME" | translate }}</h3>
+                        <h3 class="print-center">{{ patient.hospitalName }}</h3>
                     </td>
                 </tr>
             </table>
@@ -54,7 +54,7 @@
                         <span class="hindi-text">{{ "REGISTRATION_ADDRESS" | translate }}</span>
                     </td>
                     <td class="registrationCard-details-seperator"> :  </td>
-                    <td>{{patient.address.address3}} </td>
+                    <td>{{patient.address.address1}} </td>
                 </tr>
             
                 <tr>
@@ -64,13 +64,20 @@
                     <td class="registrationCard-details-seperator"> :  </td>
                     <td>{{patient.PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER}} </td>
                 </tr>
+
+                <tr>
+                        <td class="registrationCard-details-name">
+                            <span class="hindi-text">{{ "REGISTRATION_PATIENT_ID" | translate }}</span>
+                        </td>
+                        <td class="registrationCard-details-seperator"> :  </td>
+                        <td>{{patient.primaryIdentifier.identifier}}</td>
+                </tr>
                 </tbody>
                 </table>
                 <table class="registrationCard-details">
                     <tbody>
                <tr>
                 <td>
-                <p>{{ "REGISTRATION_PATIENT_ID" | translate }}</p>
                 <img id="barcode"
                      jsbarcode-value="{{patient.primaryIdentifier.identifier}}"
                      jsbarcode-width="3"
@@ -82,7 +89,6 @@
                      jsbarcode-fontSize="10"
 
                 />
-                <div class="title">{{patient.primaryIdentifier.identifier}}</div>
                 </td>
                 </tr>
                 </tbody>
