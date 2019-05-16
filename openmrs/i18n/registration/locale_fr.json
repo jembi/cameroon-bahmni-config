@@ -41,7 +41,7 @@
   "FEE_INFORMATION_LOCALE_KEY": "Information sur les frais",
   "NUTRITIONAL_VALUES_LOCALE_KEY": "Valeurs Nutritionnelles",
   "OTHER_VISIT_INFORMATION_LOCALE_KEY": "Autres informations de visite",
-  "REGISTRATION_PRINT_WITH_BARCODE": "Patient Label [FR]",
+  "REGISTRATION_PRINT_WITH_BARCODE": "Étiquette du patient",
   "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY": "Quartier",
   "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY": "Saisissez le Nom du Quartier",
   "ADDRESSHIERARCHY_AREA": "Quartier",
