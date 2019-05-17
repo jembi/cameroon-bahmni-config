@@ -511,22 +511,6 @@
             ]
         }
     },
-    "visitReport": {
-        "name": "Visit Report",
-        "type": "visitReport",
-        "config": {
-            "personAttributes": [
-                "caste",
-                "class",
-                "education",
-                "occupation",
-                "primaryContact"
-            ],
-            "visitAttributes": [
-                "Visit Status"
-            ]
-        }
-    },
     "patientReport": {
         "name": "Patient Information",
         "type": "PatientReport"
