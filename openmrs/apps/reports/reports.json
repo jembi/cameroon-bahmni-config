@@ -79,7 +79,7 @@
                     "name": "Report11",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_treatment_started_12_months_ago.sql"
                     }
                 },
                 {
@@ -508,22 +508,6 @@
             "orderTypes": [
                 "Order",
                 "Drug Order"
-            ]
-        }
-    },
-    "visitReport": {
-        "name": "Visit Report",
-        "type": "visitReport",
-        "config": {
-            "personAttributes": [
-                "caste",
-                "class",
-                "education",
-                "occupation",
-                "primaryContact"
-            ],
-            "visitAttributes": [
-                "Visit Status"
             ]
         }
     },

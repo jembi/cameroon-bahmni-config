@@ -104,12 +104,12 @@ h1, h2, h3 {
 
 /* line 74, print.scss */
 .registrationCard-details {
-  padding: 0mm 5mm 0mm 5mm;
+  padding: 0mm 0mm 0mm 10mm;
 }
 
 /* line 77, print.scss */
 .registrationCard-details-name {
-  width: 70px;
+  width: 150px;
 }
 
 /* line 80, print.scss */
