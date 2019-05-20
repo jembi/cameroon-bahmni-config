@@ -2,21 +2,16 @@
   "homePage": {
     "header_text": "",
     "logo": "/images/hospitalLogo.png",
-    "title_text": " ",
-    "bottomBanner": "/bahmni/images/bottombanner/combined_logo.png"
+    "hospitalName": "Hospital de District de la Cité Verte",
+    "bottomBanner": "/bahmni/images/bottombanner/combined_logo.png",
+    "erpUrl": "http://192.168.33.10:8069"
   },
   "loginPage": {
-    "logo": "/bahmni/images/bahmniLogoFull.png",
+    "logo": "/images/hospitalLogo.png",
+    "hospitalName": "Hospital de District de la Cité Verte",
     "showHeaderText": true,
     "showTitleText": false,
-    "bottomLogos": [
-      "/bahmni/images/bottombanner/mohLogo.png",
-      "/bahmni/images/bottombanner/pepfar_logo.png",
-      "/bahmni/images/bottombanner/cdc_logo.png",
-      "/bahmni/images/bottombanner/nacc_logo.png",
-      "/bahmni/images/bottombanner/jembi_logo.png",
-      "/bahmni/images/bottombanner/ucsf_logo.png"
-    ]
+    "bottomBanner": "/bahmni/images/bottombanner/combined_logo.png"
   },
   "helpLink": {
     "url": "https://bahmni.atlassian.net/wiki/display/BAH/Bahmni+Home"
