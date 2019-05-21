@@ -2,13 +2,13 @@
   "homePage": {
     "header_text": "",
     "logo": "/images/hospitalLogo.png",
-    "hospitalName": "Hospital de District de la Cité Verte",
+    "hospitalName": "Hopital de District de la Cité Verte",
     "bottomBanner": "/bahmni/images/bottomBannerLogos.png",
     "erpUrl": "http://192.168.33.10:8069"
   },
   "loginPage": {
     "logo": "/images/hospitalLogo.png",
-    "hospitalName": "Hospital de District de la Cité Verte",
+    "hospitalName": "Hopital de District de la Cité Verte",
     "showHeaderText": true,
     "showTitleText": false,
     "bottomBanner": "/bahmni/images/bottomBannerLogos.png"
