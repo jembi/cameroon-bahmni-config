@@ -121,7 +121,7 @@
                     "name": "Report17",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator17_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator17_did_not_come_for_treatment.sql"
                     }
                 },
                 {
