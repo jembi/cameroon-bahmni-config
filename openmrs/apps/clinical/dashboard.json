@@ -87,30 +87,6 @@
                     "numberOfVisits":4
                 }
             },
-            "labOrdersDisplayControl":{  
-                "translationKey":"DASHBOARD_TITLE_LAB_ORDERS_DISPLAY_CONTROL_KEY",
-                "type":"ordersControl",
-                "orderType":"Lab Order",
-                "showDetailsButton":true,
-                "displayOrder":9,
-                "dashboardConfig":{  
-                    "conceptNames":[  
-                        "Systolic",
-                        "Diastolic",
-                        "Posture",
-                        "Temperature"
-                    ]
-                },
-                "expandedViewConfig":{  
-                    "conceptNames":[  
-                        "Systolic",
-                        "Diastolic",
-                        "Posture",
-                        "Temperature"
-                    ],
-                    "showDetailsButton":true
-                }
-            },
             "bacteriologyResults":{  
                 "translationKey":"DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY",
                 "type":"bacteriologyResultsControl",
