@@ -68,7 +68,7 @@
                 "translationKey":"DASHBOARD_TITLE_RADIOLOGY_KEY",
                 "type":"radiology",
                 "showDetailsButton":true,
-                "displayOrder":14
+                "displayOrder":15
             },
             "programs":{  
                 "translationKey":"DASHBOARD_TITLE_PROGRAMS_KEY",
@@ -79,7 +79,7 @@
                 "orderType":"Radiology Order",
                 "type":"ordersControl",
                 "translationKey":"DASHBOARD_TITLE_RADIOLOGY_ORDERS_KEY",
-                "displayOrder":12,
+                "displayOrder":13,
                 "dashboardConfig":{  
                     "conceptNames":[  
                         "Summary"
@@ -92,7 +92,7 @@
                 "type":"bacteriologyResultsControl",
                 "scope":"All",
                 "orderType":"",
-                "displayOrder":13,
+                "displayOrder":11,
                 "dashboardConfig":{  
                     "conceptNames":[  
                         "BACTERIOLOGY CONCEPT SET"
@@ -102,7 +102,7 @@
             "labResults":{  
                 "translationKey":"DASHBOARD_TITLE_LAB_RESULTS_KEY",
                 "type":"labOrders",
-                "displayOrder":11,
+                "displayOrder":9,
                 "dashboardConfig":{  
                     "title":null,
                     "numberOfVisits":6,
@@ -246,7 +246,7 @@
             },
             "patientAppointments": {
                 "type": "custom",
-                "displayOrder": 15,
+                "displayOrder": 12,
                 "config": {
                     "title": "DASHBOARD_TITLE_APPOINTMENTS_KEY",
                     "template": "<patient-appointments-dashboard section='config' patient='patient'></patient-appointments-dashboard>"
