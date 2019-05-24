@@ -2283,93 +2283,93 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Follicle-stimulating hormone (FSH) (plasma) Males': function(formName, formFieldValues) {
+	'FSH Males': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Follicle-stimulating hormone (FSH) (plasma) Males'];
+		var value = formFieldValues['FSH Males'];
 		if (value && value !== "") {	
-			conditions.show.push("Follicle-stimulating hormone (FSH) (plasma) Males Test Date");
+			conditions.show.push("FSH Males Test Date");
 		} else {	
-			conditions.hide.push("Follicle-stimulating hormone (FSH) (plasma) Males Test Date");
+			conditions.hide.push("FSH Males Test Date");
 		}	
 		return conditions;	
 	},
-	'Follicle-stimulating hormone (FSH) (plasma) Females premenopausal': function(formName, formFieldValues) {
+	'FSH Females premenopausal': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Follicle-stimulating hormone (FSH) (plasma) Females premenopausal'];
+		var value = formFieldValues['FSH Females premenopausal'];
 		if (value && value !== "") {	
-			conditions.show.push("Follicle-stimulating hormone (FSH) (plasma) Females premenopausal Test Date");
+			conditions.show.push("FSH Females premenopausal Test Date");
 		} else {	
-			conditions.hide.push("Follicle-stimulating hormone (FSH) (plasma) Females premenopausal Test Date");
+			conditions.hide.push("FSH Females premenopausal Test Date");
 		}	
 		return conditions;	
 	},
-	'Follicle-stimulating hormone (FSH) (plasma) Females postmenopausal': function(formName, formFieldValues) {
+	'FSH Females postmenopausal': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Follicle-stimulating hormone (FSH) (plasma) Females postmenopausal'];
+		var value = formFieldValues['FSH Females postmenopausal'];
 		if (value && value !== "") {	
-			conditions.show.push("Follicle-stimulating hormone (FSH) (plasma) Females postmenopausal Test Date");
+			conditions.show.push("FSH Females postmenopausal Test Date");
 		} else {	
-			conditions.hide.push("Follicle-stimulating hormone (FSH) (plasma) Females postmenopausal Test Date");
+			conditions.hide.push("FSH Females postmenopausal Test Date");
 		}	
 		return conditions;	
 	},
-	'Luteinizing hormone (LH) (serum) - Males': function(formName, formFieldValues) {
+	'LH - Males': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Luteinizing hormone (LH) (serum) - Males'];
+		var value = formFieldValues['LH - Males'];
 		if (value && value !== "") {	
-			conditions.show.push("Luteinizing hormone (LH) (serum) - Males Test Date");
+			conditions.show.push("LH - Males Test Date");
 		} else {	
-			conditions.hide.push("Luteinizing hormone (LH) (serum) - Males Test Date");
+			conditions.hide.push("LH - Males Test Date");
 		}	
 		return conditions;	
 	},
-	'Luteinizing hormone (LH) (serum) - Females (follicular)': function(formName, formFieldValues) {
+	'LH - Females (follicular)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Luteinizing hormone (LH) (serum) - Females (follicular)'];
+		var value = formFieldValues['LH - Females (follicular)'];
 		if (value && value !== "") {	
-			conditions.show.push("Luteinizing hormone (LH) (serum) - Females (follicular) Test Date");
+			conditions.show.push("LH - Females (follicular) Test Date");
 		} else {	
-			conditions.hide.push("Luteinizing hormone (LH) (serum) - Females (follicular) Test Date");
+			conditions.hide.push("LH - Females (follicular) Test Date");
 		}	
 		return conditions;	
 	},
-	'Luteinizing hormone (LH) (serum) - Females (mid-cycle)': function(formName, formFieldValues) {
+	'LH - Females (mid-cycle)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Luteinizing hormone (LH) (serum) - Females (mid-cycle)'];
+		var value = formFieldValues['LH - Females (mid-cycle)'];
 		if (value && value !== "") {	
-			conditions.show.push("Luteinizing hormone (LH) (serum) - Females (mid-cycle) Test Date");
+			conditions.show.push("LH - Females (mid-cycle) Test Date");
 		} else {	
-			conditions.hide.push("Luteinizing hormone (LH) (serum) - Females (mid-cycle) Test Date");
+			conditions.hide.push("LH - Females (mid-cycle) Test Date");
 		}	
 		return conditions;	
 	},
-	'Luteinizing hormone (LH) (serum) - Females (luteal)': function(formName, formFieldValues) {
+	'LH - Females (luteal)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Luteinizing hormone (LH) (serum) - Females (luteal)'];
+		var value = formFieldValues['LH - Females (luteal)'];
 		if (value && value !== "") {	
-			conditions.show.push("Luteinizing hormone (LH) (serum) - Females (luteal) Test Date");
+			conditions.show.push("LH - Females (luteal) Test Date");
 		} else {	
-			conditions.hide.push("Luteinizing hormone (LH) (serum) - Females (luteal) Test Date");
+			conditions.hide.push("LH - Females (luteal) Test Date");
 		}	
 		return conditions;	
 	},
-	'Luteinizing hormone (LH) (serum) - Females (postmenopausal)': function(formName, formFieldValues) {
+	'LH - Females (postmenopausal)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Luteinizing hormone (LH) (serum) - Females (postmenopausal)'];
+		var value = formFieldValues['LH - Females (postmenopausal)'];
 		if (value && value !== "") {	
-			conditions.show.push("Luteinizing hormone (LH) (serum) - Females (postmenopausal) Test Date");
+			conditions.show.push("LH - Females (postmenopausal) Test Date");
 		} else {	
-			conditions.hide.push("Luteinizing hormone (LH) (serum) - Females (postmenopausal) Test Date");
+			conditions.hide.push("LH - Females (postmenopausal) Test Date");
 		}	
 		return conditions;	
 	},
-	'Parathyroid hormone (PTH)': function(formName, formFieldValues) {
+	'PTH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Parathyroid hormone (PTH)'];
+		var value = formFieldValues['PTH'];
 		if (value && value !== "") {	
-			conditions.show.push("Parathyroid hormone (PTH) Test Date");
+			conditions.show.push("PTH Test Date");
 		} else {	
-			conditions.hide.push("Parathyroid hormone (PTH) Test Date");
+			conditions.hide.push("PTH Test Date");
 		}	
 		return conditions;	
 	},
@@ -2453,53 +2453,53 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Thyroid-stimulating hormone (TSH) - Adults': function(formName, formFieldValues) {
+	'TSH - Adults': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Thyroid-stimulating hormone (TSH) - Adults'];
+		var value = formFieldValues['TSH - Adults'];
 		if (value && value !== "") {	
-			conditions.show.push("Thyroid-stimulating hormone (TSH) - Adults Test Date");
+			conditions.show.push("TSH - Adults Test Date");
 		} else {	
-			conditions.hide.push("Thyroid-stimulating hormone (TSH) - Adults Test Date");
+			conditions.hide.push("TSH - Adults Test Date");
 		}	
 		return conditions;	
 	},
-	'Thyroid-stimulating hormone (TSH) -Term infants: (0-1 day)': function(formName, formFieldValues) {
+	'TSH -Term infants: (0-1 day)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Thyroid-stimulating hormone (TSH) -Term infants: (0-1 day)'];
+		var value = formFieldValues['TSH -Term infants: (0-1 day)'];
 		if (value && value !== "") {	
-			conditions.show.push("Thyroid-stimulating hormone (TSH) -Term infants: (0-1 day) Test Date");
+			conditions.show.push("TSH -Term infants: (0-1 day) Test Date");
 		} else {	
-			conditions.hide.push("Thyroid-stimulating hormone (TSH) -Term infants: (0-1 day) Test Date");
+			conditions.hide.push("TSH -Term infants: (0-1 day) Test Date");
 		}	
 		return conditions;	
 	},
-	'Thyroid-stimulating hormone (TSH) -Term infants: (1-4 days)': function(formName, formFieldValues) {
+	'TSH -Term infants: (1-4 days)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Thyroid-stimulating hormone (TSH) -Term infants: (1-4 days)'];
+		var value = formFieldValues['TSH -Term infants: (1-4 days)'];
 		if (value && value !== "") {	
-			conditions.show.push("Thyroid-stimulating hormone (TSH) -Term infants: (1-4 days) Test Date");
+			conditions.show.push("TSH -Term infants: (1-4 days) Test Date");
 		} else {	
-			conditions.hide.push("Thyroid-stimulating hormone (TSH) -Term infants: (1-4 days) Test Date");
+			conditions.hide.push("TSH -Term infants: (1-4 days) Test Date");
 		}	
 		return conditions;	
 	},
-	'Thyroid-stimulating hormone (TSH) -Term infants: (2-20 weeks)': function(formName, formFieldValues) {
+	'TSH -Term infants: (2-20 weeks)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Thyroid-stimulating hormone (TSH) -Term infants: (2-20 weeks)'];
+		var value = formFieldValues['TSH -Term infants: (2-20 weeks)'];
 		if (value && value !== "") {	
-			conditions.show.push("Thyroid-stimulating hormone (TSH) -Term infants: (2-20 weeks) Test Date");
+			conditions.show.push("TSH -Term infants: (2-20 weeks) Test Date");
 		} else {	
-			conditions.hide.push("Thyroid-stimulating hormone (TSH) -Term infants: (2-20 weeks) Test Date");
+			conditions.hide.push("TSH -Term infants: (2-20 weeks) Test Date");
 		}	
 		return conditions;	
 	},
-	'Thyroid-stimulating hormone (TSH) -Term infants: (21 weeks to 20 years)': function(formName, formFieldValues) {
+	'TSH -Term infants: (21 weeks to 20 years)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Thyroid-stimulating hormone (TSH) -Term infants: (21 weeks to 20 years)'];
+		var value = formFieldValues['TSH -Term infants: (21 weeks to 20 years)'];
 		if (value && value !== "") {	
-			conditions.show.push("Thyroid-stimulating hormone (TSH) -Term infants: (21 weeks to 20 years) Test Date");
+			conditions.show.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
 		} else {	
-			conditions.hide.push("Thyroid-stimulating hormone (TSH) -Term infants: (21 weeks to 20 years) Test Date");
+			conditions.hide.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
 		}	
 		return conditions;	
 	},
