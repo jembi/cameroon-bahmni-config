@@ -603,13 +603,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Urethral smear Diplocoque de Neisseria / Neisseria diplococci': function(formName, formFieldValues) {
+	'Urethral smear Diplocoque de Neisseria': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urethral smear Diplocoque de Neisseria / Neisseria diplococci'];
+		var value = formFieldValues['Urethral smear Diplocoque de Neisseria'];
 		if (value && value !== "") {	
-			conditions.show.push("Urethral smear Diplocoque de Neisseria / Neisseria diplococci Test Date");
+			conditions.show.push("Urethral smear Diplocoque de Neisseria Test Date");
 		} else {	
-			conditions.hide.push("Urethral smear Diplocoque de Neisseria / Neisseria diplococci Test Date");
+			conditions.hide.push("Urethral smear Diplocoque de Neisseria Test Date");
 		}	
 		return conditions;	
 	},	
