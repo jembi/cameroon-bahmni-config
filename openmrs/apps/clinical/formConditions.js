@@ -482,7 +482,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Vaginal Cervical smear Gram + Bacilli Test Date");
 		}		
 		return conditions;		
-	},			
+	},
+	'Vaginal Cervical smear Gram - Cocci': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};		
+		var value = formFieldValues['Vaginal Cervical smear Gram - Cocci'];
+		if (value && value !== "") {		
+			conditions.show.push("Vaginal Cervical smear Gram - Cocci Test Date");
+		} else {		
+			conditions.hide.push("Vaginal Cervical smear Gram - Cocci Test Date");
+		}		
+		return conditions;		
+	},		
 	'Vaginal Cervical smear Gardenerella vaginalis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};		
 		var value = formFieldValues['Vaginal Cervical smear Gardenerella vaginalis'];
@@ -542,7 +552,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Vaginal Cervical smear Antibiogram S.I.R Test Date");
 		}		
 		return conditions;		
-	},	
+	},
+	'Vaginal Cervical smear Macroscopic appearance': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};		
+		var value = formFieldValues['Vaginal Cervical smear Macroscopic appearance'];
+		if (value && value !== "") {		
+			conditions.show.push("Vaginal Cervical smear Macroscopic appearance Test Date");
+		} else {		
+			conditions.hide.push("Vaginal Cervical smear Macroscopic appearance Test Date");
+		}		
+		return conditions;		
+	},
 	'Urethral smear Epithelial cells': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Urethral smear Epithelial cells'];
@@ -650,6 +670,86 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Urethral smear Antibiogram S.I.R Test Date");
 		} else {	
 			conditions.hide.push("Urethral smear Antibiogram S.I.R Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Aspect macroscopique': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Aspect macroscopique'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Aspect macroscopique Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Aspect macroscopique Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Hematies': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Hematies'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Hematies Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Hematies Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Cylindre': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Cylindre'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Cylindre Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Cylindre Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Cristaux': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Cristaux'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Cristaux Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Cristaux Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Elements levuriformes': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Elements levuriformes'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Elements levuriformes Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Elements levuriformes Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Bacteries': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Bacteries'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Bacteries Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Bacteries Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Oeufs de parasites': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Oeufs de parasites'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Oeufs de parasites Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Oeufs de parasites Test Date");
+		}	
+		return conditions;	
+	},
+	'Urethral smear Celleles vesicales': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urethral smear Celleles vesicales'];
+		if (value && value !== "") {	
+			conditions.show.push("Urethral smear Celleles vesicales Test Date");
+		} else {	
+			conditions.hide.push("Urethral smear Celleles vesicales Test Date");
 		}	
 		return conditions;	
 	},
@@ -1173,23 +1273,23 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'MCV?': function(formName, formFieldValues) {
+	'MCV': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['MCV?'];
+		var value = formFieldValues['MCV'];
 		if (value && value !== "") {	
-			conditions.show.push("MCV? Test Date");
+			conditions.show.push("MCV Test Date");
 		} else {	
-			conditions.hide.push("MCV? Test Date");
+			conditions.hide.push("MCV Test Date");
 		}	
 		return conditions;	
 	},	
-	'MCH?': function(formName, formFieldValues) {
+	'MCH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['MCH?'];
+		var value = formFieldValues['MCH'];
 		if (value && value !== "") {	
-			conditions.show.push("MCH? Test Date");
+			conditions.show.push("MCH Test Date");
 		} else {	
-			conditions.hide.push("MCH? Test Date");
+			conditions.hide.push("MCH Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1333,6 +1433,36 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'Prothrombin time (PT)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Prothrombin time (PT)'];
+		if (value && value !== "") {	
+			conditions.show.push("Prothrombin time (PT) Test Date");
+		} else {	
+			conditions.hide.push("Prothrombin time (PT) Test Date");
+		}	
+		return conditions;	
+	},
+	'Thrombin Time': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Thrombin Time'];
+		if (value && value !== "") {	
+			conditions.show.push("Thrombin Time Test Date");
+		} else {	
+			conditions.hide.push("Thrombin Time Test Date");
+		}	
+		return conditions;	
+	},
+	'APTT test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['APTT test'];
+		if (value && value !== "") {	
+			conditions.show.push("APTT test Test Date");
+		} else {	
+			conditions.hide.push("APTT test Test Date");
+		}	
+		return conditions;	
+	},
 	'Cephalin-Kaolin time': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Cephalin-Kaolin time'];
@@ -1376,100 +1506,120 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'VDRL': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['VDRL'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {	
 			conditions.show.push("VDRL Test Date");
+			conditions.show.push("VDRL Comment");
 		} else {	
 			conditions.hide.push("VDRL Test Date");
+			conditions.hide.push("VDRL Comment");
 		}	
 		return conditions;	
 	},
 	'TPHA': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['TPHA'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {	
 			conditions.show.push("TPHA Test Date");
+			conditions.show.push("TPHA Comment");
 		} else {	
 			conditions.hide.push("TPHA Test Date");
+			conditions.hide.push("TPHA Comment");
 		}	
 		return conditions;	
 	},	
 	'TO': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['TO'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {
 			conditions.show.push("TO Test Date");
+			conditions.show.push("TO Titre");
 		} else {	
 			conditions.hide.push("TO Test Date");
+			conditions.hide.push("TO Titre");
 		}	
 		return conditions;	
 	},
 	'TH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['TH'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {
 			conditions.show.push("TH Test Date");
+			conditions.show.push("TH Titre");
 		} else {	
 			conditions.hide.push("TH Test Date");
+			conditions.hide.push("TH Titre");
 		}	
 		return conditions;	
 	},
 	'AO': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['AO'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {
 			conditions.show.push("AO Test Date");
+			conditions.show.push("AO Titre");
 		} else {	
 			conditions.hide.push("AO Test Date");
+			conditions.hide.push("AO Titre");
 		}	
 		return conditions;	
 	},
 	'AH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['AH'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {	
 			conditions.show.push("AH Test Date");
+			conditions.show.push("AH Titre");
 		} else {	
 			conditions.hide.push("AH Test Date");
+			conditions.hide.push("AH Titre");
 		}	
 		return conditions;	
 	},
 	'BO': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['BO'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {	
 			conditions.show.push("BO Test Date");
+			conditions.show.push("BO Titre");
 		} else {	
 			conditions.hide.push("BO Test Date");
+			conditions.hide.push("BO Titre");
 		}	
 		return conditions;	
 	},
 	'BH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['BH'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {	
 			conditions.show.push("BH Test Date");
+			conditions.show.push("BH Titre");
 		} else {	
 			conditions.hide.push("BH Test Date");
+			conditions.hide.push("BH Titre");
 		}	
 		return conditions;	
 	},
 	'CO': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['CO'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {
 			conditions.show.push("CO Test Date");
+			conditions.show.push("CO Titre");
 		} else {	
 			conditions.hide.push("CO Test Date");
+			conditions.hide.push("CO Titre");
 		}	
 		return conditions;	
 	},
 	'CH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['CH'];
-		if (value && value !== "") {	
+		if (value && value === "Positive") {
 			conditions.show.push("CH Test Date");
+			conditions.show.push("CH Titre");
 		} else {	
 			conditions.hide.push("CH Test Date");
+			conditions.hide.push("CH Titre");
 		}	
 		return conditions;	
 	},	
@@ -1592,7 +1742,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Other Haematology tests Test Date");
 		}	
 		return conditions;	
-	},	
+	},
+	'Viral Load': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Viral Load'];
+		if (value && value !== "") {	
+			conditions.show.push("Viral Load Test Date");
+		} else {	
+			conditions.hide.push("Viral Load Test Date");
+		}	
+		return conditions;	
+	},
 	'Creatinemia': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Creatinemia'];
@@ -1610,6 +1770,26 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Uric acid Test Date");
 		} else {	
 			conditions.hide.push("Uric acid Test Date");
+		}	
+		return conditions;	
+	},
+	'Creatinine': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Creatinine'];
+		if (value && value !== "") {	
+			conditions.show.push("Creatinine Test Date");
+		} else {	
+			conditions.hide.push("Creatinine Test Date");
+		}	
+		return conditions;	
+	},
+	'Phosphate': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Phosphate'];
+		if (value && value !== "") {	
+			conditions.show.push("Phosphate Test Date");
+		} else {	
+			conditions.hide.push("Phosphate Test Date");
 		}	
 		return conditions;	
 	},
@@ -1653,6 +1833,26 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'Glucose (fasting)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Glucose (fasting)'];
+		if (value && value !== "") {	
+			conditions.show.push("Glucose (fasting) Test Date");
+		} else {	
+			conditions.hide.push("Glucose (fasting) Test Date");
+		}	
+		return conditions;	
+	},
+	'Urea': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Urea'];
+		if (value && value !== "") {	
+			conditions.show.push("Urea Test Date");
+		} else {	
+			conditions.hide.push("Urea Test Date");
+		}	
+		return conditions;	
+	},
 	'S. AST': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['S. AST'];
@@ -1670,6 +1870,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("S. ALT Test Date");
 		} else {	
 			conditions.hide.push("S. ALT Test Date");
+		}	
+		return conditions;	
+	},	
+	'ALP': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['ALP'];
+		if (value && value !== "") {	
+			conditions.show.push("ALP Test Date");
+		} else {	
+			conditions.hide.push("ALP Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1732,7 +1942,47 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Chloride Test Date");
 		}	
 		return conditions;	
-	},	
+	},
+	'Prostate specific antigen (PSA)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Prostate specific antigen (PSA)'];
+		if (value && value !== "") {	
+			conditions.show.push("Prostate specific antigen (PSA) Test Date");
+		} else {	
+			conditions.hide.push("Prostate specific antigen (PSA) Test Date");
+		}	
+		return conditions;	
+	},
+	'CO2 (total)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['CO2 (total)'];
+		if (value && value !== "") {	
+			conditions.show.push("CO2 (total) Test Date");
+		} else {	
+			conditions.hide.push("CO2 (total) Test Date");
+		}	
+		return conditions;	
+	},
+	'Protein (serum) - Total': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Protein (serum) - Total'];
+		if (value && value !== "") {	
+			conditions.show.push("Protein (serum) - Total Test Date");
+		} else {	
+			conditions.hide.push("Protein (serum) - Total Test Date");
+		}	
+		return conditions;	
+	},
+	'Protein (serum) - Albumin': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Protein (serum) - Albumin'];
+		if (value && value !== "") {	
+			conditions.show.push("Protein (serum) - Albumin Test Date");
+		} else {	
+			conditions.hide.push("Protein (serum) - Albumin Test Date");
+		}	
+		return conditions;	
+	},
 	'Creatinuria (24 hours)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Creatinuria (24 hours)'];
@@ -1803,6 +2053,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'Sodium (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Sodium (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Sodium (urine) Test Date");
+		} else {	
+			conditions.hide.push("Sodium (urine) Test Date");
+		}	
+		return conditions;	
+	},
 	'Hemoglobin electrophoresis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Hemoglobin electrophoresis'];
@@ -1843,6 +2103,466 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'Iron binding capacity (TIBC)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Iron binding capacity (TIBC)'];
+		if (value && value !== "") {	
+			conditions.show.push("Iron binding capacity (TIBC) Test Date");
+		} else {	
+			conditions.hide.push("Iron binding capacity (TIBC) Test Date");
+		}	
+		return conditions;	
+	},
+	'Ferritin': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Ferritin'];
+		if (value && value !== "") {	
+			conditions.show.push("Ferritin Test Date");
+		} else {	
+			conditions.hide.push("Ferritin Test Date");
+		}	
+		return conditions;	
+	},
+	'Bicarbonate (HCO3)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Bicarbonate (HCO3)'];
+		if (value && value !== "") {	
+			conditions.show.push("Bicarbonate (HCO3) Test Date");
+		} else {	
+			conditions.hide.push("Bicarbonate (HCO3) Test Date");
+		}	
+		return conditions;	
+	},
+	'Calcium Ionized': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Calcium Ionized'];
+		if (value && value !== "") {	
+			conditions.show.push("Calcium Ionized Test Date");
+		} else {	
+			conditions.hide.push("Calcium Ionized Test Date");
+		}	
+		return conditions;	
+	},
+	'Creatine kinase': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Creatine kinase'];
+		if (value && value !== "") {	
+			conditions.show.push("Creatine kinase Test Date");
+		} else {	
+			conditions.hide.push("Creatine kinase Test Date");
+		}	
+		return conditions;	
+	},
+	'Osmolality (serum)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Osmolality (serum)'];
+		if (value && value !== "") {	
+			conditions.show.push("Osmolality (serum) Test Date");
+		} else {	
+			conditions.hide.push("Osmolality (serum) Test Date");
+		}	
+		return conditions;	
+	},
+	'Chloride (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Chloride (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Chloride (urine) Test Date");
+		} else {	
+			conditions.hide.push("Chloride (urine) Test Date");
+		}	
+		return conditions;	
+	},
+	'Creatinine (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Creatinine (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Creatinine (urine) Test Date");
+		} else {	
+			conditions.hide.push("Creatinine (urine) Test Date");
+		}	
+		return conditions;	
+	},
+	'Magnesium (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Magnesium (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Magnesium (urine) Test Date");
+		} else {	
+			conditions.hide.push("Magnesium (urine) Test Date");
+		}	
+		return conditions;	
+	},
+	'Osmolality (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Osmolality (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Osmolality (urine) Test Date");
+		} else {	
+			conditions.hide.push("Osmolality (urine) Test Date");
+		}	
+		return conditions;	
+	},
+	'Protein (urine)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Protein (urine)'];
+		if (value && value !== "") {	
+			conditions.show.push("Protein (urine) Test Date");
+		} else {	
+			conditions.hide.push("Protein (urine) Test Date");
+		}	
+		return conditions;	
+	},
+	'Cortisol (plasma) 8 AM': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Cortisol (plasma) 8 AM'];
+		if (value && value !== "") {	
+			conditions.show.push("Cortisol (plasma) 8 AM Test Date");
+		} else {	
+			conditions.hide.push("Cortisol (plasma) 8 AM Test Date");
+		}	
+		return conditions;	
+	},
+	'Cortisol (plasma) 4 PM': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Cortisol (plasma) 4 PM'];
+		if (value && value !== "") {	
+			conditions.show.push("Cortisol (plasma) 4 PM Test Date");
+		} else {	
+			conditions.hide.push("Cortisol (plasma) 4 PM Test Date");
+		}	
+		return conditions;	
+	},
+	'Oxygen (arterial saturation)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Oxygen (arterial saturation)'];
+		if (value && value !== "") {	
+			conditions.show.push("Oxygen (arterial saturation) Test Date");
+		} else {	
+			conditions.hide.push("Oxygen (arterial saturation) Test Date");
+		}	
+		return conditions;	
+	},
+	'pCO2 (arterial)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['pCO2 (arterial)'];
+		if (value && value !== "") {	
+			conditions.show.push("pCO2 (arterial) Test Date");
+		} else {	
+			conditions.hide.push("pCO2 (arterial) Test Date");
+		}	
+		return conditions;	
+	},
+	'pO2 (arterial)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['pO2 (arterial)'];
+		if (value && value !== "") {	
+			conditions.show.push("pO2 (arterial) Test Date");
+		} else {	
+			conditions.hide.push("pO2 (arterial) Test Date");
+		}	
+		return conditions;	
+	},
+	'pH (arterial)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['pH (arterial)'];
+		if (value && value !== "") {	
+			conditions.show.push("pH (arterial) Test Date");
+		} else {	
+			conditions.hide.push("pH (arterial) Test Date");
+		}	
+		return conditions;	
+	},
+	'Growth hormone (hGH) fasting': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Growth hormone (hGH) fasting'];
+		if (value && value !== "") {	
+			conditions.show.push("Growth hormone (hGH) fasting Test Date");
+		} else {	
+			conditions.hide.push("Growth hormone (hGH) fasting Test Date");
+		}	
+		return conditions;	
+	},
+	'FSH Males': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['FSH Males'];
+		if (value && value !== "") {	
+			conditions.show.push("FSH Males Test Date");
+		} else {	
+			conditions.hide.push("FSH Males Test Date");
+		}	
+		return conditions;	
+	},
+	'FSH Females premenopausal': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['FSH Females premenopausal'];
+		if (value && value !== "") {	
+			conditions.show.push("FSH Females premenopausal Test Date");
+		} else {	
+			conditions.hide.push("FSH Females premenopausal Test Date");
+		}	
+		return conditions;	
+	},
+	'FSH Females postmenopausal': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['FSH Females postmenopausal'];
+		if (value && value !== "") {	
+			conditions.show.push("FSH Females postmenopausal Test Date");
+		} else {	
+			conditions.hide.push("FSH Females postmenopausal Test Date");
+		}	
+		return conditions;	
+	},
+	'LH - Males': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH - Males'];
+		if (value && value !== "") {	
+			conditions.show.push("LH - Males Test Date");
+		} else {	
+			conditions.hide.push("LH - Males Test Date");
+		}	
+		return conditions;	
+	},
+	'LH - Females (follicular)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH - Females (follicular)'];
+		if (value && value !== "") {	
+			conditions.show.push("LH - Females (follicular) Test Date");
+		} else {	
+			conditions.hide.push("LH - Females (follicular) Test Date");
+		}	
+		return conditions;	
+	},
+	'LH - Females (mid-cycle)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH - Females (mid-cycle)'];
+		if (value && value !== "") {	
+			conditions.show.push("LH - Females (mid-cycle) Test Date");
+		} else {	
+			conditions.hide.push("LH - Females (mid-cycle) Test Date");
+		}	
+		return conditions;	
+	},
+	'LH - Females (luteal)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH - Females (luteal)'];
+		if (value && value !== "") {	
+			conditions.show.push("LH - Females (luteal) Test Date");
+		} else {	
+			conditions.hide.push("LH - Females (luteal) Test Date");
+		}	
+		return conditions;	
+	},
+	'LH - Females (postmenopausal)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH - Females (postmenopausal)'];
+		if (value && value !== "") {	
+			conditions.show.push("LH - Females (postmenopausal) Test Date");
+		} else {	
+			conditions.hide.push("LH - Females (postmenopausal) Test Date");
+		}	
+		return conditions;	
+	},
+	'PTH': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PTH'];
+		if (value && value !== "") {	
+			conditions.show.push("PTH Test Date");
+		} else {	
+			conditions.hide.push("PTH Test Date");
+		}	
+		return conditions;	
+	},
+	'Progesterone (serum) (adult) - Males': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Progesterone (serum) (adult) - Males'];
+		if (value && value !== "") {	
+			conditions.show.push("Progesterone (serum) (adult) - Males Test Date");
+		} else {	
+			conditions.hide.push("Progesterone (serum) (adult) - Males Test Date");
+		}	
+		return conditions;	
+	},
+	'Progesterone (serum) (adult) - Females (follicular)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Progesterone (serum) (adult) - Females (follicular)'];
+		if (value && value !== "") {	
+			conditions.show.push("Progesterone (serum) (adult) - Females (follicular) Test Date");
+		} else {	
+			conditions.hide.push("Progesterone (serum) (adult) - Females (follicular) Test Date");
+		}	
+		return conditions;	
+	},
+	'Progesterone (serum) (adult) - Females (luteal)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Progesterone (serum) (adult) - Females (luteal)'];
+		if (value && value !== "") {	
+			conditions.show.push("Progesterone (serum) (adult) - Females (luteal) Test Date");
+		} else {	
+			conditions.hide.push("Progesterone (serum) (adult) - Females (luteal) Test Date");
+		}	
+		return conditions;	
+	},
+	'Prolactin (serum) - Males': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Prolactin (serum) - Males'];
+		if (value && value !== "") {	
+			conditions.show.push("Prolactin (serum) - Males Test Date");
+		} else {	
+			conditions.hide.push("Prolactin (serum) - Males Test Date");
+		}	
+		return conditions;	
+	},
+	'Prolactin (serum) Females': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Prolactin (serum) Females'];
+		if (value && value !== "") {	
+			conditions.show.push("Prolactin (serum) Females Test Date");
+		} else {	
+			conditions.hide.push("Prolactin (serum) Females Test Date");
+		}	
+		return conditions;	
+	},
+	'Testosterone - Males': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Testosterone - Males'];
+		if (value && value !== "") {	
+			conditions.show.push("Testosterone - Males Test Date");
+		} else {	
+			conditions.hide.push("Testosterone - Males Test Date");
+		}	
+		return conditions;	
+	},
+	'Testosterone - Females': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Testosterone - Females'];
+		if (value && value !== "") {	
+			conditions.show.push("Testosterone - Females Test Date");
+		} else {	
+			conditions.hide.push("Testosterone - Females Test Date");
+		}	
+		return conditions;	
+	},
+	'Testosterone - Pregnant females': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Testosterone - Pregnant females'];
+		if (value && value !== "") {	
+			conditions.show.push("Testosterone - Pregnant females Test Date");
+		} else {	
+			conditions.hide.push("Testosterone - Pregnant females Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH - Adults': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH - Adults'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH - Adults Test Date");
+		} else {	
+			conditions.hide.push("TSH - Adults Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH -Term infants: (0-1 day)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH -Term infants: (0-1 day)'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH -Term infants: (0-1 day) Test Date");
+		} else {	
+			conditions.hide.push("TSH -Term infants: (0-1 day) Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH -Term infants: (1-4 days)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH -Term infants: (1-4 days)'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH -Term infants: (1-4 days) Test Date");
+		} else {	
+			conditions.hide.push("TSH -Term infants: (1-4 days) Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH -Term infants: (2-20 weeks)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH -Term infants: (2-20 weeks)'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH -Term infants: (2-20 weeks) Test Date");
+		} else {	
+			conditions.hide.push("TSH -Term infants: (2-20 weeks) Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH -Term infants: (21 weeks to 20 years)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH -Term infants: (21 weeks to 20 years)'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
+		} else {	
+			conditions.hide.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
+		}	
+		return conditions;	
+	},
+	'Triiodothyronine total (T3)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Triiodothyronine total (T3)'];
+		if (value && value !== "") {	
+			conditions.show.push("Triiodothyronine total (T3) Test Date");
+		} else {	
+			conditions.hide.push("Triiodothyronine total (T3) Test Date");
+		}	
+		return conditions;	
+	},
+	'Triiodothyronine free (FT3)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Triiodothyronine free (FT3)'];
+		if (value && value !== "") {	
+			conditions.show.push("Triiodothyronine free (FT3) Test Date");
+		} else {	
+			conditions.hide.push("Triiodothyronine free (FT3) Test Date");
+		}	
+		return conditions;	
+	},
+	'Thyroxine total (T4)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Thyroxine total (T4)'];
+		if (value && value !== "") {	
+			conditions.show.push("Thyroxine total (T4) Test Date");
+		} else {	
+			conditions.hide.push("Thyroxine total (T4) Test Date");
+		}	
+		return conditions;	
+	},
+	'Thyroxine free (FT4)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Thyroxine free (FT4)'];
+		if (value && value !== "") {	
+			conditions.show.push("Thyroxine free (FT4) Test Date");
+		} else {	
+			conditions.hide.push("Thyroxine free (FT4) Test Date");
+		}	
+		return conditions;	
+	},
+	'Specific gravity': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Specific gravity'];
+		if (value && value !== "") {	
+			conditions.show.push("Specific gravity Test Date");
+		} else {	
+			conditions.hide.push("Specific gravity Test Date");
+		}	
+		return conditions;	
+	},
+	'Sperm count': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Sperm count'];
+		if (value && value !== "") {	
+			conditions.show.push("Sperm count Test Date");
+		} else {	
+			conditions.hide.push("Sperm count Test Date");
+		}	
+		return conditions;	
+	}, 
 	'Lipid profile Total cholesterol': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Lipid profile Total cholesterol'];
@@ -1880,16 +2600,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("LDL Test Date");
 		} else {	
 			conditions.hide.push("LDL Test Date");
-		}	
-		return conditions;	
-	},	
-	'Determination of hormones': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Determination of hormones'];
-		if (value && value !== "") {	
-			conditions.show.push("Determination of hormones Test Date");
-		} else {	
-			conditions.hide.push("Determination of hormones Test Date");
 		}	
 		return conditions;	
 	},

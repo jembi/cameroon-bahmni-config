@@ -68,7 +68,7 @@
                 "translationKey":"DASHBOARD_TITLE_RADIOLOGY_KEY",
                 "type":"radiology",
                 "showDetailsButton":true,
-                "displayOrder":14
+                "displayOrder":15
             },
             "programs":{  
                 "translationKey":"DASHBOARD_TITLE_PROGRAMS_KEY",
@@ -79,7 +79,7 @@
                 "orderType":"Radiology Order",
                 "type":"ordersControl",
                 "translationKey":"DASHBOARD_TITLE_RADIOLOGY_ORDERS_KEY",
-                "displayOrder":12,
+                "displayOrder":13,
                 "dashboardConfig":{  
                     "conceptNames":[  
                         "Summary"
@@ -87,36 +87,12 @@
                     "numberOfVisits":4
                 }
             },
-            "labOrdersDisplayControl":{  
-                "translationKey":"DASHBOARD_TITLE_LAB_ORDERS_DISPLAY_CONTROL_KEY",
-                "type":"ordersControl",
-                "orderType":"Lab Order",
-                "showDetailsButton":true,
-                "displayOrder":9,
-                "dashboardConfig":{  
-                    "conceptNames":[  
-                        "Systolic",
-                        "Diastolic",
-                        "Posture",
-                        "Temperature"
-                    ]
-                },
-                "expandedViewConfig":{  
-                    "conceptNames":[  
-                        "Systolic",
-                        "Diastolic",
-                        "Posture",
-                        "Temperature"
-                    ],
-                    "showDetailsButton":true
-                }
-            },
             "bacteriologyResults":{  
                 "translationKey":"DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY",
                 "type":"bacteriologyResultsControl",
                 "scope":"All",
                 "orderType":"",
-                "displayOrder":13,
+                "displayOrder":11,
                 "dashboardConfig":{  
                     "conceptNames":[  
                         "BACTERIOLOGY CONCEPT SET"
@@ -126,7 +102,7 @@
             "labResults":{  
                 "translationKey":"DASHBOARD_TITLE_LAB_RESULTS_KEY",
                 "type":"labOrders",
-                "displayOrder":11,
+                "displayOrder":9,
                 "dashboardConfig":{  
                     "title":null,
                     "numberOfVisits":6,
@@ -270,7 +246,7 @@
             },
             "patientAppointments": {
                 "type": "custom",
-                "displayOrder": 15,
+                "displayOrder": 12,
                 "config": {
                     "title": "DASHBOARD_TITLE_APPOINTMENTS_KEY",
                     "template": "<patient-appointments-dashboard section='config' patient='patient'></patient-appointments-dashboard>"

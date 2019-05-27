@@ -29,16 +29,6 @@
     "order": 3,
     "requiredPrivilege": "app:clinical"
   },
-  "adt": {
-    "id": "bahmni.adt",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-    "translationKey": "MODULE_LABEL_INPATIENT_KEY",
-    "url": "../adt/",
-    "icon": "icon-bahmni-inpatient",
-    "order": 4,
-    "requiredPrivilege": "app:adt"
-  },
   "radiologyDocumentUpload": {
     "id": "bahmni.radiology.document.upload",
     "extensionPointId": "org.bahmni.home.dashboard",
@@ -69,16 +59,6 @@
     "order": 7,
     "requiredPrivilege": "app:admin"
   },
-  "orders": {
-    "id": "bahmni.orders",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-    "translationKey": "MODULE_LABEL_ORDERS_KEY",
-    "url": "../orders/#/search",
-    "icon": "icon-bahmni-orders",
-    "order": 10,
-    "requiredPrivilege": "app:orders"
-  },
   "reports": {
     "id": "bahmni.reports",
     "extensionPointId": "org.bahmni.home.dashboard",
@@ -98,26 +78,6 @@
     "icon": "fa fa-calendar",
     "order": 11,
     "requiredPrivilege": "App: appointmentschedulingui.home"
-  },
-  "implementerInterface": {
-    "id": "bahmni.implementer.interface",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-    "translationKey": "MODULE_LABEL_IMPLEMENTER_INTERFACE_KEY",
-    "url": "/implementer-interface",
-    "icon": "fa fa-pencil-square-o",
-    "order": 12,
-    "requiredPrivilege": "app:implementer-interface"
-  },
-  "atomfeedConsole": {
-    "id": "bahmni.atomfeed.console",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-    "translationKey": "MODULE_LABEL_ATOMFEED_CONSOLE_KEY",
-    "url": "/atomfeed-console",
-    "icon": "fa fa-terminal",
-    "order": 13,
-    "requiredPrivilege": "app:admin"
   },
   "appointmentScheduling": {
     "id": "bahmni.appointment.scheduling",

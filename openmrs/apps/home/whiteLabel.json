@@ -1,13 +1,17 @@
 {
   "homePage": {
-    "header_text": "<b>WELCOME TO<br />BAHMNI EMR & HOSPITAL SERVICE",
-    "logo": "/bahmni/images/bahmniLogoFull.png",
-    "title_text": " "
+    "header_text": "",
+    "logo": "/images/hospitalLogo.png",
+    "hospitalName": "Hopital de District de la Cité Verte",
+    "bottomBanner": "/bahmni/images/bottomBannerLogos.png",
+    "erpUrl": "http://192.168.33.10:8069"
   },
   "loginPage": {
-    "logo": "/bahmni/images/bahmniLogoFull.png",
+    "logo": "/images/hospitalLogo.png",
+    "hospitalName": "Hopital de District de la Cité Verte",
     "showHeaderText": true,
-    "showTitleText": false
+    "showTitleText": false,
+    "bottomBanner": "/bahmni/images/bottomBannerLogos.png"
   },
   "helpLink": {
     "url": "https://bahmni.atlassian.net/wiki/display/BAH/Bahmni+Home"
