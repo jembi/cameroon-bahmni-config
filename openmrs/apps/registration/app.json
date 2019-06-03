@@ -17,6 +17,7 @@
             "activeVisitUuid"
         ],
         "config" : {
+            "showEnterID": false,
             "patientInformation": {
                 "hidden": {
                     "attributes": [
