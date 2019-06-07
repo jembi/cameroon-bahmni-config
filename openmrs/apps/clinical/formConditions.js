@@ -603,13 +603,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Urethral smear Diplocoque de Neisseria / Neisseria diplococci': function(formName, formFieldValues) {
+	'Urethral smear Diplocoque de Neisseria': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urethral smear Diplocoque de Neisseria / Neisseria diplococci'];
+		var value = formFieldValues['Urethral smear Diplocoque de Neisseria'];
 		if (value && value !== "") {	
-			conditions.show.push("Urethral smear Diplocoque de Neisseria / Neisseria diplococci Test Date");
+			conditions.show.push("Urethral smear Diplocoque de Neisseria Test Date");
 		} else {	
-			conditions.hide.push("Urethral smear Diplocoque de Neisseria / Neisseria diplococci Test Date");
+			conditions.hide.push("Urethral smear Diplocoque de Neisseria Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1507,10 +1507,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['VDRL'];
 		if (value && value === "Positive") {	
-			conditions.show.push("VDRL Test Date");
 			conditions.show.push("VDRL Comment");
 		} else {	
-			conditions.hide.push("VDRL Test Date");
 			conditions.hide.push("VDRL Comment");
 		}	
 		return conditions;	
@@ -1519,10 +1517,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['TPHA'];
 		if (value && value === "Positive") {	
-			conditions.show.push("TPHA Test Date");
 			conditions.show.push("TPHA Comment");
 		} else {	
-			conditions.hide.push("TPHA Test Date");
 			conditions.hide.push("TPHA Comment");
 		}	
 		return conditions;	
