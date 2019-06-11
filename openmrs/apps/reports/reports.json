@@ -101,7 +101,7 @@
                     "name": "Report14",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator14_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator14_virally_suppressed_at_12_months.sql"
                     }
                 },
                 {
