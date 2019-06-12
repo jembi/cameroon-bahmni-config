@@ -129,7 +129,7 @@
                     "name": "Report18",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator18_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator18_missed_TRLM_come_for_TRDM.sql"
                     }
                 },
                 {
