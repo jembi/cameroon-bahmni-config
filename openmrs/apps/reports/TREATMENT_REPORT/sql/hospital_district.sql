@@ -1,0 +1,1 @@
+select address2 from location where name = "LOCATION_HOSPITAL";
