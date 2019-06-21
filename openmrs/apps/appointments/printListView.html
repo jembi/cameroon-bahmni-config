@@ -55,7 +55,7 @@
                 <td ng-if="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
                 <td>{{::appointment.startDateTime | bahmniTime}}</td>
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
-                <td class="table-mid-width">{{::appointment.provider.name}}</td>
+                <td class="table-mid-width">{{::appointment.providers[0].name}}</td>
                 <td>{{::appointment.service.name | translate}}</td>
                 <td class="table-mid-width" ng-if="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td class="table-mid-width">{{::appointment.location.name | translate}}</td>
