@@ -2816,6 +2816,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'TB screened?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TB screened?'];
+		if (value === "Yes full name") {	
+			conditions.show.push("TB screened date");
+		} else {	
+			conditions.hide.push("TB screened date");
+		}	
+		return conditions;	
+	},
 	'Contact with?': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Contact with?'];
