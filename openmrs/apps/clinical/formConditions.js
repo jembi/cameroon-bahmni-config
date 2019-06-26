@@ -2796,16 +2796,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;	
 	},
-	'Other prescriptions': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Other prescriptions'];
-		if (value === "Yes full name") {	
-			conditions.show.push("If yes specify");
-		} else {	
-			conditions.hide.push("If yes specify");
-		}	
-		return conditions;	
-	},
 	'Recent TB contact': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Recent TB contact'];
