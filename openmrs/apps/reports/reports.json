@@ -264,10 +264,10 @@
                             "address3",
                             "state_Province"
                         ],
-                        "additionalPatientIdentifiers": ["REGISTRATION_IDTYPE_1_CNI_KEY","REGISTRATION_IDTYPE_3_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY"],
+                        "additionalPatientIdentifiers": ["REGISTRATION_IDTYPE_1_CNI_KEY","REGISTRATION_IDTYPE_4_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY"],
                         "applyDateRangeFor": "visitStopDate",
                         "excludeColumns": ["Date Of Admission","Date Of Discharge","New patient visit"],
-                        "preferredColumns": ["Patient Identifier","Patient Name","Age","Birthdate","Gender","Patient Created Date","Visit Type","Date started","Date stopped","PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER","address1","address2","city_Village","county_District","address3","state_Province","education","occupation","matrimonialStatus","emergencyContact","REGISTRATION_IDTYPE_3_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY","REGISTRATION_IDTYPE_1_CNI_KEY"],
+                        "preferredColumns": ["Patient Identifier","Patient Name","Age","Birthdate","Gender","Patient Created Date","Visit Type","Date started","Date stopped","PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER","address1","address2","city_Village","county_District","address3","state_Province","education","occupation","matrimonialStatus","emergencyContact","REGISTRATION_IDTYPE_4_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY","REGISTRATION_IDTYPE_1_CNI_KEY"],
                         "visitTypesToFilter": []
                     }
                 },
