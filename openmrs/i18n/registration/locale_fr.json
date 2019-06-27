@@ -19,7 +19,7 @@
   "REGISTRATION_INSTITUTE_NAME_TEXT_KEY": "MINSANTE",
   "REGISTRATION_INSTITUTE_REGISTERED_TEXT_KEY": "(Enregistré)",
   "REGISTRATION_INSTITUTE_ADDRESS": "Hopital de la Cité Verte, District - Yaoundé",
-  "FEE_INFORMATION_LOCALE_KEY": "Frais d'Information",
+  "FEE_INFORMATION_LOCALE_KEY": "Frais de consultation",
   "NUTRITIONAL_VALUES_LOCALE_KEY": "Valeurs Nutritionnelles",
   "REGISTRATION_PRINT_WITH_BARCODE": "Impression avec <u>C</u>ode Barre"
 }
