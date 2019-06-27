@@ -33,7 +33,7 @@
   "DASHBOARD_TAB_TRENDS_KEY": "Tendances",
   "DASHBOARD_TAB_PATIENT_SUMMARY_KEY": "Résumé du Patient",
   "DASHBOARD_TAB_DISCHARGE_SUMMARY_KEY": "Résumé de la Sortie",
-  "DASHBOARD_TAB_ORDERS_KEY": "Ordonnances",
+  "DASHBOARD_TAB_ORDERS_KEY": "Bilan",
 
   "LAB_INVESTIGATIONS_KEY":"Examens de laboratoire",
   "PACS_ORDERS_VISIT_PAGE_KEY": "Page des Ordonnances de Pacs",
@@ -50,7 +50,7 @@
 
   "OBSERVATIONS_BOARD_LABEL_KEY":"Observations",
   "MEDICATIONS_BOARD_LABEL_KEY":"Médicaments",
-  "ORDERS_BOARD_LABEL_KEY":"Ordonnances",
+  "ORDERS_BOARD_LABEL_KEY":"Bilan",
   "BACTERIOLOGY_BOARD_LABEL_KEY":"Bacteriologie",
   "CONSULTATION_BOARD_LABEL_KEY":"Consultation",
   "DISPOSITION_BOARD_LABEL_KEY":"Disposition",
