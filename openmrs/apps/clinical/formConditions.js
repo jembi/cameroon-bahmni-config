@@ -2796,16 +2796,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;	
 	},
-	'Other prescriptions': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Other prescriptions'];
-		if (value === "Yes full name") {	
-			conditions.show.push("If yes specify");
-		} else {	
-			conditions.hide.push("If yes specify");
-		}	
-		return conditions;	
-	},
 	'Recent TB contact': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Recent TB contact'];
@@ -2813,6 +2803,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Contact with?");
 		} else {	
 			conditions.hide.push("Contact with?");
+		}	
+		return conditions;	
+	},
+	'TB screened?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TB screened?'];
+		if (value === "Yes full name") {	
+			conditions.show.push("TB screened date");
+		} else {	
+			conditions.hide.push("TB screened date");
 		}	
 		return conditions;	
 	},
