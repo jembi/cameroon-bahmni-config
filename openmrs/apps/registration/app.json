@@ -30,6 +30,7 @@
                         "landHolding",
                         "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
                         "PERSON_ATTRIBUTE_TYPE_OTHER_CAUSE_OF_DEATH",
+                        "PERSON_ATTRIBUTE_TYPE_TIME_OF_DEATH",
                         "distanceFromCenter",
                         "isUrban",
                         "cluster",
