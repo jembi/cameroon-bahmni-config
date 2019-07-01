@@ -102,7 +102,7 @@
   "RELATIONSHIP_CAREGIVER": "Soignant",
   "RELATIONSHIP_AUNT_UNCLE": "Tante/Oncle",
   "RELATIONSHIP_OTHER": "Autre",
-  "RELATIONSHIP_SPOUSE": "Époux",
+  "RELATIONSHIP_PARTNER": "partenaire",
   "GENDER_MALE":"Masculin",
   "GENDER_FEMALE":"Feminin",
   "LOCATION_MINOR_SURGERY": "Chirurgie mineure",
