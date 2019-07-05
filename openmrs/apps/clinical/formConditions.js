@@ -2990,4 +2990,57 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	/**
+	 * Handling conditions for ANC forms
+	 */
+	'HIV Tested': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['HIV Tested'];
+		if (value === "Yes full name") {	
+			conditions.show.push("HIV Test Date");
+			conditions.show.push("HTC, Result");
+		} else {	
+			conditions.hide.push("HIV Test Date");
+			conditions.hide.push("HTC, Result");
+		}	
+		return conditions;	
+	},
+	'HTC, Result': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['HTC, Result'];
+		if (value === "Positive") {	
+			if ('Repeat Test done if (P)' in formFieldValues) {
+				conditions.show.push("Repeat Test done if (P)");
+			}
+		} else {	
+			if ('Repeat Test done if (P)' in formFieldValues) {
+				conditions.hide.push("Repeat Test done if (P)");
+			}
+		}	
+		return conditions;	
+	},
+	'Repeat Test done if (P)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Repeat Test done if (P)'];
+		if (value === "Yes full name") {	
+			conditions.show.push("Repeat Test Date");
+			conditions.show.push("Repeat Test Result");
+		} else {	
+			conditions.hide.push("Repeat Test Date");
+			conditions.hide.push("Repeat Test Result");
+		}	
+		return conditions;	
+	},
+	'Screened': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Screened'];
+		if (value === "Yes full name") {	
+			conditions.show.push("TB Status");
+			conditions.show.push("ANC, TB Outcome");
+		} else {	
+			conditions.hide.push("TB Status");
+			conditions.hide.push("ANC, TB Outcome");
+		}	
+		return conditions;	
+	},
 };
