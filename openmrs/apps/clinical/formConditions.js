@@ -832,16 +832,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Cyto Bacterial exam of urine Isolated germs Test Date");
 		}	
 		return conditions;	
-	},		
-	'Cyto Bacterial exam of urine Antibiogram S.I.R': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Cyto Bacterial exam of urine Antibiogram S.I.R'];
-		if (value && value !== "") {	
-			conditions.show.push("Cyto Bacterial exam of urine Antibiogram S.I.R Test Date");
-		} else {	
-			conditions.hide.push("Cyto Bacterial exam of urine Antibiogram S.I.R Test Date");
-		}	
-		return conditions;	
 	},
 	'Urine Sediments Epithelial cells': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
