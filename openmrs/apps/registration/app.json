@@ -60,7 +60,7 @@
             "searchByIdForwardUrl": "/patient/{{patientUuid}}",
             "showMiddleName": false,
             "showLastName": true,
-            "isLastNameMandatory": false,
+            "isLastNameMandatory": true,
             "showBirthTime": false,
             "showCasteSameAsLastNameCheckbox": false,
             "printOptions": [
