@@ -3013,4 +3013,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+        /**
+         * Handling conditions for HIV Testing and Counseling Form
+         */
+        'HTC, Reason for test': function(formName, formFieldValues) {
+                var conditions = {show: [], hide: []};
+                var value = formFieldValues['HTC, Reason for test'];
+                if (value === "Others") {
+                        conditions.show.push("HTC, Other reason for test");
+                } else {
+                        conditions.hide.push("HTC, Other reason for test");
+                }
+                return conditions;
+        }
 };
