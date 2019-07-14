@@ -3025,5 +3025,15 @@ Bahmni.ConceptSet.FormConditions.rules = {
                         conditions.hide.push("HTC, Other reason for test");
                 }
                 return conditions;
+        },
+        'HTC, Risk Group': function(formName, formFieldValues) {
+                var conditions = {show: [], hide: []};
+                var value = formFieldValues['HTC, Risk Group'];
+                if (value === "Others") {
+                        conditions.show.push("HTC, Other Risk Group");
+                } else {
+                        conditions.hide.push("HTC, Other Risk Group");
+                }
+                return conditions;
         }
 };
