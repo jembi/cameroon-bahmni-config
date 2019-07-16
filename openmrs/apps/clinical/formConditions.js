@@ -2842,10 +2842,10 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Exposure to ARVs other than PMTCT?': function(formName, formFieldValues) {
+	'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Exposure to ARVs other than PMTCT?'];
-		if (value === "Yes") {
+		var value = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
+		if (value === "Yes full name") {
 			conditions.show.push("If yes, select ARV used");
 		} else {	
 			conditions.hide.push("If yes, select ARV used");
