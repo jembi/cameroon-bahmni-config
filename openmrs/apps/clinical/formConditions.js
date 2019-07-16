@@ -573,16 +573,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;
 	},
-	'Urethral smear Trichomonas vaginalis': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urethral smear Trichomonas vaginalis'];
-		if (value && value !== "") {	
-			conditions.show.push("Urethral smear Trichomonas vaginalis Test Date");
-		} else {	
-			conditions.hide.push("Urethral smear Trichomonas vaginalis Test Date");
-		}	
-		return conditions;	
-	},	
 	'Urethral smear Leucocytes (WBC)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Urethral smear Leucocytes (WBC)'];
@@ -603,13 +593,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Urethral smear Diplocoque de Neisseria': function(formName, formFieldValues) {
+	'Urethral smear Neisseria diplococci': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urethral smear Diplocoque de Neisseria'];
+		var value = formFieldValues['Urethral smear Neisseria diplococci'];
 		if (value && value !== "") {	
-			conditions.show.push("Urethral smear Diplocoque de Neisseria Test Date");
+			conditions.show.push("Urethral smear Neisseria diplococci Test Date");
 		} else {	
-			conditions.hide.push("Urethral smear Diplocoque de Neisseria Test Date");
+			conditions.hide.push("Urethral smear Neisseria diplococci Test Date");
 		}	
 		return conditions;	
 	},	
@@ -842,16 +832,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Cyto Bacterial exam of urine Isolated germs Test Date");
 		}	
 		return conditions;	
-	},		
-	'Cyto Bacterial exam of urine Antibiogram S.I.R': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Cyto Bacterial exam of urine Antibiogram S.I.R'];
-		if (value && value !== "") {	
-			conditions.show.push("Cyto Bacterial exam of urine Antibiogram S.I.R Test Date");
-		} else {	
-			conditions.hide.push("Cyto Bacterial exam of urine Antibiogram S.I.R Test Date");
-		}	
-		return conditions;	
 	},
 	'Urine Sediments Epithelial cells': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
@@ -883,13 +863,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Urine Sediments Cristals': function(formName, formFieldValues) {
+	'Urine Sediments Crystals': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Urine Sediments Cristals'];
+		var value = formFieldValues['Urine Sediments Crystals'];
 		if (value && value !== "") {	
-			conditions.show.push("Urine Sediments Cristals Test Date");
+			conditions.show.push("Urine Sediments Crystals Test Date");
 		} else {	
-			conditions.hide.push("Urine Sediments Cristals Test Date");
+			conditions.hide.push("Urine Sediments Crystals Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1182,16 +1162,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("Sputum excudates Identified germ Test Date");
 		}	
 		return conditions;	
-	},	
-	'Sputum excudates Antibiogram': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Sputum excudates Antibiogram'];
-		if (value && value !== "") {	
-			conditions.show.push("Sputum excudates Antibiogram Test Date");
-		} else {	
-			conditions.hide.push("Sputum excudates Antibiogram Test Date");
-		}	
-		return conditions;	
 	},
 	'Blood Culture Germs': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
@@ -1290,6 +1260,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("MCH Test Date");
 		} else {	
 			conditions.hide.push("MCH Test Date");
+		}	
+		return conditions;	
+	},
+	'MCHC': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['MCHC'];
+		if (value && value !== "") {	
+			conditions.show.push("MCHC Test Date");
+		} else {	
+			conditions.hide.push("MCHC Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1729,16 +1709,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Other Haematology tests': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Other Haematology tests'];
-		if (value && value !== "") {	
-			conditions.show.push("Other Haematology tests Test Date");
-		} else {	
-			conditions.hide.push("Other Haematology tests Test Date");
-		}	
-		return conditions;	
-	},
 	'Viral Load': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Viral Load'];
@@ -1829,13 +1799,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Glucose (fasting)': function(formName, formFieldValues) {
+	'Fasting blood glucose': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Glucose (fasting)'];
+		var value = formFieldValues['Fasting blood glucose'];
 		if (value && value !== "") {	
-			conditions.show.push("Glucose (fasting) Test Date");
+			conditions.show.push("Fasting blood glucose Test Date");
 		} else {	
-			conditions.hide.push("Glucose (fasting) Test Date");
+			conditions.hide.push("Fasting blood glucose Test Date");
 		}	
 		return conditions;	
 	},
@@ -1849,33 +1819,33 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'S. AST': function(formName, formFieldValues) {
+	'Aspartate Aminotransferase': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['S. AST'];
+		var value = formFieldValues['Aspartate Aminotransferase'];
 		if (value && value !== "") {	
-			conditions.show.push("S. AST Test Date");
+			conditions.show.push("Aspartate Aminotransferase Test Date");
 		} else {	
-			conditions.hide.push("S. AST Test Date");
+			conditions.hide.push("Aspartate Aminotransferase Test Date");
 		}	
 		return conditions;	
 	},
-	'S. ALT': function(formName, formFieldValues) {
+	'Alanine Aminotransferase': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['S. ALT'];
+		var value = formFieldValues['Alanine Aminotransferase'];
 		if (value && value !== "") {	
-			conditions.show.push("S. ALT Test Date");
+			conditions.show.push("Alanine Aminotransferase Test Date");
 		} else {	
-			conditions.hide.push("S. ALT Test Date");
+			conditions.hide.push("Alanine Aminotransferase Test Date");
 		}	
 		return conditions;	
 	},	
-	'ALP': function(formName, formFieldValues) {
+	'Alanine Aminophosphatase': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['ALP'];
+		var value = formFieldValues['Alanine Aminophosphatase'];
 		if (value && value !== "") {	
-			conditions.show.push("ALP Test Date");
+			conditions.show.push("Alanine Aminophosphatase Test Date");
 		} else {	
-			conditions.hide.push("ALP Test Date");
+			conditions.hide.push("Alanine Aminophosphatase Test Date");
 		}	
 		return conditions;	
 	},	
@@ -1999,13 +1969,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Pregnancy test': function(formName, formFieldValues) {
+	'Serum HCG (Pregnancy test)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Pregnancy test'];
+		var value = formFieldValues['Serum HCG (Pregnancy test)'];
 		if (value && value !== "") {	
-			conditions.show.push("Pregnancy test Test Date");
+			conditions.show.push("Serum HCG (Pregnancy test) Test Date");
 		} else {	
-			conditions.hide.push("Pregnancy test Test Date");
+			conditions.hide.push("Serum HCG (Pregnancy test) Test Date");
 		}	
 		return conditions;	
 	},
@@ -2279,86 +2249,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'FSH Males': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['FSH Males'];
-		if (value && value !== "") {	
-			conditions.show.push("FSH Males Test Date");
-		} else {	
-			conditions.hide.push("FSH Males Test Date");
-		}	
-		return conditions;	
-	},
-	'FSH Females premenopausal': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['FSH Females premenopausal'];
-		if (value && value !== "") {	
-			conditions.show.push("FSH Females premenopausal Test Date");
-		} else {	
-			conditions.hide.push("FSH Females premenopausal Test Date");
-		}	
-		return conditions;	
-	},
-	'FSH Females postmenopausal': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['FSH Females postmenopausal'];
-		if (value && value !== "") {	
-			conditions.show.push("FSH Females postmenopausal Test Date");
-		} else {	
-			conditions.hide.push("FSH Females postmenopausal Test Date");
-		}	
-		return conditions;	
-	},
-	'LH - Males': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['LH - Males'];
-		if (value && value !== "") {	
-			conditions.show.push("LH - Males Test Date");
-		} else {	
-			conditions.hide.push("LH - Males Test Date");
-		}	
-		return conditions;	
-	},
-	'LH - Females (follicular)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['LH - Females (follicular)'];
-		if (value && value !== "") {	
-			conditions.show.push("LH - Females (follicular) Test Date");
-		} else {	
-			conditions.hide.push("LH - Females (follicular) Test Date");
-		}	
-		return conditions;	
-	},
-	'LH - Females (mid-cycle)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['LH - Females (mid-cycle)'];
-		if (value && value !== "") {	
-			conditions.show.push("LH - Females (mid-cycle) Test Date");
-		} else {	
-			conditions.hide.push("LH - Females (mid-cycle) Test Date");
-		}	
-		return conditions;	
-	},
-	'LH - Females (luteal)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['LH - Females (luteal)'];
-		if (value && value !== "") {	
-			conditions.show.push("LH - Females (luteal) Test Date");
-		} else {	
-			conditions.hide.push("LH - Females (luteal) Test Date");
-		}	
-		return conditions;	
-	},
-	'LH - Females (postmenopausal)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['LH - Females (postmenopausal)'];
-		if (value && value !== "") {	
-			conditions.show.push("LH - Females (postmenopausal) Test Date");
-		} else {	
-			conditions.hide.push("LH - Females (postmenopausal) Test Date");
-		}	
-		return conditions;	
-	},
 	'PTH': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['PTH'];
@@ -2366,136 +2256,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("PTH Test Date");
 		} else {	
 			conditions.hide.push("PTH Test Date");
-		}	
-		return conditions;	
-	},
-	'Progesterone (serum) (adult) - Males': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Progesterone (serum) (adult) - Males'];
-		if (value && value !== "") {	
-			conditions.show.push("Progesterone (serum) (adult) - Males Test Date");
-		} else {	
-			conditions.hide.push("Progesterone (serum) (adult) - Males Test Date");
-		}	
-		return conditions;	
-	},
-	'Progesterone (serum) (adult) - Females (follicular)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Progesterone (serum) (adult) - Females (follicular)'];
-		if (value && value !== "") {	
-			conditions.show.push("Progesterone (serum) (adult) - Females (follicular) Test Date");
-		} else {	
-			conditions.hide.push("Progesterone (serum) (adult) - Females (follicular) Test Date");
-		}	
-		return conditions;	
-	},
-	'Progesterone (serum) (adult) - Females (luteal)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Progesterone (serum) (adult) - Females (luteal)'];
-		if (value && value !== "") {	
-			conditions.show.push("Progesterone (serum) (adult) - Females (luteal) Test Date");
-		} else {	
-			conditions.hide.push("Progesterone (serum) (adult) - Females (luteal) Test Date");
-		}	
-		return conditions;	
-	},
-	'Prolactin (serum) - Males': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Prolactin (serum) - Males'];
-		if (value && value !== "") {	
-			conditions.show.push("Prolactin (serum) - Males Test Date");
-		} else {	
-			conditions.hide.push("Prolactin (serum) - Males Test Date");
-		}	
-		return conditions;	
-	},
-	'Prolactin (serum) Females': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Prolactin (serum) Females'];
-		if (value && value !== "") {	
-			conditions.show.push("Prolactin (serum) Females Test Date");
-		} else {	
-			conditions.hide.push("Prolactin (serum) Females Test Date");
-		}	
-		return conditions;	
-	},
-	'Testosterone - Males': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Testosterone - Males'];
-		if (value && value !== "") {	
-			conditions.show.push("Testosterone - Males Test Date");
-		} else {	
-			conditions.hide.push("Testosterone - Males Test Date");
-		}	
-		return conditions;	
-	},
-	'Testosterone - Females': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Testosterone - Females'];
-		if (value && value !== "") {	
-			conditions.show.push("Testosterone - Females Test Date");
-		} else {	
-			conditions.hide.push("Testosterone - Females Test Date");
-		}	
-		return conditions;	
-	},
-	'Testosterone - Pregnant females': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Testosterone - Pregnant females'];
-		if (value && value !== "") {	
-			conditions.show.push("Testosterone - Pregnant females Test Date");
-		} else {	
-			conditions.hide.push("Testosterone - Pregnant females Test Date");
-		}	
-		return conditions;	
-	},
-	'TSH - Adults': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['TSH - Adults'];
-		if (value && value !== "") {	
-			conditions.show.push("TSH - Adults Test Date");
-		} else {	
-			conditions.hide.push("TSH - Adults Test Date");
-		}	
-		return conditions;	
-	},
-	'TSH -Term infants: (0-1 day)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['TSH -Term infants: (0-1 day)'];
-		if (value && value !== "") {	
-			conditions.show.push("TSH -Term infants: (0-1 day) Test Date");
-		} else {	
-			conditions.hide.push("TSH -Term infants: (0-1 day) Test Date");
-		}	
-		return conditions;	
-	},
-	'TSH -Term infants: (1-4 days)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['TSH -Term infants: (1-4 days)'];
-		if (value && value !== "") {	
-			conditions.show.push("TSH -Term infants: (1-4 days) Test Date");
-		} else {	
-			conditions.hide.push("TSH -Term infants: (1-4 days) Test Date");
-		}	
-		return conditions;	
-	},
-	'TSH -Term infants: (2-20 weeks)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['TSH -Term infants: (2-20 weeks)'];
-		if (value && value !== "") {	
-			conditions.show.push("TSH -Term infants: (2-20 weeks) Test Date");
-		} else {	
-			conditions.hide.push("TSH -Term infants: (2-20 weeks) Test Date");
-		}	
-		return conditions;	
-	},
-	'TSH -Term infants: (21 weeks to 20 years)': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['TSH -Term infants: (21 weeks to 20 years)'];
-		if (value && value !== "") {	
-			conditions.show.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
-		} else {	
-			conditions.hide.push("TSH -Term infants: (21 weeks to 20 years) Test Date");
 		}	
 		return conditions;	
 	},
@@ -2669,13 +2429,223 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Skin snip': function(formName, formFieldValues) {
+	'Skin snip test': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Skin snip'];
+		var value = formFieldValues['Skin snip test'];
 		if (value && value !== "") {	
-			conditions.show.push("Skin snip Test Date");
+			conditions.show.push("Skin snip test Test Date");
 		} else {	
-			conditions.hide.push("Skin snip Test Date");
+			conditions.hide.push("Skin snip test Test Date");
+		}	
+		return conditions;	
+	},
+	'Fibrinogen test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Fibrinogen test'];
+		if (value && value !== "") {	
+			conditions.show.push("Fibrinogen test Test Date");
+		} else {	
+			conditions.hide.push("Fibrinogen test Test Date");
+		}	
+		return conditions;	
+	},
+	'PCR(ALERE-Q)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PCR(ALERE-Q)'];
+		if (value && value !== "") {	
+			conditions.show.push("PCR(ALERE-Q) Test Date");
+		} else {	
+			conditions.hide.push("PCR(ALERE-Q) Test Date");
+		}	
+		return conditions;	
+	},
+	'DBS': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['DBS'];
+		if (value && value !== "") {	
+			conditions.show.push("DBS Test Date");
+		} else {	
+			conditions.hide.push("DBS Test Date");
+		}	
+		return conditions;	
+	},
+	'VDRL': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['VDRL'];
+		if (value && value !== "") {	
+			conditions.show.push("VDRL Test Date");
+		} else {	
+			conditions.hide.push("VDRL Test Date");
+		}	
+		return conditions;	
+	},
+	'TPHA': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TPHA'];
+		if (value && value !== "") {	
+			conditions.show.push("TPHA Test Date");
+		} else {	
+			conditions.hide.push("TPHA Test Date");
+		}	
+		return conditions;	
+	},
+	'Oestrogen': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Oestrogen'];
+		if (value && value !== "") {	
+			conditions.show.push("Oestrogen Test Date");
+		} else {	
+			conditions.hide.push("Oestrogen Test Date");
+		}	
+		return conditions;	
+	},
+	'Testosterone': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Testosterone'];
+		if (value && value !== "") {	
+			conditions.show.push("Testosterone Test Date");
+		} else {	
+			conditions.hide.push("Testosterone Test Date");
+		}	
+		return conditions;	
+	},
+	'LH': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['LH'];
+		if (value && value !== "") {	
+			conditions.show.push("LH Test Date");
+		} else {	
+			conditions.hide.push("LH Test Date");
+		}	
+		return conditions;	
+	},
+	'FSH': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['FSH'];
+		if (value && value !== "") {	
+			conditions.show.push("FSH Test Date");
+		} else {	
+			conditions.hide.push("FSH Test Date");
+		}	
+		return conditions;	
+	},
+	'TSH': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['TSH'];
+		if (value && value !== "") {	
+			conditions.show.push("TSH Test Date");
+		} else {	
+			conditions.hide.push("TSH Test Date");
+		}	
+		return conditions;	
+	},
+	'Gama GT': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Gama GT'];
+		if (value && value !== "") {	
+			conditions.show.push("Gama GT Test Date");
+		} else {	
+			conditions.hide.push("Gama GT Test Date");
+		}	
+		return conditions;	
+	},
+	'Sputum analysis': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Sputum analysis'];
+		if (value && value !== "") {	
+			conditions.show.push("Sputum analysis Test Date");
+		} else {	
+			conditions.hide.push("Sputum analysis Test Date");
+		}	
+		return conditions;	
+	},
+	'Stool analysis': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Stool analysis'];
+		if (value && value !== "") {	
+			conditions.show.push("Stool analysis Test Date");
+		} else {	
+			conditions.hide.push("Stool analysis Test Date");
+		}	
+		return conditions;	
+	},
+	'Spermoculture': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Spermoculture'];
+		if (value && value !== "") {	
+			conditions.show.push("Spermoculture Test Date");
+		} else {	
+			conditions.hide.push("Spermoculture Test Date");
+		}	
+		return conditions;	
+	},
+	'Spermogram': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Spermogram'];
+		if (value && value !== "") {	
+			conditions.show.push("Spermogram Test Date");
+		} else {	
+			conditions.hide.push("Spermogram Test Date");
+		}	
+		return conditions;	
+	},
+	'Chlamydia IgG': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Chlamydia IgG'];
+		if (value && value !== "") {	
+			conditions.show.push("Chlamydia IgG Test Date");
+		} else {	
+			conditions.hide.push("Chlamydia IgG Test Date");
+		}	
+		return conditions;	
+	},
+	'Chlamydia IgM': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Chlamydia IgM'];
+		if (value && value !== "") {	
+			conditions.show.push("Chlamydia IgM Test Date");
+		} else {	
+			conditions.hide.push("Chlamydia IgM Test Date");
+		}	
+		return conditions;	
+	},
+	'Toxoplasmosis IgG': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Toxoplasmosis IgG'];
+		if (value && value !== "") {	
+			conditions.show.push("Toxoplasmosis IgG Test Date");
+		} else {	
+			conditions.hide.push("Toxoplasmosis IgG Test Date");
+		}	
+		return conditions;	
+	},
+	'Toxoplasmosis IgM': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Toxoplasmosis IgM'];
+		if (value && value !== "") {	
+			conditions.show.push("Toxoplasmosis IgM Test Date");
+		} else {	
+			conditions.hide.push("Toxoplasmosis IgM Test Date");
+		}	
+		return conditions;	
+	},
+	'Rubella IgG': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Rubella IgG'];
+		if (value && value !== "") {	
+			conditions.show.push("Rubella IgG Test Date");
+		} else {	
+			conditions.hide.push("Rubella IgG Test Date");
+		}	
+		return conditions;	
+	},
+	'Rubella IgM': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Rubella IgM'];
+		if (value && value !== "") {	
+			conditions.show.push("Rubella IgM Test Date");
+		} else {	
+			conditions.hide.push("Rubella IgM Test Date");
 		}	
 		return conditions;	
 	},
@@ -2872,10 +2842,10 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Exposure to ARVs other than PMTCT?': function(formName, formFieldValues) {
+	'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Exposure to ARVs other than PMTCT?'];
-		if (value === "Yes") {
+		var value = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
+		if (value === "Yes full name") {
 			conditions.show.push("If yes, select ARV used");
 		} else {	
 			conditions.hide.push("If yes, select ARV used");
@@ -2920,48 +2890,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	/**
 	 * Handling conditions for CHILD EXPOSED TO HIV form
 	 */
-	'PCR 1': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['PCR 1'];
-		if (value === "Yes full name") {	
-			conditions.show.push("PCR 1 sample date");
-			conditions.show.push("PCR 1 result");
-			conditions.show.push("PCR 1 result date");
-		} else {	
-			conditions.hide.push("PCR 1 sample date");
-			conditions.hide.push("PCR 1 result");
-			conditions.hide.push("PCR 1 result date");
-		}	
-		return conditions;	
-	},
-	'PCR 2': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['PCR 2'];
-		if (value === "Yes full name") {	
-			conditions.show.push("PCR 2 sample date");
-			conditions.show.push("PCR 2 result");
-			conditions.show.push("PCR 2 result date");
-		} else {	
-			conditions.hide.push("PCR 2 sample date");
-			conditions.hide.push("PCR 2 result");
-			conditions.hide.push("PCR 2 result date");
-		}	
-		return conditions;	
-	},
-	'PCR 3': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['PCR 3'];
-		if (value === "Yes full name") {	
-			conditions.show.push("PCR 3 sample date");
-			conditions.show.push("PCR 3 result");
-			conditions.show.push("PCR 3 result date");
-		} else {	
-			conditions.hide.push("PCR 3 sample date");
-			conditions.hide.push("PCR 3 result");
-			conditions.hide.push("PCR 3 result date");
-		}	
-		return conditions;	
-	},
 	'Rapid Test 1 (9 to 18 months)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Rapid Test 1 (9 to 18 months)'];
@@ -3043,4 +2971,27 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+        /**
+         * Handling conditions for HIV Testing and Counseling Form
+         */
+        'HTC, Reason for test': function(formName, formFieldValues) {
+                var conditions = {show: [], hide: []};
+                var value = formFieldValues['HTC, Reason for test'];
+                if (value === "Others") {
+                        conditions.show.push("HTC, Other reason for test");
+                } else {
+                        conditions.hide.push("HTC, Other reason for test");
+                }
+                return conditions;
+        },
+        'HTC, Risk Group': function(formName, formFieldValues) {
+                var conditions = {show: [], hide: []};
+                var value = formFieldValues['HTC, Risk Group'];
+                if (value === "Others") {
+                        conditions.show.push("HTC, Other Risk Group");
+                } else {
+                        conditions.hide.push("HTC, Other Risk Group");
+                }
+                return conditions;
+        }
 };

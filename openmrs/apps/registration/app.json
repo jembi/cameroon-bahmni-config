@@ -60,7 +60,7 @@
             "searchByIdForwardUrl": "/patient/{{patientUuid}}",
             "showMiddleName": false,
             "showLastName": true,
-            "isLastNameMandatory": false,
+            "isLastNameMandatory": true,
             "showBirthTime": false,
             "showCasteSameAsLastNameCheckbox": false,
             "printOptions": [
@@ -95,7 +95,7 @@
                 "address": {
                     "label": "REGISTRATION_SEARCH_ADDRESS_LABEL_KEY",
                     "placeholder": "REGISTRATION_SEARCH_ADDRESS_PLACEHOLDER_KEY",
-                    "field": "address1"
+                    "field": "city_village"
                 }, 
                 "customAttributes": {
                     "label": "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
