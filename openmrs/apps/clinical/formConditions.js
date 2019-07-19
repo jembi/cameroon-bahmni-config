@@ -138,21 +138,21 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (General health)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Tiredness");
-			conditions.show.push("Weakness");
-			conditions.show.push("Fever");
-			conditions.show.push("Night Sweats");
-			conditions.show.push("Weight Loss");
-			conditions.show.push("Weight Gain");
-			conditions.show.push("Inadequate Growth In Height");
+			conditions.show.push("Tiredness?");
+			conditions.show.push("Weakness?");
+			conditions.show.push("Fever?");
+			conditions.show.push("Night Sweats?");
+			conditions.show.push("Weight Loss?");
+			conditions.show.push("Weight Gain?");
+			conditions.show.push("Inadequate Growth In Height?");
 		} else {
-			conditions.hide.push("Tiredness");
-			conditions.hide.push("Weakness");
-			conditions.hide.push("Fever");
-			conditions.hide.push("Night Sweats");
-			conditions.hide.push("Weight Loss");
-			conditions.hide.push("Weight Gain");
-			conditions.hide.push("Inadequate Growth In Height");
+			conditions.hide.push("Tiredness?");
+			conditions.hide.push("Weakness?");
+			conditions.hide.push("Fever?");
+			conditions.hide.push("Night Sweats?");
+			conditions.hide.push("Weight Loss?");
+			conditions.hide.push("Weight Gain?");
+			conditions.hide.push("Inadequate Growth In Height?");
 		}
 		return conditions;
 	},
@@ -160,25 +160,25 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Ear, Nose, Mouth, Throat)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Difficulty With Hearing");
-			conditions.show.push("Rhinorrhea");
-			conditions.show.push("Ringing In The Ears");
-			conditions.show.push("Mouths Sores");
-			conditions.show.push("Loose Teeth");
-			conditions.show.push("Ear Pain");
-			conditions.show.push("Nosebleeds");
-			conditions.show.push("Sore Throat");
-			conditions.show.push("Facial Pain Or Numbness");
+			conditions.show.push("Difficulty With Hearing?");
+			conditions.show.push("Rhinorrhea?");
+			conditions.show.push("Ringing In The Ears?");
+			conditions.show.push("Mouths Sores?");
+			conditions.show.push("Loose Teeth?");
+			conditions.show.push("Ear Pain?");
+			conditions.show.push("Nosebleeds?");
+			conditions.show.push("Sore Throat?");
+			conditions.show.push("Facial Pain Or Numbness?");
 		} else {
-			conditions.hide.push("Difficulty With Hearing");
-			conditions.hide.push("Rhinorrhea");
-			conditions.hide.push("Ringing In The Ears");
-			conditions.hide.push("Mouths Sores");
-			conditions.hide.push("Loose Teeth");
-			conditions.hide.push("Ear Pain");
-			conditions.hide.push("Nosebleeds");
-			conditions.hide.push("Sore Throat");
-			conditions.hide.push("Facial Pain Or Numbness");
+			conditions.hide.push("Difficulty With Hearing?");
+			conditions.hide.push("Rhinorrhea?");
+			conditions.hide.push("Ringing In The Ears?");
+			conditions.hide.push("Mouths Sores?");
+			conditions.hide.push("Loose Teeth?");
+			conditions.hide.push("Ear Pain?");
+			conditions.hide.push("Nosebleeds?");
+			conditions.hide.push("Sore Throat?");
+			conditions.hide.push("Facial Pain Or Numbness?");
 		}
 		return conditions;
 	},
@@ -186,19 +186,19 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Cardiovascular)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Palpitation");
-			conditions.show.push("Chest Pain");
-			conditions.show.push("Swelling Of Feet/Legs");
-			conditions.show.push("Pain In Legs With Walking");
-			conditions.show.push("Irregular Heart Beats");
-			conditions.show.push("Varicose Veins");
+			conditions.show.push("Palpitation?");
+			conditions.show.push("Chest Pain?");
+			conditions.show.push("Swelling Of Feet/Legs?");
+			conditions.show.push("Pain In Legs With Walking?");
+			conditions.show.push("Irregular Heart Beats?");
+			conditions.show.push("Varicose Veins?");
 		} else {
-			conditions.hide.push("Palpitation");
-			conditions.hide.push("Chest Pain");
-			conditions.hide.push("Swelling Of Feet/Legs");
-			conditions.hide.push("Pain In Legs With Walking");
-			conditions.hide.push("Irregular Heart Beats");
-			conditions.hide.push("Varicose Veins");
+			conditions.hide.push("Palpitation?");
+			conditions.hide.push("Chest Pain?");
+			conditions.hide.push("Swelling Of Feet/Legs?");
+			conditions.hide.push("Pain In Legs With Walking?");
+			conditions.hide.push("Irregular Heart Beats?");
+			conditions.hide.push("Varicose Veins?");
 		}
 		return conditions;
 	},
@@ -206,17 +206,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Respiratory)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Shortness Of Breath");
-			conditions.show.push("Night Sweats");
-			conditions.show.push("Cough");
-			conditions.show.push("Wheezing");
-			conditions.show.push("Coughing Up Blood");
+			conditions.show.push("Shortness Of Breath?");
+			conditions.show.push("Night Sweats?");
+			conditions.show.push("Cough?");
+			conditions.show.push("Wheezing?");
+			conditions.show.push("Coughing Up Blood?");
 		} else {
-			conditions.hide.push("Shortness Of Breath");
-			conditions.hide.push("Night Sweats");
-			conditions.hide.push("Cough");
-			conditions.hide.push("Wheezing");
-			conditions.hide.push("Coughing Up Blood");
+			conditions.hide.push("Shortness Of Breath?");
+			conditions.hide.push("Night Sweats?");
+			conditions.hide.push("Cough?");
+			conditions.hide.push("Wheezing?");
+			conditions.hide.push("Coughing Up Blood?");
 		}
 		return conditions;
 	},
@@ -224,27 +224,27 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Gastro Intestinal)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Nausea");
-			conditions.show.push("Vomiting");
-			conditions.show.push("Diarrhea");
-			conditions.show.push("Abdominal Pain");
-			conditions.show.push("Blood In Stool");
-			conditions.show.push("Blood In Vomitus");
-			conditions.show.push("Constipation Complaint");
-			conditions.show.push("Heartburn");
-			conditions.show.push("Difficulty Swallowing");
-			conditions.show.push("Incontinence");
+			conditions.show.push("Nausea?");
+			conditions.show.push("Vomiting?");
+			conditions.show.push("Diarrhea?");
+			conditions.show.push("Abdominal Pain?");
+			conditions.show.push("Blood In Stool?");
+			conditions.show.push("Blood In Vomitus?");
+			conditions.show.push("Constipation?");
+			conditions.show.push("Heartburn?");
+			conditions.show.push("Difficulty Swallowing?");
+			conditions.show.push("Incontinence?");
 		} else {
-			conditions.hide.push("Nausea");
-			conditions.hide.push("Vomiting");
-			conditions.hide.push("Diarrhea");
-			conditions.hide.push("Abdominal Pain");
-			conditions.hide.push("Blood In Stool");
-			conditions.hide.push("Blood In Vomitus");
-			conditions.hide.push("Constipation Complaint");
-			conditions.hide.push("Heartburn");
-			conditions.hide.push("Difficulty Swallowing");
-			conditions.hide.push("Incontinence");
+			conditions.hide.push("Nausea?");
+			conditions.hide.push("Vomiting?");
+			conditions.hide.push("Diarrhea?");
+			conditions.hide.push("Abdominal Pain?");
+			conditions.hide.push("Blood In Stool?");
+			conditions.hide.push("Blood In Vomitus?");
+			conditions.hide.push("Constipation?");
+			conditions.hide.push("Heartburn?");
+			conditions.hide.push("Difficulty Swallowing?");
+			conditions.hide.push("Incontinence?");
 		}
 		return conditions;
 	},
@@ -252,21 +252,21 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Genito-Urinary)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Painful Urination");
-			conditions.show.push("Frequent Urination");
-			conditions.show.push("Urgency");
-			conditions.show.push("Prostate Problems");
-			conditions.show.push("Bladder Problems");
-			conditions.show.push("Blood In Urine");
-			conditions.show.push("Impotence");
+			conditions.show.push("Painful Urination?");
+			conditions.show.push("Frequent Urination?");
+			conditions.show.push("Urgency?");
+			conditions.show.push("Prostate Problems?");
+			conditions.show.push("Bladder Problems?");
+			conditions.show.push("Blood In Urine?");
+			conditions.show.push("Impotence?");
 		} else {
-			conditions.hide.push("Painful Urination");
-			conditions.hide.push("Frequent Urination");
-			conditions.hide.push("Urgency");
-			conditions.hide.push("Prostate Problems");
-			conditions.hide.push("Bladder Problems");
-			conditions.hide.push("Blood In Urine");
-			conditions.hide.push("Impotence");
+			conditions.hide.push("Painful Urination?");
+			conditions.hide.push("Frequent Urination?");
+			conditions.hide.push("Urgency?");
+			conditions.hide.push("Prostate Problems?");
+			conditions.hide.push("Bladder Problems?");
+			conditions.hide.push("Blood In Urine?");
+			conditions.hide.push("Impotence?");
 		}
 		return conditions;
 	},
@@ -274,19 +274,19 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Musculo-Skeletal)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Joint Pain");
-			conditions.show.push("Aching Muscles");
-			conditions.show.push("Shoulder Pain");
-			conditions.show.push("Swelling Of Joints");
-			conditions.show.push("Joint Deformities");
-			conditions.show.push("Back Pain");
+			conditions.show.push("Joint Pain?");
+			conditions.show.push("Aching Muscles?");
+			conditions.show.push("Shoulder Pain?");
+			conditions.show.push("Swelling Of Joints?");
+			conditions.show.push("Joint Deformities?");
+			conditions.show.push("Back Pain?");
 		} else {
-			conditions.hide.push("Joint Pain");
-			conditions.hide.push("Aching Muscles");
-			conditions.hide.push("Shoulder Pain");
-			conditions.hide.push("Swelling Of Joints");
-			conditions.hide.push("Joint Deformities");
-			conditions.hide.push("Back Pain");
+			conditions.hide.push("Joint Pain?");
+			conditions.hide.push("Aching Muscles?");
+			conditions.hide.push("Shoulder Pain?");
+			conditions.hide.push("Swelling Of Joints?");
+			conditions.hide.push("Joint Deformities?");
+			conditions.hide.push("Back Pain?");
 		}
 		return conditions;
 	},
@@ -294,23 +294,23 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Skin, Hair And Breast)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Rash");
-			conditions.show.push("Itching");
-			conditions.show.push("Hair Loss");
-			conditions.show.push("Hair Increase");
-			conditions.show.push("New Skin Lesion");
-			conditions.show.push("Breast Pain");
-			conditions.show.push("Breast Mass");
-			conditions.show.push("Breast Change");
+			conditions.show.push("Rash?");
+			conditions.show.push("Itching?");
+			conditions.show.push("Hair Loss?");
+			conditions.show.push("Hair Increase?");
+			conditions.show.push("New Skin Lesion?");
+			conditions.show.push("Breast Pain?");
+			conditions.show.push("Breast Mass?");
+			conditions.show.push("Breast Change?");
 		} else {
-			conditions.hide.push("Rash");
-			conditions.hide.push("Itching");
-			conditions.hide.push("Hair Loss");
-			conditions.hide.push("Hair Increase");
-			conditions.hide.push("New Skin Lesion");
-			conditions.hide.push("Breast Pain");
-			conditions.hide.push("Breast Mass");
-			conditions.hide.push("Breast Change");
+			conditions.hide.push("Rash?");
+			conditions.hide.push("Itching?");
+			conditions.hide.push("Hair Loss?");
+			conditions.hide.push("Hair Increase?");
+			conditions.hide.push("New Skin Lesion?");
+			conditions.hide.push("Breast Pain?");
+			conditions.hide.push("Breast Mass?");
+			conditions.hide.push("Breast Change?");
 		}
 		return conditions;
 	},
@@ -318,31 +318,31 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Neurologic)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Convulsion");
-			conditions.show.push("Frequent Headaches");
-			conditions.show.push("Double Vision");
-			conditions.show.push("Weakness");
-			conditions.show.push("Changes In Sensation");
-			conditions.show.push("Problems With Walking");
-			conditions.show.push("Problem With Balance");
-			conditions.show.push("Dizziness");
-			conditions.show.push("Tremor");
-			conditions.show.push("Loss Of Consciousness");
-			conditions.show.push("Episodes Of Visual Loss");
-			conditions.show.push("Uncontrolled Emotion");
+			conditions.show.push("Convulsion?");
+			conditions.show.push("Frequent Headaches?");
+			conditions.show.push("Double Vision?");
+			conditions.show.push("Weakness?");
+			conditions.show.push("Changes In Sensation?");
+			conditions.show.push("Problems With Walking?");
+			conditions.show.push("Problem With Balance?");
+			conditions.show.push("Dizziness?");
+			conditions.show.push("Tremor?");
+			conditions.show.push("Loss Of Consciousness?");
+			conditions.show.push("Episodes Of Visual Loss?");
+			conditions.show.push("Uncontrolled Emotion?");
 		} else {
-			conditions.hide.push("Convulsion");
-			conditions.hide.push("Frequent Headaches");
-			conditions.hide.push("Double Vision");
-			conditions.hide.push("Weakness");
-			conditions.hide.push("Changes In Sensation");
-			conditions.hide.push("Problems With Walking");
-			conditions.hide.push("Problem With Balance");
-			conditions.hide.push("Dizziness");
-			conditions.hide.push("Tremor");
-			conditions.hide.push("Loss Of Consciousness");
-			conditions.hide.push("Episodes Of Visual Loss");
-			conditions.hide.push("Uncontrolled Emotion");
+			conditions.hide.push("Convulsion?");
+			conditions.hide.push("Frequent Headaches?");
+			conditions.hide.push("Double Vision?");
+			conditions.hide.push("Weakness?");
+			conditions.hide.push("Changes In Sensation?");
+			conditions.hide.push("Problems With Walking?");
+			conditions.hide.push("Problem With Balance?");
+			conditions.hide.push("Dizziness?");
+			conditions.hide.push("Tremor?");
+			conditions.hide.push("Loss Of Consciousness?");
+			conditions.hide.push("Episodes Of Visual Loss?");
+			conditions.hide.push("Uncontrolled Emotion?");
 		}
 		return conditions;
 	},
@@ -350,21 +350,21 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Psychiatric)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Insomnia");
-			conditions.show.push("Irritability");
-			conditions.show.push("Depression");
-			conditions.show.push("Anxiety");
-			conditions.show.push("Mood Swings");
-			conditions.show.push("Recurrent Bad Thoughts");
-			conditions.show.push("Hallucinations");
+			conditions.show.push("Insomnia?");
+			conditions.show.push("Irritability?");
+			conditions.show.push("Depression?");
+			conditions.show.push("Anxiety?");
+			conditions.show.push("Mood Swings?");
+			conditions.show.push("Recurrent Bad Thoughts?");
+			conditions.show.push("Hallucinations?");
 		} else {
-			conditions.hide.push("Insomnia");
-			conditions.hide.push("Irritability");
-			conditions.hide.push("Depression");
-			conditions.hide.push("Anxiety");
-			conditions.hide.push("Mood Swings");
-			conditions.hide.push("Recurrent Bad Thoughts");
-			conditions.hide.push("Hallucinations");
+			conditions.hide.push("Insomnia?");
+			conditions.hide.push("Irritability?");
+			conditions.hide.push("Depression?");
+			conditions.hide.push("Anxiety?");
+			conditions.hide.push("Mood Swings?");
+			conditions.hide.push("Recurrent Bad Thoughts?");
+			conditions.hide.push("Hallucinations?");
 		}
 		return conditions;
 	},
@@ -372,21 +372,21 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Endocrinologic)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Intolerance To Heat");
-			conditions.show.push("Intolerance To Cold");
-			conditions.show.push("Menstrual Irregularities");
-			conditions.show.push("Frequent Hunger");
-			conditions.show.push("Frequent Thirst");
-			conditions.show.push("Frequent Urination");
-			conditions.show.push("Changes In Sex Drive");
+			conditions.show.push("Intolerance To Heat?");
+			conditions.show.push("Intolerance To Cold?");
+			conditions.show.push("Menstrual Irregularities?");
+			conditions.show.push("Frequent Hunger?");
+			conditions.show.push("Frequent Thirst?");
+			conditions.show.push("Frequent Urination?");
+			conditions.show.push("Changes In Sex Drive?");
 		} else {
-			conditions.hide.push("Intolerance To Heat");
-			conditions.hide.push("Intolerance To Cold");
-			conditions.hide.push("Menstrual Irregularities");
-			conditions.hide.push("Frequent Hunger");
-			conditions.hide.push("Frequent Thirst");
-			conditions.hide.push("Frequent Urination");
-			conditions.hide.push("Changes In Sex Drive");
+			conditions.hide.push("Intolerance To Heat?");
+			conditions.hide.push("Intolerance To Cold?");
+			conditions.hide.push("Menstrual Irregularities?");
+			conditions.hide.push("Frequent Hunger?");
+			conditions.hide.push("Frequent Thirst?");
+			conditions.hide.push("Frequent Urination?");
+			conditions.hide.push("Changes In Sex Drive?");
 		}
 		return conditions;
 	},
@@ -394,19 +394,19 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};
 		var abnormal = formFieldValues['Review (Hematologic)'];
 		if (abnormal === "Abnormal") {
-			conditions.show.push("Easy Bleeding");
-			conditions.show.push("Easy Bruising");
-			conditions.show.push("Anemia");
-			conditions.show.push("Abnormal Blood Test");
-			conditions.show.push("Leukemia");
-			conditions.show.push("Lymphadenopathy");
+			conditions.show.push("Easy Bleeding?");
+			conditions.show.push("Easy Bruising?");
+			conditions.show.push("Anemia?");
+			conditions.show.push("Abnormal Blood Test?");
+			conditions.show.push("Leukemia?");
+			conditions.show.push("Lymphadenopathy?");
 		} else {
-			conditions.hide.push("Easy Bleeding");
-			conditions.hide.push("Easy Bruising");
-			conditions.hide.push("Anemia");
-			conditions.hide.push("Abnormal Blood Test");
-			conditions.hide.push("Leukemia");
-			conditions.hide.push("Lymphadenopathy");
+			conditions.hide.push("Easy Bleeding?");
+			conditions.hide.push("Easy Bruising?");
+			conditions.hide.push("Anemia?");
+			conditions.hide.push("Abnormal Blood Test?");
+			conditions.hide.push("Leukemia?");
+			conditions.hide.push("Lymphadenopathy?");
 		}
 		return conditions;
 	},
@@ -2656,13 +2656,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Opportunist Infections'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Opportunist Infection duration");
-			conditions.show.push("Opportunist Infection complications");
-			conditions.show.push("Opportunist Infection treatment");
+			conditions.show.push("Opportunist Infection duration?");
+			conditions.show.push("Opportunist Infection complications?");
+			conditions.show.push("Opportunist Infection treatment?");
 		} else {	
-			conditions.hide.push("Opportunist Infection duration");
-			conditions.hide.push("Opportunist Infection complications");
-			conditions.hide.push("Opportunist Infection treatment");
+			conditions.hide.push("Opportunist Infection duration?");
+			conditions.hide.push("Opportunist Infection complications?");
+			conditions.hide.push("Opportunist Infection treatment?");
 		}	
 		return conditions;	
 	},
@@ -2670,13 +2670,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Opportunist Infections'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Opportunist Infection duration");
-			conditions.show.push("Opportunist Infection complications");
-			conditions.show.push("Opportunist Infection treatment");
+			conditions.show.push("Opportunist Infection duration?");
+			conditions.show.push("Opportunist Infection complications?");
+			conditions.show.push("Opportunist Infection treatment?");
 		} else {	
-			conditions.hide.push("Opportunist Infection duration");
-			conditions.hide.push("Opportunist Infection complications");
-			conditions.hide.push("Opportunist Infection treatment");
+			conditions.hide.push("Opportunist Infection duration?");
+			conditions.hide.push("Opportunist Infection complications?");
+			conditions.hide.push("Opportunist Infection treatment?");
 		}	
 		return conditions;	
 	},
@@ -2684,13 +2684,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Chronic diarrhea'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Chronic diarrhea duration");
-			conditions.show.push("Chronic diarrhea complications");
-			conditions.show.push("Chronic diarrhea treatment");
+			conditions.show.push("Chronic diarrhea duration?");
+			conditions.show.push("Chronic diarrhea complications?");
+			conditions.show.push("Chronic diarrhea treatment?");
 		} else {	
-			conditions.hide.push("Chronic diarrhea duration");
-			conditions.hide.push("Chronic diarrhea complications");
-			conditions.hide.push("Chronic diarrhea treatment");
+			conditions.hide.push("Chronic diarrhea duration?");
+			conditions.hide.push("Chronic diarrhea complications?");
+			conditions.hide.push("Chronic diarrhea treatment?");
 		}	
 		return conditions;	
 	},
@@ -2698,13 +2698,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Chronic Cough'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Chronic Cough duration");
-			conditions.show.push("Chronic Cough complications");
-			conditions.show.push("Chronic Cough treatment");
+			conditions.show.push("Chronic Cough duration?");
+			conditions.show.push("Chronic Cough complications?");
+			conditions.show.push("Chronic Cough treatment?");
 		} else {	
-			conditions.hide.push("Chronic Cough duration");
-			conditions.hide.push("Chronic Cough complications");
-			conditions.hide.push("Chronic Cough treatment");
+			conditions.hide.push("Chronic Cough duration?");
+			conditions.hide.push("Chronic Cough complications?");
+			conditions.hide.push("Chronic Cough treatment?");
 		}	
 		return conditions;	
 	},
@@ -2712,27 +2712,27 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Shingles'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Shingles duration");
-			conditions.show.push("Shingles complications");
-			conditions.show.push("Shingles treatment");
+			conditions.show.push("Shingles duration?");
+			conditions.show.push("Shingles complications?");
+			conditions.show.push("Shingles treatment?");
 		} else {	
-			conditions.hide.push("Shingles duration");
-			conditions.hide.push("Shingles complications");
-			conditions.hide.push("Shingles treatment");
+			conditions.hide.push("Shingles duration?");
+			conditions.hide.push("Shingles complications?");
+			conditions.hide.push("Shingles treatment?");
 		}	
 		return conditions;	
 	},
-	'Hepatitis B': function(formName, formFieldValues) {
+	'Hepatitis B?': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Hepatitis B'];
+		var value = formFieldValues['Hepatitis B?'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Hepatitis B duration");
-			conditions.show.push("Hepatitis B complications");
-			conditions.show.push("Hepatitis B treatment");
+			conditions.show.push("Hepatitis B duration?");
+			conditions.show.push("Hepatitis B complications?");
+			conditions.show.push("Hepatitis B treatment?");
 		} else {	
-			conditions.hide.push("Hepatitis B duration");
-			conditions.hide.push("Hepatitis B complications");
-			conditions.hide.push("Hepatitis B treatment");
+			conditions.hide.push("Hepatitis B duration?");
+			conditions.hide.push("Hepatitis B complications?");
+			conditions.hide.push("Hepatitis B treatment?");
 		}	
 		return conditions;	
 	},
@@ -2740,28 +2740,28 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Hepatitis C'];
 		if (value === "Yes full name") {	
-			conditions.show.push("Hepatitis C duration");
-			conditions.show.push("Hepatitis C complications");
-			conditions.show.push("Hepatitis C treatment");
+			conditions.show.push("Hepatitis C duration?");
+			conditions.show.push("Hepatitis C complications?");
+			conditions.show.push("Hepatitis C treatment?");
 		} else {	
-			conditions.hide.push("Hepatitis C duration");
-			conditions.hide.push("Hepatitis C complications");
-			conditions.hide.push("Hepatitis C treatment");
+			conditions.hide.push("Hepatitis C duration?");
+			conditions.hide.push("Hepatitis C complications?");
+			conditions.hide.push("Hepatitis C treatment?");
 		}	
 		return conditions;	
 	},
-	'Diabetes': function(formName, formFieldValues) {
+	'Diabetes?': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		if (formName === "Medical background") {
-			var value = formFieldValues['Diabetes'];
+		if (formName === "PATIENT WITH HIV - CHILD INITIAL") {
+			var value = formFieldValues['Diabetes?'];
 			if (value === "Yes full name") {	
-				conditions.show.push("Diabetes duration");
-				conditions.show.push("Diabetes complications");
-				conditions.show.push("Diabetes treatment");
+				conditions.show.push("Diabetes duration?");
+				conditions.show.push("Diabetes complications?");
+				conditions.show.push("Diabetes treatment?");
 			} else {	
-				conditions.hide.push("Diabetes duration");
-				conditions.hide.push("Diabetes complications");
-				conditions.hide.push("Diabetes treatment");
+				conditions.hide.push("Diabetes duration?");
+				conditions.hide.push("Diabetes complications?");
+				conditions.hide.push("Diabetes treatment?");
 			}	
 		}
 		return conditions;	
@@ -2776,11 +2776,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'TB screened': function(formName, formFieldValues) {
+	'TB screened?': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		
-		var value = formFieldValues['TB screened'];
-		console.log(value);
+		var value = formFieldValues['TB screened?'];
 		if (value === "Yes full name") {	
 			conditions.show.push("TB screened date");
 		} else {	
@@ -2844,9 +2842,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Exposure to ARVs other than PMTCT (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
+	'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Exposure to ARVs other than PMTCT (Post-exposure prophylaxis, rape, etc.)'];
+		var value = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
 		if (value === "Yes full name") {
 			conditions.show.push("If yes, select ARV used");
 		} else {	
