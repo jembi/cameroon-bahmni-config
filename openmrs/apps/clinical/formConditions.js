@@ -209,13 +209,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Shortness Of Breath");
 			conditions.show.push("Night Sweats");
 			conditions.show.push("Cough");
-			conditions.show.push("Wheezing");
+			conditions.show.push("Wheezing Complaint");
 			conditions.show.push("Coughing Up Blood");
 		} else {
 			conditions.hide.push("Shortness Of Breath");
 			conditions.hide.push("Night Sweats");
 			conditions.hide.push("Cough");
-			conditions.hide.push("Wheezing");
+			conditions.hide.push("Wheezing Complaint");
 			conditions.hide.push("Coughing Up Blood");
 		}
 		return conditions;
