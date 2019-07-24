@@ -2995,5 +2995,18 @@ Bahmni.ConceptSet.FormConditions.rules = {
                         conditions.hide.push("HTC, Other Risk Group");
                 }
                 return conditions;
-        }
+		},
+		/**
+         * Handling conditions for Patient with HIV - child initial
+         */
+		'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
+			var conditions = {show: [], hide: []};
+			var yes = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
+			if (yes == "Yes full name") {
+				conditions.show.push("If yes, select ARV used")
+			} else {
+				conditions.hide.push("If yes, select ARV used")
+			}
+			return conditions;
+		}
 };
