@@ -2844,9 +2844,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Exposure to ARVs other than PMTCT (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
+	'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Exposure to ARVs other than PMTCT (Post-exposure prophylaxis, rape, etc.)'];
+		var value = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
 		if (value === "Yes full name") {
 			conditions.show.push("If yes, select ARV used");
 		} else {	
@@ -2995,5 +2995,5 @@ Bahmni.ConceptSet.FormConditions.rules = {
                         conditions.hide.push("HTC, Other Risk Group");
                 }
                 return conditions;
-        }
+		}
 };
