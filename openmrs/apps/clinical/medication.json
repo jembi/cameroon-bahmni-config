@@ -12,7 +12,7 @@
         "defaultInstructions": "As directed",
         "frequencyDefaultDurationUnitsMap": [
           {
-            "minFrequency": "1/7",
+            "minFrequency": "1",
             "maxFrequency": 5,
             "defaultDurationUnit": "Day(s)"
           },
