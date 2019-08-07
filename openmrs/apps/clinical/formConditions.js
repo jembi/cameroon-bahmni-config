@@ -31,7 +31,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Normal nutrition': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['Normal nutrition'];
-		if (value === "No") {
+		if (value === "No full name" || value === "No") {
 			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)")
 			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)")
 		} else {
