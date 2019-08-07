@@ -188,7 +188,7 @@
                     "name": "Report1",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator1a_pregnantwomen_receivingART_toreduceMTCT_newlyinitiating.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator1a_pregnantwomen_receivingART_newlyinitiating.sql"
                     }
                 },
                 {
