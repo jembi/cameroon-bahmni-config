@@ -43,20 +43,11 @@
                 "ID_Number": {
                     "required" : true
                 },
-		"Co-morbidites": {
-                    "excludeFrom": ["PTME / PMTCT Program"]
+		        "PROGRAM_MANAGEMENT_PATIENT_COMORBIDITES": {
+                    "excludeFrom": ["TB_PROGRAM_KEY"]
                 },
-		"Prophylaxy": {
-                    "excludeFrom": ["TB Program","HIV Program"]
-                },
-		"PMTCT Visit Stage":{
-       		    "excludeFrom": ["TB Program","HIV Program"]
-		},
-                "PCR":{
-       		    "excludeFrom": ["TB Program","HIV Program"]
-		},
-                "Doctor": {
-                    "excludeFrom": ["TB Program"]
+                "PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE": {
+                    "excludeFrom": ["TB_PROGRAM_KEY"]
                 }
             },
             "patientContext": {
