@@ -51,7 +51,7 @@
             <tbody>
             <tr ng-repeat="appointment in filteredAppointments">
                 <td>{{::appointment.patient.identifier}}</td>
-                <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
+                <td class="table-mid-width">{{::appointment.patient.name | reverseNames}}</td>
                 <td ng-if="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
                 <td>{{::appointment.startDateTime | bahmniTime}}</td>
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
