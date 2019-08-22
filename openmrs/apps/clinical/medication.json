@@ -21,11 +21,11 @@
             "doseUnits": "ml",
             "route": "Par voie orale"
           },
-          "Syrup": {
+          "Sirop": {
             "doseUnits": "ml",
             "route": "Par voie orale"
           },
-          "Tablet": {
+          "Comprimé": {
             "doseUnits": "Comprimé(s)",
             "route": "Par voie orale"
           }
