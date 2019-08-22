@@ -31,7 +31,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Normal nutrition': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['Normal nutrition'];
-		if (value === "No full name") {
+		if (value === "No full name" || value === "No") {
 			conditions.show.push("Acute malnutrition (Moderate if P / T between - 2 and - 3 SD, Severe if <- 3 SD)")
 			conditions.show.push("Chronic malnutrition (Moderate if T / A between - 2 and - 3 SD, Severe if <- 3 SD)")
 		} else {
@@ -65,8 +65,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Opportunistic disease': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var yes = formFieldValues['Opportunistic disease'];
-		if (yes == "Yes full name") {
+		var value = formFieldValues['Opportunistic disease'];
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes specify")
 		} else {
 			conditions.hide.push("If yes specify")
@@ -75,8 +75,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Tuberculosis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var yes = formFieldValues['Tuberculosis'];
-		if (yes == "Yes full name") {
+		var value = formFieldValues['Tuberculosis'];
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes, specify start date");
 			conditions.show.push("End date of treatment");
 		} else {
@@ -87,8 +87,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Alcohol consumption': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var yes = formFieldValues['Alcohol consumption'];
-		if (yes == "Yes full name") {
+		var value = formFieldValues['Alcohol consumption'];
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes, type of alcohol");
 			conditions.show.push("Frequency of alcohol consumption");
 		} else {
@@ -99,8 +99,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'ATCD prescription ARV': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var yes = formFieldValues['ATCD prescription ARV'];
-		if (yes == "Yes full name") {
+		var value = formFieldValues['ATCD prescription ARV'];
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If previous ARV treatment; start date");
 			conditions.show.push("End date");
 			conditions.show.push("Health Facility");
@@ -119,8 +119,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'Medication allergy': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var yes = formFieldValues['Medication allergy'];
-		if (yes == "Yes full name") {
+		var value = formFieldValues['Medication allergy'];
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes specify allergy");
 		} else {
 			conditions.hide.push("If yes specify allergy");
@@ -2655,7 +2655,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Opportunist Infections': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Opportunist Infections'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Opportunist Infection duration");
 			conditions.show.push("Opportunist Infection complications");
 			conditions.show.push("Opportunist Infection treatment");
@@ -2669,7 +2669,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Opportunist Infections': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Opportunist Infections'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Opportunist Infection duration");
 			conditions.show.push("Opportunist Infection complications");
 			conditions.show.push("Opportunist Infection treatment");
@@ -2683,7 +2683,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Chronic diarrhea': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Chronic diarrhea'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Chronic diarrhea duration");
 			conditions.show.push("Chronic diarrhea complications");
 			conditions.show.push("Chronic diarrhea treatment");
@@ -2697,7 +2697,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Chronic Cough': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Chronic Cough'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Chronic Cough duration");
 			conditions.show.push("Chronic Cough complications");
 			conditions.show.push("Chronic Cough treatment");
@@ -2711,7 +2711,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Shingles': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Shingles'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Shingles duration");
 			conditions.show.push("Shingles complications");
 			conditions.show.push("Shingles treatment");
@@ -2725,7 +2725,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Hepatitis B': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Hepatitis B'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Hepatitis B duration");
 			conditions.show.push("Hepatitis B complications");
 			conditions.show.push("Hepatitis B treatment");
@@ -2739,7 +2739,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Hepatitis C': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Hepatitis C'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Hepatitis C duration");
 			conditions.show.push("Hepatitis C complications");
 			conditions.show.push("Hepatitis C treatment");
@@ -2754,7 +2754,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		var conditions = {show: [], hide: []};	
 		if (formName === "Medical background") {
 			var value = formFieldValues['Diabetes'];
-			if (value === "Yes full name") {	
+			if (value === "Yes full name" || value === "Yes") {
 				conditions.show.push("Diabetes duration");
 				conditions.show.push("Diabetes complications");
 				conditions.show.push("Diabetes treatment");
@@ -2769,7 +2769,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Recent TB contact': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Recent TB contact'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Contact with?");
 		} else {	
 			conditions.hide.push("Contact with?");
@@ -2778,10 +2778,8 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	'TB screened': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		
 		var value = formFieldValues['TB screened'];
-		console.log(value);
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("TB screened date");
 		} else {	
 			conditions.hide.push("TB screened date");
@@ -2801,7 +2799,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Multiple pregnancy': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Multiple pregnancy'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes, Order at Birth");
 		} else {	
 			conditions.hide.push("If yes, Order at Birth");
@@ -2811,7 +2809,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'History of Tuberculosis': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['History of Tuberculosis'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Treatment start date");
 			conditions.show.push("If Yes");
 			conditions.show.push("End date");
@@ -2825,7 +2823,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'ARV treatment': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['ARV treatment'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If Yes since");
 			conditions.show.push("Specify the protocol");
 		} else {	
@@ -2847,7 +2845,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.)'];
-		if (value === "Yes full name") {
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("If yes, select ARV used");
 		} else {	
 			conditions.hide.push("If yes, select ARV used");
@@ -2895,7 +2893,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Rapid Test 1 (9 to 18 months)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Rapid Test 1 (9 to 18 months)'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Rapid Test 1 sample date");
 			conditions.show.push("Rapid Test 1 result");
 			conditions.show.push("Rapid Test 1 result date");
@@ -2909,7 +2907,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Rapid Test 2 (>/= 18 MOIS)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Rapid Test 2 (>/= 18 MOIS)'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Rapid Test 2 sample date");
 			conditions.show.push("Rapid Test 2 result");
 			conditions.show.push("Rapid Test 2 result date");
@@ -2926,7 +2924,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'HIV Tested': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['HIV Tested'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("HIV Test Date");
 			conditions.show.push("HTC, Result");
 		} else {	
@@ -2952,7 +2950,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Repeat Test done if (P)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Repeat Test done if (P)'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("Repeat Test Date");
 			conditions.show.push("Repeat Test Result");
 		} else {	
@@ -2964,7 +2962,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'Screened': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Screened'];
-		if (value === "Yes full name") {	
+		if (value === "Yes full name" || value === "Yes") {
 			conditions.show.push("TB Status");
 			conditions.show.push("ANC, TB Outcome");
 		} else {	
