@@ -1709,13 +1709,33 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Viral Load': function(formName, formFieldValues) {
+	'Routine Viral Load': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Viral Load'];
+		var value = formFieldValues['Routine Viral Load'];
 		if (value && value !== "") {	
-			conditions.show.push("Viral Load Test Date");
+			conditions.show.push("Routine Viral Load Test Date");
 		} else {	
-			conditions.hide.push("Viral Load Test Date");
+			conditions.hide.push("Routine Viral Load Test Date");
+		}	
+		return conditions;	
+	},
+	'Targeted Viral Load': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Targeted Viral Load'];
+		if (value && value !== "") {	
+			conditions.show.push("Targeted Viral Load Test Date");
+		} else {	
+			conditions.hide.push("Targeted Viral Load Test Date");
+		}	
+		return conditions;	
+	},
+	'Not Documented Viral Load': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Not Documented Viral Load'];
+		if (value && value !== "") {	
+			conditions.show.push("Not Documented Viral Load Test Date");
+		} else {	
+			conditions.hide.push("Not Documented Viral Load Test Date");
 		}	
 		return conditions;	
 	},
