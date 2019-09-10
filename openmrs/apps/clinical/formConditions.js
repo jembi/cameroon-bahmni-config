@@ -1719,16 +1719,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Viral Load': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Viral Load'];
-		if (value && value !== "") {	
-			conditions.show.push("Viral Load Test Date");
-		} else {	
-			conditions.hide.push("Viral Load Test Date");
-		}	
-		return conditions;	
-	},
 	'Targeted Viral Load': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Targeted Viral Load'];
