@@ -17,17 +17,68 @@
             "doseUnits": "Capsule(s)",
             "route": "Par voie orale"
           },
+          "Crème": {
+            "doseUnits":"Application(s)",
+            "route":"Topique"
+          },
+          "Collyre": {
+            "doseUnits":"Collyre(s)",
+            "route":"œil"
+          },
+          "Goutte nasales": {
+            "doseUnits":"Goutte(s)",
+            "route":"Nasale"
+          },
+          "Goutte auriculaires": {
+            "doseUnits":"Goutte(s)",
+            "route":"Oreille"
+          },
+          "Gel": {
+            "doseUnits":"Application(s)",
+            "route":"Topique"
+          },
+          "Inhalation": {
+            "doseUnits":"Bouffée(s)",
+            "route":"Inhalation"
+          },
+          "Pommade": {
+            "doseUnits":"Application(s)",
+            "route":" Topique"
+          },
+          "Poudre": {
+            "doseUnits":"mg",
+            "route":"Topique"
+          },
           "Solution": {
-            "doseUnits": "ml",
-            "route": "Par voie orale"
+            "doseUnits":"ml",
+            "route":"Topique "
           },
           "Sirop": {
-            "doseUnits": "ml",
-            "route": "Par voie orale"
+            "doseUnits":"Cuillère(s) à café",
+            "route":"Par voie orale "
           },
           "Comprimé": {
-            "doseUnits": "Comprimé(s)",
-            "route": "Par voie orale"
+            "doseUnits":"Comprimé(s)",
+            "route":"Par voie orale "
+          },
+          "Sachet": {
+            "doseUnits":"Sachet(s)",
+            "route":"Par voie orale "
+          },
+          "Suppositoire": {
+            "doseUnits":"Suppositoire(s)"
+          },
+          "Vial": {
+            "doseUnits":"Vial(s)"
+          },
+          "Injection": {
+            "doseUnits":"ml"
+          },
+          "Ampoule": {
+            "doseUnits":"Ampoule(s)"
+          },
+          "Bidon": {
+            "doseUnits":"ml"
           }
         }
       }
