@@ -247,7 +247,7 @@
                     "name": "Report1",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIRAL_SUPPRESSION/sql/indicator1_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIRAL_SUPPRESSION/sql/indicator1a__viral_suppression_routine.sql"
                     }
                 },
                 {
