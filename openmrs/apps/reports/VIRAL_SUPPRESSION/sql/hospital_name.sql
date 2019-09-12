@@ -1,1 +1,0 @@
-select SUBSTRING(property_value, 10, 10) from global_property where property = "mrs.hospitalName";
