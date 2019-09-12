@@ -1,1 +1,1 @@
-select address1 from location where name = "LOCATION_HOSPITAL";
+select state_province from location where name = "LOCATION_HOSPITAL";

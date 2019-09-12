@@ -1,1 +1,1 @@
-select SUBSTRING(property_value, 10, 10) from global_property where property = "mrs.hospitalName";
+select address1 from location where name = "LOCATION_HOSPITAL";
