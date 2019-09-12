@@ -150,21 +150,21 @@
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/hospital_region.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
                     }
                 },
                 {
                     "name": "ReportHospitalDistrict",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/hospital_district.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
                     }
                 },                            
                 {
                     "name": "ReportHospitalName",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/hospital_name.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
                     }
                 },
                 {
@@ -216,21 +216,21 @@
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/hospital_region.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
                     }
                 },
                 {
                     "name": "ReportHospitalDistrict",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/hospital_district.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
                     }
                 },                            
                 {
                     "name": "ReportHospitalName",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/hospital_name.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
                     }
                 }
             ]
@@ -268,21 +268,21 @@
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIRAL_SUPPRESSION/sql/hospital_region.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
                     }
                 },
                 {
                     "name": "ReportHospitalDistrict",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIRAL_SUPPRESSION/sql/hospital_district.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
                     }
                 },                            
                 {
                     "name": "ReportHospitalName",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIRAL_SUPPRESSION/sql/hospital_name.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
                     }
                 }
             ]
@@ -376,21 +376,21 @@
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/hospital_region.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
                     }
                 },
                 {
                     "name": "ReportHospitalDistrict",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/hospital_district.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
                     }
                 },                            
                 {
                     "name": "ReportHospitalName",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/hospital_name.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
                     }
                 }
             ]
@@ -435,21 +435,21 @@
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/sql/hospital_region.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
                     }
                 },
                 {
                     "name": "ReportHospitalDistrict",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/sql/hospital_district.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
                     }
                 },                            
                 {
                     "name": "ReportHospitalName",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/sql/hospital_name.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
                     }
                 }
             ]
