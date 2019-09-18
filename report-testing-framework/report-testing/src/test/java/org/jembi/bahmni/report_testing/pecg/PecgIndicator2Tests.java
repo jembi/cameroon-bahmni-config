@@ -32,7 +32,7 @@ public class PecgIndicator2Tests extends BaseReportTest{
 
 		// Assert
 		assertEquals(result.getString("Title"), "Number of old PLWHA on ARV who came for treatment in the month");
-		assertEquals(result.getInt("<1 M"), 0);
+		assertEquals(result.getInt("<1 M"), 1);
 		assertEquals(result.getInt("<1 F"), 0);
 		assertEquals(result.getInt("1-4 M"), 0);
 		assertEquals(result.getInt("1-4 F"), 0);
