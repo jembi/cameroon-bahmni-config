@@ -1,0 +1,9 @@
+mysql:
+  image: mysql/mysql-server:5.6
+  container_name: bahmni_report_test_db
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: dbtest
+  volumes:
+    - ./data:/docker-entrypoint-initdb.d
