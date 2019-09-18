@@ -5,7 +5,8 @@ before_install:
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/deploy_key
 - ssh-add /tmp/deploy_key
-- sh report-testing-framework/start_mysql_test_db.sh
+- cd report-testing-framework
+- sh start_mysql_test_db.sh
 addons:
   ssh_known_hosts:
   - cmr-dev.jembi.org
