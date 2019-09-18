@@ -12,7 +12,7 @@ addons:
   - cmr-dev.jembi.org
   - cmr-staging.jembi.org
 script:
-  - cd report-testing-framework/report-testing
+  - cd report-testing
   - mvn test
 deploy:
 - provider: script
