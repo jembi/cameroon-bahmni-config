@@ -43,7 +43,7 @@
           },
           "Pommade": {
             "doseUnits":"Application(s)",
-            "route":" Topique"
+            "route":"Topique"
           },
           "Poudre": {
             "doseUnits":"mg",
@@ -51,7 +51,7 @@
           },
           "Solution": {
             "doseUnits":"ml",
-            "route":"Topique "
+            "route":"Topique"
           },
           "Sirop": {
             "doseUnits":"Cuillère(s) à café",
