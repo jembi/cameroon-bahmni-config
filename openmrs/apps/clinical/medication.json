@@ -55,15 +55,15 @@
           },
           "Sirop": {
             "doseUnits":"Cuillère(s) à café",
-            "route":"Par voie orale "
+            "route":"Par voie orale"
           },
           "Comprimé": {
             "doseUnits":"Comprimé(s)",
-            "route":"Par voie orale "
+            "route":"Par voie orale"
           },
           "Sachet": {
             "doseUnits":"Sachet(s)",
-            "route":"Par voie orale "
+            "route":"Par voie orale"
           },
           "Suppositoire": {
             "doseUnits":"Suppositoire(s)"
