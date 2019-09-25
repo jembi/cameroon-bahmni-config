@@ -16,7 +16,7 @@ FROM patient pat
     (SELECT @row_number:=0) AS t
 WHERE
    (
-       patientHasRegisteredWithinReportingPeriod(pat.patient_id, '#startDate#','#endDate#') = "Yes" AND
+       patientHasRegisteredWithinReportingPeriod(pat.patient_id, '#startDate#','#endDate#') = TRUE AND
        (
             patientHasEnrolledIntoHivProgram(pat.patient_id) = "No" OR
             arvInitiationDateSpecified(pat.patient_id) = "No" OR
