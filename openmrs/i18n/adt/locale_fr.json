@@ -57,6 +57,7 @@
   "RELATIONSHIP_SIBLING": "Frère/Sœur",
   "RELATIONSHIP_MOTHER": "Mère",
   "RELATIONSHIP_CHILD": "Enfant",
+  "RELATIONSHIP_CHILD_CARER": "Soignant de l'enfant",
   "RELATIONSHIP_FATHER": "Père",
   "RELATIONSHIP_COUSIN": "Cousin",
   "RELATIONSHIP_GRANDPARENT": "Grand parent",
