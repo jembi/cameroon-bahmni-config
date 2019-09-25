@@ -15,7 +15,13 @@ FROM patient pat
     JOIN patient_identifier pi ON pi.patient_id = pat.patient_id,
     (SELECT @row_number:=0) AS t
 WHERE
-	patientHasEnrolledIntoHivProgram(pat.patient_id) = "No" OR
-    arvInitiationDateSpecified(pat.patient_id) = "No" OR
-    patientHasAtLeastOneArvDrugPrescribed(pat.patient_id) = "No" OR
-    patientLatestArvDrugWasDispensed(pat.patient_id) = "No";
+   (
+       patientHasRegisteredWithinReportingPeriod(pat.patient_id, '#startDate#','#endDate#') = TRUE AND
+       (
+            patientHasEnrolledIntoHivProgram(pat.patient_id) = "No" OR
+            arvInitiationDateSpecified(pat.patient_id) = "No" OR
+            patientHasAtLeastOneArvDrugPrescribed(pat.patient_id) = "No" OR
+            patientLatestArvDrugWasDispensed(pat.patient_id) = "No"
+       )
+   );
+	
