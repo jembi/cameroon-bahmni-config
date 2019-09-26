@@ -23,7 +23,7 @@ WHERE
             arvInitiationDateSpecified(pat.patient_id) = "No" OR
             patientHasAtLeastOneArvDrugPrescribed(pat.patient_id) = "No" OR
             patientLatestArvDrugWasDispensed(pat.patient_id) = "No" OR
-            patientTherapeuticLineSpecified(pat.patient_id) 
+            patientTherapeuticLineSpecified(pat.patient_id) = "No"
        )
    );
 	
