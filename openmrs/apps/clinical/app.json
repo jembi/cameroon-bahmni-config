@@ -130,9 +130,6 @@
             "Appointment date": {
                 "allowFutureDates": true
             },
-            "Reason for consultation": {
-                "required": true
-            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [
