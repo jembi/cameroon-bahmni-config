@@ -24,6 +24,13 @@ WHERE
             patientHasAtLeastOneArvDrugPrescribed(pat.patient_id) = "No" OR
             patientLatestArvDrugWasDispensed(pat.patient_id) = "No" OR
             patientTherapeuticLineSpecified(pat.patient_id) = "No"
+       ) AND 
+       (
+            patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" OR
+            arvInitiationDateSpecified(pat.patient_id) = "Yes" OR
+            patientHasAtLeastOneArvDrugPrescribed(pat.patient_id) = "Yes" OR
+            patientLatestArvDrugWasDispensed(pat.patient_id) = "Yes" OR
+            patientTherapeuticLineSpecified(pat.patient_id) = "Yes"
        )
    );
 	
