@@ -334,7 +334,7 @@
                     "name": "Report4c",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4c_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4c_new_negatives.sql"
                     }
                 },
                 {
