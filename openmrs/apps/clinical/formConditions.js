@@ -2589,6 +2589,136 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'PUS smear Macroscopic appearance': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Macroscopic appearance'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Macroscopic appearance Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Macroscopic appearance Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Clue cells': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Clue cells'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Clue cells Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Clue cells Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Yeast cells per field': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Yeast cells per field'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Yeast cells per field Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Yeast cells per field Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Epithelial cells per field': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Epithelial cells per field'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Epithelial cells per field Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Epithelial cells per field Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Leucocytes per field': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Leucocytes per field'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Leucocytes per field Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Leucocytes per field Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Gram + Bacilli': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Gram + Bacilli'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Gram + Bacilli Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Gram + Bacilli Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Gram - Cocci': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Gram - Cocci'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Gram - Cocci Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Gram - Cocci Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Gram - Bacilli': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Gram - Bacilli'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Gram - Bacilli Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Gram - Bacilli Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Gram + Cocci': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Gram + Cocci'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Gram + Cocci Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Gram + Cocci Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Identified germ': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Identified germ'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Identified germ Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Identified germ Test Date");
+		}	
+		return conditions;	
+	},
+	'PUS smear Antibiogram S.I.R': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['PUS smear Antibiogram S.I.R'];
+		if (value && value !== "") {	
+			conditions.show.push("PUS smear Antibiogram S.I.R Test Date");
+		} else {	
+			conditions.hide.push("PUS smear Antibiogram S.I.R Test Date");
+		}	
+		return conditions;	
+	},
+	'Mycoplasma hominis': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Mycoplasma hominis'];
+		if (value && value !== "") {	
+			conditions.show.push("Mycoplasma hominis Test Date");
+		} else {	
+			conditions.hide.push("Mycoplasma hominis Test Date");
+		}	
+		return conditions;	
+	},
+	'Mycoplasma urealyticum': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Mycoplasma urealyticum'];
+		if (value && value !== "") {	
+			conditions.show.push("Mycoplasma urealyticum Test Date");
+		} else {	
+			conditions.hide.push("Mycoplasma urealyticum Test Date");
+		}	
+		return conditions;	
+	},
 	'Spermoculture': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Spermoculture'];
@@ -2606,6 +2736,26 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Spermogram Test Date");
 		} else {	
 			conditions.hide.push("Spermogram Test Date");
+		}	
+		return conditions;	
+	},
+	'Lipase': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Lipase'];
+		if (value && value !== "") {	
+			conditions.show.push("Lipase Test Date");
+		} else {	
+			conditions.hide.push("Lipase Test Date");
+		}	
+		return conditions;	
+	},
+	'Glucose-6-phosphate dehydrogenase': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Glucose-6-phosphate dehydrogenase'];
+		if (value && value !== "") {	
+			conditions.show.push("Glucose-6-phosphate dehydrogenase Test Date");
+		} else {	
+			conditions.hide.push("Glucose-6-phosphate dehydrogenase Test Date");
 		}	
 		return conditions;	
 	},
