@@ -554,5 +554,29 @@
                 "Drug Order"
             ]
         }
+    },
+
+    "MONITOR": {
+        "name": "MONITOR",
+        "type": "concatenated",
+        "DHISProgram": true,
+        "config": {
+            "reports": [
+                {
+                    "name": "RegistrationsByServiceType",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_service_type.sql"
+                    }
+                },
+                {
+                    "name": "HIVEncountersByForm",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/hiv_encounters_by_form.sql"
+                    }
+                }
+            ]
+        }
     }
 }
