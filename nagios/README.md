@@ -1,5 +1,5 @@
-# cameroon-monitor
-Nagios configuration to monitor clinics.
+# Nagios configuration
+Nagios configuration to monitor bahmni services and server status.
 
 ## Setup Nagios
 
@@ -24,7 +24,7 @@ localhost
 bahmni -i local install-nagios
 ```
 
-4- Deploy changes
+## Deploy
 
 From the nagios folder in this repo run:
 
