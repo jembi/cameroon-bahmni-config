@@ -97,7 +97,7 @@
     "url": "/dhis-integration/index.html",
     "icon": "fa-book",
     "order": 11,
-    "requiredPrivilege": "app:reports"
+    "requiredPrivilege": "app:dhis"
   }
 
 }

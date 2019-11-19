@@ -1,7 +1,7 @@
 # Nagios configuration
 Nagios configuration to monitor bahmni services and server status.
 
-## Setup Nagios
+## Install Nagios
 
 1- Add nagios properties to setup file `/etc/bahmni-installer/setup.yml`:
 
