@@ -327,21 +327,21 @@
                     "name": "Report4b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4b_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4b_newly_tested_positive.sql"
                     }
                 },
                 {
                     "name": "Report4c",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4c_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4c_new_negatives.sql"
                     }
                 },
                 {
                     "name": "Report4d",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4d_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4d_recent_negative_at_entry.sql"
                     }
                 },
                 {
@@ -552,6 +552,30 @@
             "orderTypes": [
                 "Order",
                 "Drug Order"
+            ]
+        }
+    },
+
+    "MONITOR": {
+        "name": "MONITOR",
+        "type": "concatenated",
+        "DHISProgram": true,
+        "config": {
+            "reports": [
+                {
+                    "name": "RegistrationsByServiceType",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_service_type.sql"
+                    }
+                },
+                {
+                    "name": "HIVEncountersByForm",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/hiv_encounters_by_form.sql"
+                    }
+                }
             ]
         }
     }
