@@ -6,7 +6,7 @@ Configuration to setup the dhis-integration app, that integrates bahmni reports 
 1- Install from rpm file:
 
 ```
-wget https://github.com/jembi/cameroon-bahmni-config/releases/download/v1.2.1-draft/dhis-integration-1.0-1.noarch.rpm
+wget https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.2.1/dhis-integration-1.0-1.noarch.rpm
 yum install dhis-integration-1.0-1.noarch.rpm
 ```
 
