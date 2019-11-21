@@ -299,7 +299,7 @@
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator2_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator2_first_vl_test_by_12_months.sql"
                     }
                 },
                 {
