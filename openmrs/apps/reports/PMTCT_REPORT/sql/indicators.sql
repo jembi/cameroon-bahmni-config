@@ -1,7 +1,7 @@
 SELECT 'Number of pregnant women registered for ANC 1 (first contact) in the month' AS 'Indicator1 Title', 
     PMTCT_Indicator1('#startDate#','#endDate#') AS 'Count1',
     'Not Available' AS 'Indicator2 Title', 0 AS 'Count2',
-    'Not Available' AS 'Indicator3 Title', 0 AS 'Count3',
+    PMTCT_Indicator3('#startDate#','#endDate#') AS 'Count3',
     'Not Available' AS 'Indicator4 Title', 0 AS 'Count4',
     'Not Available' AS 'Indicator5 Title', 0 AS 'Count5',
     'Not Available' AS 'Indicator6 Title', 0 AS 'Count6',
