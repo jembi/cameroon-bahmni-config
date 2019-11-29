@@ -1,6 +1,7 @@
 SELECT 'Number of pregnant women registered for ANC 1 (first contact) in the month' AS 'Indicator1 Title', 
     PMTCT_Indicator1('#startDate#','#endDate#') AS 'Count1',
     'Not Available' AS 'Indicator2 Title', 0 AS 'Count2',
+    'Number of pregnant women who withdrew the result of their HIV test during the month' AS 'Indicator3 Title', 
     PMTCT_Indicator3('#startDate#','#endDate#') AS 'Count3',
     'Not Available' AS 'Indicator4 Title', 0 AS 'Count4',
     'Not Available' AS 'Indicator5 Title', 0 AS 'Count5',
