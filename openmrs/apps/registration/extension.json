@@ -57,6 +57,18 @@
         "order": 2,
         "requiredPrivilege": "Edit Visits"
     },
+    "services":{
+        "id": "bahmni.registration.conceptSetGroup.services",
+        "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+        "type": "config",
+        "extensionParams": {
+            "conceptName": "Services",
+            "translationKey": "REGISTRATION_SERVICE_REQUIRED_KEY",
+            "required":true
+        },
+        "order": 2,
+        "requiredPrivilege": "Edit Visits"
+    },
     "otherVisitInformation":{
         "id": "bahmni.registration.conceptSetGroup.otherVisitInformation",
         "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
