@@ -531,6 +531,51 @@
             ]
         }
     },
+
+    "hivPatientsLostToFollowup": {
+        "name": "HIV lost to followup patients",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/template/hiv_patients_lost_to_followup.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/sql/dissagregated_by_patient.sql"
+                    }
+                },
+                {
+                    "name": "ReportSummary",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/sql/statistical_summary.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     
     "OPD/IPDVisitCount": {
         "name": "OPD/IPD Visit Count",
