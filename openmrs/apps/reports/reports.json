@@ -648,10 +648,10 @@
         "config": {
             "reports": [
                 {
-                    "name": "RegistrationsByServiceType",
+                    "name": "RegistrationsByLocation",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_service_type.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_location.sql"
                     }
                 },
                 {
