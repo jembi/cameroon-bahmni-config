@@ -12,6 +12,19 @@
         "order": 1,
         "requiredPrivilege": "app:clinical"
     },
+    "bahmniClinicalPatientsSearchDefaulterPatientsForPrograms": {
+        "id": "bahmni.clinical.patients.search.defaulterPatients",
+        "extensionPointId": "org.bahmni.patient.search",
+        "type": "config",
+        "extensionParams": {
+            "searchHandler": "emrapi.sqlSearch.defaulterPatients",
+            "translationKey": "MODULE_LABEL_DEFAULTERS_PROGRAM_KEY",
+            "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext"
+        },
+        "label": "Active",
+        "order": 2,
+        "requiredPrivilege": "app:clinical"
+    },
     "bahmniClinicalPatientsSearchAllPatients": {
         "id": "bahmni.clinical.patients.search.allPatients",
         "extensionPointId": "org.bahmni.patient.search",
@@ -21,7 +34,7 @@
             "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext"
         },
         "label": "All",
-        "order": 2,
+        "order": 3,
         "requiredPrivilege": "app:clinical"
     },
     "bahmniClinicalConceptSetGroupObservationsHistory": {
