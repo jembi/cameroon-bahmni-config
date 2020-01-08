@@ -36,34 +36,65 @@
             ]
         },
     	"diagnosisStatus": "Inactive",
-            "program": {
-                "patientInformation": {
-                    "ageLimit": 100
-                },
-                "ID_Number": {
-                    "required" : true
-                },
-		        "PROGRAM_MANAGEMENT_PATIENT_COMORBIDITES": {
-                    "excludeFrom": ["TB_PROGRAM_KEY"]
-                },
-                "PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE": {
-                    "excludeFrom": ["TB_PROGRAM_KEY"]
-                }
+        "program": {
+            "patientInformation": {
+                "ageLimit": 100
             },
-            "patientContext": {
-        		"programAttributes": [
-            		"Id_Number",
-            		"Doctor",
-            		"Stage"
-        		],
-        		"personAttributes": [
-            		"class",
-            		"caste"
-        		],
-        		"additionalPatientIdentifiers": [
-           			"National ID"
+            "PROGRAM_MANAGEMENT_PATIENT_COMORBIDITES": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_DURATION_ON_ART": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_PATIENT_STAGE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_PATIENT_DOCTOR_IN_CHARGE": {
+                "excludeFrom": ["HIV_DEFAULTERS_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_ART_NUMBER": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_REASON_FOR_DEFAULTING": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_LAST_FAILED_APPOINTMENT_DATE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_PRETRACKING_OUTCOME": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_RETURNED_TO_TREATMENT_DATE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_TRACKING_DATE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"],
+                "required" : true
+            },
+            "PROGRAM_MANAGEMENT_APS_NAME": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_TRACKING_OUTCOME": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            }
+        },
+        "patientContext": {
+        	"programAttributes": [
+                "Id_Number",
+                "Doctor",
+                "Stage"
+        	],
+        	"personAttributes": [
+                "class",
+                "caste"
+            ],
+            "additionalPatientIdentifiers": [
+                "National ID"
        		],
-        		"preferredIdentifier": "Id_Number"
+        	"preferredIdentifier": "Id_Number"
     	},
         "obsIgnoreList": [
             "REGISTRATION FEES",
