@@ -12,6 +12,31 @@
         "order": 1,
         "requiredPrivilege": "app:clinical"
     },
+    "bahmniClinicalPatientsSearchDefaulterPatientsForPrograms": {
+        "id": "bahmni.clinical.patients.search.defaulterPatients",
+        "extensionPointId": "org.bahmni.patient.search",
+        "type": "config",
+        "extensionParams": {
+            "searchHandler": "emrapi.sqlSearch.defaulterPatients",
+            "translationKey": "MODULE_LABEL_DEFAULTERS_PROGRAM_KEY",
+            "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext",
+            "view": "tabular",
+            "searchColumns": [
+                "ID",
+                "PROGRAM_MODULE_LABEL_NAME_KEY",
+                "PROGRAM_MODULE_LABEL_VILLAGE_KEY",
+                "PROGRAM_MODULE_LABEL_ART_NUMBER_KEY",
+                "PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY",
+                "PROGRAM_MODULE_LABEL_EMERGENCY_CONTACT_KEY",
+                "PROGRAM_MODULE_LABEL_APS_NAME_KEY",
+                "PROGRAM_MODULE_LABEL_TRACKING_STATE_KEY",
+                "PROGRAM_MODULE_LABEL_TRACKING_OUTCOME_KEY"
+            ]
+        },
+        "label": "Active",
+        "order": 2,
+        "requiredPrivilege": "app:clinical"
+    },
     "bahmniClinicalPatientsSearchAllPatients": {
         "id": "bahmni.clinical.patients.search.allPatients",
         "extensionPointId": "org.bahmni.patient.search",
@@ -21,7 +46,7 @@
             "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext"
         },
         "label": "All",
-        "order": 2,
+        "order": 3,
         "requiredPrivilege": "app:clinical"
     },
     "bahmniClinicalConceptSetGroupObservationsHistory": {
