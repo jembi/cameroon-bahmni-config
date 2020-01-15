@@ -3141,27 +3141,42 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-        /**
-         * Handling conditions for HIV Testing and Counseling Form
-         */
-        'HTC, Reason for test': function(formName, formFieldValues) {
-                var conditions = {show: [], hide: []};
-                var value = formFieldValues['HTC, Reason for test'];
-                if (value === "Others") {
-                        conditions.show.push("HTC, Other reason for test");
-                } else {
-                        conditions.hide.push("HTC, Other reason for test");
-                }
-                return conditions;
-        },
-        'HTC, Risk Group': function(formName, formFieldValues) {
-                var conditions = {show: [], hide: []};
-                var value = formFieldValues['HTC, Risk Group'];
-                if (value === "Others") {
-                        conditions.show.push("HTC, Other Risk Group");
-                } else {
-                        conditions.hide.push("HTC, Other Risk Group");
-                }
-                return conditions;
+	/**
+	 * Handling conditions for HIV Testing and Counseling Form
+	 */
+	'HTC, Reason for test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['HTC, Reason for test'];
+		if (value === "Others") {
+			conditions.show.push("HTC, Other reason for test");
+		} else {
+			conditions.hide.push("HTC, Other reason for test");
 		}
+		return conditions;
+	},
+	'HTC, Risk Group': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['HTC, Risk Group'];
+		if (value === "Others") {
+			conditions.show.push("HTC, Other Risk Group");
+		} else {
+			conditions.hide.push("HTC, Other Risk Group");
+		}
+		return conditions;
+	},
+	"HTC, Tested before": function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['HTC, Tested before'];
+		console.log(value)
+		if (value === true) {
+			conditions.show.push("HIV Test Date");
+			conditions.show.push("HTC, Result if tested");
+			conditions.show.push("HTC, Reason for test");
+		} else {
+			conditions.hide.push("HIV Test Date");
+			conditions.hide.push("HTC, Result if tested");
+			conditions.hide.push("HTC, Reason for test");
+		}
+		return conditions;
+	}
 };
