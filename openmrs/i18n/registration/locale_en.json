@@ -108,6 +108,6 @@
   "LOCATION_GYNAECOLOGY": "Gynaecology",
   "LOCATION_OPHTHALMOLOGY": "Ophthalmology",
   "LOCATION_RADIOLOGY": "Radiology",
-  "VISIT_TYPE_OPD": "OPD",
+  "VISIT_TYPE_OPD": "Outpatient",
   "REGISTRATION_SERVICE_REQUIRED_KEY": "Service required"
 }
