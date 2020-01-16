@@ -296,6 +296,83 @@
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/template/testing.xls",
             "reports": [
                 {
+                    "name": "Report1a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1a_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1b_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1c_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1d_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1e_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1f_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1g",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1g_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1h",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1h_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1i",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1i_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1j",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1j_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report1k",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1k_not_available.sql"
+                    }
+                },
+                {
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
@@ -342,6 +419,76 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4d_recent_negative_at_entry.sql"
+                    }
+                },
+                {
+                    "name": "Report5a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5a_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5b_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5c_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5d_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5e_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5f_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5g",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5g_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5h",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5h_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5i",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5i_not_available.sql"
+                    }
+                },
+                {
+                    "name": "Report5j",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5j_not_available.sql"
                     }
                 },
                 {
