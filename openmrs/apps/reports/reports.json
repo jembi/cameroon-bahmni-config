@@ -327,7 +327,7 @@
                     "name": "Report1e",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1e_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1e_tb.sql"
                     }
                 },
                 {
