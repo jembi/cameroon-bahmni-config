@@ -488,7 +488,7 @@
                     "name": "Report5j",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5j_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5j_confirmed_through_vld.sql"
                     }
                 },
                 {
