@@ -58,7 +58,46 @@
             "PROGRAM_MANAGEMENT_1_ART_NUMBER": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
             },
-            "PROGRAM_MANAGEMENT_7_REASON_FOR_DEFAULTING": {
+            "PROGRAM_MANAGEMENT_701_STIGMA": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_702_LONG_DISTANCE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_703_COST_OF_TRANSPORT": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_704_SIDE_EFFECTS_OF_ARVS": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_705_COST_OF_SERVICES": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_706_STAFF_ATTITUDE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_707_TRADITIONAL_BELIEFS": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_708_RELIGIOUS_BELIEFS": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_709_DENIAL": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_710_INCONVENIENT_SERVICE_HOURS": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_711_TRAVEL": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_712_FEELS_HEALTHY": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_713_INSECURITY": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_714_OTHER_DEFAULTING_REASON": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE": {
