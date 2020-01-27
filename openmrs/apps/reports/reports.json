@@ -654,6 +654,95 @@
             ]
         }
     },
+
+    "DispensationReport": {
+        "name": "Dispensation Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/template/dispensation.xls",
+            "reports": [
+                      
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/1_to_5_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report6_10",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/6_to_10_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report11_15",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/11_to_15_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report16_20",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/16_to_20_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report21_25",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/21_to_25_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report26_30",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/26_to_30_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report31_35",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/31_to_35_drugs.sql"
+                    }
+                },
+                {
+                    "name": "ReportPVsD",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/prescribed_vs_dispensed.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+
     "hivPatientsNotReportedOn": {
         "name": "HIV patients not reported on",
         "type": "concatenated",
