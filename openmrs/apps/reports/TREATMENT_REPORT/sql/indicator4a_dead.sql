@@ -23,5 +23,5 @@ SELECT 'Dead' AS 'Title',
     TREATMENT_Indicator4a('#startDate#','#endDate#', 45, 49, 1, 'F') AS '45-49 F',
     TREATMENT_Indicator4a('#startDate#','#endDate#', 50, 200, 1, 'M') AS '>=50 M',
     TREATMENT_Indicator4a('#startDate#','#endDate#', 50, 200, 1, 'F') AS '>=50 F',
-    TREATMENT_Indicator4a('#startDate#','#endDate#', 0, 0, 0, 'M') AS 'Unknown M',
-    TREATMENT_Indicator4a('#startDate#','#endDate#', 0, 0, 0, 'F') AS 'Unknown F';
+    0 AS 'Unknown M',
+    0 AS 'Unknown F';
