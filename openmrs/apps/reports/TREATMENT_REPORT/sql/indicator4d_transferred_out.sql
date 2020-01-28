@@ -1,4 +1,4 @@
-SELECT 'Refused (Stopped) Treatment' AS 'Title',
+SELECT 'Transferred Out' AS 'Title',
     TREATMENT_Indicator4d('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
     TREATMENT_Indicator4d('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
     TREATMENT_Indicator4d('#startDate#','#endDate#', 1, 4, 1, 'M') AS '1-4 M',
