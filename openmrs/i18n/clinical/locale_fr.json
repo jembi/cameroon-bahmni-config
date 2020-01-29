@@ -59,7 +59,7 @@
   "MEDICATIONS_BOARD_LABEL_KEY": "Médicaments",
   "ORDERS_BOARD_LABEL_KEY": "Ordonnances",
   "BACTERIOLOGY_BOARD_LABEL_KEY": "Bacteriologie",
-  "CONSULTATION_BOARD_LABEL_KEY": "Consultation",
+  "CONSULTATION_BOARD_LABEL_KEY": "Résumé de la consultation",
   "DISPOSITION_BOARD_LABEL_KEY": "Disposition",
   "DIAGNOSIS_BOARD_LABEL_KEY": "Diagnostique",
   "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT": "Impression nécessaire pour cette ordonnance",

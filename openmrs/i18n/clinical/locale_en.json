@@ -59,7 +59,7 @@
   "MEDICATIONS_BOARD_LABEL_KEY": "Medications",
   "ORDERS_BOARD_LABEL_KEY": "Orders",
   "BACTERIOLOGY_BOARD_LABEL_KEY": "Bacteriology",
-  "CONSULTATION_BOARD_LABEL_KEY": "Consultation",
+  "CONSULTATION_BOARD_LABEL_KEY": "Consultation Summary",
   "DISPOSITION_BOARD_LABEL_KEY": "Disposition",
   "DIAGNOSIS_BOARD_LABEL_KEY": "Diagnosis",
   "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT": "Need Print for this order.",
