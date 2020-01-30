@@ -179,7 +179,7 @@
     },
 
     "treatmentReport": {
-        "name": "TREATMENT Report",
+        "name": "Treatment Report",
         "type": "concatenated",
         "config": {
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/template/treatment.xls",
@@ -211,7 +211,42 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator3_number_of_adults_and_children_new_on_ART.sql"
                     }
-                },               
+                },
+                {
+                    "name": "Report4a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4a_dead.sql"
+                    }
+                },
+                {
+                    "name": "Report4b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4b_ltfu_less_three_months.sql"
+                    }
+                },
+                {
+                    "name": "Report4c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4c_ltfu_more_three_months.sql"
+                    }
+                },
+                {
+                    "name": "Report4d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4d_transferred_out.sql"
+                    }
+                },
+                {
+                    "name": "Report4e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4e_refused_treatment.sql"
+                    }
+                },            
                 {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
@@ -296,24 +331,101 @@
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/template/testing.xls",
             "reports": [
                 {
+                    "name": "Report1a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1a_index.sql"
+                    }
+                },
+                {
+                    "name": "Report1b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1b_inpatient.sql"
+                    }
+                },
+                {
+                    "name": "Report1c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1c_paediatric.sql"
+                    }
+                },
+                {
+                    "name": "Report1d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1d_malnutrition.sql"
+                    }
+                },
+                {
+                    "name": "Report1e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1e_tb.sql"
+                    }
+                },
+                {
+                    "name": "Report1f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1f_pmtct_anc1_only.sql"
+                    }
+                },
+                {
+                    "name": "Report1g",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1g_pmtct_post_anc1.sql"
+                    }
+                },
+                {
+                    "name": "Report1h",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1h_sti.sql"
+                    }
+                },
+                {
+                    "name": "Report1i",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1i_emergency.sql"
+                    }
+                },
+                {
+                    "name": "Report1j",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1j_other_pitc.sql"
+                    }
+                },
+                {
+                    "name": "Report1k",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator1k_vct.sql"
+                    }
+                },
+                {
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator2_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator2_first_vl_test_by_12_months.sql"
                     }
                 },
                 {
                     "name": "Report3a",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator3a_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator3a_hiv_positive_by_12_months.sql"
                     }
                 },   
                 {
                     "name": "Report3b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator3b_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator3b_hiv_positive_initiated_art_by_12_months.sql"
                     }
                 },
                 {
@@ -342,6 +454,76 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator4d_recent_negative_at_entry.sql"
+                    }
+                },
+                {
+                    "name": "Report5a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5a_index.sql"
+                    }
+                },
+                {
+                    "name": "Report5b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5b_inpatient.sql"
+                    }
+                },
+                {
+                    "name": "Report5c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5c_tb.sql"
+                    }
+                },
+                {
+                    "name": "Report5d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5d_pmtct_anc1_only.sql"
+                    }
+                },
+                {
+                    "name": "Report5e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5e_pmtct_post_anc1.sql"
+                    }
+                },
+                {
+                    "name": "Report5f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5f_sti.sql"
+                    }
+                },
+                {
+                    "name": "Report5g",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5g_emergency.sql"
+                    }
+                },
+                {
+                    "name": "Report5h",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5h_other_pitc.sql"
+                    }
+                },
+                {
+                    "name": "Report5i",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5i_vct.sql"
+                    }
+                },
+                {
+                    "name": "Report5j",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator5j_confirmed_through_vld.sql"
                     }
                 },
                 {
@@ -397,38 +579,18 @@
         }
     }, 
 
-    "Myvisitreport": {
-        "name": "Visit Report",
+    "PMTCTReport": {
+        "name": "PMTCT Report",
         "type": "concatenated",
         "config": {
-            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/template/visit_report.xls",
-            "reports": [    
-               {
-                    "name": "visit",
-                    "type": "visits",
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/PMTCT_REPORT/template/pmtct.xls",
+            "reports": [
+                      
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
                     "config": {
-                    
-                        "forDataAnalysis": false,
-                        "patientAttributes": [
-                            "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER",
-                            "education",
-                            "occupation",
-                            "matrimonialStatus",
-                            "emergencyContact"
-                        ],
-                        "patientAddresses": [
-                            "address1",
-                            "address2",
-                            "city_Village",
-                            "county_District",
-                            "address3",
-                            "state_Province"
-                        ],
-                        "additionalPatientIdentifiers": ["REGISTRATION_IDTYPE_1_CNI_KEY","REGISTRATION_IDTYPE_4_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY"],
-                        "applyDateRangeFor": "visitStopDate",
-                        "excludeColumns": ["Date Of Admission","Date Of Discharge","New patient visit"],
-                        "preferredColumns": ["Patient Identifier","Patient Name","Age","Birthdate","Gender","Patient Created Date","Visit Type","Date started","Date stopped","PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER","address1","address2","city_Village","county_District","address3","state_Province","education","occupation","matrimonialStatus","emergencyContact","REGISTRATION_IDTYPE_4_ANC_KEY","REGISTRATION_IDTYPE_2_ART_KEY","REGISTRATION_IDTYPE_1_CNI_KEY"],
-                        "visitTypesToFilter": []
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PMTCT_REPORT/sql/indicators.sql"
                     }
                 },
                 {
@@ -455,6 +617,132 @@
             ]
         }
     },
+    "Myvisitreport": {
+        "name": "Visit Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/template/visit_report.xls",
+            "reports": [    
+                {
+                    "name": "VisitReport",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VISIT_REPORT/sql/visits.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+
+    "DispensationReport": {
+        "name": "Dispensation Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/template/dispensation.xls",
+            "reports": [
+                      
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/1_to_5_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report6_10",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/6_to_10_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report11_15",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/11_to_15_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report16_20",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/16_to_20_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report21_25",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/21_to_25_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report26_30",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/26_to_30_drugs.sql"
+                    }
+                },
+                {
+                    "name": "Report31_35",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/31_to_35_drugs.sql"
+                    }
+                },
+                {
+                    "name": "ReportPVsD",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DISPENSATION/sql/prescribed_vs_dispensed.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+
     "hivPatientsNotReportedOn": {
         "name": "HIV patients not reported on",
         "type": "concatenated",
@@ -492,6 +780,52 @@
             ]
         }
     },
+
+    "hivPatientsLostToFollowup": {
+        "name": "HIV lost to followup patients",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/template/hiv_patients_lost_to_followup.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/sql/dissagregated_by_patient.sql"
+                    }
+                },
+                {
+                    "name": "ReportSummary",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_PATIENTS_LOST_TO_FOLLOWUP/sql/statistical_summary.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    
     "OPD/IPDVisitCount": {
         "name": "OPD/IPD Visit Count",
         "type": "IpdOpdVisitCount"
@@ -563,10 +897,10 @@
         "config": {
             "reports": [
                 {
-                    "name": "RegistrationsByServiceType",
+                    "name": "RegistrationsByLocation",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_service_type.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/MONITOR/sql/reg_by_location.sql"
                     }
                 },
                 {
