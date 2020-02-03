@@ -1,0 +1,109 @@
+{
+  "orgUnit": "Q3ngM9lPHgI",
+  "reports": {
+    "Report": { "dataValues": [] },
+    "ReportHospitalRegion": { "dataValues": [] },
+    "ReportHospitalDistrict": { "dataValues": [] },
+    "ReportHospitalName": { "dataValues": [] },
+    "ReportSummary": {
+      "dataValues": [
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "Cg4g0Z3CNLU",
+          "row": 1,
+          "column": 1
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "Cg4g0Z3CNLU",
+          "row": 1,
+          "column": 2
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "Pwb9lgwKUBE",
+          "row": 1,
+          "column": 3
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "Pwb9lgwKUBE",
+          "row": 1,
+          "column": 4
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "L9FvgUvSo3X",
+          "row": 1,
+          "column": 5
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "L9FvgUvSo3X",
+          "row": 1,
+          "column": 6
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "iXoOsTeawXY",
+          "row": 1,
+          "column": 7
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "iXoOsTeawXY",
+          "row": 1,
+          "column": 8
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "AyTVRCThLZk",
+          "row": 1,
+          "column": 9
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "AyTVRCThLZk",
+          "row": 1,
+          "column": 10
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "Y7cde49jU5X",
+          "row": 1,
+          "column": 11
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "Y7cde49jU5X",
+          "row": 1,
+          "column": 12
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "Ya0cwFAE1s7",
+          "row": 1,
+          "column": 13
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "Ya0cwFAE1s7",
+          "row": 1,
+          "column": 14
+        },
+        {
+          "dataElement": "hSE7tyCs3E2",
+          "categoryOptionCombo": "Ek4Lhu9G8Dn",
+          "row": 1,
+          "column": 15
+        },
+        {
+          "dataElement": "cuGNsvJ4gns",
+          "categoryOptionCombo": "Ek4Lhu9G8Dn",
+          "row": 1,
+          "column": 16
+        }
+      ]
+    }
+  }
+}
