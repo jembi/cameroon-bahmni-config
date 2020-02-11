@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.UUID;
 
+import org.jembi.bahmni.report_testing.test_utils.models.ConceptUuidEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.DrugNameEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.DurationUnitEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
@@ -79,7 +80,7 @@ public class TestDataGenerator {
 		stmt.executeUpdate(createPatientProgramQuery);
 
 		int patientProgramId = getQueryIntResult("SELECT patient_program_id FROM patient_program WHERE uuid = '" + uuidPatientProgram + "'");
-		int therapeuticLineAttributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = 'PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE'");
+		int therapeuticLineAttributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE'");
 		int therapeuticLineConceptId = getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + therapeuticLine + "'");
 
 		String createPatientProgramAttributeQuery = "INSERT INTO patient_program_attribute "
@@ -127,6 +128,75 @@ public class TestDataGenerator {
 		return orderId;
 	}
 
+	public void setHivTestedBefore(int patientId, int encounterId, ConceptUuidEnum conceptUuid) throws Exception {
+		createCodedObservation(
+            encounterId,
+            patientId,
+            new ConceptUuidEnum [] { ConceptUuidEnum.HIV_TESTING_AND_COUNSELING },
+            ConceptUuidEnum.HIV_TESTED_BEFORE,
+            conceptUuid);
+	}
+
+	public void setHivTestDate(int patientId, int encounterId, LocalDate date) throws Exception {
+		createDateObservation(
+            encounterId,
+            patientId,
+            new ConceptUuidEnum [] { ConceptUuidEnum.HIV_TESTING_AND_COUNSELING },
+            ConceptUuidEnum.HIV_TEST_DATE,
+            date);
+	}
+
+	public void setTestingEntryPointAndModality(int patientId, int encounterId, ConceptUuidEnum conceptUuid) throws Exception {
+		createCodedObservation(
+            encounterId,
+            patientId,
+            new ConceptUuidEnum [] { ConceptUuidEnum.HIV_TESTING_AND_COUNSELING },
+            ConceptUuidEnum.TESTING_ENTRY_POINT_AND_MODALITY,
+            conceptUuid);
+	}
+
+	public void setHivFinalTestResult(int patientId, int encounterId, ConceptUuidEnum conceptUuid) throws Exception {
+		createCodedObservation(
+            encounterId,
+            patientId,
+            new ConceptUuidEnum [] {
+				ConceptUuidEnum.HIV_TESTING_AND_COUNSELING,
+				ConceptUuidEnum.HTC_HIV_TEST,
+				ConceptUuidEnum.FINAL_RESULT },
+            ConceptUuidEnum.FINAL_TEST_RESULT,
+            conceptUuid);
+	}
+
+	public void createCodedObservation(int encounterId, int patientId, ConceptUuidEnum[] parentConceptUuids, ConceptUuidEnum conceptUuid, ConceptUuidEnum codedValueUuid) throws Exception {
+		createObservation(encounterId, patientId, parentConceptUuids, conceptUuid, codedValueUuid, null, null, null);
+	}
+
+	public void createNumericObservation(int encounterId, int patientId, ConceptUuidEnum[] parentConceptUuids, ConceptUuidEnum conceptUuid, Integer numericValue) throws Exception {
+		createObservation(encounterId, patientId, parentConceptUuids, conceptUuid, null, numericValue, null, null);
+	}
+
+	public void createTextObservation(int encounterId, int patientId, ConceptUuidEnum[] parentConceptUuids, ConceptUuidEnum conceptUuid, String textValue) throws Exception {
+		createObservation(encounterId, patientId, parentConceptUuids, conceptUuid, null, null, textValue, null);
+	}
+
+	public void createDateObservation(int encounterId, int patientId, ConceptUuidEnum[] parentConceptUuids, ConceptUuidEnum conceptUuid, LocalDate dateValue) throws Exception {
+		createObservation(encounterId, patientId, parentConceptUuids, conceptUuid, null, null, null, dateValue);
+	}
+
+	public void createObservation(int encounterId, int patientId, ConceptUuidEnum[] parentConceptUuids, ConceptUuidEnum conceptUuid, ConceptUuidEnum codedValueUuid, Integer numericValue, String textValue, LocalDate dateValue) throws Exception {
+		Integer obsGroupId = null;
+		int conceptId;
+		if (parentConceptUuids != null && parentConceptUuids.length > 0) {
+			for (ConceptUuidEnum parentConceptUuid : parentConceptUuids) {
+				conceptId = getConceptId(parentConceptUuid);
+				obsGroupId = createObservation(obsGroupId, patientId, conceptId, null, null, null, null);
+			}
+		}
+
+		conceptId = getConceptId(conceptUuid);
+		createObservation(obsGroupId, patientId, conceptId, codedValueUuid, numericValue, textValue, dateValue);
+	}
+
 	private int addConsultationEncounter(int patientId, int visitId) throws Exception {
 		String uuidEncounter = generateUUID();
 
@@ -150,6 +220,47 @@ public class TestDataGenerator {
 				+ "(" + patientId + "," + dispensedConceptConceptId + ", now(), 4, now(), 0,'" + uuidObs + "','FINAL'," + drugOrderId + ")";
 
 		stmt.executeUpdate(createObservationQuery);
+	}
+
+	public int getConceptId(ConceptUuidEnum conceptUuid) throws Exception {
+		return getQueryIntResult("SELECT concept_id FROM concept WHERE uuid ='" + conceptUuid + "'");
+	}
+
+	private int createObservation(Integer obsGroupId, int patientId, int conceptId, ConceptUuidEnum codedValueUuid, Integer numericValue, String textValue, LocalDate dateValue) throws Exception {
+		String uuidObs = generateUUID();
+
+		String dateValueString = "null";
+		if (dateValue != null) {
+			dateValueString = "'" + dateValue + "'";
+		}
+
+		if (textValue != null) {
+			textValue = "'" + dateValue + "'";
+		} else {
+			textValue = "null";
+		}
+
+		String codedValueString = "null";
+		Integer conceptIdValueCoded;
+
+		if (codedValueUuid != null) {
+			conceptIdValueCoded = getConceptId(codedValueUuid);
+			codedValueString = conceptIdValueCoded.toString();
+		}
+
+		String createObservationQuery = "INSERT INTO obs "
+		+ "(obs_group_id, person_id, concept_id, obs_datetime, creator, date_created, voided, uuid, status, value_coded, value_numeric, value_text, value_datetime) VALUES"
+		+ "(" + obsGroupId + "," + patientId + "," + conceptId + ", now(), 4, now(), 0,'" + uuidObs + "','FINAL'," + codedValueString + "," + numericValue + "," + textValue + "," + dateValueString + ")";
+
+		stmt.executeUpdate(createObservationQuery);
+
+		String query = "SELECT obs_id FROM obs WHERE uuid = '" + uuidObs + "'";
+		ResultSet rs = stmt.executeQuery(query);
+		while (rs.next()) {
+			return rs.getInt(1);
+		}
+
+		throw new Exception("Obseervation creation failed");
 	}
 
 	private String generateUUID() {
