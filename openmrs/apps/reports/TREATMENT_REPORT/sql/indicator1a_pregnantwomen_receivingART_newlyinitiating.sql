@@ -1,4 +1,4 @@
-SELECT 'Number of HIV-positive pregnant women who received ART to reduce the risk of mother-to-child-transmission during pregnancy' AS 'New on ART', 
+SELECT '(PMTCT_ART) Number of HIV-positive pregnant women who received ART to reduce the risk of mother-to-child-transmission during pregnancy' AS 'New on ART', 
             TREATMENT_Indicator1a('#startDate#','#endDate#', 0, 10, 0, 'F') AS '<10 years',
             TREATMENT_Indicator1a('#startDate#','#endDate#', 10, 14, 1, 'F') AS '10-14 years',
             TREATMENT_Indicator1a('#startDate#','#endDate#', 15, 19, 1, 'F') AS '15-19 years',

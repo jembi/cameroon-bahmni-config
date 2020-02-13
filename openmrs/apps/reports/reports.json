@@ -202,7 +202,21 @@
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator2_number_of_adults_and_children_currently_receiving_antiretroviral_therapy_(ART).sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator2a_number_of_adults_and_children_currently_receiving_antiretroviral_therapy_(ART).sql"
+                    }
+                }, 
+                {
+                    "name": "Report2b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator2b_tx_curr_3-5_months_arv.sql"
+                    }
+                }, 
+                {
+                    "name": "Report2c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator2c_tx_curr_6_or_more_months_arv.sql"
                     }
                 },   
                 {
