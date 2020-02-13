@@ -1,4 +1,4 @@
-SELECT 'Number of adults and children currently receiving antiretroviral therapy (ART)' AS '-'  ,
+SELECT '(TX_CURR) Number of adults and children currently receiving antiretroviral therapy (ART)' AS '-'  ,
             TREATMENT_Indicator2('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
             TREATMENT_Indicator2('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
             TREATMENT_Indicator2('#startDate#','#endDate#', 1, 4, 1, 'M') AS '1-4 M',

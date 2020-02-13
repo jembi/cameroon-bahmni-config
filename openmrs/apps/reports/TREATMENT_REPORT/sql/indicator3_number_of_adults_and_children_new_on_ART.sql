@@ -1,4 +1,4 @@
-SELECT 'Number of adults and children newly enrolled on antiretroviral therapy (ART)' AS '-'  ,
+SELECT '(TX_NEW) Number of adults and children newly enrolled on antiretroviral therapy (ART)' AS '-'  ,
             TREATMENT_Indicator3('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
             TREATMENT_Indicator3('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
             TREATMENT_Indicator3('#startDate#','#endDate#', 1, 4, 1, 'M') AS '1-4 M',
