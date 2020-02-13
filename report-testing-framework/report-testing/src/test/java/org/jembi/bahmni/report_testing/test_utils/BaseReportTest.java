@@ -1,5 +1,7 @@
 package org.jembi.bahmni.report_testing.test_utils;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -115,5 +117,29 @@ public class BaseReportTest {
 
 	private void executeUpdateQuery(String query) throws SQLException {
 		stmt.executeUpdate(query);
+	}
+
+	protected LocalDate getFirstDayOfCurrentMonth() {
+		return new LocalDate().dayOfMonth().withMinimumValue();
+	}
+
+	protected LocalDate getLastDayOfCurrentMonth() {
+		return new LocalDate().dayOfMonth().withMaximumValue();
+	}
+
+	protected void assertThatAllColumnsHaveZeroesExcept(ResultSet result, String columnName) throws SQLException {
+		for (int i = 2; i <= result.getMetaData().getColumnCount(); i++) {
+			if (result.getMetaData().getColumnName(i).equals(columnName)) {
+				assertEquals(result.getInt(i), 1);
+			} else {
+				assertEquals(result.getInt(i), 0);
+			}
+		}
+	}
+
+	protected void assertThatAllColumnsHaveZeroes(ResultSet result) throws SQLException {
+		for (int i = 2; i <= result.getMetaData().getColumnCount(); i++) {
+			assertEquals(result.getInt(i), 0);
+		}
 	}
 }
