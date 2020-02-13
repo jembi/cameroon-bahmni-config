@@ -99,6 +99,7 @@
   "RELATIONSHIP_AUNT_UNCLE": "Tante/Oncle",
   "RELATIONSHIP_OTHER": "Autre",
   "RELATIONSHIP_PARTNER": "Contact sexuel",
+  "RELATIONSHIP_SPOUSE": "Epoux(se)",
   "GENDER_MALE":"Masculin",
   "GENDER_FEMALE":"Feminin",
   "LOCATION_MINOR_SURGERY": "Chirurgie mineure",
