@@ -54,5 +54,7 @@
     "LOCATION_DENTISTRY" : "Dentisterie",
     "LOCATION_GYNAECOLOGY" : "Gynécologie",
     "LOCATION_OPHTHALMOLOGY" : "Ophtalmologie",
-    "LOCATION_RADIOLOGY" : "Radiologie"
+    "LOCATION_RADIOLOGY" : "Radiologie",
+    "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
+    "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile"
 }
