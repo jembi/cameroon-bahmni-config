@@ -89,6 +89,8 @@
   "LOCATION_MEN_WARD_ROOM": "Hospitalisations Hommes",
   "LOCATION_VIP_WARD_ROOM": "Salle VIP",
   "LOCATION_MATERNITY_WARD_ROOM": "Suite de Couche",
+  "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
+  "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile",
   "RELATIONSHIP_SIBLING": "Frère/Sœur",
   "RELATIONSHIP_MOTHER": "Mère",
   "RELATIONSHIP_CHILD": "Enfant",

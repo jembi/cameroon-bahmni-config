@@ -89,6 +89,8 @@
   "LOCATION_MEN_WARD_ROOM": "Men Ward Room",
   "LOCATION_VIP_WARD_ROOM": "VIP Ward Room",
   "LOCATION_MATERNITY_WARD_ROOM": "maternity ward room",
+  "LOCATION_COMMUNITY_HOME": "Community Home",
+  "LOCATION_COMMUNITY_MOBILE": "Community Mobile",
   "RELATIONSHIP_SIBLING": "Sibling",
   "RELATIONSHIP_MOTHER": "Mother",
   "RELATIONSHIP_CHILD": "Child",
