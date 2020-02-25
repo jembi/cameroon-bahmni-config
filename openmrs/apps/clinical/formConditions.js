@@ -63,6 +63,26 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
+	'Index testing offered?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Index testing offered?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Date Offered")
+		} else {
+			conditions.hide.push("Date Offered")
+		}
+		return conditions;
+	},
+	'Index testing accepted?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Index testing accepted?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Date Accepted")
+		} else {
+			conditions.hide.push("Date Accepted")
+		}
+		return conditions;
+	},
 	'Opportunistic disease': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['Opportunistic disease'];
