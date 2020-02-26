@@ -54,5 +54,7 @@
     "LOCATION_DENTISTRY" : "Dentistry",
     "LOCATION_GYNAECOLOGY" : "Gynaecology",
     "LOCATION_OPHTHALMOLOGY" : "Ophthalmology",
-    "LOCATION_RADIOLOGY" : "Radiology"
+    "LOCATION_RADIOLOGY" : "Radiology",
+    "LOCATION_COMMUNITY_HOME": "Community Home",
+    "LOCATION_COMMUNITY_MOBILE": "Community Mobile"
 }
