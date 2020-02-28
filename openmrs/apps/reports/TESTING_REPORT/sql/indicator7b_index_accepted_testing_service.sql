@@ -1,4 +1,4 @@
-SELECT 'Number of index cases accepted index testing service' AS 'Title',
+SELECT 'Number of index cases accepted index testing services' AS 'Title',
     Testing_Indicator7ab('#startDate#','#endDate#',0,1,0,'m', 1) AS '<1 years M Pos',
     Testing_Indicator7ab('#startDate#','#endDate#',0,1,0,'f', 1) AS '<1 years F Pos',
     Testing_Indicator7ab('#startDate#','#endDate#',1,4,1,'m', 1) AS '1 - 4 years M Pos',
