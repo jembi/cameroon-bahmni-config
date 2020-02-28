@@ -429,6 +429,48 @@
                     }
                 },
                 {
+                    "name": "Report7a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7a_index_offered_testing_service.sql"
+                    }
+                },
+                {
+                    "name": "Report7b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7b_index_accepted_testing_service.sql"
+                    }
+                },
+                {
+                    "name": "Report7c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7c_contacts_elicited.sql"
+                    }
+                },
+                {
+                    "name": "Report7d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7d_new_positives.sql"
+                    }
+                },
+                {
+                    "name": "Report7e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7e_new_negatives.sql"
+                    }
+                },
+                {
+                    "name": "Report7f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator7f_known_positives.sql"
+                    }
+                },
+                {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
