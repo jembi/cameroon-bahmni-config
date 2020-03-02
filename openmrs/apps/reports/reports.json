@@ -471,6 +471,34 @@
                     }
                 },
                 {
+                    "name": "Report8a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator8a_known_positives.sql"
+                    }
+                },
+                {
+                    "name": "Report8b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator8b_new_positives.sql"
+                    }
+                },
+                {
+                    "name": "Report8c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator8c_new_negatives.sql"
+                    }
+                },
+                {
+                    "name": "Report8d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator8d_total.sql"
+                    }
+                },
+                {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
