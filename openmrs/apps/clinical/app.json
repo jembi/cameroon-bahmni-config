@@ -46,6 +46,9 @@
             "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
+            "PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+            },
             "PROGRAM_MANAGEMENT_1_DURATION_ON_ART": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
@@ -106,7 +109,7 @@
             "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
-            "PROGRAM_MANAGEMENT_8_RETURNED_TO_TREATMENT_DATE": {
+            "PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_4_TRACKING_DATE": {
