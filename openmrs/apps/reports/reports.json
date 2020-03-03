@@ -274,7 +274,21 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4e_refused_treatment.sql"
                     }
-                },            
+                },
+                {
+                    "name": "Report5a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator5a_tb_new_on_art.sql"
+                    }
+                },
+                {
+                    "name": "Report5b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator5b_tb_already_on_art.sql"
+                    }
+                },
                 {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
