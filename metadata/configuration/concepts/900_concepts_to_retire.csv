@@ -1,0 +1,11 @@
+uuid,void/retire,Fully specified name:en,Short name:en,Data class,Data type,_version:1,_order:900
+bdc00ba0-548a-46d3-9f48-28e0a9be61f9,true,Prevention of Mother-to-child Transmission,PMTCT,Misc,N/A,,
+395dd943-c68d-4f1c-bb7f-0ce4a2048fc5,true,"ANC, HIV Test Date",HIV test date,Misc,Date,,
+df9401b8-552e-4d70-8c15-c3a35a982496,true,HbA1C To retire,HbA1C To retire,LabTest,Text,,
+01c3ce55-b7eb-45f5-93d5-bace353e3cfd,true,"HIVTC, Viral Load",Viral Load,Misc,Text,,
+f14925ae-f09d-4920-a285-0f2c56751824,true,TSH to retire,TSH to retire,LabTest,N/A,,
+1cad38f7-a7dc-44d9-b4f3-104490bab8cf,true,"HIVTC, TB Screened",,Misc,Boolean,,
+19aeb618-4c07-474d-8150-a0cdbb995a64,true,abc to retire,,Misc,N/A,,
+ea380283-4e14-11e4-8a57-0800271c1b75,true,Normal delivery to retire,Diagnosis,N/A,,
+ef29ac41-47c9-4f4d-9f53-0d4e797b9fef,true,PNC to retire,Misc,N/A,,
+bfdf3c6c-8b38-43ac-ac91-5dfb6a40bebb,true,Inpatient to retire,Misc,N/A,,

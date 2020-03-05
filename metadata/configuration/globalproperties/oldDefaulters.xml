@@ -1,0 +1,35 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>emrapi.sqlSearch.oldDefaulters</property>
+      <value>
+      select
+        distinct pi.identifier as ID,
+        concat("",p.uuid) as uuid,
+        concat(pn.given_name," ", ifnull(pn.family_name,'')) as 'PROGRAM_MODULE_LABEL_NAME_KEY',
+        getPatientARTNumber(pat.patient_id) as 'PROGRAM_MODULE_LABEL_ART_NUMBER_KEY',
+        getPatientAge(pat.patient_id) as 'PROGRAM_MODULE_LABEL_AGE_KEY',
+        getPatientVillage(pat.patient_id) as 'PROGRAM_MODULE_LABEL_VILLAGE_KEY',
+        getPatientPhoneNumber(pat.patient_id) as 'PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY',
+        getPatientEmergencyContact(pat.patient_id) as 'PROGRAM_MODULE_LABEL_EMERGENCY_CONTACT_KEY',
+        getPatientMostRecentProgramTrackingStateValue(pat.patient_id, ${language}) as 'PROGRAM_MODULE_LABEL_TRACKING_STATE_KEY',
+        getPatientMostRecentProgramTrackingDateValue(pat.patient_id) as 'PROGRAM_MODULE_LABEL_TRACKING_DATE_KEY',
+        getPatientMostRecentProgramTrackingOutcomeValue(pat.patient_id, ${language}) as 'PROGRAM_MODULE_LABEL_TRACKING_OUTCOME_KEY',
+        getDateMostRecentARVAppointment(pat.patient_id) as 'PROGRAM_MODULE_LABEL_DATE_LAST_APPOINTMENT_KEY',
+        getPatientMostRecentProgramAPSName(pat.patient_id) as 'PROGRAM_MODULE_LABEL_APS_NAME_KEY',
+        getPatientMostRecentProgramOutcome(pat.patient_id, ${language}, 'HIV_DEFAULTERS_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_PROGRAM_OUTCOME_KEY'
+      from
+        patient pat join person_name pn on pat.patient_id = pn.person_id and pn.voided = 0 and pat.voided=0
+        join patient_identifier pi on pat.patient_id = pi.patient_id and pi.voided=0
+        join patient_identifier_type pit on pi.identifier_type = pit.patient_identifier_type_id
+        join global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
+        join person p on p.person_id = pat.patient_id and p.voided=0
+      where
+        patientIsDefaulter(pat.patient_id) and
+        patientHasEnrolledInDefaulterProgram(pat.patient_id) and
+        getPatientMostRecentProgramOutcome(pat.patient_id, ${language}, 'HIV_DEFAULTERS_PROGRAM_KEY') is not null
+      order by pat.patient_id desc;
+      </value>
+    </globalProperty>
+  </globalProperties>
+</config>

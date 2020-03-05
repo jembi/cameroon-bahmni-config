@@ -1,0 +1,7 @@
+Uuid,Void/Retire,Name,Description,Format,Foreign uuid,Searchable,Edit privilege,_order:1000
+46d216b0-8e57-4151-9270-2918b689c880,,matrimonialStatus,REGISTRATION_MATRIMONIAL_STATUS_KEY,org.openmrs.Concept,a54cc160-8133-4a87-a706-3813fb121838,,,
+c1f4a004-3f10-11e4-adec-0800271c1b75,,education,REGISTRATION_EDUCATION_DETAILS_KEY,org.openmrs.Concept,c2084e7b-3f10-11e4-adec-0800271c1b75,TRUE,,
+c1f7d1f1-3f10-11e4-adec-0800271c1b75,,occupation,REGISTRATION_OCCUPATION_KEY,org.openmrs.Concept,c221869a-3f10-11e4-adec-0800271c1b75,TRUE,,
+dd812450-9687-11e9-bc42-526af7764f64,,emergencyContactNumber,REGISTRATION_EMERGENCY_CONTACT_NUMBER_KEY,java.lang.String,,,,
+cd1b3cac-34d0-4c3a-a333-c433e8e2d81f,,emergencyContactName,REGISTRATION_EMERGENCY_CONTACT_NAME_KEY,java.lang.String,,,,
+dd8119e2-9687-11e9-bc42-526af7764f64,,emergencyContactRelationship,REGISTRATION_EMERGENCY_CONTACT_RELATIONSHIP_KEY,java.lang.String,,,,

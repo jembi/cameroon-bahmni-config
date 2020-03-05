@@ -14,12 +14,13 @@ addons:
 script:
   - cd report-testing
   - mvn test
+  - cd ../..
 deploy:
 - provider: script
-  script: ssh bahmni@cmr-dev.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout dev;git pull;'
+  script: bash scripts/travis/deploy.sh dev $mysql_password
   on:
     branch: dev
 - provider: script
-  script: ssh bahmni@cmr-staging.jembi.org 'cd ~/git/cameroon-bahmni-config;git reset --hard;git checkout staging;git pull;'
+  script: bash scripts/travis/deploy.sh staging $mysql_password
   on:
     branch: staging
