@@ -1,0 +1,8 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>bahmni.extraPatientIdentifierTypes</property>
+      <value>270d55d3-337d-4a18-ba21-fe521b3f55e3,64e7547a-21b5-4cd1-8607-4d29edccb45a,d7372b19-2f36-44df-9113-9c483f4410c9,d66a7f67-f559-4ef4-87c8-128de0db22f0,2042b38a-fbee-4d58-812e-496022130419,a9f7dc56-fae1-40e6-9357-06a75a569123,f9870d29-1c19-4bc8-9e42-ca237355c9b8</value>
+    </globalProperty>
+  </globalProperties>
+</config>

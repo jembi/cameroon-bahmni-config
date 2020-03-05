@@ -1,0 +1,1 @@
+update person_attribute_type set foreign_key=(select concept_id from concept_name where name="Did index have knowledge of contact's HIV status" limit 1) where name="PERSON_ATTRIBUTE_TYPE_INDEX_KNOW_VIH_STATUS";

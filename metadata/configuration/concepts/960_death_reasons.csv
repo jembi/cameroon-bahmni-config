@@ -1,0 +1,11 @@
+Uuid,Members,Answers,Fully specified name:en,Fully specified name:fr,Short name:en,Short name:fr,Data class,Data type,_version:1,_order:960
+c1935955-b2a5-47c2-8e78-1c9a44aeed54,,,Heart failure,Arrêt cardiaque,,,Misc,N/A,,
+42ff2076-d570-4703-a826-53432386d529,,,"Death Note, Brought dead","Death Note, Brought dead [FR]",Brought dead ?,Ramené mort ?,Misc,N/A,,
+52c78e86-804c-11e9-bc42-526af7764f64,,,Pneumonia,Pneumophie,,,Misc,N/A,,
+52c7911a-804c-11e9-bc42-526af7764f64,,,Anaemia,Anemie,,,Misc,N/A,,
+52c7962e-804c-11e9-bc42-526af7764f64,,,Septicaemia,Speticemie,,,Misc,N/A,,
+f48a534d-b1dd-4d37-8794-065243c546a4,,,Liver disease,Hepatopathie,,,Misc,N/A,,
+b7a451c9-907b-46cb-a4d3-3af7d49eca8c,,Yes full name;No full name,Opportunist Infections,Infections Oportuniste,Opportunist Infections,Infections Oportuniste,Misc,Coded,,
+58370446-3439-4007-a6bc-4d6687c8d354,"096cdce6-a5c3-493b-a991-9a8e673bd877;6bb9bdb2-0ee4-40df-a57a-7b7e7df72200;54be72e3-098b-4ac8-a3e4-591598891971;3e2325bf-4543-4fdc-8512-8baf98c2b25d;f81c28a8-3ec5-46d5-ba08-79ac75723693;bcdd80b2-a2bd-4888-9f46-df274cd01338;be236b04-7a1c-4eee-8e17-79c6683d5d59;50bce98e-1e84-4336-829e-9d69973ebefe;d7dfbbbc-3961-4042-8b8d-b3d093ffcdf9;c45f6876-3f10-11e4-adec-0800271c1b75;b5a72e18-bf5c-40e0-9431-e36efaa76b9b;5345a6f4-c2c3-4ede-8bba-74bf76000e15;e36a04a4-aef2-4021-9144-5d46eec47527;2a9dcf87-6623-413c-9f88-75d75642a047;235a6246-6179-4309-ba84-6f0ec337eb48;f16b6694-8f6b-401d-88f8-f2fce1921f60;ecf0d1b3-a5df-4356-9e3b-bcc3ac2c714d;10c2418b-ca86-4939-aa37-89c9d8194c8f;7e795fab-daf4-4cee-9baa-6a639e1f6644;91c3a559-5024-46ef-b947-1adc310d0b77;c54659a8-eb25-49fa-b6d4-38ed31172050;85846e6a-be7c-4612-ab5b-0b129a00f8c8;ae0ad7b8-2e9b-4731-9563-137382f376d5;fabe6da0-d8c7-4d08-9e7a-79b84f6167c4;38048f86-e89f-451d-84b3-82ed60259157;a6273de3-98f7-4ca2-b57d-bef752b5d177;7a96ba3a-6399-4eb2-a721-50aeba21c60b;d2d9bdbc-aa56-4c2c-b59c-af5e61167814;
+",,Malaria,Paludisme,,,Misc,N/A,,
+30e1c728-f008-4dd1-ab34-2c34a00fd3a5,c1935955-b2a5-47c2-8e78-1c9a44aeed54;42ff2076-d570-4703-a826-53432386d529;52c78e86-804c-11e9-bc42-526af7764f64;52c7911a-804c-11e9-bc42-526af7764f64;Diarrhea;52c7962e-804c-11e9-bc42-526af7764f64;f48a534d-b1dd-4d37-8794-065243c546a4;b7a451c9-907b-46cb-a4d3-3af7d49eca8c;58370446-3439-4007-a6bc-4d6687c8d354;cb279713-3373-44be-91bf-ead37122d098,,Reason For Death,Reason For Death [FR],,,Misc,Numeric,,

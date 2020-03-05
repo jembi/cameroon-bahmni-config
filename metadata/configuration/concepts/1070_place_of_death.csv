@@ -1,0 +1,5 @@
+Uuid,Void/Retire,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Description,Data class,Data type,Edit privilege,_order:1070
+b8f695ae-98b5-11e9-80fe-2a2ae2dbcce4,,,Dans la FOSA,At the Health Facility,Dans la FOSA,At the Health Facility,,Misc,N/A,,
+b8f6981a-98b5-11e9-80fe-2a2ae2dbcce4,,,Hors de la FOSA,Out of the HF,Hors de la FOSA,Out of the HF,,Misc,N/A,,
+b8f6996e-98b5-11e9-80fe-2a2ae2dbcce4,,,Dans un autre FOSA,In another Facility,Dans un autre FOSA,In another Facility,,Misc,N/A,,
+6ea73229-7399-41ae-a6e5-68942a354956,,b8f695ae-98b5-11e9-80fe-2a2ae2dbcce4; b8f6981a-98b5-11e9-80fe-2a2ae2dbcce4; b8f6996e-98b5-11e9-80fe-2a2ae2dbcce4,Lieu de Deces,Place of death,Lieu de Deces,Place of death,,Misc,Coded,,

@@ -1,0 +1,8 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>mrs.hospitalName</property>
+      <value>{"name":"Cite Verte"}</value>
+    </globalProperty>
+  </globalProperties>
+</config>
