@@ -447,7 +447,7 @@ BEGIN
 
     IF examResult IS NOT NULL THEN
         -- RETURN "Yes";
-        SET examResultDate = getObsDatetimeValue(p_patientId, uuidCD4ExamDate);
+        SET examResultDate = getMostRecentTestResultDate(p_patientId, uuidCD4Exam, uuidCD4ExamDate);
         IF examResultDate IS NOT NULL THEN
             RETURN CONCAT("Yes (", DATE_FORMAT(examResultDate, "%d-%b-%Y"), ")");
         ELSE
@@ -456,6 +456,37 @@ BEGIN
     ELSE
         RETURN NULL;
     END IF;
+
+END$$
+DELIMITER ;
+
+-- getMostRecentTestResultDate
+
+DROP FUNCTION IF EXISTS getMostRecentTestResultDate;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentTestResultDate(
+    p_patientId INT(11),
+    p_uuidTest VARCHAR(38),
+    p_uuidTestDate VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+
+    DECLARE resultDateFromForm DATE DEFAULT getObsDatetimeValue(p_patientId, p_uuidTestDate);
+    DECLARE resultDateFromElis DATE;
+
+    SELECT
+        o.date_created INTO resultDateFromElis
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NOT NULL
+        AND o.person_id = p_patientId
+        AND c.uuid = p_uuidTest
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN getGreatestDate(resultDateFromForm,resultDateFromElis);
 
 END$$
 DELIMITER ;
