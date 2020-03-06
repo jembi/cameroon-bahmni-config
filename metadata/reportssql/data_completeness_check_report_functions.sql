@@ -692,7 +692,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 -- patientHadAHivRelatedVisitWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadAHivRelatedVisitWithinReportingPeriod;
@@ -718,6 +717,59 @@ BEGIN
             "LOCATION_ART_DISPENSATION",
             "LOCATION_OPD"
         )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDateLatestARTOrARTDispensaryVisit
+
+DROP FUNCTION IF EXISTS getDateLatestARTOrARTDispensaryVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateLatestARTOrARTDispensaryVisit(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT e.encounter_datetime INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND loc.name IN (
+            "LOCATION_ART",
+            "LOCATION_ART_DISPENSATION"
+        )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNumberOfVisits
+
+DROP FUNCTION IF EXISTS getNumberOfVisits;
+
+DELIMITER $$
+CREATE FUNCTION getNumberOfVisits(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_location VARCHAR(255)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT count(DISTINCT e.encounter_id) INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND e.encounter_datetime BETWEEN p_startDate AND p_endDate
+        AND loc.name = p_location
     LIMIT 1;
 
     RETURN (result);
