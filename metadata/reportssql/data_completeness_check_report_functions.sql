@@ -64,7 +64,7 @@ CREATE FUNCTION getPatientEntryPointAndModality(
     DETERMINISTIC
 BEGIN
     DECLARE uuidEntryPointAndModality VARCHAR(38) DEFAULT "bc43179d-00b4-4712-a5d6-4dabd4230888";
-    DECLARE entryPointAndModality VARCHAR(50) DEFAULT getObsCodedValue(p_patientId, uuidEntryPointAndModality);
+    DECLARE entryPointAndModality VARCHAR(50) DEFAULT getObsCodedShortNameValue(p_patientId, uuidEntryPointAndModality);
     DECLARE entryPointAndModalityDate DATE;
     
     IF (entryPointAndModality IS NOT NULL) THEN
@@ -477,6 +477,33 @@ BEGIN
     FROM obs o
         JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = p_conceptUuid
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getObsCodedShortNameValue
+
+DROP FUNCTION IF EXISTS getObsCodedShortNameValue;
+
+DELIMITER $$
+CREATE FUNCTION getObsCodedShortNameValue(
+    p_patientId INT(11),
+    p_conceptUuid VARCHAR(38)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT
+        cn.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en' AND cn.concept_name_type = "SHORT"
     WHERE o.voided = 0
         AND o.person_id = p_patientId
         AND c.uuid = p_conceptUuid
