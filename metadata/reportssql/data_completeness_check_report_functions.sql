@@ -64,7 +64,7 @@ CREATE FUNCTION getPatientEntryPointAndModality(
     DETERMINISTIC
 BEGIN
     DECLARE uuidEntryPointAndModality VARCHAR(38) DEFAULT "bc43179d-00b4-4712-a5d6-4dabd4230888";
-    DECLARE entryPointAndModality VARCHAR(50) DEFAULT getObsCodedValue(p_patientId, uuidEntryPointAndModality);
+    DECLARE entryPointAndModality VARCHAR(50) DEFAULT getObsCodedShortNameValue(p_patientId, uuidEntryPointAndModality);
     DECLARE entryPointAndModalityDate DATE;
     
     IF (entryPointAndModality IS NOT NULL) THEN
@@ -487,6 +487,33 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getObsCodedShortNameValue
+
+DROP FUNCTION IF EXISTS getObsCodedShortNameValue;
+
+DELIMITER $$
+CREATE FUNCTION getObsCodedShortNameValue(
+    p_patientId INT(11),
+    p_conceptUuid VARCHAR(38)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT
+        cn.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en' AND cn.concept_name_type = "SHORT"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = p_conceptUuid
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getObsYesNoValueWithDate
 
 DROP FUNCTION IF EXISTS getObsYesNoValueWithDate;
@@ -665,7 +692,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 -- patientHadAHivRelatedVisitWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadAHivRelatedVisitWithinReportingPeriod;
@@ -691,6 +717,59 @@ BEGIN
             "LOCATION_ART_DISPENSATION",
             "LOCATION_OPD"
         )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDateLatestARTOrARTDispensaryVisit
+
+DROP FUNCTION IF EXISTS getDateLatestARTOrARTDispensaryVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateLatestARTOrARTDispensaryVisit(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT e.encounter_datetime INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND loc.name IN (
+            "LOCATION_ART",
+            "LOCATION_ART_DISPENSATION"
+        )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNumberOfVisits
+
+DROP FUNCTION IF EXISTS getNumberOfVisits;
+
+DELIMITER $$
+CREATE FUNCTION getNumberOfVisits(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_location VARCHAR(255)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT count(DISTINCT e.encounter_id) INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND e.encounter_datetime BETWEEN p_startDate AND p_endDate
+        AND loc.name = p_location
     LIMIT 1;
 
     RETURN (result);
