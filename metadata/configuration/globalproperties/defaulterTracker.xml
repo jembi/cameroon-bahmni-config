@@ -26,7 +26,7 @@
       where
         patientIsDefaulter(pat.patient_id) and
         patientHasEnrolledInDefaulterProgram(pat.patient_id) and
-        getPatientMostRecentDefaulterProgramOutcome(pat.patient_id, ${language}) is null
+        getPatientMostRecentProgramOutcome(pat.patient_id, ${language}, 'HIV_DEFAULTERS_PROGRAM_KEY') is null
       order by pat.patient_id desc;
       </value>
     </globalProperty>
