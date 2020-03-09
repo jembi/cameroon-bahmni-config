@@ -1,0 +1,6 @@
+Uuid,Answers,Fully specified name:en,Fully specified name:fr,Short name:en,Short name:fr,Data class,Data type,_version:1,_order:1030
+cf180299-f6e2-4b08-8b80-2e9125a97230,,Transfer in,Transfer,Transfer in,Transfer,Misc,N/A,,
+88f2a6ea-367d-45dc-942a-b809b0d17275,,Initiation of ART,Initiation ARV,Initiation of ART,Initiation ARV,Misc,N/A,,
+5b6d7bc3-d92b-4979-a420-38efa8621b1a,,Auto transfer,Auto transfert,Auto transfer,Auto transfert,Misc,N/A,,
+17a3b24b-e107-49fe-8b0d-69c3b7e60f4c,,Unplanned Aid,Suivi régulier sans ARV,Unplanned Aid,Suivi régulier sans ARV,Misc,N/A,,
+08277dd9-14e1-4792-8e61-6368bd2a2c48,cf180299-f6e2-4b08-8b80-2e9125a97230;88f2a6ea-367d-45dc-942a-b809b0d17275;86e2f66d-6a78-40a3-a3f5-ceb0bbbbdf5a;5b6d7bc3-d92b-4979-a420-38efa8621b1a;17a3b24b-e107-49fe-8b0d-69c3b7e60f4c,Health Stage,Stade Clinique,Health Stage,Stade Clinique,Misc,Coded,,

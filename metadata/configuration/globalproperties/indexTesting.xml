@@ -1,0 +1,95 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>emrapi.sqlSearch.indexPatients</property>
+      <value>
+      select
+        distinct p.uuid as uuid,
+        concat(pn.given_name," ", ifnull(pn.family_name,'')) as 'PROGRAM_MODULE_LABEL_NAME_KEY',
+        getPatientPhoneNumber(p.person_id) as 'PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY',
+        getPatientAge(p.person_id) as 'PROGRAM_MODULE_LABEL_AGE_KEY',
+        p.gender as 'PROGRAM_MODULE_LABEL_GENDER_KEY',
+        getNumberOfContactsRelatedToIndex(p.person_id) as 'PROGRAM_MODULE_LABEL_NR_CONTACTS_KEY',
+        concat(
+          getNumberOfEnrolledContactsRelatedToIndex(p.person_id),
+          "/",
+          getNumberOfContactsRelatedToIndex(p.person_id)) as 'PROGRAM_MODULE_LABEL_NR_ENROL_CONTACTS_KEY'
+      from
+        person p join person_name pn on p.person_id = pn.person_id and pn.voided = 0 and p.voided=0
+      where 
+        patientIsIndex(p.person_id) AND
+        (getNumberOfContactsRelatedToIndex(p.person_id) = 0 or
+        getNumberOfEnrolledContactsRelatedToIndex(p.person_id) &lt; getNumberOfContactsRelatedToIndex(p.person_id))
+      order by p.date_created desc;
+      </value>
+    </globalProperty>
+    <globalProperty>
+      <property>emrapi.sqlSearch.indexContacts</property>
+      <value>
+      select
+        distinct pi.identifier as ID,
+        concat("",p.uuid) as uuid,
+        concat(pn.given_name," ", ifnull(pn.family_name,'')) as 'PROGRAM_MODULE_LABEL_NAME_KEY',
+        getFirstIndexName(p.person_id) as 'PROGRAM_MODULE_LABEL_INDEX_NAME_KEY',
+        getFirstIndexRelationship(p.person_id) as 'PROGRAM_MODULE_LABEL_INDEX_RELATIONSHIP_KEY',
+        getPatientPhoneNumber(p.person_id) as 'PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY',
+        getPatientAge(p.person_id) as 'PROGRAM_MODULE_LABEL_AGE_KEY',
+        p.gender as 'PROGRAM_MODULE_LABEL_GENDER_KEY',
+        getPatientMostRecentProgramAttributeCodedValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_1_NOTIFICATION_METHOD', ${language}) as 'PROGRAM_MODULE_LABEL_NOTIFICATION_METHOD_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE') as 'PROGRAM_MODULE_LABEL_NOTIFICATION_DATE_KEY',
+        getPatientMostRecentProgramAttributeCodedValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME', ${language}) as 'PROGRAM_MODULE_LABEL_NOTIFICATION_OUTCOME_KEY',
+        getMostRecentDateObservation(p.person_id, 'HIV Test Date') as 'PROGRAM_MODULE_LABEL_TEST_DATE_KEY',
+        getTestedLocation(p.person_id) as 'PROGRAM_MODULE_LABEL_TEST_PLACE_KEY',
+        getMostRecentTextObservation(p.person_id, 'Counselling and Testing facility') as 'PROGRAM_MODULE_LABEL_TEST_FACILITY_KEY',
+        getMostRecentCodedObservation(p.person_id, 'Final Test Result', ${language}) as 'PROGRAM_MODULE_LABEL_TEST_RESULT_KEY',
+        getMostRecentDateObservation(p.person_id, 'ARV start date') as 'PROGRAM_MODULE_LABEL_ARV_START_DATE_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_4_CONTACT_TRACER') as 'PROGRAM_MODULE_LABEL_CONTACT_TRACER_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_5_COMMENTS') as 'PROGRAM_MODULE_LABEL_COMMENTS_KEY',
+        getPatientARTNumber(p.person_id) as 'PROGRAM_MODULE_LABEL_ART_NUMBER_KEY'
+      from
+        person p join person_name pn on p.person_id = pn.person_id and pn.voided = 0 and p.voided=0
+        join patient_identifier pi on p.person_id = pi.patient_id and pi.voided=0
+        join patient_identifier_type pit on pi.identifier_type = pit.patient_identifier_type_id
+        join global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
+      where 
+        patientIsContact(p.person_id) and 
+        getPatientMostRecentProgramOutcome(p.person_id, ${language}, 'INDEX_TESTING_PROGRAM_KEY') is null
+      order by p.date_created desc;
+      </value>
+    </globalProperty>
+    <globalProperty>
+      <property>emrapi.sqlSearch.indexHistory</property>
+      <value>
+      select
+        distinct p.uuid as uuid,
+        concat(pn.given_name," ", ifnull(pn.family_name,'')) as 'PROGRAM_MODULE_LABEL_NAME_KEY',
+        getFirstIndexName(p.person_id) as 'PROGRAM_MODULE_LABEL_INDEX_NAME_KEY',
+        getFirstIndexRelationship(p.person_id) as 'PROGRAM_MODULE_LABEL_INDEX_RELATIONSHIP_KEY',
+        getPatientPhoneNumber(p.person_id) as 'PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY',
+        getPatientAge(p.person_id) as 'PROGRAM_MODULE_LABEL_AGE_KEY',
+        p.gender as 'PROGRAM_MODULE_LABEL_GENDER_KEY',
+        getPatientMostRecentProgramAttributeCodedValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_1_NOTIFICATION_METHOD', ${language}) as 'PROGRAM_MODULE_LABEL_NOTIFICATION_METHOD_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE') as 'PROGRAM_MODULE_LABEL_NOTIFICATION_DATE_KEY',
+        getPatientMostRecentProgramAttributeCodedValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME', ${language}) as 'PROGRAM_MODULE_LABEL_NOTIFICATION_OUTCOME_KEY',
+        getMostRecentDateObservation(p.person_id, 'HIV Test Date') as 'PROGRAM_MODULE_LABEL_TEST_DATE_KEY',
+        getTestedLocation(p.person_id) as 'PROGRAM_MODULE_LABEL_TEST_PLACE_KEY',
+        getMostRecentTextObservation(p.person_id, 'Counselling and Testing facility') as 'PROGRAM_MODULE_LABEL_TEST_FACILITY_KEY',
+        getMostRecentCodedObservation(p.person_id, 'Final Test Result', ${language}) as 'PROGRAM_MODULE_LABEL_TEST_RESULT_KEY',
+        getMostRecentDateObservation(p.person_id, 'ARV start date') as 'PROGRAM_MODULE_LABEL_ARV_START_DATE_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_4_CONTACT_TRACER') as 'PROGRAM_MODULE_LABEL_CONTACT_TRACER_KEY',
+        getPatientMostRecentProgramAttributeValueFromName(p.person_id, 'PROGRAM_MANAGEMENT_5_COMMENTS') as 'PROGRAM_MODULE_LABEL_COMMENTS_KEY',
+        getPatientARTNumber(p.person_id) as 'PROGRAM_MODULE_LABEL_ART_NUMBER_KEY',
+        getPatientMostRecentProgramOutcome(p.person_id, ${language}, 'INDEX_TESTING_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_PROGRAM_OUTCOME_KEY'
+      from
+        person p join person_name pn on p.person_id = pn.person_id and pn.voided = 0 and p.voided=0
+        join patient_identifier pi on p.person_id = pi.patient_id and pi.voided=0
+        join patient_identifier_type pit on pi.identifier_type = pit.patient_identifier_type_id
+        join global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
+      where
+        patientIsContact(p.person_id) and
+        getPatientMostRecentProgramOutcome(p.person_id, ${language}, 'INDEX_TESTING_PROGRAM_KEY') is not null
+      order by p.date_created desc;
+      </value>
+    </globalProperty>
+  </globalProperties>
+</config>

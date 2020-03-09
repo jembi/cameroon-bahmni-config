@@ -1,0 +1,5 @@
+Uuid,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_order:1330
+5b7eaae2-ba66-421a-8c1d-139386191e10,,"Positif, Statut TX inconnu","Positive, unknown TX status","Positif, Statut TX inconnu","Positive, unknown TX status",Misc,N/A,,
+a0f3ed27-ecd0-45a0-a5d5-b87e6ea05e7c,,"Positif, Sous TX","Positive, on TX","Positif, Sous TX","Positive, on TX",Misc,N/A,,
+f65e01f3-d6ae-423b-a243-c51bdeb99c2b,,"Positif, PAS sous TX","Positive, NOT on TX","Positif, PAS sous TX","Positive, NOT on TX",Misc,N/A,,
+d3ea9865-ca72-436a-8abb-a0588ab621c6,"Unknown;Negative;Positive, unknown TX status;Positive, on TX;Positive, NOT on TX","Connaissance du Statut VIH","Did index have knowledge of contact's HIV status","Connaissance du Statut VIH","Did index have knowledge of contact's HIV status",Misc,Coded,,

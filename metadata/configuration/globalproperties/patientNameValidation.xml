@@ -1,0 +1,8 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>patient.nameValidationRegex</property>
+      <value></value>
+    </globalProperty>
+  </globalProperties>
+</config>

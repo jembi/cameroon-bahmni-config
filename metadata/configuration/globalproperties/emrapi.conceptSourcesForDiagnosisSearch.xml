@@ -1,0 +1,8 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>emrapi.conceptSourcesForDiagnosisSearch</property>
+      <value>ICD 10 - WHO</value>
+    </globalProperty>
+  </globalProperties>
+</config>

@@ -1,0 +1,2 @@
+Uuid,Void/Retire,Name,Description,Format,Foreign uuid,Searchable,Edit privilege,_order:1000
+030f63da-87c0-42d2-9603-4a3b4eed9520,,PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER,,java.lang.String,,yes,,

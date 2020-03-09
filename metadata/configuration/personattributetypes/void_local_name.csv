@@ -1,0 +1,4 @@
+Uuid,Void/Retire,Name,Description,Format,Foreign uuid,Searchable,Edit privilege,_order:1000
+82325788-3f10-11e4-adec-0800271c1b75,TRUE,givenNameLocal,Name in local language,java.lang.String,,,,
+8233a58a-3f10-11e4-adec-0800271c1b75,TRUE,familyNameLocal,familyNameLocal,java.lang.String,,,,
+8234e7b0-3f10-11e4-adec-0800271c1b75,TRUE,middleNameLocal,middleNameLocal,java.lang.String,,,,
