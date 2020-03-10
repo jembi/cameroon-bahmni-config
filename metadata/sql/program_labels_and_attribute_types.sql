@@ -14,6 +14,7 @@ update program_attribute_type set description = 'PROGRAM_MANAGEMENT_PATIENT_DOCT
 
 -- add new program attribute types
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE","PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "397b7bc7-13ca-4e4e-abc3-bf854904dce3", (select concept_id from concept where uuid="397b7bc7-13ca-4e4e-abc3-bf854904dce3"));
+insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING","PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING","org.openmrs.customdatatype.datatype.BooleanDatatype", 1, NOW(), "242c9027-dc2d-42e6-869e-045e8a8b95cb");
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PROGRAM_MANAGEMENT_DURATION_ON_ART","PROGRAM_MANAGEMENT_DURATION_ON_ART","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "27441b69-84bd-4640-8682-92b6c0f449a0", (select concept_id from concept where uuid="8e259e94-b13d-48c4-a294-261aa243f92e"));
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_LAST_FAILED_APPOINTMENT_DATE","PROGRAM_MANAGEMENT_LAST_FAILED_APPOINTMENT_DATE","org.openmrs.customdatatype.datatype.DateDatatype", 1, NOW(), "88a312a2-51a6-47e4-b725-e5b8b545ac4c");
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PROGRAM_MANAGEMENT_PRETRACKING_OUTCOME","PROGRAM_MANAGEMENT_PRETRACKING_OUTCOME","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "0a51d8d0-c775-48a2-9ca2-42c269d00bc2", (select concept_id from concept where uuid="7239a3a0-da2a-4940-bfab-8418246988d7"));
@@ -42,16 +43,16 @@ insert ignore into program_attribute_type(name, description, datatype,creator, d
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_5_COMMENTS","PROGRAM_MANAGEMENT_5_COMMENTS","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "a404f7a7-1249-4b81-bb58-fd4e97e4798e");
 
 -- update some of the attribute type names so that they are displayed in order
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART', description = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART' where name = 'PROGRAM_MANAGEMENT_DURATION_ON_ART';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE', description = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE' where name = 'PROGRAM_MANAGEMENT_LAST_FAILED_APPOINTMENT_DATE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME', description = 'PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME' where name = 'PROGRAM_MANAGEMENT_PRETRACKING_OUTCOME';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_4_TRACKING_DATE', description = 'PROGRAM_MANAGEMENT_4_TRACKING_DATE' where name = 'PROGRAM_MANAGEMENT_TRACKING_DATE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_5_APS_NAME', description = 'PROGRAM_MANAGEMENT_5_APS_NAME' where name = 'PROGRAM_MANAGEMENT_APS_NAME';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME', description = 'PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME' where name = 'PROGRAM_MANAGEMENT_TRACKING_OUTCOME';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_8_RETURNED_TO_TREATMENT_DATE', description = 'PROGRAM_MANAGEMENT_8_RETURNED_TO_TREATMENT_DATE' where name = 'PROGRAM_MANAGEMENT_RETURNED_TO_TREATMENT_DATE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_1_ART_NUMBER', description = 'PROGRAM_MANAGEMENT_1_ART_NUMBER' where name = 'PROGRAM_MANAGEMENT_ART_NUMBER';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE', description = 'PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE' where name = 'PROGRAM_MANAGEMENT_PATIENT_TREATMENT_DATE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES', description = 'PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES' where name = 'PROGRAM_MANAGEMENT_PATIENT_COMORBIDITES';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_4_PATIENT_DOCTOR_IN_CHARGE', description = 'PROGRAM_MANAGEMENT_4_PATIENT_DOCTOR_IN_CHARGE' where name = 'PROGRAM_MANAGEMENT_PATIENT_DOCTOR_IN_CHARGE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_5_PATIENT_STAGE', description = 'PROGRAM_MANAGEMENT_5_PATIENT_STAGE' where name = 'PROGRAM_MANAGEMENT_PATIENT_STAGE';
-update program_attribute_type set name = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE', description = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE' where name = 'PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART', description = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART' where uuid = '27441b69-84bd-4640-8682-92b6c0f449a0';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE', description = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE' where uuid = '88a312a2-51a6-47e4-b725-e5b8b545ac4c';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME', description = 'PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME' where uuid = '0a51d8d0-c775-48a2-9ca2-42c269d00bc2';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_4_TRACKING_DATE', description = 'PROGRAM_MANAGEMENT_4_TRACKING_DATE' where uuid = '9b4b2dd5-bc5e-44b9-ad95-333a7bbfee3c';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_5_APS_NAME', description = 'PROGRAM_MANAGEMENT_5_APS_NAME' where uuid = '8bb0bdc0-aaf3-4501-8954-d1b17226075b';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME', description = 'PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME' where uuid = 'caf6d807-861d-4393-9d6e-940b98fa712d';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE', description = 'PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE' where uuid = 'b04fb0b8-3a1c-46fa-bf83-922513016b6b';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_1_ART_NUMBER', description = 'PROGRAM_MANAGEMENT_1_ART_NUMBER' where uuid = 'c41f844e-a707-11e6-91e9-0800270d80ce';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE', description = 'PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE' where uuid = '2dc1aafd-a708-11e6-91e9-0800270d80ce';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES', description = 'PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES' where uuid = '62346a80-a708-11e6-91e9-0800270d80ce';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_4_PATIENT_DOCTOR_IN_CHARGE', description = 'PROGRAM_MANAGEMENT_4_PATIENT_DOCTOR_IN_CHARGE' where uuid = '1172915f-a709-11e6-91e9-0800270d80ce';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_5_PATIENT_STAGE', description = 'PROGRAM_MANAGEMENT_5_PATIENT_STAGE' where uuid = '39202f47-a709-11e6-91e9-0800270d80ce';
+update program_attribute_type set name = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE', description = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE' where uuid = '397b7bc7-13ca-4e4e-abc3-bf854904dce3';
