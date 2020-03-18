@@ -1269,6 +1269,15 @@ BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidHIVTestFinalResult VARCHAR(38) DEFAULT "41e48d08-2235-47d5-af12-87a009057603";
 
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+    DECLARE withinReportingPeriod TINYINT(1) DEFAULT 0;
+
+    SET withinReportingPeriod = getObsDatetimeValueInSection(p_patientId, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate;
+    IF NOT withinReportingPeriod THEN
+        RETURN 0;
+    END IF;
+
     SELECT
         cn.name = p_result INTO result
     FROM obs o
@@ -1281,7 +1290,7 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1;
 
-    RETURN (result);
+    RETURN (result AND withinReportingPeriod);
 END$$
 DELIMITER ;
 
