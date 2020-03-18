@@ -439,6 +439,65 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS Testing_Indicator8a;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8a(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestingAndCounsellingForm VARCHAR(38) DEFAULT "6bfd85ce-22c8-4b54-af0e-ab0af24240e3";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestingAndCounsellingForm) < p_startDate AND
+        getPatientHIVResultFromCounsellingForm(pat.patient_id) = "Positive" AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientHasEnrolledIntoTBProgramDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasEnrolledIntoTBProgramDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasEnrolledIntoTBProgramDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT
+        TRUE INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND pp.date_enrolled BETWEEN p_startDate AND p_endDate
+        AND pro.name = "TB_PROGRAM_KEY"
+    GROUP BY pro.name;
+
+    RETURN (result );
+END$$
+DELIMITER ;
+
 -- getPatientHIVDateFromCounsellingForm
 
 DROP FUNCTION IF EXISTS getPatientHIVDateFromCounsellingForm;
