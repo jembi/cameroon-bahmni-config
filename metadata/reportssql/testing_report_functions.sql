@@ -409,36 +409,6 @@ BEGIN
 END$$ 
 DELIMITER ;
 
-DROP FUNCTION IF EXISTS Testing_Indicator8b;
-
-DELIMITER $$
-CREATE FUNCTION Testing_Indicator8b(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
-    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
-
-    SELECT
-        COUNT(DISTINCT pat.patient_id) INTO result
-    FROM
-        patient pat
-    WHERE
-        patientGenderIs(pat.patient_id, p_gender) AND
-        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-        patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Positive", p_startDate, p_endDate) AND
-        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
-
 DROP FUNCTION IF EXISTS Testing_Indicator7f;
 
 DELIMITER $$
@@ -497,6 +467,66 @@ BEGIN
         patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
 
     RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8b;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8b(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Positive", p_startDate, p_endDate) AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8c;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8c(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Negative", p_startDate, p_endDate) AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    return (result);
 END$$ 
 DELIMITER ;
 
