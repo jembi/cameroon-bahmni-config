@@ -303,6 +303,62 @@ WHERE
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TREATMENT_Indicator5a;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator5a(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    getPatientDateOfEnrollementInProgram(pat.patient_id, "TB_PROGRAM_KEY") < p_endDate AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getPatientDateOfEnrollementInProgram
+
+DROP FUNCTION IF EXISTS getPatientDateOfEnrollementInProgram;
+
+DELIMITER $$
+CREATE FUNCTION getPatientDateOfEnrollementInProgram(
+    p_patientId INT(11),
+    p_program VARCHAR(50)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE DEFAULT 0;
+
+    SELECT
+        pp.date_enrolled INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND pro.name = p_program
+    ORDER BY date_enrolled DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientHasProgramOutcomeDeadWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHasProgramOutcomeDeadWithinReportingPeriod;
