@@ -523,7 +523,6 @@ BEGIN
     WHERE
         patientGenderIs(pat.patient_id, p_gender) AND
         patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-        getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate AND
         patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Negative", p_startDate, p_endDate) AND
         patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
 
