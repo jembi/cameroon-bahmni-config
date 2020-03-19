@@ -352,7 +352,7 @@ BEGIN
     WHERE p.person_id = p_patientId
         AND p.voided = 0
         AND pro.name = p_program
-    ORDER BY date_enrolled DESC
+    ORDER BY pp.date_enrolled DESC
     LIMIT 1;
 
     RETURN (result);
