@@ -1274,7 +1274,7 @@ BEGIN
     DECLARE withinReportingPeriod TINYINT(1) DEFAULT 0;
 
     SET withinReportingPeriod = getObsDatetimeValueInSection(p_patientId, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate;
-    IF NOT withinReportingPeriod THEN
+    IF withinReportingPeriod IS NULL THEN
         RETURN 0;
     END IF;
 
