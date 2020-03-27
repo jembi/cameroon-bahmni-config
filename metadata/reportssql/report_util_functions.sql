@@ -189,20 +189,24 @@ CREATE FUNCTION arvInitiationDateSpecified(
     p_patientId INT(11)) RETURNS VARCHAR(3)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(3) DEFAULT "No";
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
+    IF getPatientDateOfEnrolmentInHIVProgram(p_patientId) IS NOT NULL THEN
+        RETURN "Yes";
+    ELSE
+        RETURN "No";
+    END IF;
+END$$
+DELIMITER ;
 
-    SELECT
-        "Yes" INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-    GROUP BY c.uuid;
+-- getPatientDateOfEnrolmentInHIVProgram
 
-    RETURN (result);
+DROP FUNCTION IF EXISTS getPatientDateOfEnrolmentInHIVProgram;
+
+DELIMITER $$
+CREATE FUNCTION getPatientDateOfEnrolmentInHIVProgram(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    RETURN getPatientDateOfEnrolmentInProgram(p_patientId, "HIV_PROGRAM_KEY");
 END$$
 DELIMITER ;
 
@@ -263,21 +267,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBefore(
     p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND cast(o.value_datetime AS DATE) < p_startDate
-    GROUP BY c.uuid;
-
-    RETURN (result );
+    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) < p_startDate;
 END$$
 DELIMITER ;
 
@@ -291,21 +281,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentAfter(
     p_date DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND cast(o.value_datetime AS DATE) > p_date
-    GROUP BY c.uuid;
-
-    RETURN (result );
+    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) > p_date;
 END$$
 DELIMITER ;
 
@@ -320,21 +296,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
     p_extendedMonths INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND timestampadd(MONTH, -p_extendedMonths, cast(o.value_datetime AS DATE)) < p_endDate
-    GROUP BY c.uuid;
-
-    RETURN (result);
+    RETURN timestampadd(MONTH, -p_extendedMonths, getPatientDateOfEnrolmentInHIVProgram(p_patientId)) < p_endDate;
 END$$
 DELIMITER ;
 
@@ -349,21 +311,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND cast(o.value_datetime AS DATE) BETWEEN p_startDate AND p_endDate
-        LIMIT 1;
-
-    RETURN (result );
+    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) BETWEEN p_startDate AND p_endDate;
 END$$
 DELIMITER ;
 
@@ -417,21 +365,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND cast(o.value_datetime AS DATE) <= p_endDate
-    GROUP BY c.uuid;
-
-    RETURN (result );
+    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) <= p_endDate;
 END$$
 DELIMITER ;
 
@@ -707,22 +641,7 @@ CREATE FUNCTION patientHasStartedARVTreatment12MonthsAgo(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-
-    DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE uuidARVTreatmentStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        TRUE INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVTreatmentStartDate
-        AND o.value_datetime IS NOT NULL
-        AND timestampadd(YEAR, 1, cast(o.value_datetime AS DATE)) BETWEEN p_startDate AND p_endDate
-    GROUP BY c.uuid;
-
-    RETURN (result );
+    RETURN timestampadd(YEAR, 1, cast(getPatientDateOfEnrolmentInHIVProgram(p_patientId) AS DATE)) BETWEEN p_startDate AND p_endDate;
 END$$ 
 DELIMITER ;
 

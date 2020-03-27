@@ -400,7 +400,7 @@ CREATE FUNCTION getPatientDateOfEnrolmentInProgram(
     p_program VARCHAR(50)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    DECLARE result DATE DEFAULT 0;
+    DECLARE result DATE;
 
     SELECT
         pp.date_enrolled INTO result

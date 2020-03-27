@@ -22,7 +22,6 @@ public class PecgIndicator2Tests extends BaseReportTest{
 		int patientId = testDataGenerator.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1));
 		int encounterId = testDataGenerator.startVisit(patientId, VisitTypeEnum.OPD);
 		testDataGenerator.enrollPatientIntoHIVProgram(patientId, new LocalDate(2019, 8, 1), TherapeuticLineEnum.FIRST_LINE);
-		testDataGenerator.setARVStartDate(patientId, new LocalDate(2019, 8, 1));
 		int orderId = testDataGenerator.orderDrug(patientId, encounterId, DrugNameEnum.ABC_3TC_120_60MG, new LocalDateTime(2019, 9, 1, 8, 0, 0), 2, DurationUnitEnum.MONTH);
 		testDataGenerator.dispenseDrugOrder(patientId, orderId);
 

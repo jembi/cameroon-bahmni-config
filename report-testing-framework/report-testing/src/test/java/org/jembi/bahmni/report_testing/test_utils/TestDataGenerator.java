@@ -91,19 +91,6 @@ public class TestDataGenerator {
 		return getQueryIntResult("SELECT patient_program_attribute_id FROM patient_program_attribute WHERE uuid = '" + uuidPatientProgramAttribute + "'");
 	}
 
-	public void setARVStartDate(int patientId, LocalDate startDate) throws Exception {
-		String uuidObs = generateUUID();
-		String uuidArvStartDate = "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-		
-		int arvStartDateConceptId = getQueryIntResult("SELECT concept_id FROM concept WHERE uuid = '" + uuidArvStartDate + "'");
-
-		String createObservationQuery = "INSERT INTO obs "
-				+ "(person_id, concept_id, obs_datetime, value_datetime, creator, date_created, voided, uuid, status) VALUES"
-				+ "(" + patientId + "," + arvStartDateConceptId + ", now(), '" + startDate + "',4,now(),0,'" + uuidObs + "','FINAL')";
-
-		stmt.executeUpdate(createObservationQuery);
-	}
-
 	public int orderDrug(int patientId, int encounterId, DrugNameEnum drugName, LocalDateTime startDate, int duration, DurationUnitEnum durationUnit) throws Exception {
 		String uuidOrder = generateUUID();
 		String orderNumber = generateUUID();
