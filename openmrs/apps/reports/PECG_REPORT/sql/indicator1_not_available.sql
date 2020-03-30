@@ -14,5 +14,4 @@ SELECT 'Not Available' AS '-'  ,
             0 AS '25-49 M',
             0 AS '25-49 F',
             0 AS '>=50 M',
-            0 AS '>=50 F'     
-    FROM person;
+            0 AS '>=50 F';
