@@ -79,7 +79,7 @@ public class TestDataGenerator {
 		stmt.executeUpdate(createPatientProgramQuery);
 
 		int patientProgramId = getQueryIntResult("SELECT patient_program_id FROM patient_program WHERE uuid = '" + uuidPatientProgram + "'");
-		int therapeuticLineAttributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = 'PROGRAM_MANAGEMENT_LABEL_THERAPEUTIC_LINE'");
+		int therapeuticLineAttributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE'");
 		int therapeuticLineConceptId = getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + therapeuticLine + "'");
 
 		String createPatientProgramAttributeQuery = "INSERT INTO patient_program_attribute "
