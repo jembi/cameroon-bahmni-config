@@ -413,22 +413,53 @@ WHERE
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientOrderedARVDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientScreenedPositiveForTBDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientScreenedForTBDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, "Positive") AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
 
     RETURN (result);
 END$$
 DELIMITER ;
 
--- patientScreenedPositiveForTBDuringReportingPeriod
-
-DROP FUNCTION IF EXISTS patientScreenedPositiveForTBDuringReportingPeriod;
+DROP FUNCTION IF EXISTS TREATMENT_Indicator7d;
 
 DELIMITER $$
-CREATE FUNCTION patientScreenedPositiveForTBDuringReportingPeriod(
+CREATE FUNCTION TREATMENT_Indicator7d(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientOrderedARVDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientScreenedForTBDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, "Negative") AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientScreenedForTBDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientScreenedForTBDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientScreenedForTBDuringReportingPeriod(
     p_patientId INT(11),
     p_startDate DATE,
-    p_endDate DATE) RETURNS TINYINT(1)
+    p_endDate DATE,
+    p_testResult VARCHAR(8)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
 
@@ -436,7 +467,6 @@ BEGIN
     DECLARE tbTestDate DATE;
     DECLARE tbResultUuid VARCHAR(38) DEFAULT "7a4899dc-68ff-444a-9c7e-7fbae547e326";
     DECLARE tbTestDateUuid VARCHAR(38) DEFAULT "55185e73-e634-4dfc-8ec0-02086e8c54d0";
-    DECLARE tbPositiveUuid VARCHAR(38) DEFAULT "7acfafa4-f19b-485e-97a7-c9e002dbe37a";
     DECLARE encounterIdOfTestDateObservation INT(11);
 
     SELECT
@@ -454,11 +484,12 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM obs o
-    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale = "en"
     WHERE o.voided = 0
         AND o.encounter_id = encounterIdOfTestDateObservation
         AND o.value_coded IS NOT NULL
-        AND o.value_coded = (SELECT concept.concept_id FROM concept WHERE concept.uuid = tbPositiveUuid)
+        AND cn.name = p_testResult
         AND o.person_id = p_patientId
         AND c.uuid = tbResultUuid
     ORDER BY o.obs_id DESC
