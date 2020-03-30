@@ -267,7 +267,12 @@ CREATE FUNCTION patientHasStartedARVTreatmentBefore(
     p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) < p_startDate;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate < p_startDate;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -281,7 +286,12 @@ CREATE FUNCTION patientHasStartedARVTreatmentAfter(
     p_date DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) > p_date;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate > p_date;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -296,7 +306,12 @@ CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
     p_extendedMonths INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN timestampadd(MONTH, -p_extendedMonths, getPatientDateOfEnrolmentInHIVProgram(p_patientId)) < p_endDate;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN timestampadd(MONTH, -p_extendedMonths, enrolmentDate) < p_endDate;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -311,7 +326,12 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) BETWEEN p_startDate AND p_endDate;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate BETWEEN p_startDate AND p_endDate;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -365,7 +385,12 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId) <= p_endDate;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate <= p_endDate;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -641,7 +666,12 @@ CREATE FUNCTION patientHasStartedARVTreatment12MonthsAgo(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    RETURN timestampadd(YEAR, 1, cast(getPatientDateOfEnrolmentInHIVProgram(p_patientId) AS DATE)) BETWEEN p_startDate AND p_endDate;
+    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN timestampadd(YEAR, 1, enrolmentDate) BETWEEN p_startDate AND p_endDate;
+    END IF;
 END$$ 
 DELIMITER ;
 
