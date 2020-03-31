@@ -450,20 +450,7 @@ CREATE FUNCTION getPatientARVStartDate(
     p_patientId INT(11)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    DECLARE result DATE;
-    DECLARE uuidARVStartDate VARCHAR(38) DEFAULT "e3f9c7ee-aa3e-4224-9d18-42e09b095ac6";
-
-    SELECT
-        o.value_datetime INTO result
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidARVStartDate
-    ORDER BY o.obs_id DESC
-    LIMIT 1;
-
-    RETURN result;
+    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId);
 END$$
 DELIMITER ;
 
