@@ -323,6 +323,28 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6a;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6a(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getPatientHIVFinalTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) = "Positive";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
@@ -551,6 +573,72 @@ BEGIN
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+-- getPatientHIVFinalTestResultWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getPatientHIVFinalTestResultWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getPatientHIVFinalTestResultWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidHIVFinalResult VARCHAR(38) DEFAULT "41e48d08-2235-47d5-af12-87a009057603";
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE encounterIdOfTestDate INT(11);
+    DECLARE result VARCHAR(50);
+
+    SELECT
+        o.encounter_id INTO encounterIdOfTestDate
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidHIVTestDate
+    ORDER BY o.value_datetime DESC
+    LIMIT 1;
+
+    SELECT
+        cn.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidHIVFinalResult
+        AND o.encounter_id = encounterIdOfTestDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getPatientAgeAtDate
+
+DROP FUNCTION IF EXISTS getPatientAgeAtDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeAtDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+
+    SELECT 
+        timestampdiff(YEAR, p.birthdate, p_date) INTO result 
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
 DELIMITER ;
 
 -- patientHasEnrolledIntoTBProgramDuringReportingPeriod
