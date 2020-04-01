@@ -347,6 +347,30 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6b;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6b(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) = "Negative";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
