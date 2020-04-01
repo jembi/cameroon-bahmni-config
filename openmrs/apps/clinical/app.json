@@ -178,6 +178,43 @@
                 "durationRequired": false,
                 "allowAddMore": true
             },
+
+            "HTC, HIV Test": {
+                "important": true
+            },
+            "Index Testing": {
+                "important": true
+            },
+            "HIV Test Date": {
+                "important": true
+            },
+            "Index testing offered?": {
+                "important": true
+            },
+            "Index testing accepted?": {
+                "important": true
+            },
+            "HIV Status": {
+                "important": true
+            },
+            "HIV Tested": {
+                "important": true
+            },
+            "Final Result": {
+                "important": true
+            },
+            "Final Test Result": {
+                "important": true
+            },
+            "Prior to ANC Enrolment": {
+                "important": true
+            },
+            "At ANC Enrolment": {
+                "important": true 
+            },
+            "Eligible for HIV Repeat Test?": {
+                "important": true 
+            }, 
             "Tuberculosis, Adverse Effects" :{
                 "multiSelect" : true,
                 "autocomplete" : true
