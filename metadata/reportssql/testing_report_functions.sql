@@ -371,6 +371,41 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6c;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6c(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) < 18 AND
+        (
+            (
+                patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+                getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) IS NULL
+            )
+            OR
+            (
+                patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
+                NOT patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
+            )
+        );
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
@@ -599,6 +634,33 @@ BEGIN
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+-- patientAttendedHIVRelatedAppointmentWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS patientAttendedHIVRelatedAppointmentWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientAttendedHIVRelatedAppointmentWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.status = "Completed"
+        AND pa.date_changed BETWEEN p_startDate AND p_endDate
+        AND aps.name IN ("APPOINTMENT_SERVICE_OPD_KEY", "APPOINTMENT_SERVICE_ART_KEY", "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
+    GROUP BY pa.patient_id;
+
+    RETURN result;
+END$$
 DELIMITER ;
 
 -- getPatientAgeInMonthsAtDate
