@@ -239,6 +239,24 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientProgramTreatmentStartDate
+
+DROP FUNCTION IF EXISTS getPatientProgramTreatmentStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientProgramTreatmentStartDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidProgramTreatmentStartDate VARCHAR(38) DEFAULT "2dc1aafd-a708-11e6-91e9-0800270d80ce";
+
+    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramTreatmentStartDate);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientHasEnrolledInDefaulterProgram
 
 DROP FUNCTION IF EXISTS patientHasEnrolledInDefaulterProgram;
