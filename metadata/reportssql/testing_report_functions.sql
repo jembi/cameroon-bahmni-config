@@ -624,6 +624,7 @@ BEGIN
         AND o.order_id IS NOT NULL
         AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
         AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
     IF (result IS NOT NULL) THEN
@@ -648,6 +649,7 @@ BEGIN
                     FROM concept c
                     WHERE c.uuid = p_testDateUuid
                     LIMIT 1)
+            ORDER BY o2.value_datetime DESC
             LIMIT 1
         ) BETWEEN p_startDate AND p_endDate
     LIMIT 1;
