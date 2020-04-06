@@ -450,7 +450,7 @@ CREATE FUNCTION getPatientARVStartDate(
     p_patientId INT(11)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    RETURN getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    RETURN getPatientProgramTreatmentStartDate(p_patientId);
 END$$
 DELIMITER ;
 

@@ -189,7 +189,7 @@ CREATE FUNCTION arvInitiationDateSpecified(
     p_patientId INT(11)) RETURNS VARCHAR(3)
     DETERMINISTIC
 BEGIN
-    IF getPatientDateOfEnrolmentInHIVProgram(p_patientId) IS NOT NULL THEN
+    IF getPatientProgramTreatmentStartDate(p_patientId) IS NOT NULL THEN
         RETURN "Yes";
     ELSE
         RETURN "No";
@@ -267,7 +267,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBefore(
     p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -286,7 +286,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentAfter(
     p_date DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -306,7 +306,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
     p_extendedMonths INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -326,7 +326,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -385,7 +385,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -666,7 +666,7 @@ CREATE FUNCTION patientHasStartedARVTreatment12MonthsAgo(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientDateOfEnrolmentInHIVProgram(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
