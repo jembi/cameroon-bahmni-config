@@ -614,6 +614,7 @@ CREATE FUNCTION getTestResultWithinReportingPeriod(
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(50);
+    DECLARE encounterId INT(11);
 
     -- retrieve the test result from OpenElis
     SELECT cn.name INTO result
@@ -632,6 +633,16 @@ BEGIN
     END IF;
 
     -- retrieve the test result from the lab form
+    SELECT o.encounter_id INTO encounterId
+    FROM obs o
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testDateUuid LIMIT 1)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC, o.date_created DESC
+    LIMIT 1;
+
     SELECT cn.name INTO result
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
@@ -639,19 +650,8 @@ BEGIN
         AND o.person_id = p_patientId
         AND o.order_id IS NULL
         AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
-        AND ( -- query the test date
-            SELECT o2.value_datetime
-            FROM obs o2
-            WHERE o2.encounter_id = o.encounter_id
-                AND o2.voided = 0
-                AND o2.concept_id = (
-                    SELECT c.concept_id
-                    FROM concept c
-                    WHERE c.uuid = p_testDateUuid
-                    LIMIT 1)
-            ORDER BY o2.value_datetime DESC
-            LIMIT 1
-        ) BETWEEN p_startDate AND p_endDate
+        AND o.encounter_id = encounterId
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
     RETURN result;
