@@ -297,45 +297,75 @@
                     }
                 },
                 {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "treatmentReportTxTb": {
+        "name": "Treatment Report (TX_TB)",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/template/treatment_tx_tb.xls",
+            "reports": [
+                {
                     "name": "Report7a",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7a_patient_starting_tb_treatment_newly_started_arv.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7a_patient_starting_tb_treatment_newly_started_arv.sql"
                     }
                 },
                 {
                     "name": "Report7b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7b_patient_starting_tb_treatment_already_on_arv.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7b_patient_starting_tb_treatment_already_on_arv.sql"
                     }
                 },
                 {
                     "name": "Report7c",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7c_patient_new_on_arv_screen_positive.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7c_patient_new_on_arv_screen_positive.sql"
                     }
                 },
                 {
                     "name": "Report7d",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7d_patient_new_on_arv_screen_negative.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7d_patient_new_on_arv_screen_negative.sql"
                     }
                 },
                 {
                     "name": "Report7e",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7e_patient_previously_on_arv_screen_positive.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7e_patient_previously_on_arv_screen_positive.sql"
                     }
                 },
                 {
                     "name": "Report7f",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7f_patient_previously_on_arv_screen_negative.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7f_patient_previously_on_arv_screen_negative.sql"
                     }
                 },
                 {
@@ -361,8 +391,7 @@
                 }
             ]
         }
-    },   
-
+    },
     "viralSuppressionReport": {
         "name": "Viral Suppression Report",
         "type": "concatenated",
