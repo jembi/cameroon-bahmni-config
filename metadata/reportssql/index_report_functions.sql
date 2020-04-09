@@ -104,7 +104,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     getPatientRegistrationDate(pat.patient_id) BETWEEN p_startDate AND p_endDate AND
     patientHasARelationshipWithIndex(pat.patient_id, "RELATIONSHIP_PARTNER");
 
