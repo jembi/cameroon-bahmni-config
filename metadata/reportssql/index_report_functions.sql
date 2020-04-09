@@ -11,7 +11,7 @@ CREATE FUNCTION Index_Indicator1a(
     DETERMINISTIC
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
-    DECLARE uuidServiceRequired VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
+    DECLARE uuidIndexTestingDateOffered VARCHAR(38) DEFAULT "836fe9d4-96f1-4fea-9ad8-35bd06e0ee05";
 
 SELECT
     COUNT(DISTINCT pat.patient_id) INTO result
@@ -21,10 +21,37 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     getPatientIndexTestingDateOffered(pat.patient_id) IS NOT NULL AND
-    getObsCodedShortNameValue(pat.patient_id, uuidServiceRequired) NOT IN ("Community home", "Community mobile");
+    getObsLocation(pat.patient_id, uuidIndexTestingDateOffered) NOT IN ("LOCATION_COMMUNITY_HOME", "LOCATION_COMMUNITY_MOBILE");
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+-- getObsLocation
+
+DROP FUNCTION IF EXISTS getObsLocation;
+
+DELIMITER $$
+CREATE FUNCTION getObsLocation(
+    p_patientId INT(11),
+    p_conceptUuid VARCHAR(38)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT
+        l.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN location l ON o.location_id = l.location_id AND l.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = p_conceptUuid
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
 DELIMITER ;
 
 -- getPatientIndexTestingDateOffered
