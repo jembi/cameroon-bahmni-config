@@ -214,7 +214,43 @@
             },
             "Eligible for HIV Repeat Test?": {
                 "important": true 
-            }, 
+            },
+            "3. Initial visit": {
+                "important": true 
+            },
+            "3.3 Treatments": {
+                "important": true 
+            },
+            "1. Index Testing": {
+                "important": true 
+            },
+            "Testing Entry Point and Modality": {
+                "important": true 
+            },
+            "HTC, Tested before": {
+                "important": true 
+            },
+            "HTC, Result if tested": {
+                "important": true 
+            },
+            "Date of First ANC Visit": {
+                "important": true 
+            },
+            "HTC, Result": {
+                "important": true 
+            },
+            "ARVs / ART": {
+                "important": true 
+            },
+            "ART, Status": {
+                "important": true 
+            },
+            "Start date": {
+                "important": true 
+            },
+            "Partners HIV status": {
+                "important": true 
+            },
             "Tuberculosis, Adverse Effects" :{
                 "multiSelect" : true,
                 "autocomplete" : true
