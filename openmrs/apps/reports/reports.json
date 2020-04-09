@@ -297,45 +297,75 @@
                     }
                 },
                 {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "treatmentReportTxTb": {
+        "name": "Treatment Report (TX_TB)",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/template/treatment_tx_tb.xls",
+            "reports": [
+                {
                     "name": "Report7a",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7a_patient_starting_tb_treatment_newly_started_arv.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7a_patient_starting_tb_treatment_newly_started_arv.sql"
                     }
                 },
                 {
                     "name": "Report7b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7b_patient_starting_tb_treatment_already_on_arv.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7b_patient_starting_tb_treatment_already_on_arv.sql"
                     }
                 },
                 {
                     "name": "Report7c",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7c_patient_new_on_arv_screen_positive.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7c_patient_new_on_arv_screen_positive.sql"
                     }
                 },
                 {
                     "name": "Report7d",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7d_patient_new_on_arv_screen_negative.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7d_patient_new_on_arv_screen_negative.sql"
                     }
                 },
                 {
                     "name": "Report7e",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7e_patient_previously_on_arv_screen_positive.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7e_patient_previously_on_arv_screen_positive.sql"
                     }
                 },
                 {
                     "name": "Report7f",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator7f_patient_previously_on_arv_screen_negative.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7f_patient_previously_on_arv_screen_negative.sql"
                     }
                 },
                 {
@@ -361,8 +391,7 @@
                 }
             ]
         }
-    },   
-
+    },
     "viralSuppressionReport": {
         "name": "Viral Suppression Report",
         "type": "concatenated",
@@ -474,14 +503,14 @@
                     "name": "Report6a",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6a_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6a_hiv_infected.sql"
                     }
                 },
                 {
                     "name": "Report6b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6b_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6b_hiv_uninfected.sql"
                     }
                 },
                 {
@@ -840,6 +869,66 @@
             ]
         }
     },
+
+    "preventionAdnSupportReport": {
+        "name": "Prevention and Support Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/template/prevention_and_support.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1a_numerator_newly_enrolled.sql"
+                    }
+                },
+                {
+                    "name": "Report1b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1b_numerator_previously_enrolled.sql"
+                    }
+                },   
+                {
+                    "name": "Report1c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1c_numerator_newly_enrolled.sql"
+                    }
+                }, 
+                {
+                    "name": "Report1d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1d_numerator_previously_enrolled.sql"
+                    }
+                },                
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    }, 
+
     "Myvisitreport": {
         "name": "Visit Report",
         "type": "concatenated",

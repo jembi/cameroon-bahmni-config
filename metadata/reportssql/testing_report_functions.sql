@@ -323,6 +323,54 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6a;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6a(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) = "Positive";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TESTING_Indicator6b;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6b(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) = "Negative";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
@@ -551,6 +599,87 @@ BEGIN
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+-- getPatientAgeInMonthsAtDate
+
+DROP FUNCTION IF EXISTS getPatientAgeInMonthsAtDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeInMonthsAtDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+
+    SELECT 
+        timestampdiff(MONTH, p.birthdate, p_date) INTO result 
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getTestResultWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getTestResultWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestResultWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_testUuid VARCHAR(38),
+    p_testDateUuid VARCHAR(38)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    DECLARE encounterId INT(11);
+
+    -- retrieve the test result from OpenElis
+    SELECT cn.name INTO result
+    FROM obs o
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NOT NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (result IS NOT NULL) THEN
+        RETURN result;
+    END IF;
+
+    -- retrieve the test result from the lab form
+    SELECT o.encounter_id INTO encounterId
+    FROM obs o
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testDateUuid LIMIT 1)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC, o.date_created DESC
+    LIMIT 1;
+
+    SELECT cn.name INTO result
+    FROM obs o
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
+        AND o.encounter_id = encounterId
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
 DELIMITER ;
 
 -- patientHasEnrolledIntoTBProgramDuringReportingPeriod
