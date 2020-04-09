@@ -1013,7 +1013,7 @@
         }
     },
     "IndexReport": {
-        "name": "Index Report",
+        "name": "CDC Report (HTS INDEX)",
         "type": "concatenated",
         "config": {
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/template/index.xls",
