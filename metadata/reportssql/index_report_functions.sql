@@ -19,7 +19,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     getPatientIndexTestingDateOffered(pat.patient_id) IS NOT NULL AND
     getObsCodedShortNameValue(pat.patient_id, uuidServiceRequired) NOT IN ("Community home", "Community mobile");
 
@@ -38,5 +38,35 @@ CREATE FUNCTION getPatientIndexTestingDateOffered(
 BEGIN
     DECLARE uuidIndexTestingDateOffered VARCHAR(38) DEFAULT "836fe9d4-96f1-4fea-9ad8-35bd06e0ee05";
     RETURN getObsDatetimeValue(p_patientId, uuidIndexTestingDateOffered);
+END$$
+DELIMITER ;
+
+-- patientAgeAtReportEndDateIsBetween
+
+DROP FUNCTION IF EXISTS patientAgeAtReportEndDateIsBetween;
+
+DELIMITER $$
+CREATE FUNCTION patientAgeAtReportEndDateIsBetween(
+    p_patientId INT(11),
+    p_startAge INT(11),
+    p_endAge INT(11),
+    p_includeEndAge TINYINT(1),
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1);
+
+    SELECT 
+        IF (p_includeEndAge, 
+            timestampdiff(YEAR, p.birthdate, p_endDate) BETWEEN p_startAge AND p_endAge, 
+            timestampdiff(YEAR, p.birthdate, p_endDate) >= p_startAge
+                AND timestampdiff(YEAR, p.birthdate, p_endDate) < p_endAge
+        ) INTO result  
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
 END$$
 DELIMITER ;
