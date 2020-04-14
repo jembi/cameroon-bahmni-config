@@ -371,6 +371,42 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6c;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6c(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) >= 18 AND
+        (
+            (
+                patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+                getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) IS NULL AND
+                getMostRecentOpenElisOrderDateWithinReportingPeriod(pat.patient_id,'PCR(ALERE-Q)', p_startDate, p_endDate) IS NULL
+            )
+            OR
+            (
+                patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
+                NOT patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
+            )
+        );
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
@@ -599,6 +635,102 @@ BEGIN
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+-- getMostRecentOpenElisOrderDateWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getMostRecentOpenElisOrderDateWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentOpenElisOrderDateWithinReportingPeriod(
+    p_patientId INT(11),
+    p_testName VARCHAR(255),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result DATE;
+
+    SELECT o.date_created INTO result
+    FROM orders o
+        JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en'
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND cn.name = p_testName
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+
+END$$
+DELIMITER ;
+
+-- patientAttendedHIVRelatedAppointmentWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS patientAttendedHIVRelatedAppointmentWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientAttendedHIVRelatedAppointmentWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE appointmentDate DATE;
+    DECLARE mostRecentHIVRelatedVisit DATE;
+
+    SELECT pa.start_date_time INTO appointmentDate
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time BETWEEN p_startDate AND p_endDate
+        AND aps.name IN ("APPOINTMENT_SERVICE_OPD_KEY", "APPOINTMENT_SERVICE_ART_KEY", "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
+    GROUP BY pa.patient_id;
+
+    IF appointmentDate IS NULL THEN
+        RETURN 0;
+    END IF;
+
+    SET mostRecentHIVRelatedVisit = getDateMostRecentHIVRelatedEncounterExcludingANC(p_patientId);
+
+    IF mostRecentHIVRelatedVisit IS NOT NULL AND mostRecentHIVRelatedVisit >= appointmentDate THEN
+        RETURN 1;
+    ELSE
+        RETURN 0;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getDateMostRecentHIVRelatedEncounterExcludingANC
+
+DROP FUNCTION IF EXISTS getDateMostRecentHIVRelatedEncounterExcludingANC;
+
+DELIMITER $$
+CREATE FUNCTION getDateMostRecentHIVRelatedEncounterExcludingANC(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT e.encounter_datetime INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND loc.name IN (
+            "LOCATION_ART",
+            "LOCATION_ART_DISPENSATION",
+            "LOCATION_OPD"
+        )
+    ORDER BY e.encounter_datetime DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
 DELIMITER ;
 
 -- getPatientAgeInMonthsAtDate
