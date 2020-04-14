@@ -251,6 +251,18 @@
             "Partners HIV status": {
                 "important": true 
             },
+            "Systemic exam": {
+                "important": true 
+            },
+            "TB screened": {
+                "important": true 
+            },
+            "3.2 Systemic Exam": {
+                "important": true 
+            },
+            "TB screened date": {
+                "important": true 
+            },
             "Tuberculosis, Adverse Effects" :{
                 "multiSelect" : true,
                 "autocomplete" : true
