@@ -83,6 +83,35 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS Index_Indicator1c;
+
+DELIMITER $$
+CREATE FUNCTION Index_Indicator1c(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidServiceRequired VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    getPatientRegistrationDate(pat.patient_id) BETWEEN p_startDate AND p_endDate AND
+    patientHasARelationshipWithIndex(pat.patient_id, "RELATIONSHIP_PARTNER");
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getPatientIndexTestingDateOffered
 
 DROP FUNCTION IF EXISTS getPatientIndexTestingDateOffered;
@@ -121,6 +150,46 @@ BEGIN
     FROM person p 
     WHERE p.voided = 0
         AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getPatientIndexTestingDateAccepted
+
+DROP FUNCTION IF EXISTS getPatientIndexTestingDateAccepted;
+
+DELIMITER $$
+CREATE FUNCTION getPatientIndexTestingDateAccepted(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidIndexTestingDateAccepted VARCHAR(38) DEFAULT "e7a002be-8afc-48b1-a81b-634e37f2961c";
+    RETURN getObsDatetimeValue(p_patientId, uuidIndexTestingDateAccepted);
+END$$
+DELIMITER ;
+
+-- patientHasARelationshipWithIndex
+
+DROP FUNCTION IF EXISTS patientHasARelationshipWithIndex;
+
+DELIMITER $$
+CREATE FUNCTION patientHasARelationshipWithIndex(
+    p_patientId INT(11),
+    p_relationshipType VARCHAR(255)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndex ON (r.person_a = p_patientId AND r.person_b = pIndex.person_id) OR
+                (r.person_a = pIndex.person_id AND r.person_b = p_patientId)
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndex.person_id) AND
+        rt.a_is_to_b = p_relationshipType
     LIMIT 1;
 
     RETURN result;
