@@ -392,8 +392,7 @@ BEGIN
         (
             (
                 patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-                getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) IS NULL AND
-                getMostRecentOpenElisOrderDateWithinReportingPeriod(pat.patient_id,'PCR(ALERE-Q)', p_startDate, p_endDate) IS NULL
+                getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) IS NULL
             )
             OR
             (
@@ -635,36 +634,6 @@ BEGIN
 
     RETURN (result);
 END$$ 
-DELIMITER ;
-
--- getMostRecentOpenElisOrderDateWithinReportingPeriod
-
-DROP FUNCTION IF EXISTS getMostRecentOpenElisOrderDateWithinReportingPeriod;
-
-DELIMITER $$
-CREATE FUNCTION getMostRecentOpenElisOrderDateWithinReportingPeriod(
-    p_patientId INT(11),
-    p_testName VARCHAR(255),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS TINYINT(1)
-    DETERMINISTIC
-BEGIN
-
-    DECLARE result DATE;
-
-    SELECT o.date_created INTO result
-    FROM orders o
-        JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en'
-    WHERE o.voided = 0
-        AND o.patient_id = p_patientId
-        AND o.date_created BETWEEN p_startDate AND p_endDate
-        AND cn.name = p_testName
-    ORDER BY o.date_created DESC
-    LIMIT 1;
-
-    RETURN result;
-
-END$$
 DELIMITER ;
 
 -- patientAttendedHIVRelatedAppointmentWithinReportingPeriod
