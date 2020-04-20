@@ -44,7 +44,8 @@
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"],
+                "important": true
             },
             "PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
@@ -138,7 +139,8 @@
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE": {
-                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY"],
+                "important" : true
             }
         },
         "patientContext": {
