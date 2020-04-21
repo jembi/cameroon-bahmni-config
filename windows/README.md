@@ -17,7 +17,7 @@ Assuming that VirtualBox is already installed on the windows server together wit
 * yum install acpid
 * chkconfig acpid on
 * service acpid start
-2. Download and install the MSI: https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/Setup/Bahmni%20Service.msi
+2. Download and install the MSI: https://github.com/jembi/cameroon-bahmni-config/tree/COM-823/windows/Setup
 3. Open up a CMD window on windows machine and run command _services.msc_
 * look for the service name _Bahmni_, right click on the service then go to properties. 
 * In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials.
