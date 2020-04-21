@@ -21,7 +21,7 @@ Assuming that VirtualBox is already installed on the windows server together wit
 2. Download and install the MSI: https://github.com/jembi/cameroon-bahmni-config/tree/COM-823/windows/Setup
 3. Open up a CMD window on windows machine and run command _services.msc_
 * look for the service name _Bahmni_, right click on the service then go to properties. 
-* In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. to do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, clock on OK and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials.
+* In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. To do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, click on the OK button and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials.
 * Restart the Bahmni windows service by right clicking on the service and selecting _restart_
 4. Open the file _serviceConfig.xml_ in path _C:\Program Files\Jembi Health Systems\Bahmni Service_ and specify the appropriate values for:
 * VM Name (The name of the Bahmni VM)
