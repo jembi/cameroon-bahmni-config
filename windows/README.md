@@ -3,7 +3,8 @@
 
 #### Background
 The purpose of the Bahmni Service is to automatically start and shutdown a VirtualBox Virtual Machine (VM). 
-The service operate as follows:
+
+The service operates as follows:
 1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command _VBoxManage.exe list runningvms_
 2. If the VM is not running, start the VM using the command _VBoxManage.exe startvm Bahmni --type headless_ 
 * The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
