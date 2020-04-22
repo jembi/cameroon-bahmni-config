@@ -27,7 +27,7 @@ Assuming that VirtualBox is already installed on the windows server together wit
    *  Restart the Bahmni windows service by right clicking on the service and selecting _restart_
 1. Open the file _serviceConfig.xml_ in path __*C:\Program Files\Jembi Health Systems\Bahmni Service*__ and specify the appropriate values for:
    *  VM Name (The name of the Bahmni VM as per vagrant config fille)
-        * The --name property defines the VM name: v.customize ["modifyvm", :id, "--memory", 10240, "--cpus", 4, "--name", "Bahmni-RPM-2"]
+        * The --name property defines the VM name: ["modifyvm", :id, "--memory", 10240, "--cpus", 4, "--name", "Bahmni-RPM-2"]
    *  Logs Path (The path on the windows server where the Bahmni Service will log events)
    *  Timer Interval (How often do you want the service to check and make sure that the bahmni VM is running. __Default is 2min__)
 1. Restart the Bahmni windows service by opening CMD window on windows machine and run command _services.msc_, look for _Bahmni_ service, right click on the service and select restart
