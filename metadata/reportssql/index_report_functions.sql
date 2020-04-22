@@ -96,7 +96,6 @@ CREATE FUNCTION Index_Indicator1c(
     DETERMINISTIC
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
-    DECLARE uuidServiceRequired VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
 
 SELECT
     COUNT(DISTINCT pat.patient_id) INTO result
@@ -106,13 +105,15 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     getPatientRegistrationDate(pat.patient_id) BETWEEN p_startDate AND p_endDate AND
-    patientHasARelationshipWithIndex(pat.patient_id, "RELATIONSHIP_PARTNER");
+    patientWithIndexPartner(pat.patient_id);
 
     RETURN (result);
 END$$
 DELIMITER ;
 
 DROP FUNCTION IF EXISTS Index_Indicator1d;
+
+-- Number of biological parents for index patient
 
 DELIMITER $$
 CREATE FUNCTION Index_Indicator1d(
@@ -125,7 +126,6 @@ CREATE FUNCTION Index_Indicator1d(
     DETERMINISTIC
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
-    DECLARE uuidServiceRequired VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
 
 SELECT
     COUNT(DISTINCT pat.patient_id) INTO result
@@ -135,10 +135,37 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     getPatientRegistrationDate(pat.patient_id) BETWEEN p_startDate AND p_endDate AND
-    (
-        patientHasARelationshipWithIndex(pat.patient_id, "RELATIONSHIP_BIO_FATHER")
-        OR patientHasARelationshipWithIndex(pat.patient_id, "RELATIONSHIP_BIO_MOTHER")
-    );
+    patientWithIndexChild(pat.patient_id);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Index_Indicator1e;
+
+-- Number of children for index patient
+
+DELIMITER $$
+CREATE FUNCTION Index_Indicator1e(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    getPatientRegistrationDate(pat.patient_id) BETWEEN p_startDate AND p_endDate AND
+    patientWithIndexParent(pat.patient_id);
 
     RETURN (result);
 END$$
@@ -202,14 +229,13 @@ BEGIN
 END$$
 DELIMITER ;
 
--- patientHasARelationshipWithIndex
+-- patientWithIndexPartner
 
-DROP FUNCTION IF EXISTS patientHasARelationshipWithIndex;
+DROP FUNCTION IF EXISTS patientWithIndexPartner;
 
 DELIMITER $$
-CREATE FUNCTION patientHasARelationshipWithIndex(
-    p_patientId INT(11),
-    p_relationshipType VARCHAR(255)) RETURNS TINYINT(1)
+CREATE FUNCTION patientWithIndexPartner(
+    p_patientId INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
@@ -217,11 +243,59 @@ BEGIN
     SELECT TRUE INTO result
     FROM relationship r
         JOIN person pIndex ON (r.person_a = p_patientId AND r.person_b = pIndex.person_id) OR
-                (r.person_a = pIndex.person_id AND r.person_b = p_patientId)
+            (r.person_a = pIndex.person_id AND r.person_b = p_patientId)
         JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
     WHERE r.voided = 0 AND
         getPatientIndexTestingDateAccepted(pIndex.person_id) IS NOT NULL AND
-        rt.a_is_to_b = p_relationshipType
+        rt.a_is_to_b = "RELATIONSHIP_PARTNER"
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientWithIndexChild
+
+DROP FUNCTION IF EXISTS patientWithIndexChild;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexChild(
+    p_parent INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndexChild ON r.person_a = pIndexChild.person_id AND r.person_b = p_parent
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndexChild.person_id) IS NOT NULL AND
+        (rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD")
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientWithIndexParent
+
+DROP FUNCTION IF EXISTS patientWithIndexParent;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexParent(
+    p_child INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndexParent ON r.person_b = pIndexParent.person_id AND r.person_a = p_child
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndexParent.person_id) IS NOT NULL AND
+        (rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD")
     LIMIT 1;
 
     RETURN result;
