@@ -23,10 +23,11 @@ Assuming that VirtualBox is already installed on the windows server together wit
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/setup/Bahmni%20Service.msi) on your windows server.
 1. Open up a CMD window on windows machine and run command _services.msc_
    *  Look for the service name _Bahmni_, right click on the service then go to properties. 
-   *  In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. To do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, click on the Apply button and then on the OK button and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials. __Note:__ Windows will automatically add a .\ infornt of the username. Please __do not__ remove this otherwise logon for that account will fail. 
+   *  In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. To do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, click on the Apply button and then on the OK button and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials. __Note:__ Windows will automatically add a .\ in front of the username. Please __do not__ remove this otherwise logon for that account will fail. 
    *  Restart the Bahmni windows service by right clicking on the service and selecting _restart_
-1. Open the file _serviceConfig.xml_ in path _C:\Program Files\Jembi Health Systems\Bahmni Service_ and specify the appropriate values for:
-   *  VM Name (The name of the Bahmni VM)
+1. Open the file _serviceConfig.xml_ in path __*C:\Program Files\Jembi Health Systems\Bahmni Service*__ and specify the appropriate values for:
+   *  VM Name (The name of the Bahmni VM as per vagrant config fille)
+        * The --name property defines the VM name: v.customize ["modifyvm", :id, "--memory", 10240, "--cpus", 4, "--name", "Bahmni-RPM-2"]
    *  Logs Path (The path on the windows server where the Bahmni Service will log events)
-   *  Timer Interval (How often do you want the service to check and make sure that the bahmni VM is running)
+   *  Timer Interval (How often do you want the service to check and make sure that the bahmni VM is running. __Default is 2min__)
 1. Restart the Bahmni windows service by opening CMD window on windows machine and run command _services.msc_, look for _Bahmni_ service, right click on the service and select restart
