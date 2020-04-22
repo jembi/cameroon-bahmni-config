@@ -11,7 +11,7 @@ The service operates as follows:
     * The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
 1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command _VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton_ to gracefully shutdown the VM
 
-The winows service is configured to automatically start whenever the windows server is booted up.
+The windows service is configured to automatically start whenever the windows server is booted up.
 
 ### Configuration Steps
 Assuming that VirtualBox is already installed on the windows server together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
