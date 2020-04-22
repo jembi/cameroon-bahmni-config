@@ -17,7 +17,7 @@ The winows service is configured to automatically start whenever the windows ser
 Assuming that VirtualBox is already installed on the windows server together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
 1. Login to the Bahmni VM and install ACPID (required for gracefull shutdown of VM):
-* yum install acpid
+   *  yum install acpid
 * chkconfig acpid on
 * service acpid start
 1. Download and install the MSI: https://github.com/jembi/cameroon-bahmni-config/tree/COM-823/windows/Setup
