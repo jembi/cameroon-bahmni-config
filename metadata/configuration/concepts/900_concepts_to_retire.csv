@@ -7,5 +7,6 @@ f14925ae-f09d-4920-a285-0f2c56751824,true,TSH to retire,TSH to retire,LabTest,N/
 1cad38f7-a7dc-44d9-b4f3-104490bab8cf,true,"HIVTC, TB Screened",,Misc,Boolean,,
 19aeb618-4c07-474d-8150-a0cdbb995a64,true,abc to retire,,Misc,N/A,,
 ea380283-4e14-11e4-8a57-0800271c1b75,true,Normal delivery to retire,Diagnosis,N/A,,
-ef29ac41-47c9-4f4d-9f53-0d4e797b9fef,true,PNC to retire,Misc,N/A,,
-bfdf3c6c-8b38-43ac-ac91-5dfb6a40bebb,true,Inpatient to retire,Misc,N/A,,
+ef29ac41-47c9-4f4d-9f53-0d4e797b9fef,true,PNC to retire,,Misc,N/A,,
+bfdf3c6c-8b38-43ac-ac91-5dfb6a40bebb,true,Inpatient to retire,,Misc,N/A,,
+e3f9c7ee-aa3e-4224-9d18-42e09b095ac6,true,ARV start date to retire,ARV start date to retire,Misc,Date,,
