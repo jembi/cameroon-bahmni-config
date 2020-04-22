@@ -1,19 +1,19 @@
 ## Bahmni Windows Service
 ===================================
 
-#### Background
+### Background
 The purpose of the Bahmni Service is to automatically start and shutdown a VirtualBox Virtual Machine (VM). 
 
 The service operates as follows:
 
 1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command __VBoxManage.exe list runningvms__
-2. If the VM is not running, start the VM using the command __VBoxManage.exe startvm BahmniVMNameHere --type headless__ 
+1. If the VM is not running, start the VM using the command __VBoxManage.exe startvm BahmniVMNameHere --type headless__ 
   * The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
-3. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command __VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton__ to gracefully shutdown the VM
+1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command __VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton__ to gracefully shutdown the VM
 
 The winows service is configured to automatically start whenever the windows server is booted up.
 
-#### Configuration Steps
+### Configuration Steps
 Assuming that VirtualBox is already installed on the windows server together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
 1. Login to the Bahmni VM and install ACPID (required for gracefull shutdown of VM):
