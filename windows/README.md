@@ -8,7 +8,7 @@ The service operates as follows:
 
 1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command __VBoxManage.exe list runningvms__
 1. If the VM is not running, start the VM using the command __VBoxManage.exe startvm BahmniVMNameHere --type headless__ 
-    1. Item 3a
+    * Item 3a
 1. The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
 1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command __VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton__ to gracefully shutdown the VM
 
