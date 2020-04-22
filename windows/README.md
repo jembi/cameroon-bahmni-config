@@ -6,10 +6,10 @@ The purpose of the Bahmni Service is to automatically start and shutdown a Virtu
 
 The service operates as follows:
 
-1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command __VBoxManage.exe list runningvms__
-1. If the VM is not running, start the VM using the command __VBoxManage.exe startvm BahmniVMNameHere --type headless__
+1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command _VBoxManage.exe list runningvms_
+1. If the VM is not running, start the VM using the command _VBoxManage.exe startvm BahmniVMNameHere --type headless_
     * The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
-1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command __VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton__ to gracefully shutdown the VM
+1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command _VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton_ to gracefully shutdown the VM
 
 The winows service is configured to automatically start whenever the windows server is booted up.
 
@@ -20,7 +20,7 @@ Assuming that VirtualBox is already installed on the windows server together wit
    *  yum install acpid
    *  chkconfig acpid on
    *  service acpid start
-1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/setup/Bahmni%20Service.msi)
+1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/setup/Bahmni%20Service.msi) on your windows server.
 1. Open up a CMD window on windows machine and run command _services.msc_
    *  Look for the service name _Bahmni_, right click on the service then go to properties. 
    *  In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. To do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, click on the OK button and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials.
