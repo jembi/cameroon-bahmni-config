@@ -1,0 +1,11 @@
+SELECT '(TX_NEW) Breastfeeding at initiation of ART' AS 'Title',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 10, 14, 1, 'F', 1) AS '10-14 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 15, 19, 1, 'F', 1) AS '15-19 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 20, 24, 1, 'F', 1) AS '20-24 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 25, 29, 1, 'F', 1) AS '25-29 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 30, 34, 1, 'F', 1) AS '30-34 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 35, 39, 1, 'F', 1) AS '35-39 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 40, 44, 1, 'F', 1) AS '40-44 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 45, 49, 1, 'F', 1) AS '45-49 years F',
+    TREATMENT_Indicator3('#startDate#','#endDate#', 50, 200, 1, 'F', 1) AS '>=50 years F',
+    0 AS 'Unknown Age F';

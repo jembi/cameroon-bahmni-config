@@ -323,6 +323,89 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS TESTING_Indicator6a;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6a(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) = "Positive";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TESTING_Indicator6b;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6b(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) <= 18 AND
+        getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) = "Negative";
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TESTING_Indicator6c;
+
+DELIMITER $$
+CREATE FUNCTION TESTING_Indicator6c(
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidPcrAlereQTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPcrAlereQTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        getPatientAgeInMonthsAtDate(pat.patient_id, p_endDate) >= 18 AND
+        (
+            (
+                patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+                getTestResultWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidPcrAlereQTest, uuidPcrAlereQTestDate) IS NULL
+            )
+            OR
+            (
+                patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
+                NOT patientAttendedHIVRelatedAppointmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
+            )
+        );
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
 DROP FUNCTION IF EXISTS Testing_Indicator7ab;
 
 DELIMITER $$
@@ -437,6 +520,295 @@ BEGIN
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8a;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8a(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestingAndCounsellingForm VARCHAR(38) DEFAULT "6bfd85ce-22c8-4b54-af0e-ab0af24240e3";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestingAndCounsellingForm) < p_startDate AND
+        getPatientHIVResultFromCounsellingForm(pat.patient_id) = "Positive" AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8b;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8b(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Positive", p_startDate, p_endDate) AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8c;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8c(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        patientHIVFinalTestResultIsWithinReportingPeriod(pat.patient_id, "Negative", p_startDate, p_endDate) AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    return (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS Testing_Indicator8d;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator8d(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM
+        patient pat
+    WHERE
+        patientGenderIs(pat.patient_id, p_gender) AND
+        patientHasEnrolledIntoTBProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientAttendedHIVRelatedAppointmentWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS patientAttendedHIVRelatedAppointmentWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientAttendedHIVRelatedAppointmentWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE appointmentDate DATE;
+    DECLARE mostRecentHIVRelatedVisit DATE;
+
+    SELECT pa.start_date_time INTO appointmentDate
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time BETWEEN p_startDate AND p_endDate
+        AND aps.name IN ("APPOINTMENT_SERVICE_OPD_KEY", "APPOINTMENT_SERVICE_ART_KEY", "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
+    GROUP BY pa.patient_id;
+
+    IF appointmentDate IS NULL THEN
+        RETURN 0;
+    END IF;
+
+    SET mostRecentHIVRelatedVisit = getDateMostRecentHIVRelatedEncounterExcludingANC(p_patientId);
+
+    IF mostRecentHIVRelatedVisit IS NOT NULL AND mostRecentHIVRelatedVisit >= appointmentDate THEN
+        RETURN 1;
+    ELSE
+        RETURN 0;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getDateMostRecentHIVRelatedEncounterExcludingANC
+
+DROP FUNCTION IF EXISTS getDateMostRecentHIVRelatedEncounterExcludingANC;
+
+DELIMITER $$
+CREATE FUNCTION getDateMostRecentHIVRelatedEncounterExcludingANC(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT e.encounter_datetime INTO result
+    FROM encounter e
+    JOIN `location` loc ON loc.location_id = e.location_id
+    WHERE e.voided = 0
+        AND e.patient_id = p_patientId
+        AND loc.name IN (
+            "LOCATION_ART",
+            "LOCATION_ART_DISPENSATION",
+            "LOCATION_OPD"
+        )
+    ORDER BY e.encounter_datetime DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getPatientAgeInMonthsAtDate
+
+DROP FUNCTION IF EXISTS getPatientAgeInMonthsAtDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeInMonthsAtDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+
+    SELECT 
+        timestampdiff(MONTH, p.birthdate, p_date) INTO result 
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getTestResultWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getTestResultWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestResultWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_testUuid VARCHAR(38),
+    p_testDateUuid VARCHAR(38)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    DECLARE encounterId INT(11);
+
+    -- retrieve the test result from OpenElis
+    SELECT cn.name INTO result
+    FROM obs o
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NOT NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (result IS NOT NULL) THEN
+        RETURN result;
+    END IF;
+
+    -- retrieve the test result from the lab form
+    SELECT o.encounter_id INTO encounterId
+    FROM obs o
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testDateUuid LIMIT 1)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC, o.date_created DESC
+    LIMIT 1;
+
+    SELECT cn.name INTO result
+    FROM obs o
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.order_id IS NULL
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
+        AND o.encounter_id = encounterId
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientHasEnrolledIntoTBProgramDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasEnrolledIntoTBProgramDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasEnrolledIntoTBProgramDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT
+        TRUE INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND pp.date_enrolled BETWEEN p_startDate AND p_endDate
+        AND pro.name = "TB_PROGRAM_KEY"
+    GROUP BY pro.name;
+
+    RETURN (result );
+END$$
 DELIMITER ;
 
 -- getPatientHIVDateFromCounsellingForm
@@ -1127,6 +1499,15 @@ BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidHIVTestFinalResult VARCHAR(38) DEFAULT "41e48d08-2235-47d5-af12-87a009057603";
 
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+    DECLARE withinReportingPeriod TINYINT(1) DEFAULT 0;
+
+    SET withinReportingPeriod = getObsDatetimeValueInSection(p_patientId, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate;
+    IF withinReportingPeriod IS NULL THEN
+        RETURN 0;
+    END IF;
+
     SELECT
         cn.name = p_result INTO result
     FROM obs o
@@ -1139,7 +1520,7 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1;
 
-    RETURN (result);
+    RETURN (result AND withinReportingPeriod);
 END$$
 DELIMITER ;
 

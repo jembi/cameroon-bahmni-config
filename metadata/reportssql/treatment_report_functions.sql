@@ -113,10 +113,12 @@ CREATE FUNCTION TREATMENT_Indicator3(
     p_startAge INT(11),
     p_endAge INT (11),
     p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
+    p_gender VARCHAR(1),
+    p_includeOnlyBreastfeeding TINYINT(1)) RETURNS INT(11)
     DETERMINISTIC
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
+    DECLARE uuidIsBreastfeeding VARCHAR(38) DEFAULT "242c9027-dc2d-42e6-869e-045e8a8b95cb";
 
 SELECT
     COUNT(DISTINCT pat.patient_id) INTO result
@@ -124,6 +126,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
+    (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding) = 'true') AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
@@ -298,6 +301,149 @@ WHERE
 
     RETURN (result);
 END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TREATMENT_Indicator5a;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator5a(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") < p_endDate AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TREATMENT_Indicator5b;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator5b(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") < p_endDate AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TREATMENT_Indicator7a;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator7a(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") BETWEEN p_startDate AND p_endDate AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS TREATMENT_Indicator7b;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator7b(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") BETWEEN p_startDate AND p_endDate AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getPatientDateOfEnrolmentInProgram
+
+DROP FUNCTION IF EXISTS getPatientDateOfEnrolmentInProgram;
+
+DELIMITER $$
+CREATE FUNCTION getPatientDateOfEnrolmentInProgram(
+    p_patientId INT(11),
+    p_program VARCHAR(50)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT
+        pp.date_enrolled INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND pro.name = p_program
+    ORDER BY pp.date_enrolled DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
 DELIMITER ;
 
 -- patientHasProgramOutcomeDeadWithinReportingPeriod
@@ -514,4 +660,34 @@ BEGIN
 
     RETURN (result );
 END$$ 
+DELIMITER ;
+
+-- getPatientMostRecentProgramAttributeValue
+
+DROP FUNCTION IF EXISTS getProgramAttributeValueWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getProgramAttributeValueWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_uuidProgramAttribute VARCHAR(38)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT ppa.value_reference INTO result
+    FROM patient_program_attribute ppa
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        pat.uuid = p_uuidProgramAttribute AND
+        ppa.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY ppa.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
 DELIMITER ;

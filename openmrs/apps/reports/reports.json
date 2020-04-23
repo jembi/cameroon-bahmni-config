@@ -234,6 +234,13 @@
                     }
                 },
                 {
+                    "name": "Report3b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator3b_breastfeeding_at_ART_init.sql"
+                    }
+                },
+                {
                     "name": "Report4a",
                     "type": "MRSGeneric",
                     "config": {
@@ -267,7 +274,28 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator4e_refused_treatment.sql"
                     }
-                },            
+                },
+                {
+                    "name": "Report5a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator5a_tb_new_on_art.sql"
+                    }
+                },
+                {
+                    "name": "Report5b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator5b_tb_already_on_art.sql"
+                    }
+                },
+                {
+                    "name": "Report6",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT/sql/indicator6_patients_with_no_clinical_contact.sql"
+                    }
+                },
                 {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
@@ -291,8 +319,79 @@
                 }
             ]
         }
-    },   
-
+    },
+    "treatmentReportTxTb": {
+        "name": "Treatment Report (TX_TB)",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/template/treatment_tx_tb.xls",
+            "reports": [
+                {
+                    "name": "Report7a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7a_patient_starting_tb_treatment_newly_started_arv.sql"
+                    }
+                },
+                {
+                    "name": "Report7b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7b_patient_starting_tb_treatment_already_on_arv.sql"
+                    }
+                },
+                {
+                    "name": "Report7c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7c_patient_new_on_arv_screen_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report7d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7d_patient_new_on_arv_screen_negative.sql"
+                    }
+                },
+                {
+                    "name": "Report7e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7e_patient_previously_on_arv_screen_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report7f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TREATMENT_REPORT_TX_TB/sql/indicator7f_patient_previously_on_arv_screen_negative.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     "viralSuppressionReport": {
         "name": "Viral Suppression Report",
         "type": "concatenated",
@@ -404,21 +503,21 @@
                     "name": "Report6a",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6a_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6a_hiv_infected.sql"
                     }
                 },
                 {
                     "name": "Report6b",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6b_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6b_hiv_uninfected.sql"
                     }
                 },
                 {
                     "name": "Report6c",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6c_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/TESTING_REPORT/sql/indicator6c_hiv_final_status_unknown.sql"
                     }
                 },
                 {
@@ -770,6 +869,66 @@
             ]
         }
     },
+
+    "preventionAdnSupportReport": {
+        "name": "Prevention and Support Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/template/prevention_and_support.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1a_numerator_newly_enrolled.sql"
+                    }
+                },
+                {
+                    "name": "Report1b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1b_numerator_previously_enrolled.sql"
+                    }
+                },   
+                {
+                    "name": "Report1c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1c_numerator_newly_enrolled.sql"
+                    }
+                }, 
+                {
+                    "name": "Report1d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PREVENTION_AND_SUPPORT/sql/indicator1d_numerator_previously_enrolled.sql"
+                    }
+                },                
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    }, 
+
     "Myvisitreport": {
         "name": "Visit Report",
         "type": "concatenated",
@@ -853,7 +1012,197 @@
             ]
         }
     },
-
+    "IndexReport": {
+        "name": "CDC Report (HTS INDEX)",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/template/index.xls",
+            "reports": [
+                {
+                    "name": "Report1a",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1a_new_diagnosed_in_facility.sql"
+                    }
+                },
+                {
+                    "name": "Report1b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1b_new_diagnosed_outside_facility.sql"
+                    }
+                },
+                {
+                    "name": "Report1c",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1c_number_sexual_contacts_index_patient.sql"
+                    }
+                },
+                {
+                    "name": "Report1d",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1d_number_biological_parents_index_patient.sql"
+                    }
+                },
+                {
+                    "name": "Report1e",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1e_number_children_index_patient.sql"
+                    }
+                },
+                {
+                    "name": "Report1f",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1f_number_sexual_contacts_tested_new_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1g",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1g_number_sexual_contacts_tested_new_negative.sql"
+                    }
+                },
+                {
+                    "name": "Report1h",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1h_number_sexual_contacts_tested_known_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1i",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1i_number_biological_parent_contacts_tested_new_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1j",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1j_number_biological_parent_contacts_tested_new_negative.sql"
+                    }
+                },
+                {
+                    "name": "Report1k",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1k_number_biological_parent_contacts_tested_known_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1l",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1l_number_child_contacts_tested_new_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1m",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1m_number_child_contacts_tested_new_negative.sql"
+                    }
+                },
+                {
+                    "name": "Report1n",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1n_number_child_contacts_tested_known_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1o",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1o_number_newly_diagnosed_hiv_positive_patients.sql"
+                    }
+                },
+                {
+                    "name": "Report1p",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1p_number_sexual_contacts_index_case_tested_new_positives.sql"
+                    }
+                },
+                {
+                    "name": "Report1q",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1q_number_biological_parent_contacts_index_cases_tested_new_positive.sql"
+                    }
+                },
+                {
+                    "name": "Report1r",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1r_number_child_contacts_index_cases_tested_new_positives.sql"
+                    }
+                },
+                {
+                    "name": "Report1s",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1s_number_clients_with_unsuppressed_vl_offered_ict.sql"
+                    }
+                },
+                {
+                    "name": "Report1t",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1t_number_clients_with_unsuppressed_vl_accepted_ict.sql"
+                    }
+                },
+                {
+                    "name": "Report1u",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1u_number_contacts_elicited_from_virally_unsuppressed_clients.sql"
+                    }
+                },
+                {
+                    "name": "Report1v",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1v_number_contacts_of_unsuppressed_vl_client_tested_for_hiv.sql"
+                    }
+                },
+                {
+                    "name": "Report1w",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/INDEX_REPORT/sql/indicator1w_number_contacts_of_unsuppressed_vl_client_tested_positive.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     "hivPatientsNotReportedOn": {
         "name": "HIV patients not reported on",
         "type": "concatenated",

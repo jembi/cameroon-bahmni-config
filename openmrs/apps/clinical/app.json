@@ -44,6 +44,10 @@
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"],
+                "important": true
+            },
+            "PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_1_DURATION_ON_ART": {
@@ -106,7 +110,7 @@
             "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
-            "PROGRAM_MANAGEMENT_8_RETURNED_TO_TREATMENT_DATE": {
+            "PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_4_TRACKING_DATE": {
@@ -135,7 +139,8 @@
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE": {
-                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY"],
+                "important" : true
             }
         },
         "patientContext": {
@@ -174,6 +179,91 @@
                 "nonCodedConceptName":"Non-Coded Chief Complaint",
                 "durationRequired": false,
                 "allowAddMore": true
+            },
+
+            "HTC, HIV Test": {
+                "important": true
+            },
+            "Index Testing": {
+                "important": true
+            },
+            "HIV Test Date": {
+                "important": true
+            },
+            "Index testing offered?": {
+                "important": true
+            },
+            "Index testing accepted?": {
+                "important": true
+            },
+            "HIV Status": {
+                "important": true
+            },
+            "HIV Tested": {
+                "important": true
+            },
+            "Final Result": {
+                "important": true
+            },
+            "Final Test Result": {
+                "important": true
+            },
+            "Prior to ANC Enrolment": {
+                "important": true
+            },
+            "At ANC Enrolment": {
+                "important": true 
+            },
+            "Eligible for HIV Repeat Test?": {
+                "important": true 
+            },
+            "3. Initial visit": {
+                "important": true 
+            },
+            "3.3 Treatments": {
+                "important": true 
+            },
+            "1. Index Testing": {
+                "important": true 
+            },
+            "Testing Entry Point and Modality": {
+                "important": true 
+            },
+            "HTC, Tested before": {
+                "important": true 
+            },
+            "HTC, Result if tested": {
+                "important": true 
+            },
+            "Date of First ANC Visit": {
+                "important": true 
+            },
+            "HTC, Result": {
+                "important": true 
+            },
+            "ARVs / ART": {
+                "important": true 
+            },
+            "ART, Status": {
+                "important": true 
+            },
+            "Start date": {
+                "important": true 
+            },
+            "Partners HIV status": {
+                "important": true 
+            },
+            "Systemic exam": {
+                "important": true 
+            },
+            "TB screened": {
+                "important": true 
+            },
+            "3.2 Systemic Exam": {
+                "important": true 
+            },
+            "TB screened date": {
+                "important": true 
             },
             "Tuberculosis, Adverse Effects" :{
                 "multiSelect" : true,
