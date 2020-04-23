@@ -168,7 +168,7 @@ namespace Bahmni
 
                             if (!standardOutput.Contains("running (virtualbox)"))
                             {
-                                if (standardOutput.Contains("poweroff"))
+                                if (standardOutput.Contains("poweroff (virtualbox)"))
                                 {
                                     vmMustStart = true;
                                     WriteLog("VM is powered off! : " + DateTime.Now);
