@@ -8,7 +8,6 @@ namespace Bahmni
 {
     public partial class Service1 : ServiceBase
     {
-        const string VIRTUALBOX_VBOXMANAGE_EXE_DIRECTORY = @"C:\Program Files\Oracle\VirtualBox";
         const string LOG_FILENAME = "Bahmni_Service_Log";
        
         public Service1()
@@ -34,10 +33,10 @@ namespace Bahmni
             else
             {
                 WriteLog("Bahmni service started : " + DateTime.Now);
-                WriteLog("Checking VM status every " + sc.TIMER_INTERVAL_MINS + "min");
+                WriteLog("Checking VM status every " + sc.timerIntervalMins + "min");
 
                 var timer = new Timer();
-                timer.Interval = ConvertMinutesToMilliseconds(sc.TIMER_INTERVAL_MINS);
+                timer.Interval = ConvertMinutesToMilliseconds(sc.timerIntervalMins);
                 timer.Elapsed += getVmStatus;
                 timer.Enabled = true;
                 timer.Start();
@@ -46,6 +45,8 @@ namespace Bahmni
 
         protected override void OnStop()
         {
+            base.RequestAdditionalTime(1000 * 60 * 2); //give service extra 1min to halt VM
+
             var sc = new serviceConfig();
 
             sc.getServiceSettingsXml();
@@ -63,7 +64,7 @@ namespace Bahmni
                 {
                     using (var process = new Process())
                     {
-                        initialiseCmdProcess(process, "VBoxManage.exe controlvm " + sc.VM_NAME + " acpipowerbutton");
+                        initialiseCmdProcess(process, "vagrantHalt.bat", sc);
 
                         using (process.StandardOutput)
                         {
@@ -85,18 +86,18 @@ namespace Bahmni
             }
         }
 
-        private void initialiseCmdProcess(Process proc, string command)
+        private void initialiseCmdProcess(Process proc, string command, serviceConfig conf)
         {
-            var info = new ProcessStartInfo("cmd.exe", @"/k ""cd /d " + VIRTUALBOX_VBOXMANAGE_EXE_DIRECTORY + @"""");
+            var info = new ProcessStartInfo("cmd.exe", @"/k ""cd /d " + conf.executionDirectory + @"""");
 
             info.RedirectStandardOutput = true;
             info.RedirectStandardError = true;
             info.UseShellExecute = false;
             info.RedirectStandardInput = true;
-
+            info.CreateNoWindow = true;
+           
             proc.StartInfo = info;
             proc.Start();
-
             proc.StandardInput.WriteLine(command);
             proc.StandardInput.Close();
         }
@@ -113,12 +114,12 @@ namespace Bahmni
             }
             else
             {
-                if (!Directory.Exists(sc.LOGS_PATH))
+                if (!Directory.Exists(sc.logsPath))
                 {
-                    Directory.CreateDirectory(sc.LOGS_PATH);
+                    Directory.CreateDirectory(sc.logsPath);
                 }
 
-                var filepath = sc.LOGS_PATH + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+                var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
 
                 if (!File.Exists(filepath))
                 {
@@ -159,19 +160,34 @@ namespace Bahmni
                 {
                     using (var process = new Process())
                     {
-                        initialiseCmdProcess(process, "VBoxManage.exe list runningvms");
+                        initialiseCmdProcess(process, "vagrantStatus.bat", sc);
 
                         using (process.StandardOutput)
                         {
-                            if (!process.StandardOutput.ReadToEnd().ToLower().Contains(sc.VM_NAME.ToLower()))
+                            var standardOutput = process.StandardOutput.ReadToEnd().ToLower();
+
+                            if (!standardOutput.Contains("running"))
                             {
-                                vmMustStart = true;
-                                WriteLog("VM not running! : " + DateTime.Now);
+                                if (standardOutput.Contains("poweroff"))
+                                {
+                                    vmMustStart = true;
+                                    WriteLog("VM is powered off! : " + DateTime.Now);
+                                }
+                                else if (standardOutput.Contains("not created (virtualbox)"))
+                                {
+                                    WriteLog("VM has not been created! Contact the system administrator : " + DateTime.Now);
+                                }
+                                else
+                                {
+                                    WriteLog("Unable to verify the status of the VM! : " + DateTime.Now);
+                                }
                             }
                             else
                             {
                                 WriteLog("VM is running! : " + DateTime.Now);
                             }
+
+                            standardOutput = null;
                         }
 
                         using (process.StandardError)
@@ -211,7 +227,7 @@ namespace Bahmni
                 {
                     using (var process = new Process())
                     {
-                        initialiseCmdProcess(process, "VBoxManage.exe startvm " + sc.VM_NAME + " --type headless");
+                        initialiseCmdProcess(process, "vagrantUp.bat", sc);
 
                         using (process.StandardOutput)
                         {

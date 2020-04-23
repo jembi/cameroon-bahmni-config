@@ -3,7 +3,7 @@
   <serviceSettings>
     <VM_NAME>Bahmni</VM_NAME>
     <LOGS_PATH>C:\Bahmni\Bahmni Service Logs</LOGS_PATH>
-    <TIMER_INTERVAL_MINS>5</TIMER_INTERVAL_MINS>
+    <TIMER_INTERVAL_MINS>2</TIMER_INTERVAL_MINS>
     <EXECUTION_DIRECTORY>C:\Bahmni</EXECUTION_DIRECTORY>
   </serviceSettings>
 </Bahmni>

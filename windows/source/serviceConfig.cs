@@ -11,9 +11,10 @@ namespace Bahmni
 {
     class serviceConfig
     {
-        public string VM_NAME { get; set; }
-        public string LOGS_PATH { get; set; }
-        public int TIMER_INTERVAL_MINS { get; set; }
+        public string vmName { get; set; }
+        public string logsPath { get; set; }
+        public int timerIntervalMins { get; set; }
+        public string executionDirectory { get; set; }
         public string errorMsg { get; set; }
 
         public void getServiceSettingsXml()
@@ -27,14 +28,16 @@ namespace Bahmni
                                 {
                                     VM_NAME = (string)n.Element("VM_NAME").Value,
                                     LOGS_PATH = (string)n.Element("LOGS_PATH").Value,
-                                    TIMER_INTERVAL_MINS = Convert.ToInt32(n.Element("TIMER_INTERVAL_MINS").Value)
+                                    TIMER_INTERVAL_MINS = Convert.ToInt32(n.Element("TIMER_INTERVAL_MINS").Value),
+                                    EXECUTION_DIRECTORY = n.Element("EXECUTION_DIRECTORY").Value
                                 });
 
                 foreach (var setting in settings)
                 {
-                    VM_NAME = setting.VM_NAME;
-                    LOGS_PATH = setting.LOGS_PATH;
-                    TIMER_INTERVAL_MINS = setting.TIMER_INTERVAL_MINS;
+                    vmName = setting.VM_NAME;
+                    logsPath = setting.LOGS_PATH;
+                    timerIntervalMins = setting.TIMER_INTERVAL_MINS;
+                    executionDirectory = setting.EXECUTION_DIRECTORY;
                 }
 
                 settings = null;
@@ -48,9 +51,10 @@ namespace Bahmni
 
         ~serviceConfig()
         {
-            VM_NAME = null;
-            LOGS_PATH = null;
-            TIMER_INTERVAL_MINS = 0;
+            vmName = null;
+            logsPath = null;
+            timerIntervalMins = 0;
+            executionDirectory = null;
             errorMsg = null;
         }
     }
