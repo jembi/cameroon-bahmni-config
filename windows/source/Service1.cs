@@ -166,7 +166,7 @@ namespace Bahmni
                         {
                             var standardOutput = process.StandardOutput.ReadToEnd().ToLower();
 
-                            if (!standardOutput.Contains("running"))
+                            if (!standardOutput.Contains("running (virtualbox)"))
                             {
                                 if (standardOutput.Contains("poweroff"))
                                 {
@@ -176,6 +176,10 @@ namespace Bahmni
                                 else if (standardOutput.Contains("not created (virtualbox)"))
                                 {
                                     WriteLog("VM has not been created! Contact the system administrator : " + DateTime.Now);
+                                }
+                                else if (standardOutput.Contains("aborted (virtualbox)"))
+                                {
+                                    WriteLog("VM is in an aborted state due to the session being closed too quickly without gracefully shutting down! : " + DateTime.Now);
                                 }
                                 else
                                 {
