@@ -1,5 +1,5 @@
 ## Bahmni Windows Service
-=========================
+===========================
 
 ### Background
 The purpose of the Bahmni Service is to automatically start and gracefully halt a Vagrant Virtual Machine (VM). 
