@@ -15,7 +15,7 @@ The windows service is configured to automatically start whenever the windows se
 ### MSI Configuration Steps
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
-1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/setup/Bahmni%20Service.msi) on your windows server.
+1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.5.0/Bahmni.Service.msi) on your windows server.
    *  During installation you will be prompted to confirm the following:
       1. The Vagrant root directory on the windows server (This is the directory where the rootCA.pem and Vagrantfile files are stored)
       1. The logs directory on the windows server where the Bahmni service will log all events
