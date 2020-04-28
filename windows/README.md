@@ -22,6 +22,7 @@ Assuming that VirtualBox is already installed on the windows server together wit
       1. Service Login - This is the administrative account that was used at the time of installing the VM. __Note__: When specifying the Username, make sure to enter the prefix __.\__ in front of the username. For example, .\MyUserName
 
 ### Group Policy (GPO) Editor Configuration Steps
+#### Configure Shutdown
 1. Open the local group policy on the Windows machine by opening a CMD windows and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown)
 1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
 1. Double click on Shutdown and click on the tab called PowerShell Scripts
@@ -30,3 +31,5 @@ Assuming that VirtualBox is already installed on the windows server together wit
 1. At the bottom of the Window there is a dropdown that allows you to specify the running order of the scripts. Click on the dropdown and select __*Run Windows PowerShell scripts first*__
 1. Click on Apply button then OK button
 1. Open a CMD window (if one is not already open) and run command __*gpupdate /force*__
+
+#### Configure Power Management
