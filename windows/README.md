@@ -25,6 +25,8 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
 ### Group Policy (GPO) Editor Configuration Steps
 Open the local group policy on the Windows machine by opening a CMD windows and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
 
+After applying the below settings, open a CMD window (if one is not already open) and run command __*gpupdate /force*__
+
 #### Configure Shutdown
 1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
 1. Double click on Shutdown and click on the tab called PowerShell Scripts
@@ -32,7 +34,6 @@ Open the local group policy on the Windows machine by opening a CMD windows and 
 1. Leave the Script Parameters box blank and click on OK button
 1. At the bottom of the Window there is a dropdown that allows you to specify the running order of the scripts. Click on the dropdown and select __*Run Windows PowerShell scripts first*__
 1. Click on Apply button then OK button
-1. Open a CMD window (if one is not already open) and run command __*gpupdate /force*__
 
 #### Configure Power Management
 This section describes how to leverage the local GPO on the Windows Server to automatically and gracefully shutdown the server when the battery level reaches a capacity of 15%. This is critical step to ensure that the Windows machine can shutdown both the VM and itself before running out of battery power. This also reduces the risk of facing corrupted files in both systems. __Note__: It is recommended that the battery level of 15% is not changed as the VM could need up to 2min to gracefully shutdown.
