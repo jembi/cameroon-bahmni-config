@@ -2,33 +2,31 @@
 ===================================
 
 ### Background
-The purpose of the Bahmni Service is to automatically start and shutdown a VirtualBox Virtual Machine (VM). 
+The purpose of the Bahmni Service is to automatically start and gracefully halt a Vagrant Virtual Machine (VM). 
 
 The service operates as follows:
 
-1. At configured intervals, checks to see if the Bahmni CentOS VM is running by querying the list of running VMs using command _VBoxManage.exe list runningvms_
-1. If the VM is not running, start the VM using the command _VBoxManage.exe startvm BahmniVMNameHere --type headless_
-    * The parameter --type headless means that the VM must be started in VirtualBox without opening a window.
-1. If the VM is running and the service is stopped (user or when the hosting windows machine has been shutdown), the service will use the command _VBoxManage.exe controlvm BahmniVMNameHere acpipowerbutton_ to gracefully shutdown the VM
+1. At configured intervals, checks to see if the VM is running
+1. If the VM is not running, start the VM
+1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM
 
-The windows service is configured to automatically start whenever the windows server is booted up.
+The windows service is configured to automatically start whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins.
 
-### Configuration Steps
+### MSI Configuration Steps
 Assuming that VirtualBox is already installed on the windows server together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
-1. Login to the Bahmni VM and install ACPID (required for gracefull shutdown of VM):
-   *  yum install acpid
-   *  chkconfig acpid on
-   *  service acpid start
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-bahmni-config/blob/COM-823/windows/setup/Bahmni%20Service.msi) on your windows server.
-1. Open up a CMD window on windows machine and run command _services.msc_
-   *  Look for the service name _Bahmni_, right click on the service then go to properties. 
-   *  In the Log On tab, click on _This Account_ radio button and specify the windows credentials for the user profile under which the Bahmni VM was installed. To do this, click on the Browse button and enter the user name then click on check name. Once the user has been accepted, click on the Apply button and then on the OK button and then enter the password for the user. For example, if the user _Administrator_ was used when installing the Bhamni VM, then you must specify the Administrator credentials. __Note:__ Windows will automatically add a .\ in front of the username. Please __do not__ remove this otherwise logon for that account will fail. 
-   *  Restart the Bahmni windows service by right clicking on the service and selecting _restart_
-1. Open the file _serviceConfig.xml_ in path __*C:\Program Files\Jembi Health Systems\Bahmni Service*__ and specify the appropriate values for:
-   *  VM Name (The name of the Bahmni VM as per vagrant config fille)
-      *  The --name property defines the VM name: ["modifyvm", :id, "--memory", 10240, "--cpus", 4, "--name", "Bahmni-RPM-2"]
-      *  __Note:__ The VM name is case sensitive so make sure that VM name looks exactly the same as per the vagrant config file
-   *  Logs Path (The path on the windows server where the Bahmni Service will log events)
-   *  Timer Interval (How often do you want the service to check and make sure that the bahmni VM is running. __Default is 2min__)
-1. Restart the Bahmni windows service by opening CMD window on windows machine and run command _services.msc_, look for _Bahmni_ service, right click on the service and select restart
+   *  During installation you will be prompted to confirm the following:
+      1. The Vagrant root directory on the windows server (This is the directory where the rootCA.pem and Vagrantfile files are stored)
+      1. The logs directory on the windows server where the Bahmni service will log all events
+      1. Service Login - This is the administrative account that was used at the time of installing the VM. __Note__: When specifying the Username, make sure to enter the prefix __.\__ in front of the username. For example, .\MyUserName
+
+### Group Policy (GPO) Editor Configuration Steps
+1. Open the local group policy on the Windows machine by opening a CMD windows and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown)
+1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
+1. Double click on Shutdown and click on the tab called PowerShell Scripts
+1. Click on Add button and navigate to the Vagrant root path where the file __stopBahmni.ps1__ is saved, select the file and click on Open
+1. Leave the Script Parameters box blank and click on OK button
+1. At the bottom of the Window there is a dropdown that allows you to specify the running order of the scripts. Click on the dropdown and select __*Run Windows PowerShell scripts first*__
+1. Click on Apply button then OK button
+1. Open a CMD window (if one is not already open) and run command __*gpupdate /force*__
