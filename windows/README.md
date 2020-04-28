@@ -1,5 +1,5 @@
 ## Bahmni Windows Service
-===================================
+=========================
 
 ### Background
 The purpose of the Bahmni Service is to automatically start and gracefully halt a Vagrant Virtual Machine (VM). 
@@ -34,4 +34,18 @@ Open the local group policy on the Windows machine by opening a CMD windows and 
 1. Open a CMD window (if one is not already open) and run command __*gpupdate /force*__
 
 #### Configure Power Management
+This section describes how to leverage the local GPO on the Windows Server to automatically and gracefully shutdown the server when the battery level reaches a capacity of 10%.
+
+##### Critical battery notification action
 1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Notification Settings*__
+1.  Double click on Critical battery notification action:
+  *  Click on the __*Enable*__ radio button
+  *  In the Critical Battery Notification Action dropdown, select Shut down
+1.  Click on Apply button then OK button
+
+##### Critical battery notification level
+1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Notification Settings*__
+1.  Double click on Critical battery notification level:
+  *  Click on the __*Enable*__ radio button
+  *  In the Critical Battery Notification Level listbox, enter 10
+1.  Click on Apply button then OK button
