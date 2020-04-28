@@ -8,7 +8,6 @@ namespace Bahmni
 {
     class serviceConfig
     {
-        public string vmName { get; set; }
         public string logsPath { get; set; }
         public int timerIntervalMins { get; set; }
         public string executionDirectory { get; set; }
@@ -23,7 +22,6 @@ namespace Bahmni
                 var settings = (from n in xml.Descendants("serviceSettings")
                                 select new
                                 {
-                                    VM_NAME = (string)n.Element("VM_NAME").Value,
                                     LOGS_PATH = (string)n.Element("LOGS_PATH").Value,
                                     TIMER_INTERVAL_MINS = Convert.ToInt32(n.Element("TIMER_INTERVAL_MINS").Value),
                                     EXECUTION_DIRECTORY = n.Element("EXECUTION_DIRECTORY").Value
@@ -31,7 +29,6 @@ namespace Bahmni
 
                 foreach (var setting in settings)
                 {
-                    vmName = setting.VM_NAME;
                     logsPath = setting.LOGS_PATH;
                     timerIntervalMins = setting.TIMER_INTERVAL_MINS;
                     executionDirectory = setting.EXECUTION_DIRECTORY;
@@ -43,7 +40,7 @@ namespace Bahmni
             }
         }
 
-        public bool installerSetServiceSettingsXml(string vagrantRooDir, string vmName, string logsDirectory)
+        public bool installerSetServiceSettingsXml(string vagrantRooDir, string logsDirectory)
         {
             try
             {
@@ -56,7 +53,6 @@ namespace Bahmni
                 foreach (var setting in settings)
                 {
                     setting.SetElementValue("EXECUTION_DIRECTORY", vagrantRooDir);
-                    setting.SetElementValue("VM_NAME", vmName);
                     setting.SetElementValue("LOGS_PATH", logsDirectory);
                 }
 
@@ -74,7 +70,6 @@ namespace Bahmni
 
         ~serviceConfig()
         {
-            vmName = null;
             logsPath = null;
             timerIntervalMins = 0;
             executionDirectory = null;

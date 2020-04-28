@@ -56,12 +56,11 @@ namespace Bahmni
         private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
             var rootVagrantInstallPath = Context.Parameters["rootVagrantInstallPath"];
-            var vagrantVmName = Context.Parameters["vmName"];
             var logsPath = Context.Parameters["logsPath"];
 
             var conf = new serviceConfig();
 
-            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, vagrantVmName, logsPath);
+            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, logsPath);
 
             if (conf.errorMsg != null)
             {
