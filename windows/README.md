@@ -34,7 +34,7 @@ Open the local group policy on the Windows machine by opening a CMD windows and 
 1. Open a CMD window (if one is not already open) and run command __*gpupdate /force*__
 
 #### Configure Power Management
-This section describes how to leverage the local GPO on the Windows Server to automatically and gracefully shutdown the server when the battery level reaches a capacity of 10%.
+This section describes how to leverage the local GPO on the Windows Server to automatically and gracefully shutdown the server when the battery level reaches a capacity of 15%. This is critical step to ensure that the Windows machine can shutdown both the VM and itself before running out of battery power. This also reduces the risk of facing corrupted files in both systems. __Note__: It is recommended that the battery level of 15% is not changed as the VM could need up to 2min to gracefully shutdown.
 
 ##### Critical battery notification action
 1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Notification Settings*__
@@ -47,5 +47,5 @@ This section describes how to leverage the local GPO on the Windows Server to au
 1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Notification Settings*__
 1.  Double click on Critical battery notification level:
   *  Click on the __*Enable*__ radio button
-  *  In the Critical Battery Notification Level listbox, enter 10
+  *  In the Critical Battery Notification Level listbox, enter 15
 1.  Click on Apply button then OK button
