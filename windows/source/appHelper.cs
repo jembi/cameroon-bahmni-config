@@ -27,7 +27,7 @@ namespace Bahmni
             }
             catch (Exception error)
             {
-                WriteLog("An eror occurred while attempting to update registry! " + error.Message);
+                WriteLog("An error occurred while attempting to update registry! " + error.Message);
             }
 
             return false;
@@ -61,43 +61,46 @@ namespace Bahmni
             return false;
         }
 
-        public static void WriteLog(string Message)
+        public static void WriteLog(string logText)
         {
-            var sc = new serviceConfig();
-
-            sc.getServiceSettingsXml();
-
-            if (sc.errorMsg != null)
+            if (!String.IsNullOrWhiteSpace(logText))
             {
-                WriteLog(sc.errorMsg);
-            }
-            else
-            {
-                if (!Directory.Exists(sc.logsPath))
-                {
-                    Directory.CreateDirectory(sc.logsPath);
-                }
+                var sc = new serviceConfig();
 
-                var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+                sc.getServiceSettingsXml();
 
-                if (!File.Exists(filepath))
+                if (sc.errorMsg != null)
                 {
-                    using (var sw = File.CreateText(filepath))
-                    {
-                        sw.WriteLine("Logged at [" + DateTime.Now + "]");
-                        sw.WriteLine(Message);
-                    }
+                    WriteLog(sc.errorMsg);
                 }
                 else
                 {
-                    using (var sw = File.AppendText(filepath))
+                    if (!Directory.Exists(sc.logsPath))
                     {
-                        sw.WriteLine("Logged at [" + DateTime.Now + "]");
-                        sw.WriteLine(Message);
+                        Directory.CreateDirectory(sc.logsPath);
                     }
-                }
 
-                filepath = null;
+                    var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToString("dd-MMM-yyyy") + ".txt";
+
+                    if (!File.Exists(filepath))
+                    {
+                        using (var sw = File.CreateText(filepath))
+                        {
+                            sw.WriteLine("Logged at [" + DateTime.Now.Date + "]");
+                            sw.WriteLine(logText);
+                        }
+                    }
+                    else
+                    {
+                        using (var sw = File.AppendText(filepath))
+                        {
+                            sw.WriteLine("Logged at [" + DateTime.Now + "]");
+                            sw.WriteLine(logText);
+                        }
+                    }
+
+                    filepath = null;
+                }
             }
         }
     }

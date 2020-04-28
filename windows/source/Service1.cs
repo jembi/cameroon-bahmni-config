@@ -26,7 +26,7 @@ namespace Bahmni
             }
             else
             {
-                appHelper.WriteLog("Bahmni service started\nChecking VM status every " + sc.timerIntervalMins + "min");
+                appHelper.WriteLog("Bahmni service started...Checking VM status every " + sc.timerIntervalMins + "min");
                 
                 var timer = new System.Timers.Timer();
                 timer.Interval = TimeSpan.FromMinutes(sc.timerIntervalMins).TotalMilliseconds;
@@ -60,7 +60,7 @@ namespace Bahmni
                 {
                     using (var process = new Process())
                     {
-                        appHelper.WriteLog("Bahmni service stopping!\nHalting Bahmni VM...");
+                        appHelper.WriteLog("Bahmni service stopping and halting Bahmni VM...");
                        
                         initialiseCmdProcess(process, "vagrantHalt.bat", sc);
                       
@@ -71,8 +71,7 @@ namespace Bahmni
 
                         using (process.StandardError)
                         {
-                            if (process.StandardError.ReadToEnd().Trim() != "")
-                                appHelper.WriteLog(process.StandardError.ReadToEnd());
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -91,8 +90,7 @@ namespace Bahmni
 
                         using (process.StandardError)
                         {
-                            if (process.StandardError.ReadToEnd().Trim() != "")
-                                appHelper.WriteLog(process.StandardError.ReadToEnd());
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -196,8 +194,7 @@ namespace Bahmni
 
                         using (process.StandardError)
                         {
-                            if (process.StandardError.ReadToEnd().Trim() != "")
-                                appHelper.WriteLog(process.StandardError.ReadToEnd());
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -246,8 +243,7 @@ namespace Bahmni
 
                         using (process.StandardError)
                         {
-                            if (process.StandardError.ReadToEnd().Trim() != "")
-                                appHelper.WriteLog(process.StandardError.ReadToEnd());
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
