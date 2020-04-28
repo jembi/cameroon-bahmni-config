@@ -19,7 +19,8 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
    *  During installation you will be prompted to confirm the following:
       1. The Vagrant root directory on the windows server (This is the directory where the rootCA.pem and Vagrantfile files are stored)
       1. The logs directory on the windows server where the Bahmni service will log all events
-      1. Service Login - This is the administrative account that was used at the time of installing the VM. __Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName
+      1. Service Login - This is the administrative account that was used at the time of installing the VM. 
+      * __Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName
 
 ### Group Policy (GPO) Editor Configuration Steps
 Open the local group policy on the Windows machine by opening a CMD windows and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
