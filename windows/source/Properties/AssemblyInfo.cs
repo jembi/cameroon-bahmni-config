@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bahmni Service")]
-[assembly: AssemblyDescription("Bahmni service to start/stop VirtualBox VM")]
+[assembly: AssemblyDescription("Bahmni service to start/stop Vagrant")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jembi Health Systems")]
 [assembly: AssemblyProduct("Bahmni")]

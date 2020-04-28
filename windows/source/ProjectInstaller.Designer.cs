@@ -39,7 +39,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "Bahmni service to start/stop VirtualBox VM";
+            this.serviceInstaller1.Description = "Bahmni service to start/stop Vagrant";
             this.serviceInstaller1.DisplayName = "Bahmni";
             this.serviceInstaller1.ServiceName = "Bahmni";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;

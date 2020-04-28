@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Reflection;
-using System.IO;
 
 namespace Bahmni
 {
@@ -39,14 +36,40 @@ namespace Bahmni
                     timerIntervalMins = setting.TIMER_INTERVAL_MINS;
                     executionDirectory = setting.EXECUTION_DIRECTORY;
                 }
-
-                settings = null;
-                xml = null;
             }
             catch (Exception error)
             {
-                errorMsg = "Error while retrieving service settings. " + error.Message + " : " + DateTime.Now;
+                errorMsg = "Error while retrieving service settings. " + error.Message;
             }
+        }
+
+        public bool installerSetServiceSettingsXml(string vagrantRooDir, string vmName, string logsDirectory)
+        {
+            try
+            {
+                var xmlPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\serviceConfig.xml";
+
+                var xml = XDocument.Load(xmlPath);
+
+                var settings = (from n in xml.Descendants("serviceSettings") select n);
+
+                foreach (var setting in settings)
+                {
+                    setting.SetElementValue("EXECUTION_DIRECTORY", vagrantRooDir);
+                    setting.SetElementValue("VM_NAME", vmName);
+                    setting.SetElementValue("LOGS_PATH", logsDirectory);
+                }
+
+                xml.Save(xmlPath);
+
+                return true;
+            }
+            catch (Exception error)
+            {
+                errorMsg = "Error while opening or updating the settings in serviceConfig.xml:  " + error.Message;
+            }
+
+            return false;
         }
 
         ~serviceConfig()

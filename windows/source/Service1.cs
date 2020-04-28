@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.ServiceProcess;
-using System.Timers;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Bahmni
 {
     public partial class Service1 : ServiceBase
     {
-        const string LOG_FILENAME = "Bahmni_Service_Log";
-       
         public Service1()
         {
             InitializeComponent();
-        }
 
-        public static double ConvertMinutesToMilliseconds(double minutes)
-        {
-            return TimeSpan.FromMinutes(minutes).TotalMilliseconds;
+            this.CanStop = true;
         }
 
         protected override void OnStart(string[] args)
@@ -28,24 +22,29 @@ namespace Bahmni
 
             if (sc.errorMsg != null)
             {
-                WriteLog(sc.errorMsg);
+                appHelper.WriteLog(sc.errorMsg);
             }
             else
             {
-                WriteLog("Bahmni service started : " + DateTime.Now);
-                WriteLog("Checking VM status every " + sc.timerIntervalMins + "min");
-
-                var timer = new Timer();
-                timer.Interval = ConvertMinutesToMilliseconds(sc.timerIntervalMins);
+                appHelper.WriteLog("Bahmni service started\nChecking VM status every " + sc.timerIntervalMins + "min");
+                
+                var timer = new System.Timers.Timer();
+                timer.Interval = TimeSpan.FromMinutes(sc.timerIntervalMins).TotalMilliseconds;
                 timer.Elapsed += getVmStatus;
                 timer.Enabled = true;
                 timer.Start();
+
+                RequestAdditionalTime(2 * 60 * 1000);
+                //Start VM immediately after a shutdown if its not running
+                vmStatus();
             }
+
+            base.OnStart(args);
         }
 
-        protected override void OnStop()
+        private void haltVM()
         {
-            base.RequestAdditionalTime(1000 * 60 * 2); //give service extra 1min to halt VM
+            RequestAdditionalTime(2 * 60 * 1000);
 
             var sc = new serviceConfig();
 
@@ -53,27 +52,47 @@ namespace Bahmni
 
             if (sc.errorMsg != null)
             {
-                WriteLog(sc.errorMsg);
+                appHelper.WriteLog(sc.errorMsg);
             }
             else
             {
-                WriteLog("Bahmni service stopped : " + DateTime.Now);
-                WriteLog("Halting Bahmni VM...");
-
                 try
                 {
                     using (var process = new Process())
                     {
+                        appHelper.WriteLog("Bahmni service stopping!\nHalting Bahmni VM...");
+                       
                         initialiseCmdProcess(process, "vagrantHalt.bat", sc);
-
+                      
                         using (process.StandardOutput)
                         {
-                            WriteLog(process.StandardOutput.ReadToEnd());
+                            appHelper.WriteLog(process.StandardOutput.ReadToEnd());
                         }
 
                         using (process.StandardError)
                         {
-                            WriteLog(process.StandardError.ReadToEnd());
+                            if (process.StandardError.ReadToEnd().Trim() != "")
+                                appHelper.WriteLog(process.StandardError.ReadToEnd());
+                        }
+
+                        process.WaitForExit();
+                    }
+
+                    using (var process = new Process())
+                    {
+                        appHelper.WriteLog("Verifying whether Bamni was halted...");
+
+                        initialiseCmdProcess(process, "vagrantStatus.bat", sc);
+
+                        using (process.StandardOutput)
+                        {
+                            appHelper.WriteLog(process.StandardOutput.ReadToEnd());
+                        }
+
+                        using (process.StandardError)
+                        {
+                            if (process.StandardError.ReadToEnd().Trim() != "")
+                                appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -81,9 +100,22 @@ namespace Bahmni
                 }
                 catch (Exception error)
                 {
-                    WriteLog(error.Message + " : " + DateTime.Now);
+                    appHelper.WriteLog("An error occurred while halting the VM! " + error.Message);
                 }
             }
+        }
+
+        protected override void OnStop()
+        {
+            var timeout = 10000;
+            var task = Task.Factory.StartNew(() => haltVM());
+
+            while (!task.Wait(timeout))
+            {
+                RequestAdditionalTime(timeout); //Keep adding an additional 10 seconds until the task has completed
+            }
+
+            base.OnStop();
         }
 
         private void initialiseCmdProcess(Process proc, string command, serviceConfig conf)
@@ -102,7 +134,7 @@ namespace Bahmni
             proc.StandardInput.Close();
         }
 
-        private void WriteLog(string Message)
+        private void vmStatus()
         {
             var sc = new serviceConfig();
 
@@ -110,51 +142,13 @@ namespace Bahmni
 
             if (sc.errorMsg != null)
             {
-                WriteLog(sc.errorMsg);
-            }
-            else
-            {
-                if (!Directory.Exists(sc.logsPath))
-                {
-                    Directory.CreateDirectory(sc.logsPath);
-                }
-
-                var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
-
-                if (!File.Exists(filepath))
-                {
-                    using (var sw = File.CreateText(filepath))
-                    {
-                        sw.WriteLine(Message);
-                    }
-                }
-                else
-                {
-                    using (var sw = File.AppendText(filepath))
-                    {
-                        sw.WriteLine(Message);
-                    }
-                }
-
-                filepath = null;
-            }
-        }
-
-        private void getVmStatus(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            var sc = new serviceConfig();
-
-            sc.getServiceSettingsXml();
-
-            if (sc.errorMsg != null)
-            {
-                WriteLog(sc.errorMsg);
+                appHelper.WriteLog(sc.errorMsg);
             }
             else
             {
                 bool vmMustStart = false;
 
-                WriteLog("Checking Bahmni VM status : " + DateTime.Now);
+                appHelper.WriteLog("Checking Bahmni VM status...");
 
                 try
                 {
@@ -171,24 +165,30 @@ namespace Bahmni
                                 if (standardOutput.Contains("poweroff (virtualbox)"))
                                 {
                                     vmMustStart = true;
-                                    WriteLog("VM is powered off! : " + DateTime.Now);
+                                    appHelper.WriteLog("VM is powered off!");
                                 }
                                 else if (standardOutput.Contains("not created (virtualbox)"))
                                 {
-                                    WriteLog("VM has not been created! Contact the system administrator : " + DateTime.Now);
+                                    appHelper.WriteLog("VM has not been created! Contact the system administrator");
                                 }
                                 else if (standardOutput.Contains("aborted (virtualbox)"))
                                 {
-                                    WriteLog("VM is in an aborted state due to the session being closed too quickly without gracefully shutting down! : " + DateTime.Now);
+                                    vmMustStart = true;
+                                    appHelper.WriteLog("VM is in an aborted state due to the session being closed too quickly without gracefully shutting down!");
+                                }
+                                else if (standardOutput.Contains("saved (virtualbox)"))
+                                {
+                                    vmMustStart = true;
+                                    appHelper.WriteLog("VM is in a saved state!");
                                 }
                                 else
                                 {
-                                    WriteLog("Unable to verify the status of the VM! : " + DateTime.Now);
+                                    appHelper.WriteLog("Unable to verify the status of the VM!");
                                 }
                             }
                             else
                             {
-                                WriteLog("VM is running! : " + DateTime.Now);
+                                appHelper.WriteLog("VM is running!");
                             }
 
                             standardOutput = null;
@@ -196,7 +196,8 @@ namespace Bahmni
 
                         using (process.StandardError)
                         {
-                            WriteLog(process.StandardError.ReadToEnd());
+                            if (process.StandardError.ReadToEnd().Trim() != "")
+                                appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -204,13 +205,18 @@ namespace Bahmni
                 }
                 catch (Exception error)
                 {
-                    WriteLog(error.Message + " : " + DateTime.Now);
+                    appHelper.WriteLog("An error occurred while verifying the VM status! " + error.Message);
                 }
 
                 //Only call startVM() when the parent process has exited
                 if (vmMustStart)
                     startVm();
             }
+        }
+
+        private void getVmStatus(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            vmStatus();
         }
 
         private void startVm()
@@ -221,11 +227,11 @@ namespace Bahmni
 
             if (sc.errorMsg != null)
             {
-                WriteLog(sc.errorMsg);
+                appHelper.WriteLog(sc.errorMsg);
             }
             else
             {
-                WriteLog("Starting Bahmni VM... : " + DateTime.Now);
+                appHelper.WriteLog("Starting Bahmni VM...");
 
                 try
                 {
@@ -235,12 +241,13 @@ namespace Bahmni
 
                         using (process.StandardOutput)
                         {
-                            WriteLog(process.StandardOutput.ReadToEnd());
+                            appHelper.WriteLog(process.StandardOutput.ReadToEnd());
                         }
 
                         using (process.StandardError)
                         {
-                            WriteLog(process.StandardError.ReadToEnd());
+                            if (process.StandardError.ReadToEnd().Trim() != "")
+                                appHelper.WriteLog(process.StandardError.ReadToEnd());
                         }
 
                         process.WaitForExit();
@@ -248,7 +255,7 @@ namespace Bahmni
                 }
                 catch (Exception error)
                 {
-                    WriteLog(error.Message + " : " + DateTime.Now);
+                    appHelper.WriteLog("An error occurred while starting the VM! " + error.Message);
                 }
             }
         }
