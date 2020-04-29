@@ -26,7 +26,8 @@ SELECT
     getPatientARVStartDate(v.patient_id) as 'ARV Start Date',
     getViralLoadTestDate(v.patient_id) as 'Viral Load Test Date',
     getViralLoadTestResult(v.patient_id) as 'Viral Load Test Result',
-    getListOfActiveARVDrugs(v.patient_id, '#startDate#', '#endDate#') as 'Active Drugs'
+    getListOfActiveARVDrugs(v.patient_id, '#startDate#', '#endDate#') as 'Active Drugs',
+    (select address1 from location where name = "LOCATION_HOSPITAL") as 'HF name'
 FROM visit v
     JOIN visit_type vt ON v.visit_type_id = vt.visit_type_id
 WHERE
