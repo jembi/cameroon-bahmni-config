@@ -55,6 +55,10 @@ namespace Bahmni
 
         private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
+            var serviceInstaller = (ServiceInstaller)sender;
+
+            appHelper.ServiceName = serviceInstaller.ServiceName;
+
             var rootVagrantInstallPath = Context.Parameters["rootVagrantInstallPath"];
             var logsPath = Context.Parameters["logsPath"];
 
@@ -75,8 +79,6 @@ namespace Bahmni
 
             if (!appHelper.processFiles(rootVagrantInstallPath))
                 throw new System.Exception("Unable to copy one or more Vagrant script files from the source directory to the Vagrant root directory!");
-
-            var serviceInstaller = (ServiceInstaller)sender;
 
             using (var sc = new ServiceController(serviceInstaller.ServiceName))
             {

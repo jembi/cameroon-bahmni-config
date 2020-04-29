@@ -3,13 +3,16 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Linq;
 
 namespace Bahmni
 {
     public class appHelper
     {
         const string LOG_FILENAME = "Bahmni_Service_Log";
-
+        const string APP_INFO = "Bahmni_Service_Info";
+        public static string ServiceName = null;
+        
         public static bool disableFastStartUp(bool mustDisable)
         {
             const string HKLM = "HKEY_LOCAL_MACHINE";
@@ -61,6 +64,59 @@ namespace Bahmni
             return false;
         }
 
+        private static string getMSIProductVersion()
+        {
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))
+                {
+                    if (key != null)
+                    {
+                        foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+                        {
+                            var displayName = subkey.GetValue("DisplayName") as string;
+                            if (displayName != null && displayName.ToLower().Contains("bahmni service"))
+                            {
+                                return (string)subkey.GetValue("DisplayVersion");
+                            }
+                        }
+                    }
+
+                    key.Close();
+                }
+            }
+            catch (Exception error)
+            {
+                WriteLog("An error occurred while attempting to get the product version number from registry for the Bahmni Service MSI: " + error.Message);
+            }
+            finally
+            {
+                ServiceName = null;
+            }
+
+            return null;
+        }
+
+        private static void WriteAppInfoToLog(serviceConfig conf)
+        {
+            var filepath = conf.executionDirectory + @"\" + APP_INFO + ".txt";
+
+            if (!File.Exists(filepath))
+            {
+                using (var sw = File.CreateText(filepath))
+                {
+                    var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                    var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                    sw.WriteLine("Bahmni service installed on " + DateTime.Now);
+                    sw.WriteLine("Bahmni assembly file version: " + fvi.FileVersion);
+                    sw.WriteLine("Bahmni MSI product version: " + getMSIProductVersion());
+                }
+            }
+           
+            filepath = null;
+        }
+
         public static void WriteLog(string logText)
         {
             if (!String.IsNullOrWhiteSpace(logText))
@@ -86,7 +142,7 @@ namespace Bahmni
                     {
                         using (var sw = File.CreateText(filepath))
                         {
-                            sw.WriteLine("Logged at [" + DateTime.Now.Date + "]");
+                            sw.WriteLine("Logged at [" + DateTime.Now + "]");
                             sw.WriteLine(logText);
                         }
                     }
@@ -101,6 +157,8 @@ namespace Bahmni
 
                     filepath = null;
                 }
+
+                WriteAppInfoToLog(sc);
             }
         }
     }
