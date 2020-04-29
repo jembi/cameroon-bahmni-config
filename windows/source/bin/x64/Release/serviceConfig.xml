@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Bahmni>
   <serviceSettings>
-    <LOGS_PATH>C:\Bahmni\Bahmni Service Logs</LOGS_PATH>
+    <LOGS_PATH>C:\EMR\bahmni\bahmni-service-logs</LOGS_PATH>
     <TIMER_INTERVAL_MINS>10</TIMER_INTERVAL_MINS>
-    <EXECUTION_DIRECTORY>C:\Bahmni</EXECUTION_DIRECTORY>
+    <EXECUTION_DIRECTORY>C:\EMR\bahmni</EXECUTION_DIRECTORY>
   </serviceSettings>
 </Bahmni>
