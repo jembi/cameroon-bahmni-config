@@ -43,11 +43,11 @@ This section describes how to leverage the local GPO on the Windows Server to au
 1.  Double click on Critical battery notification action:
   *  Click on the __*Enable*__ radio button
   *  In the Critical Battery Notification Action dropdown, select Shut down
-1.  Click on Apply button then OK button
+3.  Click on Apply button then OK button
 
 ##### Critical battery notification level
 1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Notification Settings*__
 1.  Double click on Critical battery notification level:
   *  Click on the __*Enable*__ radio button
   *  In the Critical Battery Notification Level listbox, enter 15
-1.  Click on Apply button then OK button
+3.  Click on Apply button then OK button
