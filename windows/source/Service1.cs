@@ -35,7 +35,7 @@ namespace Bahmni
                 vmStatusCheckTimer.Start();
 
                 //Start VM immediately after a shutdown if its not running. First wait 2min before calling the function to check the VM status
-                callWithDelay(startVm, 2 * 60 * 1000);
+                callWithDelay(vmStatus, 2 * 60 * 1000);
             }
 
             base.OnStart(args);
