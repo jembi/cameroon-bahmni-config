@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Bahmni
 {
-    class serviceConfig
+    public class serviceConfig
     {
         public string logsPath { get; set; }
         public int timerIntervalMins { get; set; }

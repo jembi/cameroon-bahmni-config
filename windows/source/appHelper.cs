@@ -10,9 +10,9 @@ namespace Bahmni
     public class appHelper
     {
         const string LOG_FILENAME = "Bahmni_Service_Log";
-        const string APP_INFO = "Bahmni_Service_Info";
+        public const string APP_INFO = "Bahmni_Service_Info";
         public static string ServiceName = null;
-        
+
         public static bool disableFastStartUp(bool mustDisable)
         {
             const string HKLM = "HKEY_LOCAL_MACHINE";
@@ -22,7 +22,7 @@ namespace Bahmni
             try
             {
                 if (mustDisable) //0 = fast boot turned off, 1 = turned on
-                    Registry.SetValue(HKLM_HIBERBOOT_KEY_PATH, "HiberbootEnabled", 0, RegistryValueKind.DWord); 
+                    Registry.SetValue(HKLM_HIBERBOOT_KEY_PATH, "HiberbootEnabled", 0, RegistryValueKind.DWord);
                 else
                     Registry.SetValue(HKLM_HIBERBOOT_KEY_PATH, "HiberbootEnabled", 1, RegistryValueKind.DWord);
 
@@ -41,7 +41,7 @@ namespace Bahmni
             try
             {
                 var sourcePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\scripts";
-             
+
                 if (!Directory.Exists(vagrantRooDir))
                 {
                     Directory.CreateDirectory(vagrantRooDir);
@@ -64,26 +64,31 @@ namespace Bahmni
             return false;
         }
 
-        private static string getMSIProductVersion()
+        private static string[] getMSIProductVersion()
         {
+            var regValues = new string[2];
+
             try
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))
                 {
                     if (key != null)
                     {
-                        foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+                        foreach (var subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
                         {
                             var displayName = subkey.GetValue("DisplayName") as string;
                             if (displayName != null && displayName.ToLower().Contains("bahmni service"))
                             {
-                                return (string)subkey.GetValue("DisplayVersion");
+                                regValues[0] = (string)subkey.GetValue("DisplayVersion");
+                                regValues[1] = (string)subkey.GetValue("InstallDate");
                             }
                         }
                     }
 
                     key.Close();
                 }
+
+                return regValues;
             }
             catch (Exception error)
             {
@@ -92,12 +97,13 @@ namespace Bahmni
             finally
             {
                 ServiceName = null;
+                regValues = null;
             }
 
             return null;
         }
 
-        private static void WriteAppInfoToLog(serviceConfig conf)
+        public static void WriteAppInfoToFile(serviceConfig conf)
         {
             var filepath = conf.executionDirectory + @"\" + APP_INFO + ".txt";
 
@@ -107,13 +113,18 @@ namespace Bahmni
                 {
                     var assembly = System.Reflection.Assembly.GetExecutingAssembly();
                     var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                    var regValues = getMSIProductVersion();
 
-                    sw.WriteLine("Bahmni service installed on " + DateTime.Now);
+                    sw.WriteLine("Bahmni service installed on " + regValues[1]);
                     sw.WriteLine("Bahmni assembly file version: " + fvi.FileVersion);
-                    sw.WriteLine("Bahmni MSI product version: " + getMSIProductVersion());
+                    sw.WriteLine("Bahmni MSI product version: " + regValues[0]);
+
+                    regValues = null;
+                    assembly = null;
+                    fvi = null;
                 }
             }
-           
+
             filepath = null;
         }
 
@@ -131,6 +142,8 @@ namespace Bahmni
                 }
                 else
                 {
+                    WriteAppInfoToFile(sc);
+
                     if (!Directory.Exists(sc.logsPath))
                     {
                         Directory.CreateDirectory(sc.logsPath);
@@ -157,8 +170,6 @@ namespace Bahmni
 
                     filepath = null;
                 }
-
-                WriteAppInfoToLog(sc);
             }
         }
     }

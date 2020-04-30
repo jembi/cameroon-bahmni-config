@@ -23,7 +23,7 @@ namespace Bahmni
         protected override void OnBeforeUninstall(IDictionary savedState)
         {
             try
-            {     
+            {
                 using (var sv = new ServiceController(serviceInstaller1.ServiceName))
                 {
                     if (sv.Status != ServiceControllerStatus.Stopped)
