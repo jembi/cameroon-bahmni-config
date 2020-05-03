@@ -61,6 +61,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -77,12 +78,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="appHelper.cs" />
+    <Compile Include="groupPolicy.cs" />
+    <Compile Include="IniFile.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="registry.cs" />
     <Compile Include="Service1.cs">
       <SubType>Component</SubType>
     </Compile>

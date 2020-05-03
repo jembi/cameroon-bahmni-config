@@ -14,6 +14,17 @@ namespace Bahmni
             this.CanStop = true;
         }
 
+        private void initializeVmStatusTimer(serviceConfig conf)
+        {
+            appHelper.WriteLog("Bahmni service started...Checking VM status every " + conf.timerIntervalMins + "min");
+
+            var vmStatusCheckTimer = new System.Timers.Timer();
+            vmStatusCheckTimer.Interval = TimeSpan.FromMinutes(conf.timerIntervalMins).TotalMilliseconds;
+            vmStatusCheckTimer.Elapsed += getVmStatus;
+            vmStatusCheckTimer.Enabled = true;
+            vmStatusCheckTimer.Start();
+        }
+
         protected override void OnStart(string[] args)
         {
             var sc = new serviceConfig();
@@ -26,16 +37,13 @@ namespace Bahmni
             }
             else
             {
-                appHelper.WriteLog("Bahmni service started...Checking VM status every " + sc.timerIntervalMins + "min");
-
-                var vmStatusCheckTimer = new System.Timers.Timer();
-                vmStatusCheckTimer.Interval = TimeSpan.FromMinutes(sc.timerIntervalMins).TotalMilliseconds;
-                vmStatusCheckTimer.Elapsed += getVmStatus;
-                vmStatusCheckTimer.Enabled = true;
-                vmStatusCheckTimer.Start();
+                //First wait 30seconds before starting the timer for vm status checks
+                Action vmStatusTimer = () => initializeVmStatusTimer(sc);
+                callWithDelay(vmStatusTimer, 1 * 30 * 1000);
 
                 //Start VM immediately after a shutdown if its not running. First wait 2min before calling the function to check the VM status
-                callWithDelay(vmStatus, 2 * 60 * 1000);
+                Action checkVmStatus = () => vmStatus();
+                callWithDelay(checkVmStatus, 1 * 60 * 2000);
             }
 
             base.OnStart(args);

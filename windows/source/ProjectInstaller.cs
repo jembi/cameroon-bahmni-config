@@ -22,6 +22,23 @@ namespace Bahmni
 
         protected override void OnBeforeUninstall(IDictionary savedState)
         {
+            registry.fastStartUp(false);
+
+            registry.criticalBatteryNotificationAction(true);
+
+            registry.criticalBatteryNotificationLevel(true);
+
+            var conf = new serviceConfig();
+
+            conf.getServiceSettingsXml();
+
+            if (conf.errorMsg != null)
+            {
+                appHelper.WriteLog(conf.errorMsg);
+            }
+
+            registry.shutdownPowerShellScript(true, conf);
+
             try
             {
                 using (var sv = new ServiceController(serviceInstaller1.ServiceName))
@@ -43,9 +60,6 @@ namespace Bahmni
             {
                 base.OnBeforeUninstall(savedState);
             }
-
-            if (!appHelper.disableFastStartUp(false))
-                throw new System.Exception("Unable to turn on windows fast boot!");
         }
 
         private void serviceProcessInstaller1_AfterInstall(object sender, InstallEventArgs e)
@@ -56,8 +70,6 @@ namespace Bahmni
         private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
             var serviceInstaller = (ServiceInstaller)sender;
-
-            appHelper.ServiceName = serviceInstaller.ServiceName;
 
             var rootVagrantInstallPath = Context.Parameters["rootVagrantInstallPath"];
             var logsPath = Context.Parameters["logsPath"];
@@ -74,11 +86,22 @@ namespace Bahmni
             if (!checkVagrantSettingsDone)
                 throw new System.Exception("Unable to update the serviceConfig.xml file");
 
-            if (!appHelper.disableFastStartUp(true))
+            if (!registry.fastStartUp(true))
                 throw new System.Exception("Unable to turn off windows fast boot!");
+
+            if (!registry.criticalBatteryNotificationAction(false))
+                throw new System.Exception("Unable to turn on critical battery notification action!");
+
+            if (!registry.criticalBatteryNotificationLevel(false))
+                throw new System.Exception("Unable to turn on critical battery notification level!");
 
             if (!appHelper.processFiles(rootVagrantInstallPath))
                 throw new System.Exception("Unable to copy one or more Vagrant script files from the source directory to the Vagrant root directory!");
+
+            conf.getServiceSettingsXml();
+
+            if (!registry.shutdownPowerShellScript(false, conf))
+                throw new System.Exception("Unable to add the shutdown script!");
 
             using (var sc = new ServiceController(serviceInstaller.ServiceName))
             {
