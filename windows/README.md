@@ -23,9 +23,9 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
           * *__Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName*
 
 ### Group Policy (GPO) Editor Configuration Steps
-Open the local group policy on the Windows machine by opening a CMD window and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
+__*Note*__: *The Bahmni service automatically handles the following group policy requirements.*
 
-After applying the below settings, open a CMD window (if one is not already open) and run command __*gpupdate /force*__
+To verify or manually add the group policy requirements, open the local group policy on the Windows machine by opening a CMD window and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
 
 #### Configure Shutdown
 1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
