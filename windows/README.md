@@ -10,7 +10,7 @@ The service operates as follows:
 1. If the VM is not running, start the VM
 1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM
 
-The windows service is configured to automatically start whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
+The windows service is configured to automatically start (after 1min) whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
 
 ### MSI Configuration Steps
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
