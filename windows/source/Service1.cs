@@ -41,7 +41,7 @@ namespace Bahmni
                 Action vmStatusTimer = () => initializeVmStatusTimer(sc);
                 callWithDelay(vmStatusTimer, 1 * 30 * 1000);
 
-                //Start VM immediately after a shutdown if its not running. First wait 2min before calling the function to check the VM status
+                //Start VM immediately after a shutdown if its not running. First wait 1min before calling the function to check the VM status
                 Action checkVmStatus = () => vmStatus();
                 callWithDelay(checkVmStatus, 1 * 60 * 2000);
             }

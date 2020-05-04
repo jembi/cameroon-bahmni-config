@@ -9,6 +9,7 @@ namespace Bahmni
     {
         const string HKLM = "HKEY_LOCAL_MACHINE";
         const string PSSCRIPTS_INI_PATH = @"C:\Windows\System32\GroupPolicy\Machine\Scripts\psscripts.ini";
+        const string PSSCRIPTS_INI_ROOT_PATH = @"C:\Windows\System32\GroupPolicy\Machine\Scripts\";
         const string SHUTDOWN_SCRIPT_NAME = "stopBahmni.ps1";
 
         public static bool fastStartUp(bool mustDisable)
@@ -81,6 +82,27 @@ namespace Bahmni
         {
             try
             {
+                if (!Directory.Exists(PSSCRIPTS_INI_ROOT_PATH + "Startup"))
+                    Directory.CreateDirectory(PSSCRIPTS_INI_ROOT_PATH + "Startup");
+
+                if (!Directory.Exists(PSSCRIPTS_INI_ROOT_PATH + "Shutdown"))
+                    Directory.CreateDirectory(PSSCRIPTS_INI_ROOT_PATH + "Shutdown");
+
+                if (!File.Exists(PSSCRIPTS_INI_PATH))
+                {
+                    using (File.Create(PSSCRIPTS_INI_PATH))
+                    {
+                        var f = new FileInfo(PSSCRIPTS_INI_PATH);
+                        f.Attributes = FileAttributes.Hidden;
+
+                        f = null;
+                    }
+
+                    var parser = new IniFile(PSSCRIPTS_INI_PATH);
+
+                    parser.Write(null, null, "ScriptsConfig");
+                }
+
                 const string SHUTDOWN_SECTION_NAME = "Shutdown";
 
                 if (mustDisable)

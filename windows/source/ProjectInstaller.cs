@@ -39,6 +39,13 @@ namespace Bahmni
 
             registry.shutdownPowerShellScript(true, conf);
 
+            var filepath = conf.executionDirectory + @"\" + appHelper.APP_INFO + ".txt";
+
+            if (File.Exists(filepath))
+            {
+                File.Delete(filepath);
+            }
+
             try
             {
                 using (var sv = new ServiceController(serviceInstaller1.ServiceName))
