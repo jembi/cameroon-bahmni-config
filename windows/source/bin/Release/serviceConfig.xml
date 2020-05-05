@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Bahmni>
+  <serviceSettings>
+    <VM_NAME>Bahmni</VM_NAME>
+    <LOGS_PATH>C:\Bahmni\Bahmni Service Logs</LOGS_PATH>
+    <TIMER_INTERVAL_MINS>2</TIMER_INTERVAL_MINS>
+    <EXECUTION_DIRECTORY>C:\Bahmni</EXECUTION_DIRECTORY>
+  </serviceSettings>
+</Bahmni>
