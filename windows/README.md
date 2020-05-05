@@ -8,7 +8,7 @@ The service operates as follows:
 
 1. At configured intervals, checks to see if the VM is running
 1. If the VM is not running, start the VM
-1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM before allowing the hosting machine to complete its shutdown cycle.
+1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM before allowing the hosting machine to complete its shutdown cycle. In summary, when the hosting machine begins its shutdown, a signal is sent to the service's OnStop() function so that it can execute a process that begins and waits for a Vagrant VM to be gracefully shutdown. The service will automatically add 10sec after every elapsed 10secs to ensure that the service completes the vagrant halt and is able to verify that the machine is powered off.
 
 The windows service is configured to automatically start (__*after 1min*__) whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
 
