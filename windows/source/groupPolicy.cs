@@ -239,6 +239,7 @@ namespace Bahmni
                                 if (subKey != null)
                                 {
                                     subKey.DeleteValue(valueName);
+                                    subKey.Close();
                                 }
                             }
                         }
@@ -247,8 +248,11 @@ namespace Bahmni
                             using (RegistryKey subKey = rootRegistryKey.CreateSubKey(key))
                             {
                                 subKey.SetValue(valueName, settingValue, registryValueKind);
+                                subKey.Close();
                             }
                         }
+
+                        rootRegistryKey.Close();
                     }
 
                     gpo.Save();
@@ -293,6 +297,8 @@ namespace Bahmni
                             result = subKey.GetValue(valueName);
                         }
                     }
+
+                    rootRegistryKey.Close();
                 }
             });
             t.SetApartmentState(ApartmentState.STA);
