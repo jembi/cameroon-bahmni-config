@@ -130,7 +130,7 @@ namespace Bahmni
             base.OnStop();
         }
 
-        private void initialiseCmdProcess(Process proc, string command, serviceConfig conf)
+        private void initialiseCmdProcess(Process proc, string command, serviceConfig conf, bool isBackupProcess = false)
         {
             var info = new ProcessStartInfo("cmd.exe", @"/k ""cd /d " + conf.executionDirectory + @"""");
 
@@ -139,11 +139,20 @@ namespace Bahmni
             info.UseShellExecute = false;
             info.RedirectStandardInput = true;
             info.CreateNoWindow = true;
-           
+
             proc.StartInfo = info;
             proc.Start();
-            proc.StandardInput.WriteLine(command);
-            proc.StandardInput.Close();
+
+            if (!isBackupProcess)
+            {
+                proc.StandardInput.WriteLine(command);
+                proc.StandardInput.Close();
+            }
+            else
+            {
+                proc.StandardInput.WriteLine("vagrant ssh --command 'sudo /home/bahmni/cameroon-backups.sh'");
+                proc.StandardInput.Close();
+            }
         }
 
         private void vmStatus()
@@ -220,14 +229,59 @@ namespace Bahmni
                 }
 
                 //Only call startVM() when the parent process has exited
+                //After starting the VM perform a VM backup
                 if (vmMustStart)
+                {
                     startVm();
+
+                    backupVm();
+                }
             }
         }
 
         private void getVmStatus(object sender, System.Timers.ElapsedEventArgs e)
         {
             vmStatus();
+        }
+
+        private void backupVm()
+        {     
+            var sc = new serviceConfig();
+
+            sc.getServiceSettingsXml();
+
+            if (sc.errorMsg != null)
+            {
+                appHelper.WriteLog(sc.errorMsg);
+            }
+            else
+            {
+                appHelper.WriteLog("Backing up Bahmni VM...");
+
+                try
+                {
+                    using (var process = new Process())
+                    {
+                        initialiseCmdProcess(process, null, sc, true);
+
+                        using (process.StandardOutput)
+                        {
+                            appHelper.WriteLog(process.StandardOutput.ReadToEnd());
+                        }
+
+                        using (process.StandardError)
+                        {
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
+                        }
+
+                        process.WaitForExit();
+                    }
+                }
+                catch (Exception error)
+                {
+                    appHelper.WriteLog("An error occurred while backing up the VM! " + error.Message);
+                }
+            }
         }
 
         private void startVm()

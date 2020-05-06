@@ -49,8 +49,6 @@ namespace Bahmni
 
             registry.shutdownPowerShellScript(true, conf);
 
-            deleteOldAppInfoFileIfExists(conf);
-
             try
             {
                 using (var sv = new ServiceController(serviceInstaller1.ServiceName))
@@ -72,6 +70,8 @@ namespace Bahmni
             {
                 base.OnBeforeUninstall(savedState);
             }
+
+            deleteOldAppInfoFileIfExists(conf);
         }
 
         private void serviceProcessInstaller1_AfterInstall(object sender, InstallEventArgs e)
