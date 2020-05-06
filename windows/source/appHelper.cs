@@ -10,7 +10,7 @@ namespace Bahmni
     {
         const string LOG_FILENAME = "Bahmni_Service_Log";
         public const string APP_INFO = "Bahmni_Service_Info";
-      
+
         public static bool processFiles(string vagrantRooDir)
         {
             try
@@ -39,9 +39,9 @@ namespace Bahmni
             return false;
         }
 
-        public static void WriteAppInfoToFile(serviceConfig conf)
+        public static void WriteAppInfoToFile(serviceConfig config)
         {
-            var filepath = conf.executionDirectory + @"\" + APP_INFO + ".txt";
+            var filepath = config.executionDirectory + @"\" + APP_INFO + ".txt";
 
             if (!File.Exists(filepath))
             {
@@ -66,46 +66,64 @@ namespace Bahmni
 
         public static void WriteLog(string logText)
         {
-            if (!String.IsNullOrWhiteSpace(logText))
+            try
             {
-                var sc = new serviceConfig();
-
-                sc.getServiceSettingsXml();
-
-                if (sc.errorMsg != null)
+                if (!String.IsNullOrWhiteSpace(logText))
                 {
-                    WriteLog(sc.errorMsg);
-                }
-                else
-                {
-                    WriteAppInfoToFile(sc);
+                    var sc = new serviceConfig();
 
-                    if (!Directory.Exists(sc.logsPath))
+                    sc.getServiceSettingsXml();
+
+                    if (sc.errorMsg != null)
                     {
-                        Directory.CreateDirectory(sc.logsPath);
-                    }
-
-                    var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToString("dd-MMM-yyyy") + ".txt";
-
-                    if (!File.Exists(filepath))
-                    {
-                        using (var sw = File.CreateText(filepath))
-                        {
-                            sw.WriteLine("Logged at [" + DateTime.Now + "]");
-                            sw.WriteLine(logText);
-                        }
+                        WriteLog(sc.errorMsg);
                     }
                     else
                     {
-                        using (var sw = File.AppendText(filepath))
-                        {
-                            sw.WriteLine("Logged at [" + DateTime.Now + "]");
-                            sw.WriteLine(logText);
-                        }
-                    }
+                        WriteAppInfoToFile(sc);
 
-                    filepath = null;
+                        if (!Directory.Exists(sc.logsPath))
+                        {
+                            Directory.CreateDirectory(sc.logsPath);
+                        }
+
+                        var filepath = sc.logsPath + @"\" + LOG_FILENAME + "_" + DateTime.Now.Date.ToString("dd-MMM-yyyy") + ".txt";
+
+                        if (!File.Exists(filepath))
+                        {
+                            using (var sw = File.CreateText(filepath))
+                            {
+                                sw.WriteLine("Logged at [" + DateTime.Now + "]");
+                                sw.WriteLine(logText);
+                            }
+                        }
+                        else
+                        {
+                            using (var sw = File.AppendText(filepath))
+                            {
+                                sw.WriteLine("Logged at [" + DateTime.Now + "]");
+                                sw.WriteLine(logText);
+                            }
+                        }
+
+                        filepath = null;
+                    }
                 }
+            }
+            catch (Exception error)
+            {
+                var source = Assembly.GetExecutingAssembly().GetName().Name;
+                const string LOG_NAME = "Application";
+
+                var systemEventLog = new EventLog(LOG_NAME);
+
+                if (!EventLog.SourceExists(source))
+                {
+                    EventLog.CreateEventSource(source, LOG_NAME);
+                }
+
+                systemEventLog.Source = source;
+                systemEventLog.WriteEntry("Unable to write to the log file with error: " + error.Message, EventLogEntryType.Warning);
             }
         }
     }

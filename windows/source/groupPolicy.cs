@@ -239,7 +239,6 @@ namespace Bahmni
                                 if (subKey != null)
                                 {
                                     subKey.DeleteValue(valueName);
-                                    subKey.Close();
                                 }
                             }
                         }
@@ -248,7 +247,6 @@ namespace Bahmni
                             using (RegistryKey subKey = rootRegistryKey.CreateSubKey(key))
                             {
                                 subKey.SetValue(valueName, settingValue, registryValueKind);
-                                subKey.Close();
                             }
                         }
                     }

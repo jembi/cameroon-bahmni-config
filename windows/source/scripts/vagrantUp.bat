@@ -1,4 +1,3 @@
-echo vagrant up & backup
+echo vagrant up
 vagrant up
-vagrant ssh -c 'sudo /home/bahmni/cameroon-backups.sh'
 exit
