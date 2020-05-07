@@ -22,11 +22,21 @@ namespace Bahmni
 
         protected override void OnBeforeUninstall(IDictionary savedState)
         {
-            registry.fastStartUp(false);
+            registry.fastStartUp(true);
 
             registry.criticalBatteryNotificationAction(true);
 
             registry.criticalBatteryNotificationLevel(true);
+
+            registry.systemSleepTimeout(true, 0);
+            registry.systemSleepTimeout(true, 1);
+
+            registry.turnOffHardDisk(true, 0);
+            registry.turnOffHardDisk(true, 1);
+
+            registry.hibernateTimeout(true, 0);
+            registry.hibernateTimeout(true, 1);
+               
 
             var conf = new serviceConfig();
 
@@ -38,13 +48,6 @@ namespace Bahmni
             }
 
             registry.shutdownPowerShellScript(true, conf);
-
-            var filepath = conf.executionDirectory + @"\" + appHelper.APP_INFO + ".txt";
-
-            if (File.Exists(filepath))
-            {
-                File.Delete(filepath);
-            }
 
             try
             {
@@ -67,6 +70,8 @@ namespace Bahmni
             {
                 base.OnBeforeUninstall(savedState);
             }
+
+            deleteOldAppInfoFileIfExists(conf);
         }
 
         private void serviceProcessInstaller1_AfterInstall(object sender, InstallEventArgs e)
@@ -93,7 +98,7 @@ namespace Bahmni
             if (!checkVagrantSettingsDone)
                 throw new System.Exception("Unable to update the serviceConfig.xml file");
 
-            if (!registry.fastStartUp(true))
+            if (!registry.fastStartUp(false))
                 throw new System.Exception("Unable to turn off windows fast boot!");
 
             if (!registry.criticalBatteryNotificationAction(false))
@@ -101,6 +106,24 @@ namespace Bahmni
 
             if (!registry.criticalBatteryNotificationLevel(false))
                 throw new System.Exception("Unable to turn on critical battery notification level!");
+
+            if (!registry.systemSleepTimeout(false, 0))
+                throw new System.Exception("Unable to set system sleep timeout to never for when on battery!");
+
+            if (!registry.systemSleepTimeout(false, 1))
+                throw new System.Exception("Unable to set system sleep timeout to never for when plugged in!");
+
+            if (!registry.turnOffHardDisk(false, 0))
+                throw new System.Exception("Unable to set when Windows can turn off the hard disk for when on battery!");
+
+            if (!registry.turnOffHardDisk(false, 1))
+                throw new System.Exception("Unable to set when Windows can turn off the hard disk for when plugged in!");
+
+            if (!registry.hibernateTimeout(false, 0))
+                throw new System.Exception("Unable to set hibernate timeout to never for when on battery!");
+
+            if (!registry.hibernateTimeout(false, 1))
+                throw new System.Exception("Unable to set hibernate timeout to never for when plugged in!");
 
             if (!appHelper.processFiles(rootVagrantInstallPath))
                 throw new System.Exception("Unable to copy one or more Vagrant script files from the source directory to the Vagrant root directory!");
@@ -110,9 +133,21 @@ namespace Bahmni
             if (!registry.shutdownPowerShellScript(false, conf))
                 throw new System.Exception("Unable to add the shutdown script!");
 
+            deleteOldAppInfoFileIfExists(conf);
+
             using (var sc = new ServiceController(serviceInstaller.ServiceName))
             {
                 sc.Start();
+            }
+        }
+
+        private void deleteOldAppInfoFileIfExists(serviceConfig sc)
+        {
+            var filepath = sc.executionDirectory + @"\" + appHelper.APP_INFO + ".txt";
+
+            if (File.Exists(filepath))
+            {
+                File.Delete(filepath);
             }
         }
     }

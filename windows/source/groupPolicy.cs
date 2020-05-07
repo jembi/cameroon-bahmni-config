@@ -251,6 +251,8 @@ namespace Bahmni
                                 subKey.Close();
                             }
                         }
+
+                        rootRegistryKey.Close();
                     }
 
                     gpo.Save();
@@ -295,6 +297,8 @@ namespace Bahmni
                             result = subKey.GetValue(valueName);
                         }
                     }
+
+                    rootRegistryKey.Close();
                 }
             });
             t.SetApartmentState(ApartmentState.STA);
