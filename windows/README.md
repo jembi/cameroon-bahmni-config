@@ -86,3 +86,9 @@ This section describes how to leverage the local GPO on the Windows Server to au
     *  Click on the __*Enable*__ radio button
     *  In the System Hibernate Timeout (seconds) listbox, enter 0
 1.  Click on Apply button then OK button
+
+### Configure Fast Startup (Hiberboot)
+This section describes how to leverage the local GPO on the Windows Server to disable hiberboot so that the service can request a gracefull shutdown of the VM before allowing windows to terminate the service and shutdown.
+
+1.  Navigate to the following path in the registry editor: __*HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power*__
+1.  Add/Set HiberbootEnabled as a DWORD key and set the value to 0.
