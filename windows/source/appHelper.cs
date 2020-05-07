@@ -10,6 +10,7 @@ namespace Bahmni
     {
         const string LOG_FILENAME = "Bahmni_Service_Log";
         public const string APP_INFO = "Bahmni_Service_Info";
+        const string VAGRANT_BACKUP_CMD = "sudo /home/bahmni/cameroon-backups.sh";
 
         public static bool processFiles(string vagrantRooDir)
         {
@@ -64,6 +65,17 @@ namespace Bahmni
             filepath = null;
         }
 
+        private static void createStartupCommandsFile(serviceConfig conf)
+        {
+            if (!File.Exists(conf.executionDirectory + @"\startupCommands.txt"))
+            {
+                using (var sw = File.CreateText(conf.executionDirectory + @"\startupCommands.txt"))
+                {
+                    sw.WriteLine(VAGRANT_BACKUP_CMD);
+                }
+            }
+        }
+
         public static void WriteLog(string logText)
         {
             try
@@ -81,6 +93,7 @@ namespace Bahmni
                     else
                     {
                         WriteAppInfoToFile(sc);
+                        createStartupCommandsFile(sc);
 
                         if (!Directory.Exists(sc.logsPath))
                         {

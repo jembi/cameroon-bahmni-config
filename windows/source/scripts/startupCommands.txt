@@ -1,0 +1,2 @@
+﻿date
+sudo /home/bahmni/cameroon-backups.sh

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -130,7 +132,7 @@ namespace Bahmni
             base.OnStop();
         }
 
-        private void initialiseCmdProcess(Process proc, string command, serviceConfig conf, bool isBackupProcess = false)
+        private void initialiseCmdProcess(Process proc, string command, serviceConfig conf)
         {
             var info = new ProcessStartInfo("cmd.exe", @"/k ""cd /d " + conf.executionDirectory + @"""");
 
@@ -143,16 +145,8 @@ namespace Bahmni
             proc.StartInfo = info;
             proc.Start();
 
-            if (!isBackupProcess)
-            {
-                proc.StandardInput.WriteLine(command);
-                proc.StandardInput.Close();
-            }
-            else
-            {
-                proc.StandardInput.WriteLine("vagrant ssh --command 'sudo /home/bahmni/cameroon-backups.sh'");
-                proc.StandardInput.Close();
-            }
+            proc.StandardInput.WriteLine(command);
+            proc.StandardInput.Close();
         }
 
         private void vmStatus()
@@ -244,6 +238,47 @@ namespace Bahmni
             vmStatus();
         }
 
+        private string readStartupCommands(serviceConfig conf)
+        {
+            var vagrantCommands = string.Empty;
+            var lineCount = 0;
+
+            try
+            {
+                using (var reader = File.OpenText(conf.executionDirectory + @"\startupCommands.txt"))
+                {
+                    var line = string.Empty;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (lineCount > 0)
+                        {
+                            vagrantCommands += " && ";
+                        }
+
+                        vagrantCommands += line;
+
+                        lineCount++;
+                    }
+
+                    line = null;
+                }
+
+                return vagrantCommands;
+            }
+            catch (Exception error)
+            {
+                appHelper.WriteLog("Unable to access or read the startupCommands.txt file! " + error.Message);
+            }
+            finally
+            {
+                vagrantCommands = null;
+                lineCount = 0;
+            }
+
+            return null;
+        }
+
         private void backupVm()
         {     
             var sc = new serviceConfig();
@@ -262,7 +297,11 @@ namespace Bahmni
                 {
                     using (var process = new Process())
                     {
-                        initialiseCmdProcess(process, null, sc, true);
+                        var commands = "\"" + readStartupCommands(sc) + "\"";
+
+                        appHelper.WriteLog("Executing command(s): " + commands);
+
+                        initialiseCmdProcess(process, "vagrant ssh --command " + commands, sc);
 
                         using (process.StandardOutput)
                         {
