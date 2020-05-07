@@ -29,7 +29,7 @@ __*Note*__: *The Bahmni service automatically handles the following group policy
 
 To verify or manually add the group policy requirements, open the local group policy on the Windows machine by opening a CMD window and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
 
-#### Configure Shutdown
+#### Configure Shutdown Script
 1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
 1. Double click on Shutdown and click on the tab called PowerShell Scripts
 1. Click on Add button and navigate to the Vagrant root path where the file __stopBahmni.ps1__ is saved, select the file and click on Open
