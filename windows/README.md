@@ -11,7 +11,7 @@ The service operates as follows:
     * Once the VM has started, the service will automatically SSH into the VM and execute a backup using command __*sudo /home/bahmni/cameroon-backups.sh*__ For more info, see section __Startup Commands__.
 1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM before allowing the hosting machine to complete its shutdown cycle. In summary, when the hosting machine begins its shutdown, a signal is sent to the service's OnStop() function so that it can execute a process that begins and waits for a Vagrant VM to be gracefully shutdown. The service will automatically add 10sec after every elapsed 10secs to ensure that the service completes the vagrant halt and is able to verify that the machine is powered off.
 
-The windows service is configured to automatically start (__*after 1min*__) whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
+The windows service is configured to automatically start (__*after 1min*__) whenever the windows server is booted up. The default interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
 
 ### MSI Configuration Steps
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
@@ -28,7 +28,7 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
 ### Group Policy (GPO) Editor Configuration Steps
 __*Note*__: *The Bahmni service automatically handles the following group policy requirements.*
 
-To verify or manually add the group policy requirements, open the local group policy on the Windows machine by opening a CMD window and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not gauranteed that your VM will receive a gracefull shutdown when the Windows Server is Restarted or Shutdown).
+To verify or manually add the group policy requirements, open the local group policy on the Windows machine by opening a CMD window and typing __*gpedit.msc*__ (__Note__: If there is no local group policy available in your version of Windows then it is not guaranteed that your VM will receive a graceful shutdown when the Windows Server is Restarted or Shutdown).
 
 #### Configure Shutdown Script
 1. Navigate to the following path in the GPO editor: __*Computer Configuration/Windows Settings/Scripts (Startup/Shutdown)*__
@@ -89,7 +89,7 @@ This section describes how to leverage the local GPO on the Windows Server to au
 1.  Click on Apply button then OK button
 
 ### Configure Fast Startup (Hiberboot)
-This section describes how to leverage the local GPO on the Windows Server to disable hiberboot so that the service can request a gracefull shutdown of the VM before allowing windows to terminate the service and shutdown.
+This section describes how to leverage the local GPO on the Windows Server to disable hiberboot so that the service can request a graceful shutdown of the VM before allowing windows to terminate the service and shutdown.
 
 1.  Navigate to the following path in the registry editor: __*HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power*__
 1.  Add/Set HiberbootEnabled as a DWORD key and set the value to 0.
