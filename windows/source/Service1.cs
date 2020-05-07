@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -139,9 +141,10 @@ namespace Bahmni
             info.UseShellExecute = false;
             info.RedirectStandardInput = true;
             info.CreateNoWindow = true;
-           
+
             proc.StartInfo = info;
             proc.Start();
+
             proc.StandardInput.WriteLine(command);
             proc.StandardInput.Close();
         }
@@ -220,14 +223,104 @@ namespace Bahmni
                 }
 
                 //Only call startVM() when the parent process has exited
+                //After starting the VM perform a VM backup
                 if (vmMustStart)
+                {
                     startVm();
+
+                    backupVm();
+                }
             }
         }
 
         private void getVmStatus(object sender, System.Timers.ElapsedEventArgs e)
         {
             vmStatus();
+        }
+
+        private string readStartupCommands(serviceConfig conf)
+        {
+            var vagrantCommands = string.Empty;
+            var lineCount = 0;
+
+            try
+            {
+                using (var reader = File.OpenText(conf.executionDirectory + @"\startupCommands.txt"))
+                {
+                    var line = string.Empty;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (lineCount > 0)
+                        {
+                            vagrantCommands += " && ";
+                        }
+
+                        vagrantCommands += line;
+
+                        lineCount++;
+                    }
+
+                    line = null;
+                }
+
+                return vagrantCommands;
+            }
+            catch (Exception error)
+            {
+                appHelper.WriteLog("Unable to access or read the startupCommands.txt file! " + error.Message);
+            }
+            finally
+            {
+                vagrantCommands = null;
+                lineCount = 0;
+            }
+
+            return null;
+        }
+
+        private void backupVm()
+        {     
+            var sc = new serviceConfig();
+
+            sc.getServiceSettingsXml();
+
+            if (sc.errorMsg != null)
+            {
+                appHelper.WriteLog(sc.errorMsg);
+            }
+            else
+            {
+                appHelper.WriteLog("Backing up Bahmni VM...");
+
+                try
+                {
+                    using (var process = new Process())
+                    {
+                        var commands = "\"" + readStartupCommands(sc) + "\"";
+
+                        appHelper.WriteLog("Executing command(s): " + commands);
+
+                        initialiseCmdProcess(process, "vagrant ssh --command " + commands, sc);
+
+                        using (process.StandardOutput)
+                        {
+                            appHelper.WriteLog(process.StandardOutput.ReadToEnd());
+                        }
+
+                        using (process.StandardError)
+                        {
+                            appHelper.WriteLog(process.StandardError.ReadToEnd());
+                        }
+
+                        process.WaitForExit();
+                    }
+                }
+                catch (Exception error)
+                {
+                    appHelper.WriteLog("An error occurred while backing up the VM! " + error.Message);
+                }
+            }
         }
 
         private void startVm()
