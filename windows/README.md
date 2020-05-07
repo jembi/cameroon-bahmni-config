@@ -19,8 +19,7 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.5.0/Bahmni.Service.msi) on your windows server.
    **  During installation you will be prompted to confirm the following:
       1. The Vagrant root directory on the windows server (This is the directory where the Vagrantfile file is stored). __IT IS ESSENTIAL THAT YOU ENSURE THAT THE DIRECTORY IS CORRECT!__
-   
-         **  *__Note__: If the directory changes after installation of the service, you must navigate to the path C:\Program Files\Jembi Health Systems\Bahmni\ and update the element __EXECUTION_DIRECTORY__ in serviceConfig.xml with the new directory name. Do not add a \ after the directory path!*
+         ** *__Note__: If the directory changes after installation of the service, you must navigate to the path C:\Program Files\Jembi Health Systems\Bahmni\ and update the element __EXECUTION_DIRECTORY__ in serviceConfig.xml with the new directory name. Do not add a \ after the directory path!*
       1. The logs directory on the windows server where the Bahmni service will log all events
       1. Service Login - This is the administrative account that was used at the time of installing the VM. 
           * *__Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName*
