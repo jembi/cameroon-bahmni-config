@@ -8,6 +8,7 @@ The service operates as follows:
 
 1. At configured intervals, checks to see if the VM is running
 1. If the VM is not running, start the VM
+    * Once the VM has started, the service will automatically SSH into the VM and execute a backup using command __*sudo /home/bahmni/cameroon-backups.sh*__
 1. If the VM is running and the service is stopped (user action or when the hosting windows machine has been shutdown), the service will gracefully shutdown the VM before allowing the hosting machine to complete its shutdown cycle. In summary, when the hosting machine begins its shutdown, a signal is sent to the service's OnStop() function so that it can execute a process that begins and waits for a Vagrant VM to be gracefully shutdown. The service will automatically add 10sec after every elapsed 10secs to ensure that the service completes the vagrant halt and is able to verify that the machine is powered off.
 
 The windows service is configured to automatically start (__*after 1min*__) whenever the windows server is booted up. The deafult interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
@@ -17,7 +18,7 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
 
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.5.0/Bahmni.Service.msi) on your windows server.
    *  During installation you will be prompted to confirm the following:
-      1. The Vagrant root directory on the windows server (This is the directory where the rootCA.pem and Vagrantfile files are stored)
+      1. The Vagrant root directory on the windows server (This is the directory where the Vagrantfile file IS stored). __IT IS ESSENTIAL THAT YOU ENSURE THAT THE DIRECTORY IS CORRECT!__
       1. The logs directory on the windows server where the Bahmni service will log all events
       1. Service Login - This is the administrative account that was used at the time of installing the VM. 
           * *__Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName*
