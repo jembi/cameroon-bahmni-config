@@ -64,3 +64,14 @@ This section describes how to leverage the local GPO on the Windows Server to au
     *  Click on the __*Enable*__ radio button
     *  In the Turn Off the Hard Disk (seconds) listbox, enter 0
 1.  Click on Apply button then OK button
+
+##### Sleep Settings
+1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Sleep Settings*__
+1.  Double click on Specify the system sleep timeout (plugged in):
+    *  Click on the __*Enable*__ radio button
+    *  In the System Sleep Timeout (seconds) listbox, enter 0
+3.  Click on Apply button then OK button
+1.  Double click on Specify the system sleep timeout (on battery):
+    *  Click on the __*Enable*__ radio button
+    *  In the System Sleep Timeout (seconds) listbox, enter 0
+1.  Click on Apply button then OK button
