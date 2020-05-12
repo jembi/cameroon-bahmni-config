@@ -14,7 +14,7 @@ The service operates as follows:
 The windows service is configured to automatically start (__*after 1min*__) whenever the windows server is booted up. The default interval for checking the status of the VM is 10mins. __Note__: The service __does not__ require a user to logon in order for the VM to start. 
 
 ### MSI Configuration Steps
-__Note__: Once you have installed the service, you must download and use __*Putty*__ to SSH into the VM going forward. 
+__Note__: Once you have installed the service, you must download and use [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) to SSH into the VM going forward. 
 
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
