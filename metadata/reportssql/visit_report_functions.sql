@@ -529,7 +529,7 @@ CREATE FUNCTION getListOfActiveARVDrugs(
 BEGIN
     DECLARE result TEXT;
 
-    SELECT GROUP_CONCAT(d.name) INTO result
+    SELECT GROUP_CONCAT(DISTINCT d.name) INTO result
     FROM orders o
     JOIN drug_order do ON do.order_id = o.order_id
     JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
