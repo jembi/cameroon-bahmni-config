@@ -1324,6 +1324,43 @@
             ]
         }
     },
+
+    "radet": {
+        "name": "Radet Report",
+        "type": "concatenated",
+        "config": {
+            "reports": [    
+                {
+                    "name": "TX-PLVS",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/tx_plvs.sql"
+                    }
+                },
+                {
+                    "name": "HTS-LTC",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/hts_ltc.sql"
+                    }
+                },
+                {
+                    "name": "PMTCT-HEI",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/pmtct_hei.sql"
+                    }
+                },                            
+                {
+                    "name": "Index-testing",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/index_testing.sql"
+                    }
+                }
+            ]
+        }
+    },
     
     "OPD/IPDVisitCount": {
         "name": "OPD/IPD Visit Count",
