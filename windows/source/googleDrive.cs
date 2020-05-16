@@ -96,7 +96,10 @@ namespace Bahmni
                     {
                         if (file.Name.ToLower().Contains(facility.ToLower()))
                         {
-                            permanentlyRemove(file.Id, file.Name, drvService);
+                            if (file.Name.ToLower().Contains(DateTime.Now.Date.ToString("MMM-yyyy").ToLower())) // only delete the exisiting file for the current month. We want to keep previous logs
+                            {
+                                permanentlyRemove(file.Id, file.Name, drvService);
+                            }
                         }
                     }
                 }
