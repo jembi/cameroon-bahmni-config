@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Diagnostics;
+
 
 namespace Bahmni
 {
@@ -18,13 +18,103 @@ namespace Bahmni
 
         private void initializeVmStatusTimer(serviceConfig conf)
         {
-            appHelper.WriteLog("Bahmni service started...Checking VM status every " + conf.timerIntervalMins + "min");
+            appHelper.WriteLog("Bahmni service started..."
+                 + Environment.NewLine + "Checking VM status every: " + conf.timerIntervalMins + "min"
+                 + Environment.NewLine + "Facility name: " + conf.facilityName
+                 + Environment.NewLine + "Backup wait time: " + conf.backupWait + "min");
 
             var vmStatusCheckTimer = new System.Timers.Timer();
             vmStatusCheckTimer.Interval = TimeSpan.FromMinutes(conf.timerIntervalMins).TotalMilliseconds;
             vmStatusCheckTimer.Elapsed += getVmStatus;
             vmStatusCheckTimer.Enabled = true;
             vmStatusCheckTimer.Start();
+        }
+
+        private void initializeInternetConnectionCheckTimer()
+        {
+            var internetCheckTimer = new System.Timers.Timer();
+            internetCheckTimer.Interval = 1 * 10 * 1000; //Check every 10sec
+            internetCheckTimer.Elapsed += checkConnection;
+            internetCheckTimer.Enabled = true;
+            internetCheckTimer.Start();
+        }
+
+        private void handleLogCompressionAndRequestUpload(serviceConfig conf, string fileName)
+        {
+            if (logsCompress.doCompression())
+            {
+                googleDrive gd = new googleDrive();
+                gd.uploadCompressedFile(conf.facilityName, fileName);
+            }
+        }
+
+        private void checkConnection(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (internetConnection.IsInternetAvailable())
+            {
+                var sc = new serviceConfig();
+
+                sc.getServiceSettingsXml();
+
+                var file = sc.logsPath + @"\" + sc.facilityName + "_" + DateTime.Now.Date.ToString("dd-MMM-yyyy") + ".zip";
+
+                if (sc.errorMsg != null)
+                {
+                    appHelper.WriteLog(sc.errorMsg);
+                }
+                else
+                {
+                    var lastDateLogsCompressed = appHelper.getLastDateLogsCompressed();
+
+                    if (lastDateLogsCompressed != null)
+                    {
+                        DateTime dateLastCompressedValue;
+
+                        if (DateTime.TryParse(lastDateLogsCompressed, out dateLastCompressedValue))
+                        {
+                            if (dateLastCompressedValue.ToString("dd-MMM-yyyy") != DateTime.Now.Date.ToString("dd-MMM-yyyy"))
+                            {
+                                handleLogCompressionAndRequestUpload(sc, file);
+                            }
+                            else
+                            {
+                                if (!File.Exists(file))
+                                {
+                                    var lastDateUploaded = appHelper.getLastDateLogsUploaded();
+
+                                    if (lastDateUploaded != null)
+                                    {
+                                        if (lastDateUploaded == "Unspecified")
+                                        {
+                                            handleLogCompressionAndRequestUpload(sc, file);
+                                        }
+                                        else
+                                        {
+                                            DateTime dateLastUploadedValue;
+
+                                            if (DateTime.TryParse(lastDateUploaded, out dateLastUploadedValue))
+                                            {
+                                                if (dateLastUploadedValue.ToString("dd-MMM-yyyy") != DateTime.Now.Date.ToString("dd-MMM-yyyy"))
+                                                {
+                                                    handleLogCompressionAndRequestUpload(sc, file);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            appHelper.WriteLog("Unable to convert the last date logs compressed value to DateTime...Logs not compresssed!");
+                        }
+                    }
+                    else
+                    {
+                        appHelper.WriteLog("Unable to verify a null last compressed date for the logs...Logs not compressed!");
+                    }
+                }
+            }
         }
 
         protected override void OnStart(string[] args)
@@ -38,19 +128,23 @@ namespace Bahmni
                 appHelper.WriteLog(sc.errorMsg);
             }
             else
-            {
+            {   
                 //First wait 30seconds before starting the timer for vm status checks
                 Action vmStatusTimer = () => initializeVmStatusTimer(sc);
                 callWithDelay(vmStatusTimer, 1 * 30 * 1000);
 
                 //Start VM immediately after a shutdown if its not running. First wait 1min before calling the function to check the VM status
                 Action checkVmStatus = () => vmStatus();
-                callWithDelay(checkVmStatus, 1 * 60 * 2000);
+                callWithDelay(checkVmStatus, 1 * 60 * 1000);
+
+                //First wait 1min before starting the timer for checking the network for internet connectivity
+                Action internetCheckTimer = () => initializeInternetConnectionCheckTimer();
+                callWithDelay(internetCheckTimer, 1 * 60 * 1000);
             }
 
             base.OnStart(args);
         }
-
+        
         private static void callWithDelay(Action method, int delay)
         {
             System.Threading.Timer timer = null;
@@ -91,6 +185,7 @@ namespace Bahmni
                         }
 
                         process.WaitForExit();
+                        process.Close();
                     }
 
                     using (var process = new Process())
@@ -110,6 +205,7 @@ namespace Bahmni
                         }
 
                         process.WaitForExit();
+                        process.Close();
                     }
                 }
                 catch (Exception error)
@@ -149,7 +245,7 @@ namespace Bahmni
             proc.StandardInput.Close();
         }
 
-        private void vmStatus()
+        private void vmStatus(bool isCheckToVerifyVmIsRunningAfterCallingVmStart = false, int vmStartAttemptLimit = 0)
         {
             var sc = new serviceConfig();
 
@@ -162,8 +258,12 @@ namespace Bahmni
             else
             {
                 bool vmMustStart = false;
+                bool vmIsRunning = false;
 
-                appHelper.WriteLog("Checking Bahmni VM status...");
+                if (!isCheckToVerifyVmIsRunningAfterCallingVmStart)
+                    appHelper.WriteLog("Checking Bahmni VM status...");
+                else
+                    appHelper.WriteLog("Verifying whether the VM was started...");
 
                 try
                 {
@@ -203,6 +303,8 @@ namespace Bahmni
                             }
                             else
                             {
+                                vmIsRunning = true;
+
                                 appHelper.WriteLog("VM is running!");
                             }
 
@@ -215,6 +317,7 @@ namespace Bahmni
                         }
 
                         process.WaitForExit();
+                        process.Close();
                     }
                 }
                 catch (Exception error)
@@ -222,13 +325,30 @@ namespace Bahmni
                     appHelper.WriteLog("An error occurred while verifying the VM status! " + error.Message);
                 }
 
-                //Only call startVM() when the parent process has exited
-                //After starting the VM perform a VM backup
-                if (vmMustStart)
+                //Only call startVM() when the parent process has exited            
+                if (!isCheckToVerifyVmIsRunningAfterCallingVmStart && vmMustStart)
                 {
                     startVm();
+                }
 
-                    backupVm();
+                //After starting the VM perform a VM backup
+                if (isCheckToVerifyVmIsRunningAfterCallingVmStart)
+                {
+                    if (vmIsRunning) //Make sure that the VM is running
+                    {
+                        //Wait before calling the backupVM() function to ensure that the VM has had enough time to start all services, default = 2min
+                        Action backupVM = () => backupVm();
+                        callWithDelay(backupVM, Convert.ToInt32(TimeSpan.FromMinutes(sc.backupWait).TotalMilliseconds));
+                    }
+                    else
+                    {
+                        if (vmStartAttemptLimit == 0)
+                        {
+                            appHelper.WriteLog("First attempt to start VM failed! Retrying one more time...");
+
+                            startVm(1); //Allow service to try one more time and if the VM is stil not running then wait for the configured interval to try again, default = 15min
+                        }
+                    }
                 }
             }
         }
@@ -314,6 +434,7 @@ namespace Bahmni
                         }
 
                         process.WaitForExit();
+                        process.Close();
                     }
                 }
                 catch (Exception error)
@@ -323,7 +444,7 @@ namespace Bahmni
             }
         }
 
-        private void startVm()
+        private void startVm(int limit = 0)
         {
             var sc = new serviceConfig();
 
@@ -354,7 +475,13 @@ namespace Bahmni
                         }
 
                         process.WaitForExit();
+                        process.Close();
                     }
+
+                    //Verify whether the VM started successfully
+                    //First wait 1min before calling the function to check the VM status
+                    Action checkVmStatus = () => vmStatus(true, limit);
+                    callWithDelay(checkVmStatus, 1 * 60 * 1000);
                 }
                 catch (Exception error)
                 {

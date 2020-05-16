@@ -47,7 +47,7 @@ namespace Bahmni
                 appHelper.WriteLog(conf.errorMsg);
             }
 
-            registry.shutdownPowerShellScript(true, conf);
+            appHelper.shutdownPowerShellScript(true, conf);
 
             try
             {
@@ -85,10 +85,11 @@ namespace Bahmni
 
             var rootVagrantInstallPath = Context.Parameters["rootVagrantInstallPath"];
             var logsPath = Context.Parameters["logsPath"];
+            var facilityName = Context.Parameters["facilityName"];
 
             var conf = new serviceConfig();
 
-            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, logsPath);
+            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, logsPath, facilityName);
 
             if (conf.errorMsg != null)
             {
@@ -130,10 +131,12 @@ namespace Bahmni
 
             conf.getServiceSettingsXml();
 
-            if (!registry.shutdownPowerShellScript(false, conf))
+            if (!appHelper.shutdownPowerShellScript(false, conf))
                 throw new System.Exception("Unable to add the shutdown script!");
 
             deleteOldAppInfoFileIfExists(conf);
+
+            appHelper.encryptSecret();
 
             using (var sc = new ServiceController(serviceInstaller.ServiceName))
             {
