@@ -115,9 +115,9 @@ The service has been designed to work with frequent internet connection outages.
 Whenever there is a change in the connection state, the current state of the internet connection is recorded in the connectionState.ini file, together with the last known dates for compressed logs and logs upload events. The logs file appears as follows. The value of unspecified is simply a default value to tell the service that no attempts have been made to compress and upload the logs file.
 
 \[NetworkConnection\]
-InternetEnabled\=\Unspecified \-\ uses True of False values
-LastDateLogsUploaded\=\Unspecified \-\ The last known successful upload date
-LastDateLogsCompressed\=\Unspecified \-\ The last known successful compression date
+InternetEnabled=Unspecified - Uses True of False values\
+LastDateLogsUploaded=Unspecified - The last known successful upload date\
+LastDateLogsCompressed=Unspecified - The last known successful compression date
 
 The service uses the above file for the following:
 1. Check to see if the Windows server has an active internet connection
