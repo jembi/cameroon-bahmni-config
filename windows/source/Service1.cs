@@ -43,6 +43,8 @@ namespace Bahmni
         {
             if (logsCompress.doCompression())
             {
+                appHelper.WriteLog("The logs file has been successfully compressed!");
+
                 googleDrive gd = new googleDrive();
                 gd.uploadCompressedFile(conf.facilityName, fileName);
             }
@@ -100,6 +102,10 @@ namespace Bahmni
                                                 }
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        appHelper.WriteLog("Unable to verify a null last upload date for the logs...Logs not uploaded!");
                                     }
                                 }
                             }
