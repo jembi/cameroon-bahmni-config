@@ -93,6 +93,17 @@ This section describes how to leverage the local GPO on the Windows Server to au
     *  In the System Hibernate Timeout (seconds) listbox, enter 0
 1.  Click on Apply button then OK button
 
+##### Button Settings
+1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Button Settings*__
+1.  Double click on Select the lid switch action (plugged in):
+    *  Click on the __*Enable*__ radio button
+    *  In the List Switch Action listbox, select Shutdown
+3.  Click on Apply button then OK button
+1.  Double click on Select the lid switch action (on battery):
+    *  Click on the __*Enable*__ radio button
+    *  In the List Switch Action listbox, select Shutdown
+1.  Click on Apply button then OK button
+
 ### Configure Fast Startup (Hiberboot)
 This section describes how to leverage the local GPO on the Windows Server to disable hiberboot so that the service can request a graceful shutdown of the VM before allowing windows to terminate the service and shutdown.
 
