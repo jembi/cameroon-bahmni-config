@@ -31,6 +31,28 @@ namespace Bahmni
             return false;
         }
 
+        public static bool lidSwitchAction(bool isUninstalling, int state) // 0 state = on battery, 1 = plugged in
+        {
+            const string HKLM_SUBKEY = @"Software\Policies\Microsoft\Power\PowerSettings\5CA83367-6E45-459F-A27B-476B1D01C936";
+            const string KEY_PATH = HKLM + @"\" + HKLM_SUBKEY;
+
+            try
+            {
+                if (isUninstalling)
+                    ComputerGroupPolicyObject.SetPolicySetting(KEY_PATH + (state == 0 ? "!DCSettingIndex" : "!ACSettingIndex"), null, RegistryValueKind.Unknown);
+                else
+                    ComputerGroupPolicyObject.SetPolicySetting(KEY_PATH + (state == 0 ? "!DCSettingIndex" : "!ACSettingIndex"), "3", RegistryValueKind.DWord); //0 = take no action, 1 = sleep, 2 = hibernate, 3 = shutdown
+
+                return true;
+            }
+            catch (Exception error)
+            {
+                appHelper.WriteLog("An error occurred while attempting to update the Lid Switch Action in registry! " + error.Message);
+            }
+
+            return false;
+        }
+
         public static bool systemSleepTimeout(bool isUninstalling, int state) // 0 state = on battery, 1 = plugged in
         {
             const string HKLM_SUBKEY = @"Software\Policies\Microsoft\Power\PowerSettings\29F6C1DB-86DA-48C5-9FDB-F2B67B1F44DA";
