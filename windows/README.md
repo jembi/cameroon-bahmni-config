@@ -18,6 +18,7 @@ __Note__: Once you have installed the service, you must download and use [Putty]
 
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
+1. Make sure that the system date and time is correct. Please see sectipn [Internet Time](#Internet-Time)
 1. Open the vagrant root directory and permanently delete the temporary vagrant-start.bat script as it will no longer be used and may cause conflict.
 1. Open a CMD terminal in Windows and navigate to the vagrant root directory and then execute command __*vagrant halt*__
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.5.0/Bahmni.Service.msi) on your windows server.
@@ -28,7 +29,7 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
          1. The logs directory on the windows server where the Bahmni service will log all events
          1. Service Login - This is the administrative account that was used at the time of installing the VM. 
              * *__Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName*
-4. Once the installation has completed, the service will automatically start the VM. This can take up to around 5mins. Keep an eye on the logs found in path __*C:\EMR\bahmni\bahmni-service-logs*__
+5. Once the installation has completed, the service will automatically start the VM. This can take up to around 5mins. Keep an eye on the logs found in path __*C:\EMR\bahmni\bahmni-service-logs*__
 
 ### Group Policy (GPO) Editor Configuration Steps
 __*Note*__: *The Bahmni service automatically handles the following group policy requirements.*
