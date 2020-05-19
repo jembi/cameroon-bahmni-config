@@ -11,6 +11,8 @@ namespace Bahmni
         public string logsPath { get; set; }
         public int timerIntervalMins { get; set; }
         public string executionDirectory { get; set; }
+        public string facilityName { get; set; }
+        public int backupWait { get; set; }
         public string errorMsg { get; set; }
 
         public void getServiceSettingsXml()
@@ -22,9 +24,11 @@ namespace Bahmni
                 var settings = (from n in xml.Descendants("serviceSettings")
                                 select new
                                 {
-                                    LOGS_PATH = (string)n.Element("LOGS_PATH").Value,
+                                    LOGS_PATH = n.Element("LOGS_PATH").Value,
                                     TIMER_INTERVAL_MINS = Convert.ToInt32(n.Element("TIMER_INTERVAL_MINS").Value),
-                                    EXECUTION_DIRECTORY = n.Element("EXECUTION_DIRECTORY").Value
+                                    EXECUTION_DIRECTORY = n.Element("EXECUTION_DIRECTORY").Value,
+                                    FACILITY_NAME = n.Element("FACILITY_NAME").Value,
+                                    BACKUP_WAIT_MINS = Convert.ToInt32(n.Element("BACKUP_WAIT_MINS").Value)
                                 });
 
                 foreach (var setting in settings)
@@ -32,6 +36,8 @@ namespace Bahmni
                     logsPath = setting.LOGS_PATH;
                     timerIntervalMins = setting.TIMER_INTERVAL_MINS;
                     executionDirectory = setting.EXECUTION_DIRECTORY;
+                    facilityName = setting.FACILITY_NAME;
+                    backupWait = setting.BACKUP_WAIT_MINS;
                 }
             }
             catch (Exception error)
@@ -40,7 +46,7 @@ namespace Bahmni
             }
         }
 
-        public bool installerSetServiceSettingsXml(string vagrantRooDir, string logsDirectory)
+        public bool installerSetServiceSettingsXml(string vagrantRooDir, string logsDirectory, string facility)
         {
             try
             {
@@ -54,6 +60,7 @@ namespace Bahmni
                 {
                     setting.SetElementValue("EXECUTION_DIRECTORY", vagrantRooDir);
                     setting.SetElementValue("LOGS_PATH", logsDirectory);
+                    setting.SetElementValue("FACILITY_NAME", facility);
                 }
 
                 xml.Save(xmlPath);
@@ -73,6 +80,8 @@ namespace Bahmni
             logsPath = null;
             timerIntervalMins = 0;
             executionDirectory = null;
+            facilityName = null;
+            backupWait = 0;
             errorMsg = null;
         }
     }
