@@ -135,3 +135,19 @@ The service uses the above file for the following:
 1. If internet has been detected, __*only then*__ check:
    *  The last compressed date - if the value is Unspecified or if the date is the previous day, only then perform a compression of the logs
    *  The last upload date - if the value is Unspecified or if the date is the previous day, only then request an upload of the logs to Google Drive.
+
+## Internet Time
+It is essential that the Windows server has the correct date and time applied otherwise the service will not be able to autheticate with the Google Drive API for compressed log file uploads. Also, if the date and/or time is incorrect, the daily log files will be split across a range of new log files depending on how far out the server time is.
+
+The following steps explains how to synchronize the server time with an NTP server (internet time) (__*Note*__: Once this step is done, you will not need to do it again, even if there is no internet connectivity):
+1. Open Control Panel.
+1. Click on Clock, Language, and Region.
+1. Click on Date and Time.
+1. Click on the Internet Time tab.
+1. Click the Change settings button.
+1. Check that the Synchronize with an internet time server option is selected.
+1. Keep the default server select
+1. Click the Update now button to synchronize the time with the new server.
+1. Click on Apply button then click on OK button.
+
+__*Note*__: Depending on the internet connection speed, this could take up to 1min before the correct date/time is displayed.
