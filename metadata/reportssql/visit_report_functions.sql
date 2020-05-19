@@ -7,7 +7,7 @@ DELIMITER $$
 CREATE FUNCTION getFacilityName() RETURNS VARCHAR(38)
     DETERMINISTIC
 BEGIN
-    RETURN (SELECT address1 from l where name = "LOCATION_HOSPITAL");
+    RETURN (SELECT address1 from location where name = "LOCATION_HOSPITAL");
 END$$
 DELIMITER ;
 

@@ -1326,33 +1326,33 @@
     },
 
     "radet": {
-        "name": "Radet Report",
+        "name": "HIV Patient Level Report",
         "type": "concatenated",
         "config": {
             "reports": [    
                 {
-                    "name": "TX-PLVS",
+                    "name": "Treatment",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/tx_plvs.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/treatment.sql"
                     }
                 },
                 {
-                    "name": "HTS-LTC",
+                    "name": "Testing",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/hts_ltc.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/testing.sql"
                     }
                 },
                 {
-                    "name": "PMTCT-HEI",
+                    "name": "PMTCT",
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/pmtct_hei.sql"
                     }
                 },                            
                 {
-                    "name": "Index-testing",
+                    "name": "Index testing",
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/RADET/sql/index_testing.sql"
