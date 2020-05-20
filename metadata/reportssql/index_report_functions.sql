@@ -56,33 +56,6 @@ WHERE
 END$$
 DELIMITER ;
 
--- getObsLocation
-
-DROP FUNCTION IF EXISTS getObsLocation;
-
-DELIMITER $$
-CREATE FUNCTION getObsLocation(
-    p_patientId INT(11),
-    p_conceptUuid VARCHAR(38)) RETURNS VARCHAR(255)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(255);
-
-    SELECT
-        l.name INTO result
-    FROM obs o
-        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-        JOIN location l ON o.location_id = l.location_id AND l.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = p_conceptUuid
-    ORDER BY o.date_created DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 DROP FUNCTION IF EXISTS Index_Indicator1c;
 
 DELIMITER $$
