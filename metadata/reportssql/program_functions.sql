@@ -447,3 +447,19 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- arvInitiationDateSpecified
+
+DROP FUNCTION IF EXISTS arvInitiationDateSpecified;
+
+DELIMITER $$
+CREATE FUNCTION arvInitiationDateSpecified(
+    p_patientId INT(11)) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+    IF getPatientProgramTreatmentStartDate(p_patientId) IS NOT NULL THEN
+        RETURN "Yes";
+    ELSE
+        RETURN "No";
+    END IF;
+END$$
+DELIMITER ;
