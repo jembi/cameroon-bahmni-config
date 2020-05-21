@@ -80,63 +80,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientMostRecentProgramAttributeCodedValue
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeCodedValue;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramAttributeCodedValue(
-    p_patientId INT(11),
-    p_uuidProgramAttribute VARCHAR(38),
-    p_language VARCHAR(3)) RETURNS VARCHAR(250)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(250);
-
-    SELECT cn.name INTO result
-    FROM patient_program_attribute ppa
-        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
-        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
-        JOIN concept c ON ppa.value_reference = c.concept_id
-        JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale = p_language
-    WHERE
-        ppa.voided = 0 AND
-        pp.patient_id = p_patientId AND
-        pat.uuid = p_uuidProgramAttribute
-    ORDER BY ppa.date_created DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
--- getPatientMostRecentProgramAttributeValue
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeValue;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramAttributeValue(
-    p_patientId INT(11),
-    p_uuidProgramAttribute VARCHAR(38)) RETURNS VARCHAR(250)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(250);
-
-    SELECT ppa.value_reference INTO result
-    FROM patient_program_attribute ppa
-        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
-        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
-    WHERE
-        ppa.voided = 0 AND
-        pp.patient_id = p_patientId AND
-        pat.uuid = p_uuidProgramAttribute
-    ORDER BY ppa.date_created DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 -- getPatientMostRecentProgramTrackingStateValue
 
 DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingStateValue;
@@ -239,24 +182,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientProgramTreatmentStartDate
-
-DROP FUNCTION IF EXISTS getPatientProgramTreatmentStartDate;
-
-DELIMITER $$
-CREATE FUNCTION getPatientProgramTreatmentStartDate(
-    p_patientId INT(11)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE result DATE;
-    DECLARE uuidProgramTreatmentStartDate VARCHAR(38) DEFAULT "2dc1aafd-a708-11e6-91e9-0800270d80ce";
-
-    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramTreatmentStartDate);
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 -- patientHasEnrolledInDefaulterProgram
 
 DROP FUNCTION IF EXISTS patientHasEnrolledInDefaulterProgram;
@@ -281,29 +206,3 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientMostRecentProgramOutcome
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramOutcome;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramOutcome(
-    p_patientId INT(11),
-    p_language VARCHAR(3),
-    p_program VARCHAR(250)) RETURNS VARCHAR(250)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(250);
-
-    SELECT cn.name INTO result
-    FROM patient_program pp
-        JOIN program p ON pp.program_id = p.program_id AND p.retired = 0
-        JOIN concept_name cn ON cn.concept_id = pp.outcome_concept_id AND cn.locale = p_language
-    WHERE
-        pp.voided = 0 AND
-        pp.patient_id = p_patientId AND
-        p.name = p_program
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;

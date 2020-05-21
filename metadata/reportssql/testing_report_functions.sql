@@ -702,29 +702,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientAgeInMonthsAtDate
-
-DROP FUNCTION IF EXISTS getPatientAgeInMonthsAtDate;
-
-DELIMITER $$
-CREATE FUNCTION getPatientAgeInMonthsAtDate(
-    p_patientId INT(11),
-    p_date DATE) RETURNS VARCHAR(50)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(50);
-
-    SELECT 
-        timestampdiff(MONTH, p.birthdate, p_date) INTO result 
-    FROM person p 
-    WHERE p.voided = 0
-        AND p.person_id = p_patientId
-    LIMIT 1;
-
-    RETURN result;
-END$$
-DELIMITER ;
-
 -- getTestResultWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS getTestResultWithinReportingPeriod;
@@ -870,27 +847,6 @@ BEGIN
     LIMIT 1;
 
     RETURN testResult;
-END$$
-DELIMITER ;
-
--- getPatientRegistrationDate
-
-DROP FUNCTION IF EXISTS getPatientRegistrationDate;
-
-DELIMITER $$
-CREATE FUNCTION getPatientRegistrationDate(
-    p_patientId INT(11)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE registrationDate DATE;
-
-    SELECT
-        date_created INTO registrationDate
-    FROM patient
-    WHERE voided = 0
-        AND patient_id = p_patientId;
-
-    RETURN registrationDate;
 END$$
 DELIMITER ;
 
