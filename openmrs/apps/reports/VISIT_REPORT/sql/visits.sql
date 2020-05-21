@@ -27,8 +27,8 @@ SELECT
     getViralLoadTestDate(v.patient_id) as 'Viral Load Test Date',
     getViralLoadTestResult(v.patient_id) as 'Viral Load Test Result',
     getListOfActiveARVDrugs(v.patient_id, '#startDate#', '#endDate#') as 'Active Drugs',
-    getPatientHIVDateFromCounsellingForm(v.patient_id) as 'HIV Test Date',
-    getPatientHIVResultFromCounsellingForm(v.patient_id) as 'HIV Test Result',
+    getPatientHIVTestDate(v.patient_id, '#startDate#', '#endDate#') as 'HIV Test Date',
+    getPatientHIVResult(v.patient_id, '#startDate#', '#endDate#') as 'HIV Test Result',
     (select address1 from location where name = "LOCATION_HOSPITAL") as 'HF name'
 FROM visit v
     JOIN visit_type vt ON v.visit_type_id = vt.visit_type_id

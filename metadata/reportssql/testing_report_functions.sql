@@ -822,6 +822,157 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientHIVTestDate
+
+DROP FUNCTION IF EXISTS getPatientHIVTestDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientHIVTestDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult VARCHAR(50);
+
+    CALL retrieveHIVTestDateAndResult(p_patientId, p_startDate, p_endDate, testDate, testResult);
+
+    RETURN testDate;
+
+END$$
+DELIMITER ;
+
+
+-- getPatientHIVResult
+
+DROP FUNCTION IF EXISTS getPatientHIVResult;
+
+DELIMITER $$
+CREATE FUNCTION getPatientHIVResult(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult VARCHAR(50);
+
+    CALL retrieveHIVTestDateAndResult(p_patientId, p_startDate, p_endDate, testDate, testResult);
+
+    RETURN testResult;
+
+END$$
+DELIMITER ;
+
+-- retrieveHIVTestDateAndResult
+
+DROP PROCEDURE IF EXISTS retrieveHIVTestDateAndResult;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveHIVTestDateAndResult(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    OUT p_hivTestDate DATE,
+    OUT p_hivTestResult VARCHAR(50)
+    )
+    DETERMINISTIC
+    proc_hiv_test_date_and_result:BEGIN
+
+    DECLARE hivTestDateUuid VARCHAR(38) DEFAULT 'c6c08cdc-18dc-4f42-809c-959621bc9a6c';
+    DECLARE htcResultUuid VARCHAR(38) DEFAULT '85dadffe-5714-4210-8632-6fb51ef593b6';
+    DECLARE finalTestResultUuid VARCHAR(38) DEFAULT '41e48d08-2235-47d5-af12-87a009057603';
+
+    DECLARE priorAncVisitUuid VARCHAR(38) DEFAULT '130e05df-8283-453b-a611-d4f884fac8e0';
+    DECLARE atAncVisitUuid VARCHAR(38) DEFAULT 'd6cc3709-ffa0-42eb-b388-d7def4df30cf';
+    DECLARE sectionHivTestUuid VARCHAR(38) DEFAULT 'b70dfca0-db21-4533-8c08-4626ff0de265';
+
+    DECLARE testDateFromANCForm DATE;
+    DECLARE testResultFromANCForm VARCHAR(50);
+    DECLARE obsGroupIdAnc INT(11);
+
+    DECLARE testDateFromHTCForm DATE;
+    DECLARE testResultFromHTCForm VARCHAR(50);
+    DECLARE encounterIdHTC INT(11);
+
+    DECLARE patientIsPregnant TINYINT(1);
+
+    -- read the test date and result from ANC form
+    SELECT o.obs_group_id, o.value_datetime INTO obsGroupIdAnc, testDateFromANCForm
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.value_datetime IS NOT NULL
+        AND c.uuid = hivTestDateUuid
+        AND o.person_id = p_patientId
+        AND 
+            (
+                SELECT concept.uuid
+                FROM obs
+                    JOIN concept ON obs.concept_id = concept.concept_id
+                WHERE obs.voided = 0
+                    AND obs.obs_id = o.obs_group_id
+                LIMIT 1
+            ) IN (priorAncVisitUuid, atAncVisitUuid)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC
+    LIMIT 1;
+
+    SELECT cn.name INTO testResultFromANCForm
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id
+        JOIN concept_name cn ON cn.concept_id = o.value_coded
+    WHERE o.voided = 0
+        AND o.obs_group_id = obsGroupIdAnc
+        AND c.uuid = htcResultUuid
+    LIMIT 1;
+
+    -- read the test date AND result from HTC form
+    SELECT o.value_datetime, o.encounter_id INTO testDateFromHTCForm, encounterIdHTC
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.value_datetime IS NOT NULL
+        AND c.uuid = hivTestDateUuid
+        AND o.person_id = p_patientId
+        AND
+            (
+                SELECT concept.uuid
+                FROM obs
+                    JOIN concept ON obs.concept_id = concept.concept_id
+                WHERE obs.voided = 0
+                    AND obs.obs_id = o.obs_group_id
+                LIMIT 1
+            ) =  sectionHivTestUuid
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC
+    LIMIT 1;
+
+    SELECT cn.name INTO testResultFromHTCForm
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id
+        JOIN concept_name cn ON cn.concept_id = o.value_coded
+    WHERE o.voided = 0
+        AND o.encounter_id = encounterIdHTC
+        AND c.uuid = finalTestResultUuid
+    LIMIT 1;
+
+    -- read information about the patient being pregnant or not
+    SET patientIsPregnant = patientIsPregnant(p_patientId);
+
+    -- return the ANC result if the patient is pregnant and the ANC result is available
+    IF (testResultFromANCForm IS NOT NULL AND (patientIsPregnant OR p_hivTestResult IS NULL)) THEN
+        SET p_hivTestResult = testResultFromANCForm;
+        SET p_hivTestDate = testDateFromANCForm;
+    ELSE
+        SET p_hivTestResult = testResultFromHTCForm;
+        SET p_hivTestDate = testDateFromHTCForm;
+    END IF;
+
+END$$ 
+DELIMITER ;
+
 -- getPatientHIVResultFromCounsellingForm
 
 DROP FUNCTION IF EXISTS getPatientHIVResultFromCounsellingForm;
