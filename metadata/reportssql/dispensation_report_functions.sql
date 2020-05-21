@@ -1,4 +1,4 @@
-
+-- getNumberOfTherapeuticLineARVDispensed
 
 DROP FUNCTION IF EXISTS getNumberOfTherapeuticLineARVDispensed;
 
@@ -38,6 +38,8 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- getNumberOfNoneSpecifiedARVDispensed
+
 DROP FUNCTION IF EXISTS getNumberOfNoneSpecifiedARVDispensed;
 
 -- exclude therapeutic line entered, PA and AES dispensations (NONE in template)
@@ -74,6 +76,8 @@ BEGIN
     RETURN (result);
 END$$ 
 DELIMITER ;
+
+-- getNumberOfAESAndPAARVDispensed
 
 DROP FUNCTION IF EXISTS getNumberOfAESAndPAARVDispensed;
 
@@ -181,6 +185,8 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- getNumberOfARVPrescribed
+
 DROP FUNCTION IF EXISTS getNumberOfARVPrescribed;
 
 DELIMITER $$
@@ -206,6 +212,7 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- getNumberOfARVDispensed
 
 DROP FUNCTION IF EXISTS getNumberOfARVDispensed;
 

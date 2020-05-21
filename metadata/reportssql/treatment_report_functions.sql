@@ -419,33 +419,6 @@ WHERE
 END$$
 DELIMITER ;
 
--- getPatientDateOfEnrolmentInProgram
-
-DROP FUNCTION IF EXISTS getPatientDateOfEnrolmentInProgram;
-
-DELIMITER $$
-CREATE FUNCTION getPatientDateOfEnrolmentInProgram(
-    p_patientId INT(11),
-    p_program VARCHAR(50)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE result DATE;
-
-    SELECT
-        pp.date_enrolled INTO result
-    FROM person p
-    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
-    WHERE p.person_id = p_patientId
-        AND p.voided = 0
-        AND pro.name = p_program
-    ORDER BY pp.date_enrolled DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 -- patientHasProgramOutcomeDeadWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHasProgramOutcomeDeadWithinReportingPeriod;
@@ -662,7 +635,7 @@ BEGIN
 END$$ 
 DELIMITER ;
 
--- getPatientMostRecentProgramAttributeValue
+-- getProgramAttributeValueWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS getProgramAttributeValueWithinReportingPeriod;
 
@@ -689,5 +662,244 @@ BEGIN
     LIMIT 1;
 
     RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientIsNewlyInitiatingART
+
+DROP FUNCTION IF EXISTS patientIsNewlyInitiatingART;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNewlyInitiatingART(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE isNewlyInitiatingART TINYINT(1) DEFAULT 0;
+    DECLARE artStartedDuringReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
+    DECLARE uuidNewlyInitiatingART VARCHAR(38) DEFAULT "31314c4c-c0b9-4b86-bd68-3449ff0ad20c";
+    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
+
+    SELECT
+        TRUE INTO isNewlyInitiatingART
+    FROM obs o
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidARTStatus
+        AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidNewlyInitiatingART)
+    LIMIT 1;
+
+    SELECT
+        TRUE INTO artStartedDuringReportingPeriod
+    FROM obs o
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidStartDate
+        AND cast(o.value_datetime AS DATE) BETWEEN p_startDate AND p_endDate
+    LIMIT 1;
+
+    RETURN (isNewlyInitiatingART && artStartedDuringReportingPeriod);
+END$$
+DELIMITER ;
+
+-- patientPickedARVDrugDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPickedARVDrugDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPickedARVDrugDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    GROUP BY o.patient_id;
+
+    RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- patientWasOnARVTreatmentByDate
+
+DROP FUNCTION IF EXISTS patientWasOnARVTreatmentByDate;
+
+DELIMITER $$
+CREATE FUNCTION patientWasOnARVTreatmentByDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) >= p_date
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate <= p_endDate;
+    END IF;
+END$$
+DELIMITER ;
+
+-- patientAlreadyOnART
+
+DROP FUNCTION IF EXISTS patientAlreadyOnART;
+
+DELIMITER $$
+CREATE FUNCTION patientAlreadyOnART(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE isAlreadyOnART TINYINT(1) DEFAULT 0;
+    DECLARE artStartedBeforeReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
+    DECLARE uuidAlreadyOnART VARCHAR(38) DEFAULT "6122279f-93a8-4e5a-ac5e-b347b60c989b";
+    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
+
+    SELECT
+        TRUE INTO isAlreadyOnART
+    FROM obs o
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidARTStatus
+        AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidAlreadyOnART)
+    LIMIT 1;
+
+    SELECT
+        TRUE INTO artStartedBeforeReportingPeriod
+    FROM obs o
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidStartDate
+        AND cast(o.value_datetime AS DATE) < p_startDate
+    LIMIT 1;
+
+    RETURN (isAlreadyOnART && artStartedBeforeReportingPeriod);
+END$$
+DELIMITER ;
+
+-- patientHasStartedARVTreatmentBefore
+
+DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentBefore;
+
+DELIMITER $$
+CREATE FUNCTION patientHasStartedARVTreatmentBefore(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate < p_startDate;
+    END IF;
+END$$
+DELIMITER ;
+
+-- patientHasStartedARVTreatmentAfter
+
+DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentAfter;
+
+DELIMITER $$
+CREATE FUNCTION patientHasStartedARVTreatmentAfter(
+    p_patientId INT(11),
+    p_date DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate > p_date;
+    END IF;
+END$$
+DELIMITER ;
+
+-- patientHasStartedARVTreatmentBeforeExtendedEndDate
+
+DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentBeforeExtendedEndDate;
+
+DELIMITER $$
+CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
+    p_patientId INT(11),
+    p_endDate DATE,
+    p_extendedMonths INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN timestampadd(MONTH, -p_extendedMonths, enrolmentDate) < p_endDate;
+    END IF;
+END$$
+DELIMITER ;
+
+-- patientHasStartedARVTreatmentDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    IF enrolmentDate IS NULL THEN
+        RETURN 0;
+    ELSE
+        RETURN enrolmentDate BETWEEN p_startDate AND p_endDate;
+    END IF;
 END$$
 DELIMITER ;

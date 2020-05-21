@@ -229,6 +229,7 @@ namespace Bahmni
                 try
                 {
                     var gpo = new ComputerGroupPolicyObject();
+
                     using (RegistryKey rootRegistryKey = gpo.GetRootRegistryKey(section))
                     {
                         // Data can't be null so we can use this value to indicate key must be delete
@@ -239,7 +240,6 @@ namespace Bahmni
                                 if (subKey != null)
                                 {
                                     subKey.DeleteValue(valueName);
-                                    subKey.Close();
                                 }
                             }
                         }
@@ -248,11 +248,8 @@ namespace Bahmni
                             using (RegistryKey subKey = rootRegistryKey.CreateSubKey(key))
                             {
                                 subKey.SetValue(valueName, settingValue, registryValueKind);
-                                subKey.Close();
                             }
                         }
-
-                        rootRegistryKey.Close();
                     }
 
                     gpo.Save();
@@ -262,9 +259,15 @@ namespace Bahmni
                     exception = ex;
                 }
             });
+
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(500);
+            }
 
             if (exception != null)
                 throw exception;
@@ -283,6 +286,7 @@ namespace Bahmni
             var t = new Thread(() =>
             {
                 var gpo = new ComputerGroupPolicyObject();
+
                 using (RegistryKey rootRegistryKey = gpo.GetRootRegistryKey(section))
                 {
                     // Data can't be null so we can use this value to indicate key must be delete
@@ -297,13 +301,17 @@ namespace Bahmni
                             result = subKey.GetValue(valueName);
                         }
                     }
-
-                    rootRegistryKey.Close();
                 }
             });
+
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(500);
+            }
 
             return result;
         }

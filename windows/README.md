@@ -18,6 +18,7 @@ __Note__: Once you have installed the service, you must download and use [Putty]
 
 Assuming that VirtualBox is already installed on a 64bit Windows Professional machine together with the Bahmni Vagrant CentOS instance, please follow these steps to install and configure the Bahmni Windows Service:
 
+1. Make sure that the system date and time is correct. Please see sectipn [Internet Time](#Internet-Time)
 1. Open the vagrant root directory and permanently delete the temporary vagrant-start.bat script as it will no longer be used and may cause conflict.
 1. Open a CMD terminal in Windows and navigate to the vagrant root directory and then execute command __*vagrant halt*__
 1. Download and install the [Bahmni Service MSI](https://github.com/jembi/cameroon-openmrs-module-bahmniapps/releases/download/v1.5.0/Bahmni.Service.msi) on your windows server.
@@ -28,7 +29,7 @@ Assuming that VirtualBox is already installed on a 64bit Windows Professional ma
          1. The logs directory on the windows server where the Bahmni service will log all events
          1. Service Login - This is the administrative account that was used at the time of installing the VM. 
              * *__Note__: When specifying the Username, make sure to enter the prefix .\ in front of the username. For example, .\MyUserName*
-4. Once the installation has completed, the service will automatically start the VM. This can take up to around 5mins. Keep an eye on the logs found in path __*C:\EMR\bahmni\bahmni-service-logs*__
+5. Once the installation has completed, the service will automatically start the VM. This can take up to around 5mins. Keep an eye on the logs found in path __*C:\EMR\bahmni\bahmni-service-logs*__
 
 ### Group Policy (GPO) Editor Configuration Steps
 __*Note*__: *The Bahmni service automatically handles the following group policy requirements.*
@@ -93,6 +94,17 @@ This section describes how to leverage the local GPO on the Windows Server to au
     *  In the System Hibernate Timeout (seconds) listbox, enter 0
 1.  Click on Apply button then OK button
 
+##### Button Settings
+1.  Navigate to the following path in the GPO editor: __*Computer Configuration/Administrative Templates/System/Power Management/Button Settings*__
+1.  Double click on Select the lid switch action (plugged in):
+    *  Click on the __*Enable*__ radio button
+    *  In the List Switch Action listbox, select Shutdown
+3.  Click on Apply button then OK button
+1.  Double click on Select the lid switch action (on battery):
+    *  Click on the __*Enable*__ radio button
+    *  In the List Switch Action listbox, select Shutdown
+1.  Click on Apply button then OK button
+
 ### Configure Fast Startup (Hiberboot)
 This section describes how to leverage the local GPO on the Windows Server to disable hiberboot so that the service can request a graceful shutdown of the VM before allowing windows to terminate the service and shutdown.
 
@@ -101,3 +113,42 @@ This section describes how to leverage the local GPO on the Windows Server to di
 
 ### Startup Commands
 After the installation has taken place, a file called startupCommands.txt will be create in the vagrant root directory (the directory you specified at the time of installation). This file will allow the service to execute one or more commands by passing the commands as an argument to the vagrant command __*vagrant ssh --command [My Commands]*__. __Note__: When using more than one command, vagrant requires that the first command executes properly without any errors before allowing other commands to be executed. Multiple commands can be executed using the operator && between commands. For example, vagrant ssh --command "Command 1 && Command2". Command2 will only execute if Command1 is valid and can be executed by CentOS with no errors thrown.
+
+### Bahmni Service Logs
+This section describes the key mechanisms of the service to monitor the Windows server for internet connectivity, to detect a change in the connection state and if internet connectivity has been detected, compress the current month's folder for the logs and if compression was successful, upload the compressed file to the facility folder in the Google drive repo. The compressed file is automatically deleted from the Windows server.
+
+#### Google Drive
+The Bahmni service will automatically compress all of the __*Bahmni service*__ logs for the current month and upload to the shared Google Drive [Bahmni Service Logs](https://drive.google.com/drive/folders/1a-tFW2Kn_8On39pbipl09UreJBtQglQS). The service will automatically create each facility folder in the Google Drive repo so that logs can be grouped together in the appropriate facility folder. The service also ensures that there is only one compressed file per month in the Google Drive repo by deleting the existing file before uploading the more current file for the month.  
+
+##### Connection State Monitoring
+The service has been designed to work with frequent internet connection outages. In other words, the service will continue to try and compress the current month's logs and upload the file to Google Drive and will continue to do so until the file has been uploaded. Once the file has been uploaded, the service __*will not*__ upload another compressed log file for the same day. The service will only log the __*first occurrence*__ for each internet connection detected or connection dropped state whenever the internet has been connected or disconnected. When internet connectivity has been detected, the service also performs an internet connection speed test by downloading a 261KB file 5 times and the average speed recorded in the service log. The downloaded files are automatically deleted. The service records when a successful compression took place as well as when the compressed file has been successfully uploaded to Google Drive. The below triggers help describe how the service handles this process.
+
+###### Triggers
+Whenever there is a change in the connection state, the current state of the internet connection is recorded in the connectionState.ini file, together with the last known dates for compressed logs and logs upload events. The logs file appears as follows. The value of unspecified is simply a default value to tell the service that no attempts have been made to compress and upload the logs file.
+
+\[NetworkConnection\]\
+InternetEnabled=Unspecified - Uses True of False values\
+LastDateLogsUploaded=Unspecified - The last known successful upload date\
+LastDateLogsCompressed=Unspecified - The last known successful compression date
+
+The service uses the above file for the following:
+1. Check to see if the Windows server has an active internet connection
+1. If internet has been detected, __*only then*__ check:
+   *  The last compressed date - if the value is Unspecified or if the date is the previous day, only then perform a compression of the logs
+   *  The last upload date - if the value is Unspecified or if the date is the previous day, only then request an upload of the logs to Google Drive.
+
+## Internet Time
+It is essential that the Windows server has the correct date and time applied otherwise the service will not be able to autheticate with the Google Drive API for compressed log file uploads. Also, if the date and/or time is incorrect, the daily log files will be split across a range of new log files depending on how far out the server time is.
+
+The following steps explains how to synchronize the server time with an NTP server (internet time) (__*Note*__: Once this step is done, you will not need to do it again, even if there is no internet connectivity):
+1. Open Control Panel.
+1. Click on Clock, Language, and Region.
+1. Click on Date and Time.
+1. Click on the Internet Time tab.
+1. Click the Change settings button.
+1. Check that the Synchronize with an internet time server option is selected.
+1. Keep the default server select
+1. Click the Update now button to synchronize the time with the new server.
+1. Click on Apply button then click on OK button.
+
+__*Note*__: Depending on the internet connection speed, this could take up to 1min before the correct date/time is displayed.
