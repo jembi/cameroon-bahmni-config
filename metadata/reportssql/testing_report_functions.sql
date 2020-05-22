@@ -822,12 +822,12 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientHIVTestDate
+-- getHIVTestDate
 
-DROP FUNCTION IF EXISTS getPatientHIVTestDate;
+DROP FUNCTION IF EXISTS getHIVTestDate;
 
 DELIMITER $$
-CREATE FUNCTION getPatientHIVTestDate(
+CREATE FUNCTION getHIVTestDate(
     p_patientId INT(11),
     p_startDate DATE,
     p_endDate DATE) RETURNS DATE
@@ -844,12 +844,12 @@ END$$
 DELIMITER ;
 
 
--- getPatientHIVResult
+-- getHIVResult
 
-DROP FUNCTION IF EXISTS getPatientHIVResult;
+DROP FUNCTION IF EXISTS getHIVResult;
 
 DELIMITER $$
-CREATE FUNCTION getPatientHIVResult(
+CREATE FUNCTION getHIVResult(
     p_patientId INT(11),
     p_startDate DATE,
     p_endDate DATE) RETURNS VARCHAR(50)
@@ -895,8 +895,6 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
     DECLARE testDateFromHTCForm DATE;
     DECLARE testResultFromHTCForm VARCHAR(50);
     DECLARE encounterIdHTC INT(11);
-
-    DECLARE patientIsPregnant TINYINT(1);
 
     -- read the test date and result from ANC form
     SELECT o.obs_group_id, o.value_datetime INTO obsGroupIdAnc, testDateFromANCForm
@@ -958,14 +956,11 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
         AND c.uuid = finalTestResultUuid
     LIMIT 1;
 
-    -- read information about the patient being pregnant or not
-    SET patientIsPregnant = patientIsPregnant(p_patientId);
-
     -- return the ANC result if the patient is pregnant and the ANC result is available
-    IF (testResultFromANCForm IS NOT NULL AND (patientIsPregnant OR p_hivTestResult IS NULL)) THEN
+    IF ((testDateFromHTCForm IS NULL AND testDateFromANCForm IS NOT null) || testDateFromANCForm > testDateFromHTCForm) THEN
         SET p_hivTestResult = testResultFromANCForm;
         SET p_hivTestDate = testDateFromANCForm;
-    ELSE
+    ELSE 
         SET p_hivTestResult = testResultFromHTCForm;
         SET p_hivTestDate = testDateFromHTCForm;
     END IF;
