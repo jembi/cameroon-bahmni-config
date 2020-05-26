@@ -88,6 +88,28 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getFirstIndexID
+
+DROP FUNCTION IF EXISTS getFirstIndexID;
+
+DELIMITER $$
+CREATE FUNCTION getFirstIndexID(
+    p_contactPatientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT DEFAULT 0;
+
+    SELECT p.patient_id INTO result
+    FROM patient p
+    WHERE patientsAreRelated(p_contactPatientId, p.patient_id) AND
+        patientIsIndex(p.patient_id)
+        ORDER BY p.date_created ASC 
+        LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 
 -- getFirstIndexRelationship
 
