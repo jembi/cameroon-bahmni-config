@@ -1710,3 +1710,34 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+
+-- getDaysBetweenHIVPosAndEnrollment
+
+DROP FUNCTION IF EXISTS getDaysBetweenHIVPosAndEnrollment;
+
+DELIMITER $$
+CREATE FUNCTION getDaysBetweenHIVPosAndEnrollment(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrollmentDate DATE;
+    SET enrollmentDate = getPatientDateOfEnrolmentInProgram(p_patientId, "HIV_PROGRAM_KEY");
+    RETURN (DATEDIFF(enrollmentDate, getHIVTestDate(p_patientId, "2000-01-01", enrollmentDate)));
+END$$
+DELIMITER ;
+
+-- getDaysBetweenHIVPosAndART
+
+DROP FUNCTION IF EXISTS getDaysBetweenHIVPosAndART;
+
+DELIMITER $$
+CREATE FUNCTION getDaysBetweenHIVPosAndART(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE artStartDate DATE;
+    SET artStartDate = getPatientARVStartDate(p_patientId);
+    RETURN (DATEDIFF(artStartDate, getHIVTestDate(p_patientId, "2000-01-01", artStartDate)));
+END$$
+DELIMITER ;
