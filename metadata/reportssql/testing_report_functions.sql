@@ -822,6 +822,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateOfPositiveHIVResult
+
+DROP FUNCTION IF EXISTS getDateOfPositiveHIVResult;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfPositiveHIVResult(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult VARCHAR(50);
+
+    CALL retrieveHIVTestDateAndResult(p_patientId, p_startDate, p_endDate, testDate, testResult);
+
+    IF (testResult = "Positive") THEN
+        RETURN testDate;
+    ELSE
+        RETURN null;
+    END IF;
+
+END$$
+DELIMITER ;
+
 -- getHIVTestDate
 
 DROP FUNCTION IF EXISTS getHIVTestDate;
@@ -842,7 +867,6 @@ BEGIN
 
 END$$
 DELIMITER ;
-
 
 -- getHIVResult
 
