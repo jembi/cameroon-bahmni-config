@@ -28,8 +28,8 @@ SELECT getPatientIdentifier(p.patient_id) as "Contacts (Contact nr/Child nr) ",
 	getObsDatetimeValue(getFirstIndexID(p.patient_id), "e7a002be-8afc-48b1-a81b-634e37f2961c") as "Date accepted ICT / Date d'acceptation",
 	getNumberOfContactsRelatedToIndex(getFirstIndexID(p.patient_id)) as "No of contacts elicited/ Nombre de contacts obtenus",
 	getNumberOfEnrolledContactsRelatedToIndex(getFirstIndexID(p.patient_id)) as "No of contacts notified / Nombre de contacts notifiés",
-	0 as "No of contacts tested for HIV/ Nombre de contacts testés pour le VIH",
-	0 as "No of contacts tested HIV positive/ Nombre de contacts testés séropositifs",
+	getNumberOfHIVTestedContactsRelatedToIndex(getFirstIndexID(p.patient_id)) as "No of contacts tested for HIV/ Nombre de contacts testés pour le VIH",
+	getNumberOfHIVPosContactsRelatedToIndex(getFirstIndexID(p.patient_id)) as "No of contacts tested HIV positive/ Nombre de contacts testés séropositifs",
 	"N/A" as "APS"
 	FROM patient p
 		WHERE patientIsContact(p.patient_id);
