@@ -158,3 +158,87 @@ BEGIN
     RETURN (result);
 END$$
 DELIMITER ;
+
+-- getLastArvPickupDate
+
+DROP FUNCTION IF EXISTS getLastArvPickupDate;
+
+DELIMITER $$
+CREATE FUNCTION getLastArvPickupDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT o.scheduled_date INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDurationMostRecentArvTreatment
+
+DROP FUNCTION IF EXISTS getDurationMostRecentArvTreatment;
+
+DELIMITER $$
+CREATE FUNCTION getDurationMostRecentArvTreatment(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT calculateDurationInDays(do.duration,c.uuid) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getLocationOfArvRefill
+
+DROP FUNCTION IF EXISTS getLocationOfArvRefill;
+
+DELIMITER $$
+CREATE FUNCTION getLocationOfArvRefill(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT l.name INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
+        JOIN `location` l ON l.location_id = e.location_id AND l.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
