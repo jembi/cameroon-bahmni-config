@@ -924,6 +924,7 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
     WHERE o.voided = 0
         AND o.obs_group_id = obsGroupIdAnc
         AND c.uuid = htcResultUuid
+        AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
     LIMIT 1;
 
     -- read the test date AND result from HTC form
@@ -954,6 +955,7 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
     WHERE o.voided = 0
         AND o.encounter_id = encounterIdHTC
         AND c.uuid = finalTestResultUuid
+        AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
     LIMIT 1;
 
     -- return the ANC result if the patient is pregnant and the ANC result is available
@@ -1739,5 +1741,30 @@ BEGIN
     DECLARE artStartDate DATE;
     SET artStartDate = getPatientARVStartDate(p_patientId);
     RETURN (DATEDIFF(artStartDate, getHIVTestDate(p_patientId, "2000-01-01", artStartDate)));
+END$$
+DELIMITER ;
+
+-- getTestedLocation
+
+DROP FUNCTION IF EXISTS getTestedLocation;
+
+DELIMITER $$
+CREATE FUNCTION getTestedLocation(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT l.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN location l ON o.location_id = l.location_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND cn.name = 'Final Test Result'
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
 END$$
 DELIMITER ;
