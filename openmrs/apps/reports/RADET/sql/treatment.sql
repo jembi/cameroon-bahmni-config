@@ -35,4 +35,5 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY") as "Current ART Status (Active, LTFU, Dead, Transferred Out, Stopped)",
 	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	"N/A" as "Psychosocial Agents (Retention APS)"
-	FROM patient p;
+FROM patient p
+WHERE getPatientARVStartDate(p.patient_id) IS NOT NULL OR getLastArvPickupDate(p.patient_id, "2010-01-01", "#endDate#") IS NOT NULL;
