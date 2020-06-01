@@ -21,7 +21,7 @@ SELECT
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Maternal Outcome/ Résultat maternel",
-	"N/A" as "Status of Missed appointment / Statut de rendez-vous manqué",
+	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	"N/A" as "Child ID",
 	"N/A" as "Child Date of birth (Date de naissance)",
 	"N/A" as "Infant ARV Prophylaxis",
