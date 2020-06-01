@@ -54,7 +54,8 @@ BEGIN
             WHERE obs.voided = 0
                 AND obs.obs_id = o.obs_group_id
                 AND concept_name.locale='en' AND concept_name.concept_name_type = 'FULLY_SPECIFIED')
-    ORDER BY o.date_created DESC;
+    ORDER BY o.date_created DESC
+    LIMIT 1;
 
     RETURN (result);
 END$$
