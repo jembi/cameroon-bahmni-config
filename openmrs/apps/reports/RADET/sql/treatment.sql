@@ -17,7 +17,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	"N/A" as "Regimen Line at ART Start/ Ligne de régime à ART Start",
 	"N/A" as "Regimen at ART Start/ Régime chez ART Start", 
 	getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "Current Regimen Line/ Ligne de régime actuelle",
-	"N/A" as "Current ART Regimen/ Régime d'ART actuel",
+	getListOfActiveARVDrugs(p.patient_id, '#startDate#', '#endDate#') as "Current ART Regimen/ Régime d'ART actuel",
 	"N/A" as "Regimen Switch/ Commutateur de régime",
 	"N/A" as "Date of Regimen switch  (limit only to the current reporting month)",
 	patientIsPregnant(p.patient_id) as "Pregnancy Status/ Statut de grossesse",
