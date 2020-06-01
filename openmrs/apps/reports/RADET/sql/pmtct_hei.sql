@@ -19,7 +19,7 @@ SELECT
 	"N/A" as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
-	"N/A" as "Viral Load Indication/ Indication de la charge virale",
+	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Maternal Outcome/ Résultat maternel",
 	"N/A" as "Status of Missed appointment / Statut de rendez-vous manqué",
 	"N/A" as "Child ID",

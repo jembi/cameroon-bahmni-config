@@ -1693,9 +1693,10 @@ BEGIN
     DECLARE result TINYINT(1);
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
 
     -- retrieve the test date and result
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     RETURN (testDate IS NOT NULL AND testResult IS NOT NULL AND
         testDate > TIMESTAMPADD(MONTH, -1, CURDATE()) AND

@@ -43,8 +43,9 @@ CREATE FUNCTION getViralLoadTestDate(
 BEGIN
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
 
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     RETURN testDate;
 END$$
@@ -61,8 +62,9 @@ CREATE FUNCTION getViralLoadTestResult(
 BEGIN
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
 
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     RETURN testResult;
 END$$

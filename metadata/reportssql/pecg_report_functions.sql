@@ -568,9 +568,10 @@ BEGIN
     DECLARE result TINYINT(1);
     DECLARE testDate DATE;
     DECLARE testResult DATE;
+    DECLARE viralLoadIndication VARCHAR(50);
 
     -- retrieve the test date
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     -- if the test date is null, return FALSE (because the patient didn't have a viral load test)
     IF testDate IS NULL THEN
@@ -601,9 +602,10 @@ BEGIN
     DECLARE result TINYINT(1);
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
 
     -- retrieve the test date
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     -- if the test date is null, return FALSE (because the patient didn't have a viral load test)
     IF testDate IS NULL THEN
@@ -632,7 +634,8 @@ DELIMITER $$
 CREATE PROCEDURE retrieveViralLoadTestDateAndResult(
     IN p_patientId INT(11),
     OUT p_testDate DATE,
-    OUT p_testResult INT(11)
+    OUT p_testResult INT(11),
+    OUT p_viralLoadIndication VARCHAR(50)
     )
     DETERMINISTIC
 proc_vital_load:BEGIN
@@ -693,9 +696,10 @@ proc_vital_load:BEGIN
     SET p_testDate = testDate;
 
     IF (useFormResult) THEN
-        SELECT o.value_numeric INTO p_testResult
+        SELECT o.value_numeric, cn.name INTO p_testResult, p_viralLoadIndication
         FROM obs o
         JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale="en"
         WHERE o.voided = 0
             AND o.order_id IS NULL
             AND o.value_numeric IS NOT NULL
@@ -704,9 +708,10 @@ proc_vital_load:BEGIN
         ORDER BY o.obs_datetime DESC
         LIMIT 1;
     ELSE
-        SELECT o.value_numeric INTO p_testResult
+        SELECT o.value_numeric, cn.name  INTO p_testResult, p_viralLoadIndication
         FROM obs o
         JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale="en"
         WHERE o.voided = 0
             AND o.order_id IS NOT NULL
             AND o.value_numeric IS NOT NULL

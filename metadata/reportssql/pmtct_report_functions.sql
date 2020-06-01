@@ -243,3 +243,22 @@ BEGIN
     RETURN patientTestDateIsBeforeReportingPeriod;
 END$$
 DELIMITER ;
+
+-- getViralLoadIndication
+
+DROP FUNCTION IF EXISTS getViralLoadIndication;
+
+DELIMITER $$
+CREATE FUNCTION getViralLoadIndication(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+
+    RETURN viralLoadIndication;
+END$$
+DELIMITER ;
