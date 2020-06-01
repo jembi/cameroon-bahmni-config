@@ -41,4 +41,5 @@ SELECT
 	"N/A" as "Child ART Code",
 	getFacilityName() as "Health Facility/  Établissement de santé",
 	"N/A" as "Psychosocial Agents (Retention APS)"
-FROM patient p;
+FROM patient p
+WHERE getObsDatetimeValue(p.patient_id, "57d91463-1b95-4e4d-9448-ee4e88c53cb9") IS NOT NULL;
