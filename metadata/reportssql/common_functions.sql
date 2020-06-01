@@ -90,38 +90,4 @@ END$$
 
 DELIMITER ; 
 
--- calculateDurationInDays
-
-DROP FUNCTION IF EXISTS calculateDurationInDays;
-
-DELIMITER $$
-CREATE FUNCTION calculateDurationInDays(
-    p_duration INT(11),
-    p_uuidDurationUnit VARCHAR(38)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-
-    DECLARE result INT(11);
-    DECLARE uuidMinute VARCHAR(38) DEFAULT '33bc78b1-8a92-11e4-977f-0800271c1b75';
-    DECLARE uuidHour VARCHAR(38) DEFAULT 'bb62c684-3f10-11e4-adec-0800271c1b75';
-    DECLARE uuidDay VARCHAR(38) DEFAULT '9d7437a9-3f10-11e4-adec-0800271c1b75';
-    DECLARE uuidWeek VARCHAR(38) DEFAULT 'bb6436e3-3f10-11e4-adec-0800271c1b75';
-    DECLARE uuidMonth VARCHAR(38) DEFAULT 'bb655344-3f10-11e4-adec-0800271c1b75';
-
-    IF p_uuidDurationUnit = uuidMinute THEN
-        RETURN p_duration / 1440;
-    ELSEIF p_uuidDurationUnit = uuidHour THEN
-        RETURN p_duration / 24;
-    ELSEIF p_uuidDurationUnit = uuidDay THEN
-        RETURN p_duration;
-    ELSEIF p_uuidDurationUnit = uuidWeek THEN
-        RETURN p_duration * 7;
-    ELSEIF p_uuidDurationUnit = uuidMonth THEN
-        RETURN p_duration * 30;
-    END IF;
-
-    RETURN (result); 
-END$$ 
-
-DELIMITER ; 
 
