@@ -21,7 +21,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	"N/A" as "Regimen Switch/ Commutateur de régime",
 	"N/A" as "Date of Regimen switch  (limit only to the current reporting month)",
 	patientIsPregnant(p.patient_id) as "Pregnancy Status/ Statut de grossesse",
-	getObsCodedValue(p.patient_id,"211f0857-61a3-4049-9777-374c4a592453") as "KP Status",
+	getMostRecentCodedObservation(p.patient_id,"HTC, Risk Group","en") as "KP Status",
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load / Charge virale actuelle (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	"N/A" as "Viral Load Indication/ Indication de la charge virale",

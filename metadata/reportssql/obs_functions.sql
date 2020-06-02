@@ -365,6 +365,36 @@ BEGIN
         AND o.voided = 0
         AND cn.name = p_conceptName
         AND cn2.locale = p_language
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getMostRecentShortNameCodedObservation
+
+DROP FUNCTION IF EXISTS getMostRecentShortNameCodedObservation;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentShortNameCodedObservation(
+    p_patientId INT(11),
+    p_conceptName VARCHAR(255),
+    p_language VARCHAR(3)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND cn.name = p_conceptName
+        AND cn2.locale = p_language
+        AND cn2.concept_name_type = "SHORT"
     ORDER BY o.date_created DESC
     LIMIT 1;
 
