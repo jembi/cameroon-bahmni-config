@@ -584,3 +584,32 @@ BEGIN
     RETURN result;
 END$$
 DELIMITER ;
+
+-- getPatientAgeAtFirstVisitInMonths
+
+DROP FUNCTION IF EXISTS getPatientAgeAtFirstVisitInMonths;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeAtFirstVisitInMonths(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result INT(11);
+    DECLARE dateOfFirstVisit DATE;
+
+    SELECT v.date_started INTO dateOfFirstVisit
+    FROM visit v
+    WHERE v.voided = 0 AND v.patient_id = p_patientId
+    ORDER BY v.date_started ASC
+    LIMIT 1;
+
+    IF dateOfFirstVisit IS NOT NULL THEN
+        RETURN getPatientAgeInMonthsAtDate(p_patientId, dateOfFirstVisit);
+    ELSE
+        RETURN NULL;
+    END IF;
+    
+END$$ 
+
+DELIMITER ;

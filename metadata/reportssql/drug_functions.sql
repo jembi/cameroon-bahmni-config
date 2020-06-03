@@ -285,6 +285,7 @@ DROP FUNCTION IF EXISTS getInfantARVProphylaxis;
 DELIMITER $$
 CREATE FUNCTION getInfantARVProphylaxis(
     p_patientId INT(11),
+    p_drugName VARCHAR(50),
     p_startDate DATE,
     p_endDate DATE) RETURNS VARCHAR(255)
     DETERMINISTIC
@@ -298,6 +299,7 @@ BEGIN
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugIsChildProphylaxis(d.concept_id)
+        AND d.name LIKE CONCAT('%', p_drugName, '%')
     ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
@@ -312,6 +314,7 @@ DROP FUNCTION IF EXISTS getDateOfInfantARVProphylaxis;
 DELIMITER $$
 CREATE FUNCTION getDateOfInfantARVProphylaxis(
     p_patientId INT(11),
+    p_drugName VARCHAR(50),
     p_startDate DATE,
     p_endDate DATE) RETURNS DATE
     DETERMINISTIC
@@ -325,6 +328,7 @@ BEGIN
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugIsChildProphylaxis(d.concept_id)
+        AND d.name LIKE CONCAT('%', p_drugName, '%')
     ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
