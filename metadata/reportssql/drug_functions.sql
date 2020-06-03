@@ -277,3 +277,57 @@ BEGIN
 END$$ 
 
 DELIMITER ; 
+
+-- getInfantARVProphylaxis
+
+DROP FUNCTION IF EXISTS getInfantARVProphylaxis;
+
+DELIMITER $$
+CREATE FUNCTION getInfantARVProphylaxis(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT d.name INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsChildProphylaxis(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getDateOfInfantARVProphylaxis
+
+DROP FUNCTION IF EXISTS getDateOfInfantARVProphylaxis;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfInfantARVProphylaxis(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT o.scheduled_date INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsChildProphylaxis(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;

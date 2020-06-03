@@ -715,11 +715,58 @@ CREATE FUNCTION getTestResultWithinReportingPeriod(
     p_testDateUuid VARCHAR(38)) RETURNS VARCHAR(50)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(50);
+    DECLARE testResult VARCHAR(50);
+    DECLARE testDate DATE;
+
+    CALL retrieveTestDateAndResultWithinReportingPeriod(p_patientId, p_startDate, p_endDate, p_testUuid, p_testDateUuid, testDate, testResult);
+
+    RETURN testResult;
+END$$
+DELIMITER ;
+
+-- getTestDateWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getTestDateWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestDateWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_testUuid VARCHAR(38),
+    p_testDateUuid VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testResult VARCHAR(50);
+    DECLARE testDate DATE;
+
+    CALL retrieveTestDateAndResultWithinReportingPeriod(p_patientId, p_startDate, p_endDate, p_testUuid, p_testDateUuid, testDate, testResult);
+
+    RETURN testDate;
+END$$
+DELIMITER ;
+
+-- retrieveTestDateAndResultWithinReportingPeriod
+
+DROP PROCEDURE IF EXISTS retrieveTestDateAndResultWithinReportingPeriod;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveTestDateAndResultWithinReportingPeriod(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    IN p_testUuid VARCHAR(38),
+    IN p_testDateUuid VARCHAR(38),
+    OUT p_testDate DATE,
+    OUT p_testResult VARCHAR(50)
+    )
+    DETERMINISTIC
+    proc_test_date_and_result:BEGIN
+
     DECLARE encounterId INT(11);
 
     -- retrieve the test result from OpenElis
-    SELECT cn.name INTO result
+    SELECT cn.name INTO p_testResult
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
@@ -730,12 +777,12 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1;
 
-    IF (result IS NOT NULL) THEN
-        RETURN result;
+    IF (p_testResult IS NOT NULL) THEN
+        LEAVE proc_test_date_and_result;
     END IF;
 
     -- retrieve the test result from the lab form
-    SELECT o.encounter_id INTO encounterId
+    SELECT o.encounter_id, o.value_datetime INTO encounterId, p_testDate
     FROM obs o
     WHERE o.voided = 0
         AND o.person_id = p_patientId
@@ -745,7 +792,7 @@ BEGIN
     ORDER BY o.value_datetime DESC, o.date_created DESC
     LIMIT 1;
 
-    SELECT cn.name INTO result
+    SELECT cn.name INTO p_testResult
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
@@ -754,10 +801,9 @@ BEGIN
         AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
         AND o.encounter_id = encounterId
     ORDER BY o.date_created DESC
-    LIMIT 1;
+    LIMIT 1;    
 
-    RETURN result;
-END$$
+END$$ 
 DELIMITER ;
 
 -- patientHasEnrolledIntoTBProgramDuringReportingPeriod

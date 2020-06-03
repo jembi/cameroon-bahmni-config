@@ -22,24 +22,28 @@ SELECT
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Maternal Outcome/ Résultat maternel",
 	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
-	"N/A" as "Child ID",
-	"N/A" as "Child Date of birth (Date de naissance)",
-	"N/A" as "Infant ARV Prophylaxis",
-	"N/A" as "Date of Infant ARV Prophylaxis",
+	pi.identifier as "Child ID",
+	getPatientBirthdate(child.patient_id) as "Child Date of birth (Date de naissance)",
+	getInfantARVProphylaxis(child.patient_id, "2020-01-01", "#endDate#") as "Infant ARV Prophylaxis",
+	getDateOfInfantARVProphylaxis(child.patient_id, "2020-01-01", "#endDate#") as "Date of Infant ARV Prophylaxis",
 	"N/A" as "Infant CTX",
 	"N/A" as "Date of Infant CTX",
-	"N/A" as "Test type ",
+	getObsCodedValue(child.patient_id, "fcbc6db2-3983-4448-b95d-d8546c5bca68") as "Test type ",
 	"N/A" as "Date of EID Sample Collected",
 	"N/A" as "Date of EID Sample Sent",
-	"N/A" as "Date EID Result Received at Facility ",
-	"N/A" as "Date Caregiver Given EID Result",
-	"N/A" as "EID Result ",
+	getTestDateWithinReportingPeriod(child.patient_id, "2020-01-01", "#endDate#", "a5239a85-6f75-4882-9b9b-60168e54b7da", "9bb7b360-3790-4e1a-8aca-0d1341663040") as "Date EID Result Received at Facility ",
+	getDateMostRecentHIVRelatedEncounter(p.patient_id) as "Date Caregiver Given EID Result",
+	getTestResultWithinReportingPeriod(child.patient_id, "2020-01-01", "#endDate#", "a5239a85-6f75-4882-9b9b-60168e54b7da", "9bb7b360-3790-4e1a-8aca-0d1341663040") as "EID Result ",
 	"N/A" as "Month of Health Facility Visits when infant is seen at facility / Mois des visites dans un établissement de santé lorsqu'un nourrisson est vu dans un établissement",
 	"N/A" as "Visit status / Statut de la visite",
 	"N/A" as "Infant Outcome at 18 Months/ Résultat infantile à 18 mois",
 	getPatientARVStartDate(p.patient_id) as "Date of ART initiation (If HIV-positive) / Date d'initiation du ART (si HIV positif)",
-	"N/A" as "Child ART Code",
+	getPatientARTNumber(child.patient_id) as "Child ART Code",
 	getFacilityName() as "Health Facility/  Établissement de santé",
 	"N/A" as "Psychosocial Agents (Retention APS)"
 FROM patient p
-WHERE getObsDatetimeValue(p.patient_id, "57d91463-1b95-4e4d-9448-ee4e88c53cb9") IS NOT NULL;
+  LEFT JOIN patient child ON getRelationshipNameBetweenPatients(p.patient_id, child.patient_id) = "RELATIONSHIP_BIO_MOTHER" AND child.voided = 0
+  LEFT JOIN patient_identifier pi ON pi.patient_id = child.patient_id AND pi.preferred = 1 
+WHERE
+  p.voided = 0
+  AND getObsDatetimeValue(p.patient_id, "57d91463-1b95-4e4d-9448-ee4e88c53cb9") IS NOT NULL;
