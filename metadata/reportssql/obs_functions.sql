@@ -25,6 +25,42 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getObsCodedValueInSectionByNames
+
+DROP FUNCTION IF EXISTS getObsCodedValueInSectionByNames;
+
+DELIMITER $$
+CREATE FUNCTION getObsCodedValueInSectionByNames(
+    p_patientId INT(11),
+    p_questionName VARCHAR(38),
+    p_sectionName VARCHAR(38)) RETURNS VARCHAR(38)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(38);
+
+    SELECT
+        cn_answer.name INTO result
+    FROM obs o
+        JOIN concept_name cn_question ON o.concept_id = cn_question.concept_id
+        JOIN concept_name cn_answer ON o.value_coded = cn_answer.concept_id        
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND cn_question.name = p_questionName
+        AND cn_question.locale='en' AND cn_question.concept_name_type = 'FULLY_SPECIFIED'
+        AND cn_answer.locale='en' AND cn_answer.concept_name_type = 'FULLY_SPECIFIED'
+        AND p_sectionName = (SELECT concept_name.name
+            FROM obs
+                JOIN concept_name ON obs.concept_id = concept_name.concept_id
+            WHERE obs.voided = 0
+                AND obs.obs_id = o.obs_group_id
+                AND concept_name.locale='en' AND concept_name.concept_name_type = 'FULLY_SPECIFIED')
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getObsCodedShortNameValue
 
 DROP FUNCTION IF EXISTS getObsCodedShortNameValue;
@@ -329,6 +365,36 @@ BEGIN
         AND o.voided = 0
         AND cn.name = p_conceptName
         AND cn2.locale = p_language
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getMostRecentShortNameCodedObservation
+
+DROP FUNCTION IF EXISTS getMostRecentShortNameCodedObservation;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentShortNameCodedObservation(
+    p_patientId INT(11),
+    p_conceptName VARCHAR(255),
+    p_language VARCHAR(3)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND cn.name = p_conceptName
+        AND cn2.locale = p_language
+        AND cn2.concept_name_type = "SHORT"
     ORDER BY o.date_created DESC
     LIMIT 1;
 

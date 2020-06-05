@@ -158,3 +158,180 @@ BEGIN
     RETURN (result);
 END$$
 DELIMITER ;
+
+-- getLastArvPickupDate
+
+DROP FUNCTION IF EXISTS getLastArvPickupDate;
+
+DELIMITER $$
+CREATE FUNCTION getLastArvPickupDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT o.scheduled_date INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDurationMostRecentArvTreatment
+
+DROP FUNCTION IF EXISTS getDurationMostRecentArvTreatment;
+
+DELIMITER $$
+CREATE FUNCTION getDurationMostRecentArvTreatment(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT calculateDurationInDays(do.duration,c.uuid) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getLocationOfArvRefill
+
+DROP FUNCTION IF EXISTS getLocationOfArvRefill;
+
+DELIMITER $$
+CREATE FUNCTION getLocationOfArvRefill(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT l.name INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
+        JOIN `location` l ON l.location_id = e.location_id AND l.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- calculateDurationInDays
+
+DROP FUNCTION IF EXISTS calculateDurationInDays;
+
+DELIMITER $$
+CREATE FUNCTION calculateDurationInDays(
+    p_duration INT(11),
+    p_uuidDurationUnit VARCHAR(38)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result INT(11);
+    DECLARE uuidMinute VARCHAR(38) DEFAULT '33bc78b1-8a92-11e4-977f-0800271c1b75';
+    DECLARE uuidHour VARCHAR(38) DEFAULT 'bb62c684-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidDay VARCHAR(38) DEFAULT '9d7437a9-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidWeek VARCHAR(38) DEFAULT 'bb6436e3-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidMonth VARCHAR(38) DEFAULT 'bb655344-3f10-11e4-adec-0800271c1b75';
+
+    IF p_uuidDurationUnit = uuidMinute THEN
+        RETURN p_duration / 1440;
+    ELSEIF p_uuidDurationUnit = uuidHour THEN
+        RETURN p_duration / 24;
+    ELSEIF p_uuidDurationUnit = uuidDay THEN
+        RETURN p_duration;
+    ELSEIF p_uuidDurationUnit = uuidWeek THEN
+        RETURN p_duration * 7;
+    ELSEIF p_uuidDurationUnit = uuidMonth THEN
+        RETURN p_duration * 30;
+    END IF;
+
+    RETURN (result); 
+END$$ 
+
+DELIMITER ; 
+
+-- getInfantARVProphylaxis
+
+DROP FUNCTION IF EXISTS getInfantARVProphylaxis;
+
+DELIMITER $$
+CREATE FUNCTION getInfantARVProphylaxis(
+    p_patientId INT(11),
+    p_drugName VARCHAR(50),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT d.name INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsChildProphylaxis(d.concept_id)
+        AND d.name LIKE CONCAT('%', p_drugName, '%')
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getDateOfInfantARVProphylaxis
+
+DROP FUNCTION IF EXISTS getDateOfInfantARVProphylaxis;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfInfantARVProphylaxis(
+    p_patientId INT(11),
+    p_drugName VARCHAR(50),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT o.scheduled_date INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsChildProphylaxis(d.concept_id)
+        AND d.name LIKE CONCAT('%', p_drugName, '%')
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;

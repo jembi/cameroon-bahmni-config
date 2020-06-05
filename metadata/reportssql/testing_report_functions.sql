@@ -715,11 +715,58 @@ CREATE FUNCTION getTestResultWithinReportingPeriod(
     p_testDateUuid VARCHAR(38)) RETURNS VARCHAR(50)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(50);
+    DECLARE testResult VARCHAR(50);
+    DECLARE testDate DATE;
+
+    CALL retrieveTestDateAndResultWithinReportingPeriod(p_patientId, p_startDate, p_endDate, p_testUuid, p_testDateUuid, testDate, testResult);
+
+    RETURN testResult;
+END$$
+DELIMITER ;
+
+-- getTestDateWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getTestDateWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestDateWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_testUuid VARCHAR(38),
+    p_testDateUuid VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testResult VARCHAR(50);
+    DECLARE testDate DATE;
+
+    CALL retrieveTestDateAndResultWithinReportingPeriod(p_patientId, p_startDate, p_endDate, p_testUuid, p_testDateUuid, testDate, testResult);
+
+    RETURN testDate;
+END$$
+DELIMITER ;
+
+-- retrieveTestDateAndResultWithinReportingPeriod
+
+DROP PROCEDURE IF EXISTS retrieveTestDateAndResultWithinReportingPeriod;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveTestDateAndResultWithinReportingPeriod(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    IN p_testUuid VARCHAR(38),
+    IN p_testDateUuid VARCHAR(38),
+    OUT p_testDate DATE,
+    OUT p_testResult VARCHAR(50)
+    )
+    DETERMINISTIC
+    proc_test_date_and_result:BEGIN
+
     DECLARE encounterId INT(11);
 
     -- retrieve the test result from OpenElis
-    SELECT cn.name INTO result
+    SELECT cn.name INTO p_testResult
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
@@ -730,12 +777,12 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1;
 
-    IF (result IS NOT NULL) THEN
-        RETURN result;
+    IF (p_testResult IS NOT NULL) THEN
+        LEAVE proc_test_date_and_result;
     END IF;
 
     -- retrieve the test result from the lab form
-    SELECT o.encounter_id INTO encounterId
+    SELECT o.encounter_id, o.value_datetime INTO encounterId, p_testDate
     FROM obs o
     WHERE o.voided = 0
         AND o.person_id = p_patientId
@@ -745,7 +792,7 @@ BEGIN
     ORDER BY o.value_datetime DESC, o.date_created DESC
     LIMIT 1;
 
-    SELECT cn.name INTO result
+    SELECT cn.name INTO p_testResult
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
@@ -754,10 +801,9 @@ BEGIN
         AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = p_testUuid LIMIT 1)
         AND o.encounter_id = encounterId
     ORDER BY o.date_created DESC
-    LIMIT 1;
+    LIMIT 1;    
 
-    RETURN result;
-END$$
+END$$ 
 DELIMITER ;
 
 -- patientHasEnrolledIntoTBProgramDuringReportingPeriod
@@ -822,6 +868,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateOfPositiveHIVResult
+
+DROP FUNCTION IF EXISTS getDateOfPositiveHIVResult;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfPositiveHIVResult(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult VARCHAR(50);
+
+    CALL retrieveHIVTestDateAndResult(p_patientId, p_startDate, p_endDate, testDate, testResult);
+
+    IF (testResult = "Positive") THEN
+        RETURN testDate;
+    ELSE
+        RETURN null;
+    END IF;
+
+END$$
+DELIMITER ;
+
 -- getHIVTestDate
 
 DROP FUNCTION IF EXISTS getHIVTestDate;
@@ -842,7 +913,6 @@ BEGIN
 
 END$$
 DELIMITER ;
-
 
 -- getHIVResult
 
@@ -924,6 +994,7 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
     WHERE o.voided = 0
         AND o.obs_group_id = obsGroupIdAnc
         AND c.uuid = htcResultUuid
+        AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
     LIMIT 1;
 
     -- read the test date AND result from HTC form
@@ -954,6 +1025,7 @@ CREATE PROCEDURE retrieveHIVTestDateAndResult(
     WHERE o.voided = 0
         AND o.encounter_id = encounterIdHTC
         AND c.uuid = finalTestResultUuid
+        AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
     LIMIT 1;
 
     -- return the ANC result if the patient is pregnant and the ANC result is available
@@ -1667,9 +1739,10 @@ BEGIN
     DECLARE result TINYINT(1);
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
 
     -- retrieve the test date and result
-    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult);
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
 
     RETURN (testDate IS NOT NULL AND testResult IS NOT NULL AND
         testDate > TIMESTAMPADD(MONTH, -1, CURDATE()) AND
@@ -1707,6 +1780,68 @@ BEGIN
     LIMIT 1;
 
     RETURN (indexDate BETWEEN p_startDate AND p_endDate);
+
+END$$
+DELIMITER ;
+
+
+-- getDaysBetweenHIVPosAndEnrollment
+
+DROP FUNCTION IF EXISTS getDaysBetweenHIVPosAndEnrollment;
+
+DELIMITER $$
+CREATE FUNCTION getDaysBetweenHIVPosAndEnrollment(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE enrollmentDate DATE;
+    SET enrollmentDate = getPatientDateOfEnrolmentInProgram(p_patientId, "HIV_PROGRAM_KEY");
+    RETURN (DATEDIFF(enrollmentDate, getDateOfPositiveHIVResult(p_patientId, "2000-01-01", enrollmentDate)));
+END$$
+DELIMITER ;
+
+-- getDaysBetweenHIVPosAndART
+
+DROP FUNCTION IF EXISTS getDaysBetweenHIVPosAndART;
+
+DELIMITER $$
+CREATE FUNCTION getDaysBetweenHIVPosAndART(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE artStartDate DATE;
+    SET artStartDate = getPatientARVStartDate(p_patientId);
+    RETURN (DATEDIFF(artStartDate, getDateOfPositiveHIVResult(p_patientId, "2000-01-01", artStartDate)));
+END$$
+DELIMITER ;
+
+-- getTestedLocation
+
+DROP FUNCTION IF EXISTS getTestedLocation;
+
+DELIMITER $$
+CREATE FUNCTION getTestedLocation(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE locationName VARCHAR(255);
+
+    SELECT l.name INTO locationName
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN location l ON o.location_id = l.location_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND cn.name = 'Final Test Result'
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (locationName = "LOCATION_COMMUNITY_HOME") THEN
+        RETURN "Community home";
+    ELSEIF (locationName = "LOCATION_COMMUNITY_MOBILE") THEN
+        RETURN "Community mobile";
+    ELSE RETURN "Facility";
+    END IF;
 
 END$$
 DELIMITER ;

@@ -264,6 +264,18 @@
             },
             "TB screened date": {
                 "important": true 
+            },      
+            "1. Socio-demographic information": {
+                "important": true 
+            },
+            "Sexual orientation": {
+                "important": true 
+            },
+            "Pre-test Counseling": {
+                "important": true 
+            },
+            "Pregnancy Status": {
+                "important": true 
             },
             "Tuberculosis, Adverse Effects" :{
                 "multiSelect" : true,

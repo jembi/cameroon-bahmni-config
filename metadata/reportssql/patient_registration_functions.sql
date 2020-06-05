@@ -466,6 +466,36 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientAgeAtReportEndDateIsBetween
+
+DROP FUNCTION IF EXISTS patientAgeAtReportEndDateIsBetween;
+
+DELIMITER $$
+CREATE FUNCTION patientAgeAtReportEndDateIsBetween(
+    p_patientId INT(11),
+    p_startAge INT(11),
+    p_endAge INT(11),
+    p_includeEndAge TINYINT(1),
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1);
+
+    SELECT 
+        IF (p_includeEndAge, 
+            timestampdiff(YEAR, p.birthdate, p_endDate) BETWEEN p_startAge AND p_endAge, 
+            timestampdiff(YEAR, p.birthdate, p_endDate) >= p_startAge
+                AND timestampdiff(YEAR, p.birthdate, p_endDate) < p_endAge
+        ) INTO result  
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- getPatientRegistrationDate
 
 DROP FUNCTION IF EXISTS getPatientRegistrationDate;
@@ -553,4 +583,33 @@ BEGIN
 
     RETURN result;
 END$$
+DELIMITER ;
+
+-- getPatientAgeAtFirstVisitInMonths
+
+DROP FUNCTION IF EXISTS getPatientAgeAtFirstVisitInMonths;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeAtFirstVisitInMonths(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result INT(11);
+    DECLARE dateOfFirstVisit DATE;
+
+    SELECT v.date_started INTO dateOfFirstVisit
+    FROM visit v
+    WHERE v.voided = 0 AND v.patient_id = p_patientId
+    ORDER BY v.date_started ASC
+    LIMIT 1;
+
+    IF dateOfFirstVisit IS NOT NULL THEN
+        RETURN getPatientAgeInMonthsAtDate(p_patientId, dateOfFirstVisit);
+    ELSE
+        RETURN NULL;
+    END IF;
+    
+END$$ 
+
 DELIMITER ;

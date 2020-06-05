@@ -243,3 +243,49 @@ BEGIN
     RETURN patientTestDateIsBeforeReportingPeriod;
 END$$
 DELIMITER ;
+
+-- getViralLoadIndication
+
+DROP FUNCTION IF EXISTS getViralLoadIndication;
+
+DELIMITER $$
+CREATE FUNCTION getViralLoadIndication(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+
+    RETURN viralLoadIndication;
+END$$
+DELIMITER ;
+
+-- getStatusOfMissedAppointment
+
+DROP FUNCTION IF EXISTS getStatusOfMissedAppointment;
+
+DELIMITER $$
+CREATE FUNCTION getStatusOfMissedAppointment(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE patientIsDefaulter TINYINT(1);
+    DECLARE defaulterProgramOutcome VARCHAR(250);
+
+    SET patientIsDefaulter = patientIsDefaulter(p_patientId);
+    SET defaulterProgramOutcome = getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
+
+    IF (patientIsDefaulter AND defaulterProgramOutcome IS NULL) THEN
+        RETURN "not yet returned to care";
+    ELSEIF (defaulterProgramOutcome IS NOT NULL) THEN
+        RETURN defaulterProgramOutcome;
+    ELSE
+        RETURN NULL;
+    END IF;
+
+END$$
+DELIMITER ;
+
