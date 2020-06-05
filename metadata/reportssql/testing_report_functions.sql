@@ -1796,7 +1796,7 @@ CREATE FUNCTION getDaysBetweenHIVPosAndEnrollment(
 BEGIN
     DECLARE enrollmentDate DATE;
     SET enrollmentDate = getPatientDateOfEnrolmentInProgram(p_patientId, "HIV_PROGRAM_KEY");
-    RETURN (DATEDIFF(enrollmentDate, getHIVTestDate(p_patientId, "2000-01-01", enrollmentDate)));
+    RETURN (DATEDIFF(enrollmentDate, getDateOfPositiveHIVResult(p_patientId, "2000-01-01", enrollmentDate)));
 END$$
 DELIMITER ;
 
@@ -1811,7 +1811,7 @@ CREATE FUNCTION getDaysBetweenHIVPosAndART(
 BEGIN
     DECLARE artStartDate DATE;
     SET artStartDate = getPatientARVStartDate(p_patientId);
-    RETURN (DATEDIFF(artStartDate, getHIVTestDate(p_patientId, "2000-01-01", artStartDate)));
+    RETURN (DATEDIFF(artStartDate, getDateOfPositiveHIVResult(p_patientId, "2000-01-01", artStartDate)));
 END$$
 DELIMITER ;
 
@@ -1824,9 +1824,9 @@ CREATE FUNCTION getTestedLocation(
     p_patientId INT(11)) RETURNS VARCHAR(255)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(255);
+    DECLARE locationName VARCHAR(255);
 
-    SELECT l.name INTO result
+    SELECT l.name INTO locationName
     FROM obs o
     JOIN concept_name cn ON cn.concept_id = o.concept_id
     JOIN location l ON o.location_id = l.location_id
@@ -1836,6 +1836,12 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1;
 
-    RETURN result;
+    IF (locationName = "LOCATION_COMMUNITY_HOME") THEN
+        RETURN "Community home";
+    ELSEIF (locationName = "LOCATION_COMMUNITY_MOBILE") THEN
+        RETURN "Community mobile";
+    ELSE RETURN "Facility";
+    END IF;
+
 END$$
 DELIMITER ;
