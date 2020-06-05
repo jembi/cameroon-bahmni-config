@@ -24,7 +24,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	getMostRecentCodedObservation(p.patient_id,"HTC, Risk Group","en") as "KP Status",
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load / Charge virale actuelle (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
-	"N/A" as "Viral Load Indication/ Indication de la charge virale",
+	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Date of next Viral Load / Date de la prochaine charge virale (dd-mmm-yyyy)",
 	"N/A" as "Date of EAC 1  (dd-mmm-yyyy)",
 	"N/A" as "Date of EAC 2  (dd-mmm-yyyy)",
