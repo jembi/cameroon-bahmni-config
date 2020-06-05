@@ -1,6 +1,6 @@
 SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "Enrollment Date/Date de l'inscription",
 	getPatientARTNumber(p.patient_id) as "Patient Unique ID/ART №",
-	getPatientGender(p.patient_id) as "Sex",
+	getPatientGenderFullname(p.patient_id) as "Sex",
 	getPatientBirthdate(p.patient_id) as "Date of birth / (Date de naissance)",
 	"" as "Current Age (Âge actuel)",
 	"" as "Age Groups (Les groupes d'âge )",
