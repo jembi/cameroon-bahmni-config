@@ -38,3 +38,55 @@ BEGIN
     END IF;
 END$$
 DELIMITER ;
+
+-- getRadetDefaulterNotificationMethod
+
+DROP FUNCTION IF EXISTS getRadetDefaulterNotificationMethod;
+
+DELIMITER $$
+CREATE FUNCTION getRadetDefaulterNotificationMethod(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE method VARCHAR(50) DEFAULT getPatientMostRecentProgramAttributeCodedValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_1_NOTIFICATION_METHOD', 'en');
+
+    IF (method = "By index") THEN
+        RETURN "Index";
+    ELSEIF (method = "By service provider") THEN
+        RETURN "Service provider";
+    ELSEIF (method = "Contract") THEN
+        RETURN method;
+    ELSEIF (method = "Dual Notification") THEN
+        RETURN method;
+    ELSEIF (method = "Security risk (not recommended)") THEN
+        RETURN method;
+    ELSE
+        RETURN "";
+    END IF;
+END$$
+DELIMITER ;
+
+-- getRadetDefaulterNotificationOutcome
+
+DROP FUNCTION IF EXISTS getRadetDefaulterNotificationOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getRadetDefaulterNotificationOutcome(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE method VARCHAR(50) DEFAULT getPatientMostRecentProgramAttributeCodedValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME', 'en');
+
+    IF (method = "Refused Testing") THEN
+        RETURN "RT= Refused Testing";
+    ELSEIF (method = "Accepted Testing") THEN
+        RETURN "AT  =  Accepted Testing";
+    ELSEIF (method = "Positive, on TX") THEN
+        RETURN "PT= Positive, on Tx";
+    ELSEIF (method = "Positive, NOT on TX") THEN
+        RETURN "PXT=  Positive, NOT on TX";
+    ELSE
+        RETURN "";
+    END IF;
+END$$
+DELIMITER ;
