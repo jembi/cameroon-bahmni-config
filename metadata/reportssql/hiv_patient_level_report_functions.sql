@@ -102,10 +102,82 @@ CREATE FUNCTION getRadetTestedLocation(
 BEGIN
     DECLARE testedLocation VARCHAR(50) DEFAULT getTestedLocation(p_patientId);
 
-    IF (testedLocation = "Community home" OR testedLocation = "Community mobile") THEN
+    IF (testedLocation LIKE "Community%") THEN
         RETURN "Community/Communauté";
     ELSE RETURN "Facility/FOSA";
     END IF;
 
 END$$
 DELIMITER ;
+
+-- getRadetIndexType
+
+DROP FUNCTION IF EXISTS getRadetIndexType;
+
+DELIMITER $$
+CREATE FUNCTION getRadetIndexType(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE daysBetweenHIVPosAndART INT(11) DEFAULT getDaysBetweenHIVPosAndART(p_patientId);
+    DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
+
+    IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
+        RETURN 'Index Case New HTS POS and initiated on treatment within a month';
+    ELSEIF (viralLoadResult > 1000) THEN
+        RETURN 'Index Case virally unsuppressed client';
+    ELSEIF (daysBetweenHIVPosAndART > 30 AND daysBetweenHIVPosAndART <= 180) THEN
+        RETURN 'Index Case Old HTS POS and initiated on treatment within 2 - 5 months';
+    ELSEIF (daysBetweenHIVPosAndART > 180 AND daysBetweenHIVPosAndART <= 365) THEN
+        RETURN 'Index Case Old HTS POS and initiated on treatment within 6 - 12 months';
+    END IF;
+
+    RETURN '';
+END$$
+DELIMITER ;
+
+-- getRadetPointOfEntry
+
+DROP FUNCTION IF EXISTS getRadetPointOfEntry;
+
+DELIMITER $$
+CREATE FUNCTION getRadetPointOfEntry(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE pointOfEntry INT(11) DEFAULT getTestingEntryPoint(p_patientId);
+    DECLARE testedLocation INT(11) DEFAULT getRadetTestedLocation(p_patientId);
+
+    IF (pointOfEntry = "Emergency") THEN
+        RETURN "PITC Emergency (Urgences)";
+    ELSEIF (pointOfEntry = "Index" AND testedLocation LIKE "Facility%") THEN
+        RETURN "Index testing (Facility) (Depistage par cas index ou dans le FOSA)";
+    ELSEIF (pointOfEntry = "Index" AND testedLocation LIKE "Community%") THEN
+        RETURN "Index testing (Community) (Depistage par cas index en  communaute)";
+    ELSEIF (pointOfEntry = "Inpatient") THEN
+        RETURN "PITC Inpatient (Hospitalisations)";
+    ELSEIF (pointOfEntry = "Labor and delivery") THEN
+        RETURN "PITC PMTCT (Post ANC1: L&D/BF) (Salle d'accouchement, Femmes allaitantes)";
+    ELSEIF (pointOfEntry = "Malnutrition") THEN
+        RETURN "PITC Malnutrition";
+    ELSEIF (pointOfEntry = "Other PITC") THEN
+        RETURN "Other PITC (autres portes d'entrée eg: Opthalmologie, dentiste, Diabetologie)";
+    ELSEIF (pointOfEntry = "Paediatric") THEN
+        RETURN "PITC Pediatrics >12months old (Pediatrie >12months old)";
+    ELSEIF (pointOfEntry = "PMTCT [ANC1-Only]") THEN
+        RETURN "PITC PMTCT (ANC1 Only) (CPN1 uniquement)";
+    ELSEIF (pointOfEntry = "STI") THEN
+        RETURN "PITC STI (Infectiologie)";
+    ELSEIF (pointOfEntry = "TB") THEN
+        RETURN "PITC TB (Tuberculose)";
+    ELSEIF (pointOfEntry = "VCT" AND testedLocation LIKE "Facility%") THEN
+        RETURN "VCT (Facility) (Depistage Volontaire ou dans la FOSA)";
+    ELSEIF (pointOfEntry = "VCT" AND testedLocation LIKE "Community%") THEN
+        RETURN "VCT (Community) (Depistage Volontaire en communaute)";
+    ELSE
+        RETURN "";
+    END IF;
+    RETURN '';
+END$$
+DELIMITER ;
+

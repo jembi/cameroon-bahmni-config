@@ -374,28 +374,3 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getIndexType
-
-DROP FUNCTION IF EXISTS getIndexType;
-
-DELIMITER $$
-CREATE FUNCTION getIndexType(
-    p_patientId INT(11)) RETURNS VARCHAR(255)
-    DETERMINISTIC
-BEGIN
-    DECLARE daysBetweenHIVPosAndART INT(11) DEFAULT getDaysBetweenHIVPosAndART(p_patientId);
-    DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
-
-    IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
-        RETURN 'Index Case New HTS POS and initiated on treatment within a month';
-    ELSEIF (viralLoadResult > 1000) THEN
-        RETURN 'Index Case virally unsuppressed client';
-    ELSEIF (daysBetweenHIVPosAndART > 30 AND daysBetweenHIVPosAndART <= 180) THEN
-        RETURN 'Index Case Old HTS POS and initiated on treatment within 2 - 5 months';
-    ELSEIF (daysBetweenHIVPosAndART > 180 AND daysBetweenHIVPosAndART <= 365) THEN
-        RETURN 'Index Case Old HTS POS and initiated on treatment within 6 - 12 months';
-    END IF;
-
-    RETURN '';
-END$$
-DELIMITER ;
