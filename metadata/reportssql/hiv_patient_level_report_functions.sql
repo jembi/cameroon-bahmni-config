@@ -75,18 +75,37 @@ CREATE FUNCTION getRadetDefaulterNotificationOutcome(
     p_patientId INT(11)) RETURNS VARCHAR(255)
     DETERMINISTIC
 BEGIN
-    DECLARE method VARCHAR(50) DEFAULT getPatientMostRecentProgramAttributeCodedValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME', 'en');
+    DECLARE outcome VARCHAR(50) DEFAULT getPatientMostRecentProgramAttributeCodedValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME', 'en');
 
-    IF (method = "Refused Testing") THEN
+    IF (outcome = "Refused Testing") THEN
         RETURN "RT= Refused Testing";
-    ELSEIF (method = "Accepted Testing") THEN
+    ELSEIF (outcome = "Accepted Testing") THEN
         RETURN "AT  =  Accepted Testing";
-    ELSEIF (method = "Positive, on TX") THEN
+    ELSEIF (outcome = "Positive, on TX") THEN
         RETURN "PT= Positive, on Tx";
-    ELSEIF (method = "Positive, NOT on TX") THEN
+    ELSEIF (outcome = "Positive, NOT on TX") THEN
         RETURN "PXT=  Positive, NOT on TX";
     ELSE
         RETURN "";
     END IF;
+END$$
+DELIMITER ;
+
+-- getRadetTestedLocation
+
+DROP FUNCTION IF EXISTS getRadetTestedLocation;
+
+DELIMITER $$
+CREATE FUNCTION getRadetTestedLocation(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE testedLocation VARCHAR(50) DEFAULT getTestedLocation(p_patientId);
+
+    IF (testedLocation = "Community home" OR testedLocation = "Community mobile") THEN
+        RETURN "Community/Communauté";
+    ELSE RETURN "Facility/FOSA";
+    END IF;
+
 END$$
 DELIMITER ;
