@@ -14,12 +14,12 @@ SELECT
 	"N/A" as "Post Natal Health visit / Visite de santé post-natale",
 	getLastArvPickupDate(p.patient_id, "2010-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
 	getDurationMostRecentArvTreatment(p.patient_id, "2010-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
-	getLocationOfArvRefill(p.patient_id, "2010-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
+	getRadetLocationOfArvRefill(p.patient_id, "2010-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
 	"N/A" as "Differentiated ART delivery model at Last ARV refill ",
 	"N/A" as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
-	getViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
-	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
-	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
+	getRadetViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
+	getRadetViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
+	getRadetViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Maternal Outcome/ Résultat maternel",
 	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	pi.identifier as "Child ID",
@@ -39,7 +39,7 @@ SELECT
 	"N/A" as "Infant Outcome at 18 Months/ Résultat infantile à 18 mois",
 	getPatientARVStartDate(p.patient_id) as "Date of ART initiation (If HIV-positive) / Date d'initiation du ART (si HIV positif)",
 	getPatientARTNumber(child.patient_id) as "Child ART Code",
-	getFacilityName() as "Health Facility/  Établissement de santé",
+	getRadetFacilityName() as "Health Facility/  Établissement de santé",
 	"N/A" as "Psychosocial Agents (Retention APS)"
 FROM patient p
   LEFT JOIN patient child ON getRelationshipNameBetweenPatients(p.patient_id, child.patient_id) = "RELATIONSHIP_BIO_MOTHER" AND child.voided = 0

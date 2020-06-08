@@ -279,7 +279,7 @@ BEGIN
     SET defaulterProgramOutcome = getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
     IF (patientIsDefaulter AND defaulterProgramOutcome IS NULL) THEN
-        RETURN "not yet returned to care";
+        RETURN "Contract Tracing started, not yet returned to care";
     ELSEIF (defaulterProgramOutcome IS NOT NULL) THEN
         RETURN defaulterProgramOutcome;
     ELSE

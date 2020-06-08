@@ -181,3 +181,112 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getRadetLocationOfArvRefill
+
+DROP FUNCTION IF EXISTS getRadetLocationOfArvRefill;
+
+DELIMITER $$
+CREATE FUNCTION getRadetLocationOfArvRefill(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE locationOfRefill VARCHAR(250) DEFAULT getLocationOfArvRefill(p_patientId, p_startDate, p_endDate);
+
+    IF (locationOfRefill IS NULL) THEN
+        RETURN NULL;
+    ELSEIF (locationOfRefill LIKE "LOCATION_COMMUNITY%") THEN
+        RETURN "Community/Communauté";
+    ELSE
+        RETURN "Facility/FOSA";
+    END IF;
+END$$
+DELIMITER ;
+
+-- getRadetViralLoadIndication
+
+DROP FUNCTION IF EXISTS getRadetViralLoadIndication;
+
+DELIMITER $$
+CREATE FUNCTION getRadetViralLoadIndication(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE viralLoadIndication VARCHAR(50) DEFAULT getViralLoadIndication(p_patientId);
+
+    RETURN
+        CASE
+            WHEN viralLoadIndication = "Routine Viral Load" THEN "Routine monitoring"
+            WHEN viralLoadIndication = "Targeted Viral Load" THEN "Targeted monitoring"
+            ELSE NULL
+        END;
+
+END$$
+DELIMITER ;
+
+-- getRadetViralLoadTestDate
+
+DROP FUNCTION IF EXISTS getRadetViralLoadTestDate;
+
+DELIMITER $$
+CREATE FUNCTION getRadetViralLoadTestDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+
+    IF (viralLoadIndication = "Routine Viral Load" OR viralLoadIndication = "Targeted Viral Load") THEN
+        RETURN testDate;
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getRadetViralLoadTestResult
+
+DROP FUNCTION IF EXISTS getRadetViralLoadTestResult;
+
+DELIMITER $$
+CREATE FUNCTION getRadetViralLoadTestResult(
+    p_patientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+
+    IF (viralLoadIndication = "Routine Viral Load" OR viralLoadIndication = "Targeted Viral Load") THEN
+        RETURN testResult;
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getRadetFacilityName
+
+DROP FUNCTION IF EXISTS getRadetFacilityName;
+
+DELIMITER $$
+CREATE FUNCTION getRadetFacilityName() RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE facility VARCHAR(255) DEFAULT getFacilityName();
+
+    IF (facility IS NULL) THEN
+        RETURN NULL;
+    ELSEIF (facility LIKE "LOCATION_COMMUNITY%") THEN
+        RETURN "At home or Other place";
+    ELSE
+        RETURN "This facility";
+    END IF;
+END$$
+DELIMITER ;
