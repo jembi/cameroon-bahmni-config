@@ -1,9 +1,9 @@
--- getPatientGenderFullname
+-- getRadetPatientGender
 
-DROP FUNCTION IF EXISTS getPatientGenderFullname;
+DROP FUNCTION IF EXISTS getRadetPatientGender;
 
 DELIMITER $$
-CREATE FUNCTION getPatientGenderFullname(
+CREATE FUNCTION getRadetPatientGender(
     p_patientId INT(11)) RETURNS VARCHAR(6)
     DETERMINISTIC
 BEGIN
@@ -288,5 +288,27 @@ BEGIN
     ELSE
         RETURN "This facility";
     END IF;
+END$$
+DELIMITER ;
+
+-- getRadetRiskGroup
+
+DROP FUNCTION IF EXISTS getRadetRiskGroup;
+
+DELIMITER $$
+CREATE FUNCTION getRadetRiskGroup(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE riskGroup VARCHAR(255) DEFAULT getMostRecentCodedObservation(p_patientId,"HTC, Risk Group","en");
+
+    RETURN
+        CASE
+            WHEN riskGroup = "MSM and Transgenders" THEN "MSM"
+            WHEN riskGroup = "People Who Inject Drugs" THEN "PWID"
+            WHEN riskGroup = "Sex Worker " THEN "FSW"
+            WHEN riskGroup = "MSM and Transgenders" THEN "MSM"
+            ELSE NULL
+        END;
 END$$
 DELIMITER ;
