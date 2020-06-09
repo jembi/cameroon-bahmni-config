@@ -174,7 +174,7 @@ BEGIN
         ORDER BY pnIndex.date_created ASC 
         LIMIT 1;
 
-    RETURN (result);
+    RETURN (REPLACE(REPLACE(result, 'RELATIONSHIP_', '' ), '_', ' '));
 END$$
 DELIMITER ;
 
