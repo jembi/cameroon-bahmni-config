@@ -123,13 +123,13 @@ BEGIN
     DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
 
     IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
-        RETURN 'Index Case New HTS POS and initiated on treatment within a month';
+        RETURN 'Index Case New HTS POS and initiated on treatment this month';
     ELSEIF (viralLoadResult > 1000) THEN
-        RETURN 'Index Case virally unsuppressed client';
+        RETURN 'Index Case virally unsuppressed clients';
     ELSEIF (daysBetweenHIVPosAndART > 30 AND daysBetweenHIVPosAndART <= 180) THEN
-        RETURN 'Index Case Old HTS POS and initiated on treatment within 2 - 5 months';
+        RETURN 'Index Case Old HTS POS and initiated on treatment within the 2 - 5 months';
     ELSEIF (daysBetweenHIVPosAndART > 180 AND daysBetweenHIVPosAndART <= 365) THEN
-        RETURN 'Index Case Old HTS POS and initiated on treatment within 6 - 12 months';
+        RETURN 'Index Case Old HTS POS and initiated on treatment within the 6 - 12 months';
     END IF;
 
     RETURN '';
