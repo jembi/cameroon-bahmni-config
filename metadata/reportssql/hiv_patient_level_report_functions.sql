@@ -310,5 +310,26 @@ BEGIN
             WHEN riskGroup = "MSM and Transgenders" THEN "MSM"
             ELSE NULL
         END;
+
+END$$
+DELIMITER ;
+
+-- radetPatientIsPregnant
+
+DROP FUNCTION IF EXISTS radetPatientIsPregnant;
+
+DELIMITER $$
+CREATE FUNCTION radetPatientIsPregnant(
+    p_patientId INT(11)
+    ) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE isPregnant VARCHAR(255) DEFAULT patientIsPregnant(p_patientId);
+
+    IF (isPregnant) THEN
+        RETURN "Pregnant";
+    ELSE
+        RETURN "Not Pregnant";
+    END IF;
 END$$
 DELIMITER ;
