@@ -33,7 +33,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	"N/A" as "Date completed full course TPT/ Date de fin du cours complet TPT",
 	"N/A" as "Date of EAC 3 (dd/mm/yy)",
 	getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY") as "Current ART Status (Active, LTFU, Dead, Transferred Out, Stopped)",
-	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
+	getHIVDefaulterStatus(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	"N/A" as "Psychosocial Agents (Retention APS)"
 FROM patient p
 WHERE

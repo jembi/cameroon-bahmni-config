@@ -263,25 +263,25 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getStatusOfMissedAppointment
+-- getHIVDefaulterStatus
 
-DROP FUNCTION IF EXISTS getStatusOfMissedAppointment;
+DROP FUNCTION IF EXISTS getHIVDefaulterStatus;
 
 DELIMITER $$
-CREATE FUNCTION getStatusOfMissedAppointment(
+CREATE FUNCTION getHIVDefaulterStatus(
     p_patientId INT(11)) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
-    DECLARE patientIsDefaulter TINYINT(1);
-    DECLARE defaulterProgramOutcome VARCHAR(250);
+    DECLARE patientIsDefaulter TINYINT(1) DEFAULT patientIsDefaulter(p_patientId);
+    DECLARE patientEnrolledInDefaultersProgram TINYINT(1) DEFAULT patientHasEnrolledInDefaulterProgram(p_patientId);
+    DECLARE defaulterProgramOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-    SET patientIsDefaulter = patientIsDefaulter(p_patientId);
-    SET defaulterProgramOutcome = getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
-
-    IF (patientIsDefaulter AND defaulterProgramOutcome IS NULL) THEN
-        RETURN "not yet returned to care";
-    ELSEIF (defaulterProgramOutcome IS NOT NULL) THEN
+    IF (defaulterProgramOutcome IS NOT NULL) THEN
         RETURN defaulterProgramOutcome;
+    ELSEIF (patientEnrolledInDefaultersProgram) THEN
+        RETURN "Tracking started, not yet returned to care";
+    ELSEIF (patientIsDefaulter) THEN
+        RETURN "Tracking hasn't started";
     ELSE
         RETURN NULL;
     END IF;
