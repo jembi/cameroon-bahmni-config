@@ -21,7 +21,7 @@ SELECT
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
 	"N/A" as "Maternal Outcome/ Résultat maternel",
-	getStatusOfMissedAppointment(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
+	getHIVDefaulterStatus(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	pi.identifier as "Child ID",
 	getPatientBirthdate(child.patient_id) as "Child Date of birth (Date de naissance)",
 	getInfantARVProphylaxis(child.patient_id, "", "2020-01-01", "#endDate#") as "Infant ARV Prophylaxis",
