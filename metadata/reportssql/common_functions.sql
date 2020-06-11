@@ -67,9 +67,9 @@ BEGIN
     DECLARE pregrantStatusObsDate2 DATETIME DEFAULT getObsLastModifiedDate(p_patientId, "b2e1ffa5-a6a8-4f3d-b797-25f11a66293b");
     DECLARE pregrancyStatus VARCHAR(250) DEFAULT "";
 
-    IF pregrantStatusObsDate1 >= pregrantStatusObsDate2 THEN
+    IF pregrantStatusObsDate1 >= pregrantStatusObsDate2 OR pregrantStatusObsDate1 IS NULL THEN
         SET pregrancyStatus = getMostRecentCodedObservation(p_patientId,"HTC, Pregnancy Status","en");
-    ELSEIF pregrantStatusObsDate1 < pregrantStatusObsDate2 THEN
+    ELSEIF pregrantStatusObsDate1 < pregrantStatusObsDate2 OR pregrantStatusObsDate2 IS NULL THEN
         SET pregrancyStatus = getMostRecentCodedObservation(p_patientId,"Pregnancy","en");
     ELSE
         RETURN NULL;
