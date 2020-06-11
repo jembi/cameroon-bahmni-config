@@ -54,6 +54,39 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPregnancyStatus
+
+DROP FUNCTION IF EXISTS getPregnancyStatus;
+
+DELIMITER $$
+CREATE FUNCTION getPregnancyStatus(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN 
+    DECLARE pregrantStatusObsDate1 DATETIME DEFAULT getObsLastModifiedDate(p_patientId, "279583bf-70d4-40b5-82e9-6cb29fbe00b4");
+    DECLARE pregrantStatusObsDate2 DATETIME DEFAULT getObsLastModifiedDate(p_patientId, "b2e1ffa5-a6a8-4f3d-b797-25f11a66293b");
+    DECLARE pregrancyStatus VARCHAR(250) DEFAULT "";
+
+    IF pregrantStatusObsDate1 >= pregrantStatusObsDate2 THEN
+        SET pregrancyStatus = getMostRecentCodedObservation(p_patientId,"HTC, Pregnancy Status","en");
+    ELSEIF pregrantStatusObsDate1 < pregrantStatusObsDate2 THEN
+        SET pregrancyStatus = getMostRecentCodedObservation(p_patientId,"Pregnancy","en");
+    ELSE
+        RETURN NULL;
+    END IF;
+
+    RETURN 
+      CASE
+            WHEN pregrancyStatus = "Yes full name" THEN "Pregnant"
+            WHEN pregrancyStatus = "No full name" THEN "Not Pregnant"
+            WHEN pregrancyStatus = "Do not know" THEN "Do not know"
+            WHEN pregrancyStatus = "Not Applicable" THEN "Not Applicable"
+            ELSE NULL
+        END;
+  
+END$$
+DELIMITER ;
+
 -- calculateTreatmentEndDate
 
 DROP FUNCTION IF EXISTS calculateTreatmentEndDate;
