@@ -276,7 +276,47 @@ BEGIN
     RETURN (result); 
 END$$ 
 
-DELIMITER ; 
+DELIMITER ;
+
+-- getRegimenSwitch
+
+DROP FUNCTION IF EXISTS getRegimenSwitch;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitch(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE currentRegimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
+
+    SELECT d.name INTO currentRegimen
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    SELECT d.name INTO previousRegimen
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY o.date_created DESC
+    LIMIT 1, 1;
+
+    RETURN IF (currentRegimen <> previousRegimen, currentRegimen, NULL);
+END$$
+DELIMITER ;
 
 -- getInfantARVProphylaxis
 
