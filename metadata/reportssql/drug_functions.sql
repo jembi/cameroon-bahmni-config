@@ -335,3 +335,68 @@ BEGIN
     RETURN result;
 END$$
 DELIMITER ;
+
+-- drugOrderIsARefill
+
+DROP FUNCTION IF EXISTS drugOrderIsARefill;
+
+DELIMITER $$
+CREATE FUNCTION drugOrderIsARefill(
+    p_patientId INT(11),
+    p_drugId INT(11),
+    p_orderId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM drug_order do
+    JOIN orders o ON do.order_id = o.order_id AND o.voided = 0
+    WHERE o.patient_id = p_patientId
+        AND do.drug_inventory_id = p_drugId
+        AND do.order_id < p_orderId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+
+-- getDifferentiatedARTDeliveryModelAtLastRefill
+
+DROP FUNCTION IF EXISTS getDifferentiatedARTDeliveryModelAtLastRefill;
+
+DELIMITER $$
+CREATE FUNCTION getDifferentiatedARTDeliveryModelAtLastRefill(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(100)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(100);
+    DECLARE locationLastRefill VARCHAR(250);
+
+    SELECT l.name INTO locationLastRefill
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
+        JOIN `location` l ON e.location_id = l.location_id AND l.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugOrderIsARefill(p_patientId, do.drug_inventory_id, do.order_id)
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN 
+      CASE
+            WHEN locationLastRefill = "LOCATION_COMMUNITY_HOME" THEN "Community Home"
+            WHEN locationLastRefill = "LOCATION_COMMUNITY_MOBILE" THEN "Community Mobile"
+            WHEN locationLastRefill IS NOT NULL THEN "Facility"
+            ELSE NULL
+        END;
+
+    RETURN result;
+END$$
+DELIMITER ;
