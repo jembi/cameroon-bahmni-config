@@ -278,21 +278,26 @@ END$$
 
 DELIMITER ;
 
--- getRegimenSwitch
+-- retrieveRegimenSwitchARVandDate
 
-DROP FUNCTION IF EXISTS getRegimenSwitch;
+DROP PROCEDURE IF EXISTS retrieveRegimenSwitchARVandDate;
 
 DELIMITER $$
-CREATE FUNCTION getRegimenSwitch(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS VARCHAR(250)
+CREATE PROCEDURE retrieveRegimenSwitchARVandDate(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    OUT p_regimen VARCHAR(250),
+    OUT p_switchDate DATE
+    )
     DETERMINISTIC
-BEGIN
+    BEGIN -- proc_retrieve_regimen_switch_and_date:
+
     DECLARE currentRegimen VARCHAR(250);
     DECLARE previousRegimen VARCHAR(250);
+    DECLARE switchDate DATE;
 
-    SELECT d.name INTO currentRegimen
+    SELECT d.name, o.date_created INTO currentRegimen, switchDate
     FROM orders o
     JOIN drug_order do ON do.order_id = o.order_id
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -314,7 +319,55 @@ BEGIN
     ORDER BY o.date_created DESC
     LIMIT 1, 1;
 
-    RETURN IF (currentRegimen <> previousRegimen, currentRegimen, NULL);
+    IF (currentRegimen <> previousRegimen) THEN
+        SET p_regimen = currentRegimen;
+        SET p_switchDate = switchDate;
+    END IF;
+
+END$$ 
+DELIMITER ;
+
+-- getRegimenSwitch
+
+DROP FUNCTION IF EXISTS getRegimenSwitch;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitch(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN regimen;
+
+END$$
+DELIMITER ;
+
+-- getRegimenSwitchDate
+
+DROP FUNCTION IF EXISTS getRegimenSwitchDate;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitchDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN switchDate;
+
 END$$
 DELIMITER ;
 
