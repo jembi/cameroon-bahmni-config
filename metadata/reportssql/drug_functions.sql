@@ -383,7 +383,6 @@ BEGIN
         JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
         JOIN `location` l ON e.location_id = l.location_id AND l.retired = 0
     WHERE o.patient_id = p_patientId
-        AND drugOrderIsARefill(p_patientId, do.drug_inventory_id, do.order_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
     ORDER BY o.scheduled_date DESC
