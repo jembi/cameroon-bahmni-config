@@ -1,59 +1,4 @@
 
--- patientHasScheduledAnAppointmentDuringReportingPeriod
-
-DROP FUNCTION IF EXISTS patientHasScheduledAnAppointmentDuringReportingPeriod;
-
-DELIMITER $$
-CREATE FUNCTION patientHasScheduledAnAppointmentDuringReportingPeriod(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE,
-    p_service VARCHAR(50)) RETURNS VARCHAR(3)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(3) DEFAULT "No";
-
-    SELECT "Yes" INTO result
-    FROM patient_appointment pa
-    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
-    WHERE pa.voided = 0
-        AND pa.patient_id = p_patientId
-        AND pa.start_date_time BETWEEN p_startDate AND p_endDate
-        AND (aps.name = p_service)
-    GROUP BY pa.patient_id;
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
-
-
--- getNumberOfScheduledAppointmentsDuringReportingPeriod
-
-DROP FUNCTION IF EXISTS getNumberOfScheduledAppointmentsDuringReportingPeriod;
-
-DELIMITER $$
-CREATE FUNCTION getNumberOfScheduledAppointmentsDuringReportingPeriod(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE,
-    p_service VARCHAR(50)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-
-    SELECT count(DISTINCT pa.patient_appointment_id) INTO result
-    FROM patient_appointment pa
-    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
-    WHERE pa.voided = 0
-        AND pa.patient_id = p_patientId
-        AND pa.start_date_time BETWEEN p_startDate AND p_endDate
-        AND (aps.name = p_service)
-    GROUP BY pa.patient_id;
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
-
 -- getPatientEntryPointAndModality
 
 DROP FUNCTION IF EXISTS getPatientEntryPointAndModality;
@@ -76,24 +21,6 @@ BEGIN
 END$$ 
 DELIMITER ;
 
-
--- getDateOfLastScheduledARTOrARTDispensaryAppointment
-
-DROP FUNCTION IF EXISTS getDateOfLastScheduledARTOrARTDispensaryAppointment;
-
-DELIMITER $$
-CREATE FUNCTION getDateOfLastScheduledARTOrARTDispensaryAppointment(
-    p_patientId INT(11)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE dateLastARTAppointment DATE DEFAULT getDateOfLastScheduledAppointment(p_patientId, "APPOINTMENT_SERVICE_ART_KEY");
-    DECLARE dateLastARTDispensaryAppoint DATE DEFAULT getDateOfLastScheduledAppointment(p_patientId, "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY");
-    
-    RETURN getGreatestDate(dateLastARTAppointment, dateLastARTDispensaryAppoint);
-END$$ 
-DELIMITER ;
-
-
 -- getGreatestDate
 
 DROP FUNCTION IF EXISTS getGreatestDate;
@@ -109,31 +36,6 @@ BEGIN
     ELSE
         RETURN p_date2;
     END IF;
-END$$ 
-DELIMITER ;
-
--- getDateOfLastScheduledAppointment
-
-DROP FUNCTION IF EXISTS getDateOfLastScheduledAppointment;
-
-DELIMITER $$
-CREATE FUNCTION getDateOfLastScheduledAppointment(
-    p_patientId INT(11),
-    p_service VARCHAR(50)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE result DATE;
-
-    SELECT pa.start_date_time INTO result
-    FROM patient_appointment pa
-    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
-    WHERE pa.voided = 0
-        AND pa.patient_id = p_patientId
-        AND aps.name = p_service
-    ORDER BY pa.start_date_time DESC
-    LIMIT 1;
-
-    RETURN (result);
 END$$ 
 DELIMITER ;
 
