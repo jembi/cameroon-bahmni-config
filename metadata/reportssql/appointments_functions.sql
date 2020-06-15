@@ -121,3 +121,32 @@ BEGIN
     RETURN getGreatestDate(dateLastARTAppointment, dateLastARTDispensaryAppoint);
 END$$ 
 DELIMITER ;
+
+-- getNextARTPickupDate
+
+DROP FUNCTION IF EXISTS getNextARTPickupDate;
+
+DELIMITER $$
+CREATE FUNCTION getNextARTPickupDate(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE lastArvPickupDate DATE DEFAULT getLastArvPickupDate(p_patientId, '2000-01-01', p_endDate);
+
+    IF lastArvPickupDate IS NULL THEN
+        RETURN NULL;
+    END IF;
+
+    RETURN(
+        SELECT pa.start_date_time
+        FROM patient_appointment pa
+        JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+        WHERE pa.voided = 0
+            AND pa.patient_id = p_patientId
+            AND (aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
+            AND pa.start_date_time > lastArvPickupDate
+        ORDER BY pa.start_date_time DESC
+        LIMIT 1);
+END$$ 
+DELIMITER ;
