@@ -10,7 +10,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	getLastArvPickupDate(p.patient_id, "2010-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
 	getDurationMostRecentArvTreatment(p.patient_id, "2010-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
 	getLocationOfArvRefill(p.patient_id, "2010-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
-	"N/A" as "Differentiated ART delivery model at last ARV refil",
+	getDifferentiatedARTDeliveryModelAtLastRefill(p.patient_id,  "2001-01-01", "#endDate#") as "Differentiated ART delivery model at last ARV refil",
 	"N/A" as "Date eligible for Community ART dispensations (CAD)/ Date admissible aux dispensations de ART communautaire",
 	"N/A" as "Date newly enrolled in Community ART dispensations / Date à laquelle vous vous êtes nouvellement inscrit aux dispensations de ART communautaire",
 	"N/A" as "Next ART Pickup date/ Prochaine date de prise en charge ART",
