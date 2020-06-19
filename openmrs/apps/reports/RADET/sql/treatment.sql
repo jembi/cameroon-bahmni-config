@@ -7,13 +7,13 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	getPatientARVStartDate(p.patient_id) as "ART Start Date/ Date de début de l'ART  (dd-MMM-yyyy)",
 	"" as "Age at Start of ART (Years)",
 	"" as "Age at Start of ART (Months) Enter for Under-5s ",
-	getLastArvPickupDate(p.patient_id, "2010-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
-	getDurationMostRecentArvTreatment(p.patient_id, "2010-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
-	getLocationOfArvRefill(p.patient_id, "2010-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
-	getDifferentiatedARTDeliveryModelAtLastRefill(p.patient_id,  "2001-01-01", "#endDate#") as "Differentiated ART delivery model at last ARV refil",
+	getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
+	getDurationMostRecentArvTreatment(p.patient_id, "2000-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
+	getLocationOfArvRefill(p.patient_id, "2000-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
+    getDifferentiatedARTDeliveryModelAtLastRefill(p.patient_id,  "2001-01-01", "#endDate#") as "Differentiated ART delivery model at last ARV refil",
 	"N/A" as "Date eligible for Community ART dispensations (CAD)/ Date admissible aux dispensations de ART communautaire",
 	"N/A" as "Date newly enrolled in Community ART dispensations / Date à laquelle vous vous êtes nouvellement inscrit aux dispensations de ART communautaire",
-	"N/A" as "Next ART Pickup date/ Prochaine date de prise en charge ART",
+	getNextARTPickupDate(p.patient_id, '#endDate#') as "Next ART Pickup date/ Prochaine date de prise en charge ART",
 	"N/A" as "Regimen Line at ART Start/ Ligne de régime à ART Start",
 	"N/A" as "Regimen at ART Start/ Régime chez ART Start", 
 	getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "Current Regimen Line/ Ligne de régime actuelle",
@@ -38,4 +38,4 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 FROM patient p
 WHERE
   p.voided = 0
-  AND (getPatientARVStartDate(p.patient_id) IS NOT NULL OR getLastArvPickupDate(p.patient_id, "2010-01-01", "#endDate#") IS NOT NULL);
+  AND (getPatientARVStartDate(p.patient_id) IS NOT NULL OR getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") IS NOT NULL);
