@@ -276,7 +276,135 @@ BEGIN
     RETURN (result); 
 END$$ 
 
-DELIMITER ; 
+DELIMITER ;
+
+-- retrieveRegimenSwitchARVandDate
+
+DROP PROCEDURE IF EXISTS retrieveRegimenSwitchARVandDate;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveRegimenSwitchARVandDate(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    OUT p_regimen VARCHAR(250),
+    OUT p_switchDate DATE
+    )
+    DETERMINISTIC
+    proc_retrieve_regimen_switch_and_date:BEGIN
+
+    DECLARE currentEncounterId INT(11);
+    DECLARE previousEncounterId INT(11);
+    DECLARE currentRegimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    SELECT o.encounter_id INTO currentEncounterId
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (currentEncounterId IS NULL) THEN
+        LEAVE proc_retrieve_regimen_switch_and_date;
+    END IF;
+
+    SELECT o.encounter_id INTO previousEncounterId
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.encounter_id <> currentEncounterId
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (previousEncounterId IS NULL) THEN
+        LEAVE proc_retrieve_regimen_switch_and_date;
+    END IF;
+
+    SELECT GROUP_CONCAT(DISTINCT d.name), o.date_created INTO currentRegimen, switchDate
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.voided = 0
+        AND o.encounter_id = currentEncounterId
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY d.name DESC -- 2 regimens with the same drugs but not in the same order should be considered the same
+    LIMIT 1;
+
+    SELECT GROUP_CONCAT(DISTINCT d.name) INTO previousRegimen
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.voided = 0
+        AND o.encounter_id = previousEncounterId
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY d.name DESC
+    LIMIT 1;
+
+    IF (currentRegimen <> previousRegimen) THEN
+        SET p_regimen = currentRegimen;
+        SET p_switchDate = switchDate;
+    END IF;
+
+END$$ 
+DELIMITER ;
+
+-- getRegimenSwitch
+
+DROP FUNCTION IF EXISTS getRegimenSwitch;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitch(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN regimen;
+
+END$$
+DELIMITER ;
+
+-- getRegimenSwitchDate
+
+DROP FUNCTION IF EXISTS getRegimenSwitchDate;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitchDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN switchDate;
+
+END$$
+DELIMITER ;
 
 -- getInfantARVProphylaxis
 
