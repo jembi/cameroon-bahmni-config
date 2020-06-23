@@ -129,6 +129,26 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+-- getPatientGenderFullname
+
+DROP FUNCTION IF EXISTS getPatientGenderFullname;
+
+DELIMITER $$
+CREATE FUNCTION getPatientGenderFullname(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE gender VARCHAR(50) DEFAULT getPatientGender(p_patientId);
+    RETURN 
+      CASE
+            WHEN gender = "m" THEN "Male"
+            WHEN gender = "f" THEN "Female"
+            ELSE NULL
+        END;
+END$$
+DELIMITER ;
+
 -- getPatientAttribueValue
 
 DROP FUNCTION IF EXISTS getPatientAttribueValue;
