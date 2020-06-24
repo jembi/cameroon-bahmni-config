@@ -235,12 +235,17 @@ BEGIN
         JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
         JOIN `location` l ON l.location_id = e.location_id AND l.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
-        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.date_created BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
-    ORDER BY o.scheduled_date DESC
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
-    RETURN (result);
+    RETURN 
+      CASE
+            WHEN result LIKE "LOCATION_COMMUNITY%" THEN "Community"
+            WHEN result IS NOT NULL THEN "Facility"
+            ELSE NULL
+        END;
 END$$
 DELIMITER ;
 
@@ -384,9 +389,9 @@ BEGIN
         JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
         JOIN `location` l ON e.location_id = l.location_id AND l.retired = 0
     WHERE o.patient_id = p_patientId
-        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.date_created BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
-    ORDER BY o.scheduled_date DESC
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
     RETURN 
