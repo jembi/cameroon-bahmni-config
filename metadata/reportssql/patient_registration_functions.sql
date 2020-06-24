@@ -439,11 +439,11 @@ CREATE FUNCTION getPatientARTNumber(
     DETERMINISTIC
 BEGIN
     DECLARE artNumber VARCHAR(50);
-    SET artNumber = getPatientIdentifierValue(p_patientId, 'REGISTRATION_IDTYPE_3_ART_KEY');
+    SET artNumber = getPatientProgramARTNumber(p_patientId);
     IF (artNumber IS NOT NULL) THEN
         return artNumber;
     ELSE
-        return getPatientProgramARTNumber(p_patientId);
+        return getPatientIdentifierValue(p_patientId, 'REGISTRATION_IDTYPE_3_ART_KEY');
     END IF;
 END$$
 DELIMITER ;
