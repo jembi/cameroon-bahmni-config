@@ -123,4 +123,27 @@ END$$
 
 DELIMITER ; 
 
+-- getLabTestOrderDate
 
+DROP FUNCTION IF EXISTS getLabTestOrderDate;
+
+DELIMITER $$
+CREATE FUNCTION getLabTestOrderDate(
+    p_patientId INT(11),
+    p_labTestName VARCHAR(255),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    RETURN (
+        SELECT o.date_activated
+        FROM orders o
+        JOIN concept_name cn ON o.concept_id = cn.concept_id
+        WHERE o.patient_id = p_patientId AND o.voided = 0
+            AND o.date_activated BETWEEN p_startDate AND p_endDate
+            AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
+            AND cn.name = p_labTestName
+        ORDER BY o.date_activated DESC
+        LIMIT 1);
+END$$
+DELIMITER ;
