@@ -25,5 +25,5 @@ SELECT "N/A" AS "HTS Client ID (EID or HEI Number)",
 	IF(patientIsIndex(p.patient_id),getNumberOfEnrolledContactsRelatedToIndex(p.patient_id),0) as "No of contacts notified / Nombre de contacts notifiés",
 	IF(patientIsIndex(p.patient_id),getNumberOfHIVTestedContactsRelatedToIndex(p.patient_id),0) as "No of contacts tested for HIV/ Nombre de contacts testés pour le VIH",
 	IF(patientIsIndex(p.patient_id),getNumberOfHIVPosContactsRelatedToIndex(p.patient_id),0) as "No of contacts tested HIV positive/ Nombre de contacts testés séropositifs",
-	"N/A" as "APS"
+	getPatientMostRecentContactTracer(p.patient_id) as "APS"
 	FROM patient p WHERE getHIVResult(p.patient_id, "2000-01-01", "2050-01-01") IS NOT NULL;

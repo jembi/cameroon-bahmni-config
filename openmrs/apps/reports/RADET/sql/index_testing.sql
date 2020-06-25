@@ -30,6 +30,6 @@ SELECT getPatientIdentifier(p.patient_id) as "Contacts (Contact nr/Child nr) ",
 	getNumberOfEnrolledContactsRelatedToIndex(p.patient_id) as "No of contacts notified / Nombre de contacts notifiés",
 	getNumberOfHIVTestedContactsRelatedToIndex(p.patient_id) as "No of contacts tested for HIV/ Nombre de contacts testés pour le VIH",
 	getNumberOfHIVPosContactsRelatedToIndex(p.patient_id) as "No of contacts tested HIV positive/ Nombre de contacts testés séropositifs",
-	"N/A" as "APS"
+	getPatientMostRecentContactTracer(p.patient_id) as "APS"
 	FROM patient p
 		WHERE patientIsContact(p.patient_id);

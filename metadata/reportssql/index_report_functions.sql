@@ -144,3 +144,20 @@ WHERE
 END$$
 DELIMITER ;
 
+-- getPatientMostRecentContactTracer
+
+DROP FUNCTION IF EXISTS getPatientMostRecentContactTracer;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentContactTracer(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+    DECLARE uuidContactTracer VARCHAR(38) DEFAULT "d7246eea-5161-43e0-b840-d315c24cc95e";
+
+    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidContactTracer);
+
+    RETURN (result);
+END$$
+DELIMITER ;
