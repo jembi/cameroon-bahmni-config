@@ -142,6 +142,7 @@ BEGIN
         WHERE o.patient_id = p_patientId AND o.voided = 0
             AND o.date_activated BETWEEN p_startDate AND p_endDate
             AND cn.locale='en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
+            AND cn.name = p_labTestName
         ORDER BY o.date_activated DESC
         LIMIT 1);
 END$$

@@ -30,7 +30,7 @@ SELECT
 	getDateOfInfantARVProphylaxis(child.patient_id, "CTX", "2020-01-01", "#endDate#") as "Date of Infant CTX",
 	getObsCodedValue(child.patient_id, "fcbc6db2-3983-4448-b95d-d8546c5bca68") as "Test type ",
 	"N/A" as "Date of EID Sample Collected",
-	getLabTestOrderCreationDate(child.patient_id,'PCR(ALERE-Q)','2000-01-01',"#endDate#") as "Date of EID Sample Sent",
+	getLabTestOrderDate(child.patient_id,'PCR(ALERE-Q)','2000-01-01',"#endDate#") as "Date of EID Sample Sent",
 	getTestDateWithinReportingPeriod(child.patient_id, "2020-01-01", "#endDate#", "a5239a85-6f75-4882-9b9b-60168e54b7da", "9bb7b360-3790-4e1a-8aca-0d1341663040") as "Date EID Result Received at Facility ",
 	getDateMostRecentHIVRelatedEncounter(p.patient_id) as "Date Caregiver Given EID Result",
 	getTestResultWithinReportingPeriod(child.patient_id, "2020-01-01", "#endDate#", "a5239a85-6f75-4882-9b9b-60168e54b7da", "9bb7b360-3790-4e1a-8aca-0d1341663040") as "EID Result ",
