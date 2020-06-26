@@ -208,6 +208,7 @@ BEGIN
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
     ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
