@@ -414,25 +414,24 @@ DELIMITER $$
 CREATE FUNCTION getDateInitiatedTPT(
     p_patientId INT(11),
     p_startDate DATE,
-    p_endDate DATE) RETURNS DATE
+    p_endDate DATE) RETURNS TEXT
     DETERMINISTIC
 BEGIN
-    DECLARE result DATE;
+    DECLARE result TEXT;
 
-    SELECT o.date_created INTO result
+    SELECT GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")) INTO result
     FROM drug_order do
         JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId
-        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND (d.name LIKE "INH%" OR
             d.name IN(
                 "Rifampicine + Isoniazide 60mg+30mg",
                 "Rifampicine + Isoniazide 150mg+75mg",
                 "Rifampicine + Isoniazide 300mg+150mg"))
         AND drugOrderIsDispensed(p_patientId, o.order_id)
-    ORDER BY o.date_created DESC
-    LIMIT 1;
+    ORDER BY o.scheduled_date DESC;
 
     RETURN result;
     
