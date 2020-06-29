@@ -38,4 +38,6 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 FROM patient p
 WHERE
   p.voided = 0
-  AND (getPatientARVStartDate(p.patient_id) IS NOT NULL OR getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") IS NOT NULL);
+  AND (getPatientARVStartDate(p.patient_id) IS NOT NULL
+  	OR getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") IS NOT NULL
+	OR getDateInitiatedTPT(p.patient_id, "2001-01-01", "#endDate#") IS NOT NULL);
