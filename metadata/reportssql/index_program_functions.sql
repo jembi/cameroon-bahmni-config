@@ -65,6 +65,50 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getNumberOfHIVTestedContactsRelatedToIndex
+
+DROP FUNCTION IF EXISTS getNumberOfHIVTestedContactsRelatedToIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberOfHIVTestedContactsRelatedToIndex(
+    p_patientId INT(11)) RETURNS INT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(1) DEFAULT 0;
+
+    SELECT count(DISTINCT pat.patient_id) INTO result
+    FROM patient pat
+    WHERE pat.voided = 0 AND
+        patientsAreRelated(p_patientId, pat.patient_id) AND
+        patientIsNotDead(pat.patient_id) AND
+        getHIVResult(pat.patient_id, "2000-01-01", "2050-01-01") IS NOT NULL;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNumberOfHIVPosContactsRelatedToIndex
+
+DROP FUNCTION IF EXISTS getNumberOfHIVPosContactsRelatedToIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberOfHIVPosContactsRelatedToIndex(
+    p_patientId INT(11)) RETURNS INT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(1) DEFAULT 0;
+
+    SELECT count(DISTINCT pat.patient_id) INTO result
+    FROM patient pat
+    WHERE pat.voided = 0 AND
+        patientsAreRelated(p_patientId, pat.patient_id) AND
+        patientIsNotDead(pat.patient_id) AND
+        getHIVResult(pat.patient_id, "2000-01-01", "2050-01-01") = "Positive";
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getFirstIndexName
 
 DROP FUNCTION IF EXISTS getFirstIndexName;
@@ -82,6 +126,28 @@ BEGIN
         patientsAreRelated(p_contactPatientId, pn.person_id) AND
         patientIsIndex(pn.person_id)
         ORDER BY pn.date_created ASC 
+        LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getFirstIndexID
+
+DROP FUNCTION IF EXISTS getFirstIndexID;
+
+DELIMITER $$
+CREATE FUNCTION getFirstIndexID(
+    p_contactPatientId INT(11)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT DEFAULT 0;
+
+    SELECT p.patient_id INTO result
+    FROM patient p
+    WHERE patientsAreRelated(p_contactPatientId, p.patient_id) AND
+        patientIsIndex(p.patient_id)
+        ORDER BY p.date_created ASC 
         LIMIT 1;
 
     RETURN (result);
@@ -108,7 +174,7 @@ BEGIN
         ORDER BY pnIndex.date_created ASC 
         LIMIT 1;
 
-    RETURN (result);
+    RETURN (REPLACE(REPLACE(result, 'RELATIONSHIP_', '' ), '_', ' '));
 END$$
 DELIMITER ;
 
@@ -182,135 +248,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientMostRecentProgramAttributeCodedValueFromName
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeCodedValueFromName;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramAttributeCodedValueFromName(
-    p_patientId INT(11),
-    p_programAttributeName VARCHAR(255),
-    p_language VARCHAR(3)) RETURNS VARCHAR(255)
-    DETERMINISTIC
-BEGIN
-    DECLARE uuidProgramAttribute VARCHAR(38);
-
-    SELECT pat.uuid INTO uuidProgramAttribute
-    FROM program_attribute_type pat
-    WHERE pat.name = p_programAttributeName
-    LIMIT 1;
-
-    RETURN getPatientMostRecentProgramAttributeCodedValue(p_patientId, uuidProgramAttribute, p_language);
-END$$
-DELIMITER ;
-
--- getMostRecentDateObservation
-
-DROP FUNCTION IF EXISTS getMostRecentDateObservation;
-
-DELIMITER $$
-CREATE FUNCTION getMostRecentDateObservation(
-    p_patientId INT(11),
-    p_conceptName VARCHAR(255)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE result DATE;
-
-    SELECT o.value_datetime INTO result
-    FROM obs o
-    JOIN concept_name cn ON cn.concept_id = o.concept_id
-    WHERE o.person_id = p_patientId
-        AND o.voided = 0
-        AND cn.name = p_conceptName
-    ORDER BY o.date_created DESC
-    LIMIT 1;
-
-    RETURN result;
-END$$
-DELIMITER ;
-
-
--- getMostRecentTextObservation
-
-DROP FUNCTION IF EXISTS getMostRecentTextObservation;
-
-DELIMITER $$
-CREATE FUNCTION getMostRecentTextObservation(
-    p_patientId INT(11),
-    p_conceptName VARCHAR(255)) RETURNS TEXT
-    DETERMINISTIC
-BEGIN
-    DECLARE result TEXT;
-
-    SELECT o.value_text INTO result
-    FROM obs o
-    JOIN concept_name cn ON cn.concept_id = o.concept_id
-    WHERE o.person_id = p_patientId
-        AND o.voided = 0
-        AND cn.name = p_conceptName
-    ORDER BY o.date_created DESC
-    LIMIT 1;
-
-    RETURN result;
-END$$
-DELIMITER ;
-
-
--- getMostRecentCodedObservation
-
-DROP FUNCTION IF EXISTS getMostRecentCodedObservation;
-
-DELIMITER $$
-CREATE FUNCTION getMostRecentCodedObservation(
-    p_patientId INT(11),
-    p_conceptName VARCHAR(255),
-    p_language VARCHAR(3)) RETURNS VARCHAR(255)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(255);
-
-    SELECT cn2.name INTO result
-    FROM obs o
-    JOIN concept_name cn ON cn.concept_id = o.concept_id
-    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
-    WHERE o.person_id = p_patientId
-        AND o.voided = 0
-        AND cn.name = p_conceptName
-        AND cn2.locale = p_language
-    ORDER BY o.date_created DESC
-    LIMIT 1;
-
-    RETURN result;
-END$$
-DELIMITER ;
-
--- getPatientMostRecentProgramAttributeValueFromName
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeValueFromName;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramAttributeValueFromName(
-    p_patientId INT(11),
-    p_programAttributeName VARCHAR(255)) RETURNS VARCHAR(255)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(255);
-
-    SELECT ppa.value_reference INTO result
-    FROM patient_program_attribute ppa
-        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
-        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
-    WHERE
-        ppa.voided = 0 AND
-        pp.patient_id = p_patientId AND
-        pat.name = p_programAttributeName
-    ORDER BY ppa.date_created DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 -- patientHasEnrolledIntoIndexProgram
 
 DROP FUNCTION IF EXISTS patientHasEnrolledIntoIndexProgram;
@@ -336,27 +273,129 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getTestedLocation
+-- getPatientIndexTestingDateAccepted
 
-DROP FUNCTION IF EXISTS getTestedLocation;
+DROP FUNCTION IF EXISTS getPatientIndexTestingDateAccepted;
 
 DELIMITER $$
-CREATE FUNCTION getTestedLocation(
-    p_patientId INT(11)) RETURNS VARCHAR(255)
+CREATE FUNCTION getPatientIndexTestingDateAccepted(
+    p_patientId INT(11)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(255);
+    DECLARE uuidIndexTestingDateAccepted VARCHAR(38) DEFAULT "e7a002be-8afc-48b1-a81b-634e37f2961c";
+    RETURN getObsDatetimeValue(p_patientId, uuidIndexTestingDateAccepted);
+END$$
+DELIMITER ;
 
-    SELECT l.name INTO result
-    FROM obs o
-    JOIN concept_name cn ON cn.concept_id = o.concept_id
-    JOIN location l ON o.location_id = l.location_id
-    WHERE o.person_id = p_patientId
-        AND o.voided = 0
-        AND cn.name = 'Final Test Result'
-    ORDER BY o.date_created DESC
+-- patientWithIndexPartner
+
+DROP FUNCTION IF EXISTS patientWithIndexPartner;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexPartner(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndex ON (r.person_a = p_patientId AND r.person_b = pIndex.person_id) OR
+            (r.person_a = pIndex.person_id AND r.person_b = p_patientId)
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndex.person_id) IS NOT NULL AND
+        rt.a_is_to_b = "RELATIONSHIP_PARTNER"
     LIMIT 1;
 
     RETURN result;
+END$$
+DELIMITER ;
+
+-- patientWithIndexChild
+
+DROP FUNCTION IF EXISTS patientWithIndexChild;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexChild(
+    p_parent INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndexChild ON r.person_a = pIndexChild.person_id AND r.person_b = p_parent
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndexChild.person_id) IS NOT NULL AND
+        (rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD")
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientWithIndexParent
+
+DROP FUNCTION IF EXISTS patientWithIndexParent;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexParent(
+    p_child INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM relationship r
+        JOIN person pIndexParent ON r.person_b = pIndexParent.person_id AND r.person_a = p_child
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndexParent.person_id) IS NOT NULL AND
+        (rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD")
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getPatientIndexTestingDateOffered
+
+DROP FUNCTION IF EXISTS getPatientIndexTestingDateOffered;
+
+DELIMITER $$
+CREATE FUNCTION getPatientIndexTestingDateOffered(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidIndexTestingDateOffered VARCHAR(38) DEFAULT "836fe9d4-96f1-4fea-9ad8-35bd06e0ee05";
+    RETURN getObsDatetimeValue(p_patientId, uuidIndexTestingDateOffered);
+END$$
+DELIMITER ;
+
+-- getIndexType
+
+DROP FUNCTION IF EXISTS getIndexType;
+
+DELIMITER $$
+CREATE FUNCTION getIndexType(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE daysBetweenHIVPosAndART INT(11) DEFAULT getDaysBetweenHIVPosAndART(p_patientId);
+    DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
+
+IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
+        RETURN 'Index Case New HTS POS and initiated on treatment this month';
+    ELSEIF (viralLoadResult > 1000) THEN
+        RETURN 'Index Case virally unsuppressed clients';
+    ELSEIF (daysBetweenHIVPosAndART > 30 AND daysBetweenHIVPosAndART <= 180) THEN
+        RETURN 'Index Case Old HTS POS and initiated on treatment within the 2 - 5 months';
+    ELSEIF (daysBetweenHIVPosAndART > 180 AND daysBetweenHIVPosAndART <= 365) THEN
+        RETURN 'Index Case Old HTS POS and initiated on treatment within the 6 - 12 months';
+    END IF;
+
+    RETURN '';
 END$$
 DELIMITER ;

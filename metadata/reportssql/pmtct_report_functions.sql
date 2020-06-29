@@ -243,3 +243,49 @@ BEGIN
     RETURN patientTestDateIsBeforeReportingPeriod;
 END$$
 DELIMITER ;
+
+-- getViralLoadIndication
+
+DROP FUNCTION IF EXISTS getViralLoadIndication;
+
+DELIMITER $$
+CREATE FUNCTION getViralLoadIndication(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+
+    RETURN viralLoadIndication;
+END$$
+DELIMITER ;
+
+-- getHIVDefaulterStatus
+
+DROP FUNCTION IF EXISTS getHIVDefaulterStatus;
+
+DELIMITER $$
+CREATE FUNCTION getHIVDefaulterStatus(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE patientIsDefaulter TINYINT(1) DEFAULT patientIsDefaulter(p_patientId);
+    DECLARE patientEnrolledInDefaultersProgram TINYINT(1) DEFAULT patientHasEnrolledInDefaulterProgram(p_patientId);
+    DECLARE defaulterProgramOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
+
+    IF (defaulterProgramOutcome IS NOT NULL) THEN
+        RETURN defaulterProgramOutcome;
+    ELSEIF (patientEnrolledInDefaultersProgram) THEN
+        RETURN "Tracking started, not yet returned to care";
+    ELSEIF (patientIsDefaulter) THEN
+        RETURN "Tracking hasn't started";
+    ELSE
+        RETURN NULL;
+    END IF;
+
+END$$
+DELIMITER ;
+

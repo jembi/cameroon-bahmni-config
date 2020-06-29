@@ -25,7 +25,6 @@ namespace Bahmni
             registry.fastStartUp(true);
 
             registry.criticalBatteryNotificationAction(true);
-
             registry.criticalBatteryNotificationLevel(true);
 
             registry.systemSleepTimeout(true, 0);
@@ -36,7 +35,10 @@ namespace Bahmni
 
             registry.hibernateTimeout(true, 0);
             registry.hibernateTimeout(true, 1);
-               
+
+            registry.lidSwitchAction(true, 0);
+            registry.lidSwitchAction(true, 1);
+
 
             var conf = new serviceConfig();
 
@@ -47,7 +49,7 @@ namespace Bahmni
                 appHelper.WriteLog(conf.errorMsg);
             }
 
-            registry.shutdownPowerShellScript(true, conf);
+            appHelper.shutdownPowerShellScript(true, conf);
 
             try
             {
@@ -85,10 +87,11 @@ namespace Bahmni
 
             var rootVagrantInstallPath = Context.Parameters["rootVagrantInstallPath"];
             var logsPath = Context.Parameters["logsPath"];
+            var facilityName = Context.Parameters["facilityName"];
 
             var conf = new serviceConfig();
 
-            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, logsPath);
+            bool checkVagrantSettingsDone = conf.installerSetServiceSettingsXml(rootVagrantInstallPath, logsPath, facilityName);
 
             if (conf.errorMsg != null)
             {
@@ -101,11 +104,13 @@ namespace Bahmni
             if (!registry.fastStartUp(false))
                 throw new System.Exception("Unable to turn off windows fast boot!");
 
+
             if (!registry.criticalBatteryNotificationAction(false))
                 throw new System.Exception("Unable to turn on critical battery notification action!");
 
             if (!registry.criticalBatteryNotificationLevel(false))
                 throw new System.Exception("Unable to turn on critical battery notification level!");
+
 
             if (!registry.systemSleepTimeout(false, 0))
                 throw new System.Exception("Unable to set system sleep timeout to never for when on battery!");
@@ -113,11 +118,13 @@ namespace Bahmni
             if (!registry.systemSleepTimeout(false, 1))
                 throw new System.Exception("Unable to set system sleep timeout to never for when plugged in!");
 
+
             if (!registry.turnOffHardDisk(false, 0))
                 throw new System.Exception("Unable to set when Windows can turn off the hard disk for when on battery!");
 
             if (!registry.turnOffHardDisk(false, 1))
                 throw new System.Exception("Unable to set when Windows can turn off the hard disk for when plugged in!");
+
 
             if (!registry.hibernateTimeout(false, 0))
                 throw new System.Exception("Unable to set hibernate timeout to never for when on battery!");
@@ -125,15 +132,25 @@ namespace Bahmni
             if (!registry.hibernateTimeout(false, 1))
                 throw new System.Exception("Unable to set hibernate timeout to never for when plugged in!");
 
+
+            if (!registry.lidSwitchAction(false, 0))
+                throw new System.Exception("Unable to set the lid switch action to shutdown for when on battery!");
+
+            if (!registry.lidSwitchAction(false, 1))
+                throw new System.Exception("Unable to set the lid switch action to shutdown for when plugged in!");
+
+
             if (!appHelper.processFiles(rootVagrantInstallPath))
                 throw new System.Exception("Unable to copy one or more Vagrant script files from the source directory to the Vagrant root directory!");
 
             conf.getServiceSettingsXml();
 
-            if (!registry.shutdownPowerShellScript(false, conf))
+            if (!appHelper.shutdownPowerShellScript(false, conf))
                 throw new System.Exception("Unable to add the shutdown script!");
 
             deleteOldAppInfoFileIfExists(conf);
+
+            appHelper.encryptSecret();
 
             using (var sc = new ServiceController(serviceInstaller.ServiceName))
             {
