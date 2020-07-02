@@ -3187,7 +3187,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	"HTC, Tested before": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['HTC, Tested before'];
-		console.log(value)
 		if (value === true) {
 			conditions.show.push("HIV Test Date");
 			conditions.show.push("HTC, Result if tested");
@@ -3198,5 +3197,26 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("HTC, Reason for test");
 		}
 		return conditions;
-	}
+	},
+	"HTC, Result": function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues["HTC, Result"];
+		if (value === "Positive") {
+			conditions.show.push("Start treatment ?");
+		} else {
+			conditions.hide.push("Start treatment ?");
+		}
+		return conditions;
+	},
+	"Start treatment ?": function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues["Start treatment ?"];
+		if (value === false) {
+			conditions.show.push("Reason for not starting treatment");
+		} else {
+			conditions.hide.push("Reason for not starting treatment");
+		}
+		return conditions;
+	},
+	
 };
