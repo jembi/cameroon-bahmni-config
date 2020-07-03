@@ -3218,5 +3218,27 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
-	
+	/**
+	 * Handling conditions for History and Examination
+	 */
+	'Prison ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prison ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("If yes, when ?");
+		} else {
+			conditions.hide.push("If yes, when ?");
+		}
+		return conditions;
+	},
+	'Alcohol History ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Alcohol History ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Drinks/week");
+		} else {
+			conditions.hide.push("Drinks/week");
+		}
+		return conditions;
+	},
 };
