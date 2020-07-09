@@ -185,6 +185,28 @@
         "order": 8,
         "requiredPrivilege": "app:clinical"
     },
+    "hvlPatientsTab": {
+        "id": "bahmni.clinical.patients.search.hvlPatientsTab",
+        "extensionPointId": "org.bahmni.patient.search",
+        "type": "config",
+        "extensionParams": {
+            "searchHandler": "emrapi.sqlSearch.hvlPatients",
+            "translationKey": "MODULE_LABEL_HVL_PATIENTS_KEY",
+            "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext",
+            "view": "tabular",
+            "searchColumns": [
+                "ID",
+                "PROGRAM_MODULE_LABEL_NAME_KEY",
+                "PROGRAM_MODULE_LABEL_ART_NUMBER_KEY",
+                "PROGRAM_MODULE_LABEL_VILLAGE_KEY",
+                "PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY",
+                "PROGRAM_MODULE_LABEL_EMERGENCY_CONTACT_KEY"
+            ]
+        },
+        "label": "Active",
+        "order": 9,
+        "requiredPrivilege": "app:clinical"
+    },
     "bahmniClinicalPatientsSearchAllPatients": {
         "id": "bahmni.clinical.patients.search.allPatients",
         "extensionPointId": "org.bahmni.patient.search",
@@ -194,7 +216,7 @@
             "forwardUrl": "#/programs/patient/{{patientUuid}}/consultationContext"
         },
         "label": "All",
-        "order": 9,
+        "order": 10,
         "requiredPrivilege": "app:clinical"
     },
     "bahmniClinicalConceptSetGroupObservationsHistory": {
