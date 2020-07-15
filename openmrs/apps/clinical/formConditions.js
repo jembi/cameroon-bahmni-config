@@ -3241,4 +3241,76 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
+	/**
+	 * Handling conditions for TB Form
+	 * 
+	 */
+	'Screened': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Screened'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Cough > 2 weeks");
+			conditions.show.push("Fever > 2 weeks");
+			conditions.show.push("Weight Loss");
+			conditions.show.push("Night Sweats");
+			conditions.show.push("TB Contact");
+		} else {
+			conditions.hide.push("Cough > 2 weeks");
+			conditions.hide.push("Fever > 2 weeks");
+			conditions.hide.push("Weight Loss");
+			conditions.hide.push("Night Sweats");
+			conditions.hide.push("TB Contact");
+		}
+		return conditions;
+	},
+	'WHO registration group': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['WHO registration group'];
+		if (value === "Relapse" || value === "Treatment after Lost to LTFU" || value === "Treatment after failure" || value === "Other previously treated patient") {
+			conditions.show.push("Previously treated group");
+		} else {
+			conditions.hide.push("Previously treated group");
+		}
+		return conditions;
+	},
+	'Disease site': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Disease site'];
+		if (value === "Extra Pulmonary") {
+			conditions.show.push("Extrapulmonary site");
+		} else {
+			conditions.hide.push("Extrapulmonary site");
+		}
+		return conditions;
+	},
+	'MTB confirmation': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['MTB confirmation'];
+		if (value === "Bacteriologically Confirmed") {
+			conditions.show.push("Method of confirmation");
+		} else {
+			conditions.hide.push("Method of confirmation");
+		}
+		return conditions;
+	},
+	'Method of confirmation': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Method of confirmation'];
+		if (value === "Other") {
+			conditions.show.push("Other method of confirmation");
+		} else {
+			conditions.hide.push("Other method of confirmation");
+		}
+		return conditions;
+	},
+	'Drug resistance profile': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Drug resistance profile'];
+		if (value === "Confirmed drug resistant TB") {
+			conditions.show.push("Sub-class of drug resistance profile");
+		} else {
+			conditions.hide.push("Sub-class of drug resistance profile");
+		}
+		return conditions;
+	},
 };
