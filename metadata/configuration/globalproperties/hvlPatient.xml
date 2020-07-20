@@ -21,7 +21,9 @@
         join global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
         join person p on p.person_id = pat.patient_id and p.voided=0
       where
-        getViralLoadTestResult(pat.patient_id) > 1000 AND
+        patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+        NOT patientHasEnrolledInVlEacProgram(pat.patient_id) AND
+        getViralLoadTestResult(pat.patient_id) >= 1000 AND
         patientIsOnARVTreatment(pat.patient_id) AND
         patientIsNotDead(pat.patient_id) AND
         patientIsNotLostToFollowUp(pat.patient_id) AND
