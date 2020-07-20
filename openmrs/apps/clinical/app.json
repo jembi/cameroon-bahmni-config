@@ -118,7 +118,7 @@
                 "required" : true
             },
             "PROGRAM_MANAGEMENT_5_APS_NAME": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
