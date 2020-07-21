@@ -2579,6 +2579,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'ARV Resistance Test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['ARV Resistance Test'];
+		if (value && value !== "") {	
+			conditions.show.push("ARV Resistance Test Date");
+		} else {	
+			conditions.hide.push("ARV Resistance Test Date");
+		}	
+		return conditions;	
+	},
 	'Gama GT': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Gama GT'];
