@@ -491,3 +491,30 @@ BEGIN
     RETURN (result);
 END$$
 DELIMITER ;
+
+-- patientOnTreatmentForOneYear
+
+DROP FUNCTION IF EXISTS patientOnTreatmentForOneYear;
+
+DELIMITER $$
+CREATE FUNCTION patientOnTreatmentForOneYear(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE totalDurationInDays INT(11);
+
+    SELECT SUM(calculateDurationInDays(do.duration,c.uuid)) INTO totalDurationInDays
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id);
+
+    IF totalDurationInDays IS NOT NULL AND (totalDurationInDays >= 365) THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END$$
+DELIMITER ;
