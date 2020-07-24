@@ -1,0 +1,37 @@
+<config>
+  <globalProperties>
+    <globalProperty>
+      <property>emrapi.sqlSearch.eacTracking</property>
+      <value>
+      SELECT
+        distinct pi.identifier as ID,
+        concat("",p.uuid) as uuid,
+        concat(pn.given_name," ", ifnull(pn.family_name,'')) as 'PROGRAM_MODULE_LABEL_NAME_KEY',
+        getPatientAge(pat.patient_id) as 'PROGRAM_MODULE_LABEL_AGE_KEY',
+        getPatientMostRecentProgramTrackingStateValue(pat.patient_id, 'en', 'VL_EAC_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_TRACKING_STATE_KEY',
+        getPatientMostRecentProgramAttributeValue(pat.patient_id, '13cfc4e2-49ba-470e-a2ac-81fa9bed607c') AS 'PROGRAM_MODULE_LABEL_EAC_DATE_KEY',
+        getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, 'adf90c17-52bb-4ce3-8fb9-cde6e60e4a0d', 'en') AS 'PROGRAM_MODULE_LABEL_CLASSIFICATION_OF_ADHERENCE_KEY',
+        getViralLoadTestDate(pat.patient_id) as 'PROGRAM_MODULE_LABEL_DATE_REPEAT_VL_COLLECTION_KEY',
+        getViralLoadTestResult(pat.patient_id) as 'PROGRAM_MODULE_LABEL_REPEAT_VL_RESULT_KEY',
+        getDateLatestVLResultShared(pat.patient_id) as 'PROGRAM_MODULE_LABEL_DATE_VL_RESULT_SHARED_KEY',
+        getMostRecentResistanceTestResult(pat.patient_id) as 'PROGRAM_MODULE_LABEL_RESISTANCE_TEST_RESULT_KEY',
+        getNewARVRegimenAfterDate(pat.patient_id, getPatientMostRecentProgramTrackingDateValue(pat.patient_id,'VL_EAC_PROGRAM_KEY')) as 'PROGRAM_MODULE_LABEL_NEW_REGIMEN_KEY',
+        getDateNewARVRegimenAfterDate(pat.patient_id, getPatientMostRecentProgramTrackingDateValue(pat.patient_id,'VL_EAC_PROGRAM_KEY')) as 'PROGRAM_MODULE_LABEL_DATE_NEW_REGIMEN_KEY',
+        getPatientMostRecentProgramAPSName(pat.patient_id, 'VL_EAC_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_APS_NAME_KEY'        
+      FROM
+        patient pat JOIN person_name pn on pat.patient_id = pn.person_id and pn.voided = 0 and pat.voided=0
+        JOIN patient_identifier pi on pat.patient_id = pi.patient_id and pi.voided=0
+        JOIN patient_identifier_type pit on pi.identifier_type = pit.patient_identifier_type_id
+        JOIN global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
+        JOIN person p on p.person_id = pat.patient_id and p.voided=0
+      WHERE
+        patientHasEnrolledInVlEacProgram(pat.patient_id) AND
+        getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'VL_EAC_PROGRAM_KEY') IS NULL AND
+        patientIsNotDead(pat.patient_id) AND
+        patientIsNotLostToFollowUp(pat.patient_id) AND
+        patientIsNotTransferredOut(pat.patient_id)
+      ORDER BY pat.patient_id DESC;
+      </value>
+    </globalProperty>
+  </globalProperties>
+</config>

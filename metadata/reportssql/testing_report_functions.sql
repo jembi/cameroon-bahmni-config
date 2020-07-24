@@ -1845,3 +1845,47 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+-- getDateLatestVLResultShared
+
+DROP FUNCTION IF EXISTS getDateLatestVLResultShared;
+
+DELIMITER $$
+CREATE FUNCTION getDateLatestVLResultShared(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+
+    SELECT o.obs_datetime INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND c.uuid IN (routineViralLoadTestUuid, targetedViralLoadTestUuid, notDocumentedViralLoadTestUuid)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+
+END$$
+DELIMITER ;
+
+-- getMostRecentResistanceTestResult
+
+DROP FUNCTION IF EXISTS getMostRecentResistanceTestResult;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentResistanceTestResult(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE reistanceTestUuid VARCHAR(38) DEFAULT '97a1a638-03b0-464e-bf75-4717f9f06c38';
+
+    RETURN getObsCodedValue(p_patientId, reistanceTestUuid);
+END$$
+DELIMITER ;

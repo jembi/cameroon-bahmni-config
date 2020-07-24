@@ -80,85 +80,20 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientMostRecentProgramTrackingStateValue
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingStateValue;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramTrackingStateValue(
-    p_patientId INT(11),
-    p_language VARCHAR(3)) RETURNS VARCHAR(250)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(250);
-    DECLARE uuidDefaulterProgramTrackingState VARCHAR(38) DEFAULT "39202f47-a709-11e6-91e9-0800270d80ce";
-
-    SELECT cn.name INTO result
-    FROM patient_state ps
-        JOIN program_workflow_state pws ON ps.state = pws.program_workflow_state_id AND pws.retired = 0
-        JOIN concept_name cn ON pws.concept_id = cn.concept_id AND cn.locale=p_language
-        JOIN patient_program pp ON pp.patient_program_id = ps.patient_program_id AND pp.voided = 0
-        JOIN program p ON p.program_id = pp.program_id AND p.retired = 0
-    WHERE
-        pp.patient_id = p_patientId AND
-        p.name = "HIV_DEFAULTERS_PROGRAM_KEY"
-    ORDER BY ps.date_created DESC
-    LIMIT 1;
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
--- getPatientMostRecentProgramTrackingDateValue
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingDateValue;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramTrackingDateValue(
-    p_patientId INT(11)) RETURNS DATE
-    DETERMINISTIC
-BEGIN
-    DECLARE result DATE;
-    DECLARE uuidProgramTrackingDate VARCHAR(38) DEFAULT "9b4b2dd5-bc5e-44b9-ad95-333a7bbfee3c";
-
-    SET result = DATE(getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramTrackingDate));
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
--- getPatientMostRecentProgramTrackingOutcomeValue
-
-DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingOutcomeValue;
-
-DELIMITER $$
-CREATE FUNCTION getPatientMostRecentProgramTrackingOutcomeValue(
-    p_patientId INT(11),
-    p_language VARCHAR(3)) RETURNS VARCHAR(250)
-    DETERMINISTIC
-BEGIN
-    DECLARE result VARCHAR(250);
-    DECLARE uuidProgramTrackingOutcome VARCHAR(38) DEFAULT "caf6d807-861d-4393-9d6e-940b98fa712d";
-
-    SET result = getPatientMostRecentProgramAttributeCodedValue(p_patientId, uuidProgramTrackingOutcome, p_language);
-
-    RETURN (result);
-END$$
-DELIMITER ;
-
 -- getPatientMostRecentProgramAPSName
 
 DROP FUNCTION IF EXISTS getPatientMostRecentProgramAPSName;
 
 DELIMITER $$
 CREATE FUNCTION getPatientMostRecentProgramAPSName(
-    p_patientId INT(11)) RETURNS VARCHAR(250)
+    p_patientId INT(11),
+    p_program VARCHAR(250)) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(250);
     DECLARE uuidProgramAPSName VARCHAR(38) DEFAULT "8bb0bdc0-aaf3-4501-8954-d1b17226075b";
 
-    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramAPSName);
+    SET result = getPatientMostRecentProgramAttributeValueInProgram(p_patientId, uuidProgramAPSName, p_program);
 
     RETURN (result);
 END$$
