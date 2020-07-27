@@ -21,22 +21,27 @@
         join global_property gp on gp.property="bahmni.primaryIdentifierType" and gp.property_value=pit.uuid
         join person p on p.person_id = pat.patient_id and p.voided=0
       where
-        patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes"
-        AND
-        patientIsOnARVTreatment(pat.patient_id)
-        AND
+        patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+        patientIsOnARVTreatment(pat.patient_id) AND
+        patientIsNotDead(pat.patient_id) AND
+        patientIsNotLostToFollowUp(pat.patient_id) AND
+        patientIsNotTransferredOut(pat.patient_id) AND
         (
-          (getViralLoadTestDate(pat.patient_id) IS NOT NULL AND timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt; 6 )
+          (getViralLoadTestDate(pat.patient_id) IS NOT NULL AND timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt;= 6 )
           OR
-          (getPatientARVStartDate(pat.patient_id) IS NOT NULL AND timestampdiff(MONTH, getPatientARVStartDate(pat.patient_id), NOW()) &gt; 6)
+          (
+            getPatientARVStartDate(pat.patient_id) IS NOT NULL AND
+            timestampdiff(MONTH, getPatientARVStartDate(pat.patient_id), NOW()) &gt;= 6 AND
+            (getViralLoadTestDate(pat.patient_id) IS NULL OR timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt;= 6)
+            )
           OR
-          (patientHasEnrolledInVlEacProgram(pat.patient_id) AND timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt; 3)
+          (patientHasEnrolledInVlEacProgram(pat.patient_id) AND timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt;= 3)
           OR
           (
             getViralLoadTestResult(pat.patient_id) IS NOT NULL AND
             getViralLoadTestResult(pat.patient_id) &lt; 1000 AND
             getViralLoadTestDate(pat.patient_id) IS NOT NULL AND
-            timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt; 12 AND
+            timestampdiff(MONTH, getViralLoadTestDate(pat.patient_id), NOW()) &gt;= 12 AND
             patientOnTreatmentForOneYear(pat.patient_id)
           )
         )
