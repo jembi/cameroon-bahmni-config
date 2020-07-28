@@ -678,6 +678,36 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateNextVLExam
+
+DROP FUNCTION IF EXISTS getDateNextVLExam;
+
+DELIMITER $$
+CREATE FUNCTION getDateNextVLExam(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE arvStartDate DATE;
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+    SET arvStartDate = getPatientARVStartDate(p_patientId);
+
+    IF (testResult IS NOT NULL AND testDate IS NOT NULL AND testResult <= 1000) THEN
+        SET result = timestampadd(MONTH, 12, testDate);
+    ELSEIF (testResult IS NOT NULL AND testDate IS NOT NULL AND testResult > 1000) THEN
+        SET result = timestampadd(MONTH, 3, testDate);
+    ELSEIF (arvStartDate IS NOT NULL) THEN
+        SET result = timestampadd(MONTH, 6, arvStartDate);
+    END IF;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- getDatesCompletionTPTCourses
 
 DROP FUNCTION IF EXISTS getDatesCompletionTPTCourses;
