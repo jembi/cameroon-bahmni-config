@@ -678,3 +678,93 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDatesCompletionTPTCourses
+
+DROP FUNCTION IF EXISTS getDatesCompletionTPTCourses;
+
+DELIMITER $$
+CREATE FUNCTION getDatesCompletionTPTCourses(
+    p_patientId INT(11)) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE inhDates TEXT;
+    DECLARE threeHpDates TEXT;
+    DECLARE oneHpDates TEXT;
+    DECLARE result TEXT DEFAULT NULL;
+    
+    SELECT CONCAT(
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
+            ',',
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"))) INTO inhDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND d.name IN ('INH 100mg','INH 300mg')
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 180;
+    
+    SELECT CONCAT(
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
+            ',',
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"))) INTO threeHpDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND d.name IN ('Rifampicine + Isoniazide 60mg+30mg','Rifampicine + Isoniazide 150mg+75mg','Rifampicine + Isoniazide 300mg+150mg')
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 120;
+    
+    SELECT CONCAT(
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
+            ',',
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"))) INTO oneHpDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND d.name = 'Rifampicine + Isoniazide 60mg+30mg'
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 90;
+
+    IF (inhDates IS NOT NULL) THEN
+        SET result = inhDates;
+    END IF;
+
+    IF (threeHpDates IS NOT NULL) THEN
+        IF (result IS NULL) THEN
+            SET result = threeHpDates;
+        ELSE
+            SET result = CONCAT(result,',',threeHpDates);
+        END IF;
+    END IF;
+
+    IF (oneHpDates IS NOT NULL) THEN
+        IF (result IS NULL) THEN
+            SET result = oneHpDates;
+        ELSE
+            SET result = CONCAT(result,',',oneHpDates);
+        END IF;
+    END IF;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
