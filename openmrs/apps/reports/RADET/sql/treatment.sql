@@ -15,7 +15,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	"N/A" as "Date newly enrolled in Community ART dispensations / Date à laquelle vous vous êtes nouvellement inscrit aux dispensations de ART communautaire",
 	getNextARTPickupDate(p.patient_id, '#endDate#') as "Next ART Pickup date/ Prochaine date de prise en charge ART",
 	"N/A" as "Regimen Line at ART Start/ Ligne de régime à ART Start",
-	"N/A" as "Regimen at ART Start/ Régime chez ART Start", 
+	getFirstARVPrescribed(p.patient_id) as "Regimen at ART Start/ Régime chez ART Start", 
 	getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "Current Regimen Line/ Ligne de régime actuelle",
 	getActiveARVWithLowestDispensationPeriod(p.patient_id, '#startDate#', '#endDate#') as "Current ART Regimen/ Régime d'ART actuel",
 	"N/A" as "Regimen Switch/ Commutateur de régime",
