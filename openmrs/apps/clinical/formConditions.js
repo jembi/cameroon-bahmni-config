@@ -3276,7 +3276,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	'WHO registration group': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['WHO registration group'];
-		if (value === "Relapse" || value === "Treatment after Lost to LTFU" || value === "Treatment after failure" || value === "Other previously treated patient") {
+		if (value === "Relapse" || value === "Treatment after Lost to LTFU" || value === "Treatment after failure" || value === "Previously treated") {
 			conditions.show.push("Previously treated group");
 		} else {
 			conditions.hide.push("Previously treated group");
