@@ -884,6 +884,74 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- retrieveTBScreeningDateAndResult
+
+DROP PROCEDURE IF EXISTS retrieveTBScreeningDateAndResult;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveTBScreeningDateAndResult(
+    IN p_patientId INT(11),
+    OUT p_screeningDate DATE,
+    OUT p_screeningStatus VARCHAR(250)
+    )
+    DETERMINISTIC
+    BEGIN
+    DECLARE tbScreeningStatusUuid VARCHAR(38) DEFAULT '61931c8b-0637-40f9-97dc-07796431dd3b';
+
+    SELECT DATE(o.date_created), cn.name INTO p_screeningDate, p_screeningStatus
+    FROM obs o
+        JOIN concept_name cn ON cn.concept_id = o.value_coded
+    WHERE
+        o.voided = 0 AND
+        o.person_id = p_patientId AND
+        o.value_coded IS NOT NULL AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = tbScreeningStatusUuid)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+END$$ 
+DELIMITER ;
+
+-- getTBScreeningStatusAtLastARVRefill
+
+DROP FUNCTION IF EXISTS getTBScreeningStatusAtLastARVRefill;
+
+DELIMITER $$
+CREATE FUNCTION getTBScreeningStatusAtLastARVRefill(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE tbScreeningStatus VARCHAR(250);
+    DECLARE tbScreeningDate DATE;
+    DECLARE arvLatestRefillDate DATE;
+    DECLARE patientEnrolledOnHIVProgram VARCHAR(3);
+    DECLARE patientOnARVTreatment TINYINT(1);
+    
+    -- Get latest TB Screening status and date
+    CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
+
+    -- Get date of latest refil
+    SET arvLatestRefillDate = getLastArvPickupDate(p_patientId, '2000-01-01', '2100-01-01');
+    
+    -- Check if the patient is on HIV program
+    SET patientEnrolledOnHIVProgram = patientHasEnrolledIntoHivProgram(p_patientId);
+
+    -- Check if the patient is currently on ARV treatment
+    SET patientOnARVTreatment = patientIsOnARVTreatment(p_patientId);
+
+    IF (
+        tbScreeningDate = arvLatestRefillDate AND
+        patientEnrolledOnHIVProgram = 'Yes' AND
+        patientOnARVTreatment) THEN
+        RETURN tbScreeningStatus;
+    ELSE
+        RETURN NULL;
+    END IF;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- patientHasStartedARVTreatmentDuringReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentDuringReportingPeriod;
