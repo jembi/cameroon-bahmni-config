@@ -731,16 +731,20 @@ BEGIN
     DECLARE testDate DATE;
     DECLARE testResult INT(11);
     DECLARE arvStartDate DATE;
+    DECLARE eacDate DATE;
     DECLARE viralLoadIndication VARCHAR(50);
 
     CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
     SET arvStartDate = getPatientARVStartDate(p_patientId);
+    SET eacDate = getPatientMostRecentProgramAttributeValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_1_EAC_DATE');
 
     IF (testResult IS NOT NULL AND testDate IS NOT NULL AND testResult <= 1000) THEN
         SET result = timestampadd(MONTH, 12, testDate);
-    ELSEIF (testResult IS NOT NULL AND testDate IS NOT NULL AND testResult > 1000) THEN
-        SET result = timestampadd(MONTH, 3, testDate);
-    ELSEIF (arvStartDate IS NOT NULL) THEN
+    ELSEIF (testResult IS NOT NULL AND eacDate IS NOT NULL AND testResult > 1000) THEN
+        SET result = timestampadd(MONTH, 3, eacDate);
+    ELSEIF (
+        (arvStartDate IS NOT NULL AND testResult IS NOT NULL AND testResult <= 1000) OR 
+        (arvStartDate IS NOT NULL AND testResult IS NULL)) THEN
         SET result = timestampadd(MONTH, 6, arvStartDate);
     END IF;
 
