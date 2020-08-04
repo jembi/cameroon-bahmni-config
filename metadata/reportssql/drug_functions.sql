@@ -547,10 +547,7 @@ BEGIN
                 do.duration,
                 c.uuid)
             )
-    ORDER BY calculateTreatmentEndDate(
-                o.scheduled_date,
-                do.duration,
-                c.uuid) ASC,
+    ORDER BY calculateDurationInDays(do.duration,c.uuid) ASC,
         o.scheduled_date DESC
     LIMIT 1;
     RETURN result;
