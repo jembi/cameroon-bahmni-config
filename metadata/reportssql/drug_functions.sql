@@ -200,7 +200,7 @@ CREATE FUNCTION getDurationMostRecentArvTreatment(
 BEGIN
     DECLARE result INT(11);
 
-    SELECT calculateDurationInDays(do.duration,c.uuid) INTO result
+    SELECT calculateDurationInDays(o.scheduled_date, do.duration,c.uuid) INTO result
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -256,6 +256,7 @@ DROP FUNCTION IF EXISTS calculateDurationInDays;
 
 DELIMITER $$
 CREATE FUNCTION calculateDurationInDays(
+    p_startDate DATE,
     p_duration INT(11),
     p_uuidDurationUnit VARCHAR(38)) RETURNS INT(11)
     DETERMINISTIC
@@ -277,7 +278,7 @@ BEGIN
     ELSEIF p_uuidDurationUnit = uuidWeek THEN
         RETURN p_duration * 7;
     ELSEIF p_uuidDurationUnit = uuidMonth THEN
-        RETURN p_duration * 30;
+        RETURN timestampdiff(DAY, p_startDate, timestampadd(MONTH, p_duration, p_startDate));
     END IF;
 
     RETURN (result); 
@@ -547,7 +548,7 @@ BEGIN
                 do.duration,
                 c.uuid)
             )
-    ORDER BY calculateDurationInDays(do.duration,c.uuid) ASC,
+    ORDER BY calculateDurationInDays(o.scheduled_date,do.duration,c.uuid) ASC,
         o.scheduled_date DESC
     LIMIT 1;
     RETURN result;
@@ -565,7 +566,7 @@ CREATE FUNCTION patientOnTreatmentForOneYear(
 BEGIN
     DECLARE totalDurationInDays INT(11);
 
-    SELECT SUM(calculateDurationInDays(do.duration,c.uuid)) INTO totalDurationInDays
+    SELECT SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) INTO totalDurationInDays
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -781,7 +782,7 @@ BEGIN
         AND o.patient_id = p_patientId
         AND d.name IN ('INH 100mg','INH 300mg')
     GROUP BY o.patient_id
-    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 180;
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 180;
     
     SELECT CONCAT(
             GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
@@ -798,7 +799,7 @@ BEGIN
         AND o.patient_id = p_patientId
         AND d.name IN ('Rifampicine + Isoniazide 60mg+30mg','Rifampicine + Isoniazide 150mg+75mg','Rifampicine + Isoniazide 300mg+150mg')
     GROUP BY o.patient_id
-    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 120;
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 120;
     
     SELECT CONCAT(
             GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
@@ -815,7 +816,7 @@ BEGIN
         AND o.patient_id = p_patientId
         AND d.name = 'Rifampicine + Isoniazide 60mg+30mg'
     GROUP BY o.patient_id
-    HAVING SUM(calculateDurationInDays(do.duration,c.uuid)) >= 90;
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 90;
 
     IF (inhDates IS NOT NULL) THEN
         SET result = inhDates;
