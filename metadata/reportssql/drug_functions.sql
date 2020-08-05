@@ -767,10 +767,10 @@ BEGIN
     DECLARE oneHpDates TEXT;
     DECLARE result TEXT DEFAULT NULL;
     
-    SELECT CONCAT(
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
-            ',',
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+    SELECT GROUP_CONCAT(
+            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
                 c.uuid), "%d-%b-%Y"))) INTO inhDates
@@ -784,10 +784,10 @@ BEGIN
     GROUP BY o.patient_id
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 180;
     
-    SELECT CONCAT(
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
-            ',',
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+    SELECT GROUP_CONCAT(
+            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
                 c.uuid), "%d-%b-%Y"))) INTO threeHpDates
@@ -801,10 +801,10 @@ BEGIN
     GROUP BY o.patient_id
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 120;
     
-    SELECT CONCAT(
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(o.scheduled_date, "%d-%b-%Y")),
-            ',',
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(calculateTreatmentEndDate(
+    SELECT GROUP_CONCAT(
+            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
                 c.uuid), "%d-%b-%Y"))) INTO oneHpDates
