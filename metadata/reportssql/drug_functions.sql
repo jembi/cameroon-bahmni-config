@@ -768,12 +768,12 @@ BEGIN
     DECLARE result TEXT DEFAULT NULL;
     
     SELECT GROUP_CONCAT(
-            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
             ' to ',
             DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
-                c.uuid), "%d-%b-%Y"))) INTO inhDates
+                c.uuid), "%d-%b-%Y"), ' ')) INTO inhDates
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -785,12 +785,12 @@ BEGIN
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 180;
     
     SELECT GROUP_CONCAT(
-            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
             ' to ',
             DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
-                c.uuid), "%d-%b-%Y"))) INTO threeHpDates
+                c.uuid), "%d-%b-%Y"), ' ')) INTO threeHpDates
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -802,12 +802,12 @@ BEGIN
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 120;
     
     SELECT GROUP_CONCAT(
-            CONCAT(DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
             ' to ',
             DATE_FORMAT(calculateTreatmentEndDate(
                 o.scheduled_date,
                 do.duration,
-                c.uuid), "%d-%b-%Y"))) INTO oneHpDates
+                c.uuid), "%d-%b-%Y"), ' ')) INTO oneHpDates
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
