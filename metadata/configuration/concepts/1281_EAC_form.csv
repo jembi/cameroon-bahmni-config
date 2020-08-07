@@ -1,4 +1,9 @@
 uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1200
+49302bb3-93f1-4f17-9ae8-8bf513356467,,,Moyen,Fair,Moyen,Fair,Misc,N/A,
+1cb5e2f4-9813-4683-a81d-ffee877c7522,,,Mauvais,Poor,Mauvais,Poor,Misc,N/A,
+4a8c981b-a746-424b-a38a-7c62a07d3419,,,Continuer avec le même traitement ARV,Continue same ART regimen,Continuer avec le même traitement ARV,Continue same ART regimen,Misc,N/A,
+122f223c-ff02-48e0-af40-da77d28a2ed4,,,Passer à la ligne ARV suivante,Switch to the next line ART,Passer à la ligne ARV suivante,Switch to the next line ART,Misc,N/A,
+c1c8d5cf-3be8-4acf-b547-dc7fdadc759b,,,Refaire Session Observance,Proceed to extended EAC,Refaire Session Observance,Proceed to extended EAC,Misc,N/A,
 2d7b7d0f-d49b-4643-8b38-d5e952d2a7f1,,,1ère Session Observance,EAC 1,1ère Session Observance,EAC 1,Misc,N/A,
 beb3b80d-1f5d-412d-941d-3842eb56b0f3,,,2ème Session Observance,EAC 2,2ème Session Observance,EAC 2,Misc,N/A,
 010efc37-f82a-41c9-a348-2efee49476b9,,,3ème Session Observance,EAC 3,3ème Session Observance,EAC 3,Misc,N/A,
