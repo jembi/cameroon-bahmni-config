@@ -3323,4 +3323,18 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
+	/**
+	 * Handling conditions for EAC Form
+	 * 
+	 */
+	'Resistance Test done': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Resistance Test done'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Outcome of Resistance test");
+		} else {
+			conditions.hide.push("Outcome of Resistance test");
+		}
+		return conditions;
+	},
 };
