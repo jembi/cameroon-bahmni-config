@@ -971,3 +971,54 @@ BEGIN
     END IF;
 END$$
 DELIMITER ;
+
+-- getEacDate
+
+DROP FUNCTION IF EXISTS getEacDate;
+
+DELIMITER $$
+CREATE FUNCTION getEacDate(
+    p_patientId INT(11),
+    p_eacNumber INT(11)
+) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result DATE;
+    DECLARE uidAEC VARCHAR(38);
+    DECLARE uuidEacDate VARCHAR(38) DEFAULT "377fdf0b-9259-4197-9cf1-697e513e92cb";
+    DECLARE uuidEAC1 VARCHAR(38) DEFAULT "2d7b7d0f-d49b-4643-8b38-d5e952d2a7f1";
+    DECLARE uuidEAC2 VARCHAR(38) DEFAULT "beb3b80d-1f5d-412d-941d-3842eb56b0f3";
+    DECLARE uuidEAC3 VARCHAR(38) DEFAULT "010efc37-f82a-41c9-a348-2efee49476b9";
+    DECLARE uuidEACSessionNumber VARCHAR(38) DEFAULT "80472b4d-e37b-46c9-9078-85e3a509af24";
+
+    SET uidAEC = 
+        CASE
+                WHEN p_eacNumber = 1 THEN  uuidEAC1
+                WHEN p_eacNumber = 2 THEN  uuidEAC2
+                WHEN p_eacNumber = 3 THEN  uuidEAC3
+            END;
+
+    SELECT o.value_datetime INTO result
+    FROM obs o
+    WHERE
+    o.voided = 0 AND
+    o.person_id = p_patientId AND
+    o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidEacDate) AND
+    o.encounter_id IN
+        (
+            SELECT DISTINCT o2.encounter_id
+            FROM obs o2
+            WHERE 
+                o2.voided = 0 AND
+                o2.person_id = p_patientId AND
+                o2.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidEACSessionNumber) AND
+                o2.value_coded = (SELECT c.concept_id FROM concept c WHERE c.uuid = uidAEC)
+        )
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+ 
+END$$
+DELIMITER ;
