@@ -759,7 +759,9 @@ DROP FUNCTION IF EXISTS getDatesCompletionTPTCourses;
 
 DELIMITER $$
 CREATE FUNCTION getDatesCompletionTPTCourses(
-    p_patientId INT(11)) RETURNS TEXT
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TEXT
     DETERMINISTIC
 BEGIN
     DECLARE inhDates TEXT;
@@ -780,6 +782,7 @@ BEGIN
         JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
     WHERE o.voided = 0
         AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND d.name IN ('INH 100mg','INH 300mg')
     GROUP BY o.patient_id
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 180;
@@ -797,6 +800,7 @@ BEGIN
         JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
     WHERE o.voided = 0
         AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND d.name IN ('Rifampicine + Isoniazide 60mg+30mg','Rifampicine + Isoniazide 150mg+75mg','Rifampicine + Isoniazide 300mg+150mg')
     GROUP BY o.patient_id
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 120;
@@ -814,6 +818,7 @@ BEGIN
         JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
     WHERE o.voided = 0
         AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND d.name = 'Rifampicine + Isoniazide 60mg+30mg'
     GROUP BY o.patient_id
     HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 90;

@@ -30,7 +30,7 @@ SELECT getPatientDateOfEnrolmentInProgram(p.patient_id, "HIV_PROGRAM_KEY") AS "E
 	getEacDate(p.patient_id, 2) as "Date of EAC 2  (dd-mmm-yyyy)",
 	getTBScreeningStatusAtLastARVRefill(p.patient_id) as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose lors de la dernière recharge d'ARV",
 	getDateInitiatedTPT(p.patient_id, "2001-01-01", "#endDate#") as "Date initiated TPT/ Date de lancement du TPT",
-	getDatesCompletionTPTCourses(p.patient_id) as "Date completed full course TPT/ Date de fin du cours complet TPT",
+	getDatesCompletionTPTCourses(p.patient_id, "2001-01-01", "#endDate#") as "Date completed full course TPT/ Date de fin du cours complet TPT",
 	getEacDate(p.patient_id, 3) as "Date of EAC 3 (dd/mm/yy)",
 	getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY") as "Current ART Status (Active, LTFU, Dead, Transferred Out, Stopped)",
 	getHIVDefaulterStatus(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
