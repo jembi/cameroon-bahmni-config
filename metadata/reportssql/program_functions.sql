@@ -248,6 +248,28 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientMostRecentProgramAttributeDateValueFromName
+
+DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeDateValueFromName;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentProgramAttributeDateValueFromName(
+    p_patientId INT(11),
+    p_programAttributeName VARCHAR(255)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SET result = getPatientMostRecentProgramAttributeValueFromName(p_patientId, p_programAttributeName);
+
+    IF (result IS NOT NULL) THEN
+        RETURN DATE(result);
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
 -- getPatientDateOfEnrolmentInProgram
 
 DROP FUNCTION IF EXISTS getPatientDateOfEnrolmentInProgram;
