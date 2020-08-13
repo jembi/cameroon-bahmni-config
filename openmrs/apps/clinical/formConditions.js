@@ -3210,11 +3210,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	"HTC, Result": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		var value = formFieldValues["HTC, Result"];
-		if (value === "Positive") {
-			conditions.show.push("Start treatment ?");
-		} else {
-			conditions.hide.push("Start treatment ?");
+		if(formName === "HIV Testing and Counseling Intake Template") {
+			var value = formFieldValues["HTC, Result"];
+			if (value === "Positive") {
+				conditions.show.push("Start treatment ?");
+			} else {
+				conditions.hide.push("Start treatment ?");
+			}
 		}
 		return conditions;
 	},
@@ -3264,12 +3266,14 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Weight Loss");
 			conditions.show.push("Night Sweats");
 			conditions.show.push("TB Contact");
+			conditions.show.push("Malnutrition");
 		} else {
 			conditions.hide.push("Cough > 2 weeks");
 			conditions.hide.push("Fever > 2 weeks");
 			conditions.hide.push("Weight Loss");
 			conditions.hide.push("Night Sweats");
 			conditions.hide.push("TB Contact");
+			conditions.hide.push("Malnutrition");
 		}
 		return conditions;
 	},
