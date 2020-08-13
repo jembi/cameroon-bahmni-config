@@ -27,6 +27,7 @@ SELECT
     getViralLoadTestDate(v.patient_id) as 'Viral Load Test Date',
     getViralLoadTestResult(v.patient_id) as 'Viral Load Test Result',
     getListOfActiveARVDrugs(v.patient_id, '#startDate#', '#endDate#') as 'Active Drugs',
+    getListOfPrescribedARVDrugs(v.visit_id, v.patient_id) as 'Prescribed Drugs',
     getHIVTestDate(v.patient_id, '#startDate#', '#endDate#') as 'HIV Test Date',
     getHIVResult(v.patient_id, '#startDate#', '#endDate#') as 'HIV Test Result',
     getFacilityName() as 'HF name'
