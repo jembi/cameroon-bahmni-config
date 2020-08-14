@@ -130,3 +130,30 @@ BEGIN
     RETURN result;
 END$$
 DELIMITER ;
+
+-- getListOfPrescribedARVDrugs
+
+DROP FUNCTION IF EXISTS getListOfPrescribedARVDrugs;
+
+DELIMITER $$
+CREATE FUNCTION getListOfPrescribedARVDrugs(
+    p_visitId INT(11),
+    p_patientId INT(11)) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT;
+
+    SELECT GROUP_CONCAT(DISTINCT d.name) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN encounter e ON e.encounter_id = o.encounter_id AND e.voided = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND e.visit_id = p_visitId
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(p_patientId, o.order_id);
+
+    RETURN result;
+END$$
+DELIMITER ;

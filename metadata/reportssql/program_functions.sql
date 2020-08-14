@@ -124,6 +124,36 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientMostRecentProgramAttributeValueInProgram
+
+DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeValueInProgram;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentProgramAttributeValueInProgram(
+    p_patientId INT(11),
+    p_uuidProgramAttribute VARCHAR(38),
+    p_program VARCHAR(250)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT ppa.value_reference INTO result
+    FROM patient_program_attribute ppa
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+        JOIN program p ON p.program_id = pp.program_id AND p.retired = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        pat.uuid = p_uuidProgramAttribute AND
+        p.name = p_program
+    ORDER BY ppa.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getPatientProgramTreatmentStartDate
 
 DROP FUNCTION IF EXISTS getPatientProgramTreatmentStartDate;
@@ -215,6 +245,28 @@ BEGIN
     LIMIT 1;
 
     RETURN (result);
+END$$
+DELIMITER ;
+
+-- getPatientMostRecentProgramAttributeDateValueFromName
+
+DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeDateValueFromName;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentProgramAttributeDateValueFromName(
+    p_patientId INT(11),
+    p_programAttributeName VARCHAR(255)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SET result = getPatientMostRecentProgramAttributeValueFromName(p_patientId, p_programAttributeName);
+
+    IF (result IS NOT NULL) THEN
+        RETURN DATE(result);
+    ELSE
+        RETURN NULL;
+    END IF;
 END$$
 DELIMITER ;
 
@@ -461,5 +513,61 @@ BEGIN
     ELSE
         RETURN "No";
     END IF;
+END$$
+DELIMITER ;
+
+-- getPatientMostRecentProgramTrackingStateValue
+
+DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingStateValue;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentProgramTrackingStateValue(
+    p_patientId INT(11),
+    p_language VARCHAR(3),
+    p_programName VARCHAR(250)
+    ) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT cn.name INTO result
+    FROM patient_state ps
+        JOIN program_workflow_state pws ON ps.state = pws.program_workflow_state_id AND pws.retired = 0
+        JOIN concept_name cn ON pws.concept_id = cn.concept_id AND cn.locale=p_language
+        JOIN patient_program pp ON pp.patient_program_id = ps.patient_program_id AND pp.voided = 0
+        JOIN program p ON p.program_id = pp.program_id AND p.retired = 0
+    WHERE
+        pp.patient_id = p_patientId AND
+        p.name = p_programName
+    ORDER BY ps.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getPatientMostRecentProgramTrackingDateValue
+
+DROP FUNCTION IF EXISTS getPatientMostRecentProgramTrackingDateValue;
+
+DELIMITER $$
+CREATE FUNCTION getPatientMostRecentProgramTrackingDateValue(
+    p_patientId INT(11),
+    p_program VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT pp.date_enrolled INTO result
+    FROM patient_program pp
+        JOIN program p ON p.program_id = pp.program_id AND p.retired = 0
+    WHERE
+        pp.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        p.name = p_program
+    ORDER BY pp.date_enrolled DESC
+    LIMIT 1;
+
+    RETURN (result);
 END$$
 DELIMITER ;

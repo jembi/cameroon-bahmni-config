@@ -12,11 +12,11 @@
         getPatientVillage(pat.patient_id) as 'PROGRAM_MODULE_LABEL_VILLAGE_KEY',
         getPatientPhoneNumber(pat.patient_id) as 'PROGRAM_MODULE_LABEL_PHONE_NUMBER_KEY',
         getPatientEmergencyContact(pat.patient_id) as 'PROGRAM_MODULE_LABEL_EMERGENCY_CONTACT_KEY',
-        getPatientMostRecentProgramTrackingStateValue(pat.patient_id, ${language}) as 'PROGRAM_MODULE_LABEL_TRACKING_STATE_KEY',
-        getPatientMostRecentProgramTrackingDateValue(pat.patient_id) as 'PROGRAM_MODULE_LABEL_TRACKING_DATE_KEY',
-        getPatientMostRecentProgramTrackingOutcomeValue(pat.patient_id, ${language}) as 'PROGRAM_MODULE_LABEL_TRACKING_OUTCOME_KEY',
+        getPatientMostRecentProgramTrackingStateValue(pat.patient_id, ${language},'HIV_DEFAULTERS_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_TRACKING_STATE_KEY',
+        getPatientMostRecentProgramTrackingDateValue(pat.patient_id,'HIV_DEFAULTERS_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_TRACKING_DATE_KEY',
+        getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, 'caf6d807-861d-4393-9d6e-940b98fa712d', ${language}) as 'PROGRAM_MODULE_LABEL_TRACKING_OUTCOME_KEY',
         getDateMostRecentARVAppointment(pat.patient_id) as 'PROGRAM_MODULE_LABEL_DATE_LAST_APPOINTMENT_KEY',
-        getPatientMostRecentProgramAPSName(pat.patient_id) as 'PROGRAM_MODULE_LABEL_APS_NAME_KEY',
+        getPatientMostRecentProgramAPSName(pat.patient_id,'HIV_DEFAULTERS_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_APS_NAME_KEY',
         getPatientMostRecentProgramOutcome(pat.patient_id, ${language}, 'HIV_DEFAULTERS_PROGRAM_KEY') as 'PROGRAM_MODULE_LABEL_PROGRAM_OUTCOME_KEY'
       from
         patient pat join person_name pn on pat.patient_id = pn.person_id and pn.voided = 0 and pat.voided=0

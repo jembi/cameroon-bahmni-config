@@ -172,15 +172,15 @@ CREATE FUNCTION getLastArvPickupDate(
 BEGIN
     DECLARE result DATE;
 
-    SELECT o.scheduled_date INTO result
+    SELECT DATE(o.date_created) INTO result
     FROM orders o
     JOIN drug_order do ON do.order_id = o.order_id
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
-        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.date_created BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(p_patientId, o.order_id)
-    ORDER BY o.scheduled_date DESC
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
     RETURN (result);
@@ -200,7 +200,7 @@ CREATE FUNCTION getDurationMostRecentArvTreatment(
 BEGIN
     DECLARE result INT(11);
 
-    SELECT calculateDurationInDays(do.duration,c.uuid) INTO result
+    SELECT calculateDurationInDays(o.scheduled_date, do.duration,c.uuid) INTO result
     FROM orders o
         JOIN drug_order do ON do.order_id = o.order_id
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
@@ -256,6 +256,7 @@ DROP FUNCTION IF EXISTS calculateDurationInDays;
 
 DELIMITER $$
 CREATE FUNCTION calculateDurationInDays(
+    p_startDate DATE,
     p_duration INT(11),
     p_uuidDurationUnit VARCHAR(38)) RETURNS INT(11)
     DETERMINISTIC
@@ -277,7 +278,7 @@ BEGIN
     ELSEIF p_uuidDurationUnit = uuidWeek THEN
         RETURN p_duration * 7;
     ELSEIF p_uuidDurationUnit = uuidMonth THEN
-        RETURN p_duration * 30;
+        RETURN timestampdiff(DAY, p_startDate, timestampadd(MONTH, p_duration, p_startDate));
     END IF;
 
     RETURN (result); 
@@ -438,3 +439,412 @@ BEGIN
     
 END$$
 DELIMITER ;
+
+-- getLastARVPrescribed
+
+DROP FUNCTION IF EXISTS getLastARVPrescribed;
+
+DELIMITER $$
+CREATE FUNCTION getLastARVPrescribed(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT d.name INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+    
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getFirstARVPrescribed
+
+DROP FUNCTION IF EXISTS getFirstARVPrescribed;
+
+DELIMITER $$
+CREATE FUNCTION getFirstARVPrescribed(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT d.name INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+    
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientIsOnARVTreatment
+
+DROP FUNCTION IF EXISTS patientIsOnARVTreatment;
+
+DELIMITER $$
+CREATE FUNCTION patientIsOnARVTreatment(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1);
+
+    SELECT calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) >= CURRENT_DATE() INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getActiveARVWithLowestDispensationPeriod
+
+DROP FUNCTION IF EXISTS getActiveARVWithLowestDispensationPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getActiveARVWithLowestDispensationPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT;
+    
+    SELECT d.name INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND treatmentIsWithinReportingPeriod(
+            p_startDate,
+            p_endDate,
+            o.scheduled_date,
+            calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid)
+            )
+    ORDER BY calculateDurationInDays(o.scheduled_date,do.duration,c.uuid) ASC,
+        o.scheduled_date DESC
+    LIMIT 1;
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- patientOnTreatmentForOneYear
+
+DROP FUNCTION IF EXISTS patientOnTreatmentForOneYear;
+
+DELIMITER $$
+CREATE FUNCTION patientOnTreatmentForOneYear(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE totalDurationInDays INT(11);
+
+    SELECT SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) INTO totalDurationInDays
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id);
+
+    IF totalDurationInDays IS NOT NULL AND (totalDurationInDays >= 365) THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END$$
+DELIMITER ;
+
+-- retrieveRegimenSwitchARVandDate
+
+DROP PROCEDURE IF EXISTS retrieveRegimenSwitchARVandDate;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveRegimenSwitchARVandDate(
+    IN p_patientId INT(11),
+    IN p_startDate DATE,
+    IN p_endDate DATE,
+    OUT p_regimen VARCHAR(250),
+    OUT p_switchDate DATE
+    )
+    DETERMINISTIC
+    proc_retrieve_regimen_switch_and_date:BEGIN
+
+    DECLARE currentRegimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    SELECT d.name, MIN(o.date_created) INTO currentRegimen, switchDate
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND DATE(o.date_created) BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+    GROUP BY d.name
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (currentRegimen IS NULL) THEN
+        LEAVE proc_retrieve_regimen_switch_and_date;
+    END IF;
+
+    SELECT d.name INTO previousRegimen
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND DATE(o.date_created) BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND d.name <> currentRegimen
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (previousRegimen IS NULL) THEN
+        LEAVE proc_retrieve_regimen_switch_and_date;
+    END IF;
+
+    SET p_regimen = currentRegimen;
+    SET p_switchDate = switchDate;
+
+END$$ 
+DELIMITER ;
+
+-- getRegimenSwitch
+
+DROP FUNCTION IF EXISTS getRegimenSwitch;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitch(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN regimen;
+
+END$$
+DELIMITER ;
+
+-- getRegimenSwitchDate
+
+DROP FUNCTION IF EXISTS getRegimenSwitchDate;
+
+DELIMITER $$
+CREATE FUNCTION getRegimenSwitchDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+
+    RETURN switchDate;
+
+END$$
+DELIMITER ;
+
+-- getNewARVRegimenAfterDate
+
+DROP FUNCTION IF EXISTS getNewARVRegimenAfterDate;
+
+DELIMITER $$
+CREATE FUNCTION getNewARVRegimenAfterDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, switchDate);
+
+    RETURN regimen;
+END$$
+DELIMITER ;
+
+-- getDateNewARVRegimenAfterDate
+
+DROP FUNCTION IF EXISTS getDateNewARVRegimenAfterDate;
+
+DELIMITER $$
+CREATE FUNCTION getDateNewARVRegimenAfterDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE regimen VARCHAR(250);
+    DECLARE switchDate DATE;
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, switchDate);
+
+    RETURN switchDate;
+END$$
+DELIMITER ;
+
+-- getDateNextVLExam
+
+DROP FUNCTION IF EXISTS getDateNextVLExam;
+
+DELIMITER $$
+CREATE FUNCTION getDateNextVLExam(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE testDate DATE;
+    DECLARE testResult INT(11);
+    DECLARE arvStartDate DATE;
+    DECLARE eacDate DATE;
+    DECLARE viralLoadIndication VARCHAR(50);
+
+    CALL retrieveViralLoadTestDateAndResult(p_patientId, testDate, testResult, viralLoadIndication);
+    SET arvStartDate = getPatientARVStartDate(p_patientId);
+    SET eacDate = getPatientMostRecentProgramAttributeValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_1_EAC_DATE');
+
+    IF (testResult IS NOT NULL AND testDate IS NOT NULL AND testResult <= 1000) THEN
+        SET result = timestampadd(MONTH, 12, testDate);
+    ELSEIF (testResult IS NOT NULL AND eacDate IS NOT NULL AND testResult > 1000) THEN
+        SET result = timestampadd(MONTH, 3, eacDate);
+    ELSEIF (
+        (arvStartDate IS NOT NULL AND testResult IS NOT NULL AND testResult <= 1000) OR 
+        (arvStartDate IS NOT NULL AND testResult IS NULL)) THEN
+        SET result = timestampadd(MONTH, 6, arvStartDate);
+    END IF;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getDatesCompletionTPTCourses
+
+DROP FUNCTION IF EXISTS getDatesCompletionTPTCourses;
+
+DELIMITER $$
+CREATE FUNCTION getDatesCompletionTPTCourses(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE inhDates TEXT;
+    DECLARE threeHpDates TEXT;
+    DECLARE oneHpDates TEXT;
+    DECLARE result TEXT DEFAULT NULL;
+    
+    SELECT GROUP_CONCAT(
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"), ' ')) INTO inhDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND d.name IN ('INH 100mg','INH 300mg')
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 180;
+    
+    SELECT GROUP_CONCAT(
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"), ' ')) INTO threeHpDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND d.name IN ('Rifampicine + Isoniazide 60mg+30mg','Rifampicine + Isoniazide 150mg+75mg','Rifampicine + Isoniazide 300mg+150mg')
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 120;
+    
+    SELECT GROUP_CONCAT(
+            CONCAT(' ', DATE_FORMAT(o.scheduled_date, "%d-%b-%Y"),
+            ' to ',
+            DATE_FORMAT(calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid), "%d-%b-%Y"), ' ')) INTO oneHpDates
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND d.name = 'Rifampicine + Isoniazide 60mg+30mg'
+    GROUP BY o.patient_id
+    HAVING SUM(calculateDurationInDays(o.scheduled_date,do.duration,c.uuid)) >= 90;
+
+    IF (inhDates IS NOT NULL) THEN
+        SET result = inhDates;
+    END IF;
+
+    IF (threeHpDates IS NOT NULL) THEN
+        IF (result IS NULL) THEN
+            SET result = threeHpDates;
+        ELSE
+            SET result = CONCAT(result,',',threeHpDates);
+        END IF;
+    END IF;
+
+    IF (oneHpDates IS NOT NULL) THEN
+        IF (result IS NULL) THEN
+            SET result = oneHpDates;
+        ELSE
+            SET result = CONCAT(result,',',oneHpDates);
+        END IF;
+    END IF;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+

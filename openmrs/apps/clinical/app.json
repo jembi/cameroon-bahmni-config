@@ -41,106 +41,128 @@
                 "ageLimit": 100
             },
             "PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"],
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"],
                 "important": true
             },
             "PROGRAM_MANAGEMENT_8_LABEL_IS_BREASTFEEDING": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_1_DURATION_ON_ART": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_90_DATE_ELIGIBLE_COMMUNITY_ART": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_91_DATE_ENROLLED_COMMUNITY_ART": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_92_ART_DISPENSATION_MODEL": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_4_PATIENT_DOCTOR_IN_CHARGE": {
-                "excludeFrom": ["HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_1_ART_NUMBER": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_701_STIGMA": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_702_LONG_DISTANCE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_703_COST_OF_TRANSPORT": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_704_SIDE_EFFECTS_OF_ARVS": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_705_COST_OF_SERVICES": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_706_STAFF_ATTITUDE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_707_TRADITIONAL_BELIEFS": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_708_RELIGIOUS_BELIEFS": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_709_DENIAL": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_710_INCONVENIENT_SERVICE_HOURS": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_711_TRAVEL": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_712_FEELS_HEALTHY": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_713_INSECURITY": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_714_OTHER_DEFAULTING_REASON": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_4_TRACKING_DATE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"],
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"],
                 "required" : true
             },
             "PROGRAM_MANAGEMENT_5_APS_NAME": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_1_NOTIFICATION_METHOD": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_4_CONTACT_TRACER": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_5_COMMENTS": {
-                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY"]
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"]
             },
             "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE": {
-                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY"],
+                "excludeFrom": ["INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY"],
                 "important" : true
+            },
+            "PROGRAM_MANAGEMENT_1_EAC_DATE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"],
+                "required" : true
+            },
+            "PROGRAM_MANAGEMENT_2_CLASSIFICATION_OF_ADHERENCE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_3_RESISTANCE_TEST_DONE": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY"]
             }
         },
         "patientContext": {
@@ -194,6 +216,15 @@
                 "important": true
             },
             "Index testing accepted?": {
+                "important": true
+            },
+            "HTC, Post-test Counseling Set": {
+                "important": true
+            },
+            "Start treatment ?": {
+                "important": true
+            },
+            "Reason for not starting treatment": {
                 "important": true
             },
             "HIV Status": {

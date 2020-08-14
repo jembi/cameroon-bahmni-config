@@ -2579,6 +2579,16 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'ARV Resistance Test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['ARV Resistance Test'];
+		if (value && value !== "") {	
+			conditions.show.push("ARV Resistance Test Date");
+		} else {	
+			conditions.hide.push("ARV Resistance Test Date");
+		}	
+		return conditions;	
+	},
 	'Gama GT': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Gama GT'];
@@ -3187,7 +3197,6 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	"HTC, Tested before": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues['HTC, Tested before'];
-		console.log(value)
 		if (value === true) {
 			conditions.show.push("HIV Test Date");
 			conditions.show.push("HTC, Result if tested");
@@ -3198,5 +3207,138 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("HTC, Reason for test");
 		}
 		return conditions;
-	}
+	},
+	"HTC, Result": function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		if(formName === "HIV Testing and Counseling Intake Template") {
+			var value = formFieldValues["HTC, Result"];
+			if (value === "Positive") {
+				conditions.show.push("Start treatment ?");
+			} else {
+				conditions.hide.push("Start treatment ?");
+			}
+		}
+		return conditions;
+	},
+	"Start treatment ?": function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues["Start treatment ?"];
+		if (value === false) {
+			conditions.show.push("Reason for not starting treatment");
+		} else {
+			conditions.hide.push("Reason for not starting treatment");
+		}
+		return conditions;
+	},
+	/**
+	 * Handling conditions for History and Examination
+	 */
+	'Prison ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prison ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("If yes, when ?");
+		} else {
+			conditions.hide.push("If yes, when ?");
+		}
+		return conditions;
+	},
+	'Alcohol History ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Alcohol History ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Drinks/week");
+		} else {
+			conditions.hide.push("Drinks/week");
+		}
+		return conditions;
+	},
+	/**
+	 * Handling conditions for TB Form
+	 * 
+	 */
+	'Screened': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Screened'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Cough > 2 weeks");
+			conditions.show.push("Fever > 2 weeks");
+			conditions.show.push("Weight Loss");
+			conditions.show.push("Night Sweats");
+			conditions.show.push("TB Contact");
+			conditions.show.push("Malnutrition");
+		} else {
+			conditions.hide.push("Cough > 2 weeks");
+			conditions.hide.push("Fever > 2 weeks");
+			conditions.hide.push("Weight Loss");
+			conditions.hide.push("Night Sweats");
+			conditions.hide.push("TB Contact");
+			conditions.hide.push("Malnutrition");
+		}
+		return conditions;
+	},
+	'WHO registration group': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['WHO registration group'];
+		if (value === "Relapse" || value === "Treatment after Lost to LTFU" || value === "Treatment after failure" || value === "Previously treated") {
+			conditions.show.push("Previously treated group");
+		} else {
+			conditions.hide.push("Previously treated group");
+		}
+		return conditions;
+	},
+	'Disease site': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Disease site'];
+		if (value === "Extra Pulmonary") {
+			conditions.show.push("Extrapulmonary site");
+		} else {
+			conditions.hide.push("Extrapulmonary site");
+		}
+		return conditions;
+	},
+	'MTB confirmation': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['MTB confirmation'];
+		if (value === "Bacteriologically Confirmed") {
+			conditions.show.push("Method of confirmation");
+		} else {
+			conditions.hide.push("Method of confirmation");
+		}
+		return conditions;
+	},
+	'Method of confirmation': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Method of confirmation'];
+		if (value === "Other") {
+			conditions.show.push("Other method of confirmation");
+		} else {
+			conditions.hide.push("Other method of confirmation");
+		}
+		return conditions;
+	},
+	'Drug resistance profile': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Drug resistance profile'];
+		if (value === "Confirmed drug resistant TB") {
+			conditions.show.push("Sub-class of drug resistance profile");
+		} else {
+			conditions.hide.push("Sub-class of drug resistance profile");
+		}
+		return conditions;
+	},
+	/**
+	 * Handling conditions for EAC Form
+	 * 
+	 */
+	'Resistance Test done': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Resistance Test done'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Outcome of Resistance test");
+		} else {
+			conditions.hide.push("Outcome of Resistance test");
+		}
+		return conditions;
+	},
 };

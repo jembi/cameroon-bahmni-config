@@ -884,6 +884,74 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- retrieveTBScreeningDateAndResult
+
+DROP PROCEDURE IF EXISTS retrieveTBScreeningDateAndResult;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveTBScreeningDateAndResult(
+    IN p_patientId INT(11),
+    OUT p_screeningDate DATE,
+    OUT p_screeningStatus VARCHAR(250)
+    )
+    DETERMINISTIC
+    BEGIN
+    DECLARE tbScreeningStatusUuid VARCHAR(38) DEFAULT '61931c8b-0637-40f9-97dc-07796431dd3b';
+
+    SELECT DATE(o.date_created), cn.name INTO p_screeningDate, p_screeningStatus
+    FROM obs o
+        JOIN concept_name cn ON cn.concept_id = o.value_coded
+    WHERE
+        o.voided = 0 AND
+        o.person_id = p_patientId AND
+        o.value_coded IS NOT NULL AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = tbScreeningStatusUuid)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+END$$ 
+DELIMITER ;
+
+-- getTBScreeningStatusAtLastARVRefill
+
+DROP FUNCTION IF EXISTS getTBScreeningStatusAtLastARVRefill;
+
+DELIMITER $$
+CREATE FUNCTION getTBScreeningStatusAtLastARVRefill(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE tbScreeningStatus VARCHAR(250);
+    DECLARE tbScreeningDate DATE;
+    DECLARE arvLatestRefillDate DATE;
+    DECLARE patientEnrolledOnHIVProgram VARCHAR(3);
+    DECLARE patientOnARVTreatment TINYINT(1);
+    
+    -- Get latest TB Screening status and date
+    CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
+
+    -- Get date of latest refil
+    SET arvLatestRefillDate = getLastArvPickupDate(p_patientId, '2000-01-01', '2100-01-01');
+    
+    -- Check if the patient is on HIV program
+    SET patientEnrolledOnHIVProgram = patientHasEnrolledIntoHivProgram(p_patientId);
+
+    -- Check if the patient is currently on ARV treatment
+    SET patientOnARVTreatment = patientIsOnARVTreatment(p_patientId);
+
+    IF (
+        tbScreeningDate = arvLatestRefillDate AND
+        patientEnrolledOnHIVProgram = 'Yes' AND
+        patientOnARVTreatment) THEN
+        RETURN tbScreeningStatus;
+    ELSE
+        RETURN NULL;
+    END IF;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- patientHasStartedARVTreatmentDuringReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHasStartedARVTreatmentDuringReportingPeriod;
@@ -901,5 +969,56 @@ BEGIN
     ELSE
         RETURN enrolmentDate BETWEEN p_startDate AND p_endDate;
     END IF;
+END$$
+DELIMITER ;
+
+-- getEacDate
+
+DROP FUNCTION IF EXISTS getEacDate;
+
+DELIMITER $$
+CREATE FUNCTION getEacDate(
+    p_patientId INT(11),
+    p_eacNumber INT(11)
+) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result DATE;
+    DECLARE uidAEC VARCHAR(38);
+    DECLARE uuidEacDate VARCHAR(38) DEFAULT "377fdf0b-9259-4197-9cf1-697e513e92cb";
+    DECLARE uuidEAC1 VARCHAR(38) DEFAULT "2d7b7d0f-d49b-4643-8b38-d5e952d2a7f1";
+    DECLARE uuidEAC2 VARCHAR(38) DEFAULT "beb3b80d-1f5d-412d-941d-3842eb56b0f3";
+    DECLARE uuidEAC3 VARCHAR(38) DEFAULT "010efc37-f82a-41c9-a348-2efee49476b9";
+    DECLARE uuidEACSessionNumber VARCHAR(38) DEFAULT "80472b4d-e37b-46c9-9078-85e3a509af24";
+
+    SET uidAEC = 
+        CASE
+                WHEN p_eacNumber = 1 THEN  uuidEAC1
+                WHEN p_eacNumber = 2 THEN  uuidEAC2
+                WHEN p_eacNumber = 3 THEN  uuidEAC3
+            END;
+
+    SELECT o.value_datetime INTO result
+    FROM obs o
+    WHERE
+    o.voided = 0 AND
+    o.person_id = p_patientId AND
+    o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidEacDate) AND
+    o.encounter_id IN
+        (
+            SELECT DISTINCT o2.encounter_id
+            FROM obs o2
+            WHERE 
+                o2.voided = 0 AND
+                o2.person_id = p_patientId AND
+                o2.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidEACSessionNumber) AND
+                o2.value_coded = (SELECT c.concept_id FROM concept c WHERE c.uuid = uidAEC)
+        )
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+ 
 END$$
 DELIMITER ;
