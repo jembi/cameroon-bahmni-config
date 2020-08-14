@@ -40,7 +40,7 @@ SELECT
 	getPatientARVStartDate(p.patient_id) as "Date of ART initiation (If HIV-positive) / Date d'initiation du ART (si HIV positif)",
 	getPatientARTNumber(child.patient_id) as "Child ART Code",
 	getFacilityName() as "Health Facility/  Établissement de santé",
-	"N/A" as "Psychosocial Agents (Retention APS)"
+	getPatientMostRecentProgramAPSName(p.patient_id,'HIV_PROGRAM_KEY') as "Psychosocial Agents (Retention APS)"
 FROM patient p
   LEFT JOIN patient child ON getRelationshipNameBetweenPatients(p.patient_id, child.patient_id) = "RELATIONSHIP_BIO_MOTHER" AND child.voided = 0
   LEFT JOIN patient_identifier pi ON pi.patient_id = child.patient_id AND pi.preferred = 1 
