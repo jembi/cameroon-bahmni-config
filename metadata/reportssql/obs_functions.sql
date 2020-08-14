@@ -25,6 +25,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getObsTextValue
+
+DROP FUNCTION IF EXISTS getObsTextValue;
+
+DELIMITER $$
+CREATE FUNCTION getObsTextValue(
+    p_patientId INT(11),
+    p_conceptUuid VARCHAR(38)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT o.value_text INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = p_conceptUuid
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getObsCodedValueInSectionByNames
 
 DROP FUNCTION IF EXISTS getObsCodedValueInSectionByNames;
