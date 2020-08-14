@@ -16,7 +16,7 @@ SELECT
 	getDurationMostRecentArvTreatment(p.patient_id, "2000-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
 	getLocationOfArvRefill(p.patient_id, "2000-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
 	getDifferentiatedARTDeliveryModelAtLastRefill(p.patient_id,  "2001-01-01", "#endDate#") as "Differentiated ART delivery model at Last ARV refill ",
-	"N/A" as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
+	getTBScreeningStatusAtLastARVRefill(p.patient_id) as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
