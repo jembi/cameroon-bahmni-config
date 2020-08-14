@@ -3210,7 +3210,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	},
 	"HTC, Result": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
-		if(formName === "HIV Testing and Counseling Intake Template") {
+		if(formName === "HIV Testing and Counseling Intake Template" || formName === "HTC, Post-test Counseling Set") {
 			var value = formFieldValues["HTC, Result"];
 			if (value === "Positive") {
 				conditions.show.push("Start treatment ?");
@@ -3218,6 +3218,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 				conditions.hide.push("Start treatment ?");
 			}
 		}
+
 		return conditions;
 	},
 	"Start treatment ?": function(formName, formFieldValues) {
