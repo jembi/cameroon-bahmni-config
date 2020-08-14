@@ -20,7 +20,7 @@ SELECT
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
-	"N/A" as "Maternal Outcome/ Résultat maternel",
+	getObsCodedValue(p.patient_id, "727d55d9-1e20-4be8-8a73-96561cf47c84") as "Maternal Outcome/ Résultat maternel",
 	getHIVDefaulterStatus(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	pi.identifier as "Child ID",
 	getPatientBirthdate(child.patient_id) as "Child Date of birth (Date de naissance)",
