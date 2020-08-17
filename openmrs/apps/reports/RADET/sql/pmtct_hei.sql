@@ -11,7 +11,7 @@ SELECT
 	getPatientARVStartDate(p.patient_id) as "ART Start Date/ Date de début de l'ART  (dd-MMM-yyyy)",
 	getObsDatetimeValue(p.patient_id, "7b88e743-c39f-44cb-8181-9c4eadcf2e12") as "Date of Delivery/Date d'accouchement",
 	getObsCodedValue(p.patient_id, "09894da7-41c1-4996-a9d2-ecaca1af5bfb") as "Place of delivery / Lieu d'accouchement",
-	"N/A" as "Post Natal Health visit / Visite de santé post-natale",
+	getObsCreatedDate(p.patient_id, "81c7f82b-0c8b-4d02-ad0c-5c3935689642") as "Post Natal Health visit / Visite de santé post-natale",
 	getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
 	getDurationMostRecentArvTreatment(p.patient_id, "2000-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
 	getLocationOfArvRefill(p.patient_id, "2000-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
