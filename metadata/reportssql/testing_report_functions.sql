@@ -766,7 +766,7 @@ CREATE PROCEDURE retrieveTestDateAndResultWithinReportingPeriod(
     DECLARE encounterId INT(11);
 
     -- retrieve the test result from OpenElis
-    SELECT cn.name INTO p_testResult
+    SELECT cn.name, o.date_created INTO p_testResult, p_testDate
     FROM obs o
         JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
