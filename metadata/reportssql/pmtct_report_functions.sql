@@ -289,3 +289,29 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getInfantOutcomeAt18Months
+
+DROP FUNCTION IF EXISTS getInfantOutcomeAt18Months;
+
+DELIMITER $$
+CREATE FUNCTION getInfantOutcomeAt18Months(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidPCRTest VARCHAR(38) DEFAULT "a5239a85-6f75-4882-9b9b-60168e54b7da";
+    DECLARE uuidPCRTestDate VARCHAR(38) DEFAULT "9bb7b360-3790-4e1a-8aca-0d1341663040";
+
+    DECLARE testResult VARCHAR(50);
+    DECLARE testDate DATE;
+
+    CALL retrieveTestDateAndResultWithinReportingPeriod(p_patientId, "2000-01-01", "2100-01-01", uuidPCRTest, uuidPCRTestDate, testDate, testResult);
+
+    IF (timestampdiff(MONTH, getPatientBirthdate(p_patientId), testDate) = 18) THEN
+        RETURN testResult;
+    END IF;
+
+    RETURN NULL;
+
+END$$
+DELIMITER ;
+

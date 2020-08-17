@@ -9,18 +9,18 @@ SELECT
 	getDateOfPositiveHIVResult(p.patient_id, "2000-01-01", "#endDate#") as "Date of HIV Positive / Date de séropositivité",
 	getPatientARTNumber(p.patient_id) as "Patient Unique ID/ART №/TARV № ",
 	getPatientARVStartDate(p.patient_id) as "ART Start Date/ Date de début de l'ART  (dd-MMM-yyyy)",
-	"N/A" as "Date of Delivery/ Date de livraison",
-	"N/A" as "Place of delivery / Lieu de livraison",
-	"N/A" as "Post Natal Health visit / Visite de santé post-natale",
+	getObsDatetimeValue(p.patient_id, "7b88e743-c39f-44cb-8181-9c4eadcf2e12") as "Date of Delivery/Date d'accouchement",
+	getObsCodedValue(p.patient_id, "09894da7-41c1-4996-a9d2-ecaca1af5bfb") as "Place of delivery / Lieu d'accouchement",
+	getObsCreatedDate(p.patient_id, "81c7f82b-0c8b-4d02-ad0c-5c3935689642") as "Post Natal Health visit / Visite de santé post-natale",
 	getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#") as "Last ARV Pickup Date / Dernière date de prise en charge des ARV",
 	getDurationMostRecentArvTreatment(p.patient_id, "2000-01-01", "#endDate#") as "Days of ARV Refill / Jours de recharge ARV",
 	getLocationOfArvRefill(p.patient_id, "2000-01-01", "#endDate#") as "Location of ARV refill / Emplacement de la recharge d'ARV",
 	getDifferentiatedARTDeliveryModelAtLastRefill(p.patient_id,  "2001-01-01", "#endDate#") as "Differentiated ART delivery model at Last ARV refill ",
-	"N/A" as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
+	getTBScreeningStatusAtLastARVRefill(p.patient_id) as "TB screening status at Last ARV Refill / Statut de dépistage de la tuberculose",
 	getViralLoadTestResult(p.patient_id) as "Current Viral Load/ Charge virale actuelle  (c/ml)",
 	getViralLoadTestDate(p.patient_id) as "Date of Current Viral Load / Date de la charge virale actuelle (dd-mmm-yyyy)",
 	getViralLoadIndication(p.patient_id) as "Viral Load Indication/ Indication de la charge virale",
-	"N/A" as "Maternal Outcome/ Résultat maternel",
+	getObsCodedValue(p.patient_id, "727d55d9-1e20-4be8-8a73-96561cf47c84") as "Maternal Outcome/ Résultat maternel",
 	getHIVDefaulterStatus(p.patient_id) as "Status of Missed appointment / Statut de rendez-vous manqué",
 	pi.identifier as "Child ID",
 	getPatientBirthdate(child.patient_id) as "Child Date of birth (Date de naissance)",
@@ -36,11 +36,11 @@ SELECT
 	getTestResultWithinReportingPeriod(child.patient_id, "2020-01-01", "#endDate#", "a5239a85-6f75-4882-9b9b-60168e54b7da", "9bb7b360-3790-4e1a-8aca-0d1341663040") as "EID Result ",
 	getPatientAgeAtFirstVisitInMonths(child.patient_id) as "Month of Health Facility Visits when infant is seen at facility / Mois des visites dans un établissement de santé lorsqu'un nourrisson est vu dans un établissement",
 	getObsCodedValue(child.patient_id, "fcbc6db2-3983-4448-b95d-d8546c5bca68") as "Visit status / Statut de la visite",
-	"N/A" as "Infant Outcome at 18 Months/ Résultat infantile à 18 mois",
+	getInfantOutcomeAt18Months(child.patient_id) as "Infant Outcome at 18 Months/ Résultat infantile à 18 mois",
 	getPatientARVStartDate(p.patient_id) as "Date of ART initiation (If HIV-positive) / Date d'initiation du ART (si HIV positif)",
 	getPatientARTNumber(child.patient_id) as "Child ART Code",
 	getFacilityName() as "Health Facility/  Établissement de santé",
-	"N/A" as "Psychosocial Agents (Retention APS)"
+	getPatientMostRecentProgramAPSName(p.patient_id,'HIV_PROGRAM_KEY') as "Psychosocial Agents (Retention APS)"
 FROM patient p
   LEFT JOIN patient child ON getRelationshipNameBetweenPatients(p.patient_id, child.patient_id) = "RELATIONSHIP_BIO_MOTHER" AND child.voided = 0
   LEFT JOIN patient_identifier pi ON pi.patient_id = child.patient_id AND pi.preferred = 1 
