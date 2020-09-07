@@ -571,3 +571,85 @@ BEGIN
     RETURN (result);
 END$$
 DELIMITER ;
+
+-- getOtherReasonsOfDefaulting
+
+DROP FUNCTION IF EXISTS getOtherReasonsOfDefaulting;
+
+DELIMITER $$
+CREATE FUNCTION getOtherReasonsOfDefaulting(
+    p_patientId INT(11)) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT;
+
+    SELECT GROUP_CONCAT(pat.name) INTO result
+    FROM patient_program_attribute ppa
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+        JOIN program_attribute_type pat ON ppa.attribute_type_id = pat.program_attribute_type_id AND pat.retired = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        ppa.value_reference = "true" AND
+        ppa.patient_program_id = (
+            SELECT pp.patient_program_id
+            FROM patient_program pp
+            WHERE pp.patient_id = p_patientId AND pp.program_id = (
+                SELECT p.program_id
+                FROM program p
+                WHERE `name` = "HIV_DEFAULTERS_PROGRAM_KEY"
+                LIMIT 1)
+            ORDER BY pp.date_created DESC
+            LIMIT 1)
+    ORDER BY pp.date_enrolled DESC
+    LIMIT 1;
+
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_701_STIGMA", "Stigma");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_702_LONG_DISTANCE", "Long Distance");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_703_COST_OF_TRANSPORT", "Cost of Transport");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_704_SIDE_EFFECTS_OF_ARVS", "Side effects of ARVs");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_705_COST_OF_SERVICES", "Cost of services");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_706_STAFF_ATTITUDE", "Staff attitude");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_707_TRADITIONAL_BELIEFS", "Traditional Beliefs");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_708_RELIGIOUS_BELIEFS", "Religious beliefs");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_709_DENIAL", "Denial");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_710_INCONVENIENT_SERVICE_HOURS", "Inconvenient service hours");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_711_TRAVEL", "Travel");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_712_FEELS_HEALTHY", "Feels healthy");
+    SET result = REPLACE(result, "PROGRAM_MANAGEMENT_713_INSECURITY", "Insecurity");
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDefaulterStageThatIsHomeVisit
+
+DROP FUNCTION IF EXISTS getDefaulterStageThatIsHomeVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDefaulterStageThatIsHomeVisit(
+    p_patientId INT(11)) RETURNS VARCHAR(20)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(20);
+
+    SELECT cn.name INTO result
+    FROM patient_state ps
+        JOIN patient_program pp ON pp.patient_program_id = ps.patient_program_id AND pp.voided = 0
+        JOIN program p ON p.program_id = pp.program_id AND p.retired = 0
+        JOIN program_workflow_state pws ON pws.program_workflow_state_id = ps.state AND pws.retired = 0
+        JOIN concept_name cn ON cn.concept_id = pws.concept_id AND cn.voided = 0 AND cn.locale = 'en' AND cn.locale_preferred = 1
+    WHERE
+        ps.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        p.name = 'HIV_DEFAULTERS_PROGRAM_KEY'
+    ORDER BY ps.start_date DESC
+    LIMIT 1;
+
+    IF (result = 'Home visit') THEN
+        RETURN result;
+    ELSE
+        RETURN null;
+    END IF;
+END$$
+DELIMITER ;

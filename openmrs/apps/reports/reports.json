@@ -1448,5 +1448,42 @@
                 }
             ]
         }
+    },
+    "georgetownAPSFollowUpReport": {
+        "name": "Georgetown APS Follow up Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_APS_FOLLOWUP_REPORT/template/georgetownApsFollowupReport.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_APS_FOLLOWUP_REPORT/sql/georgetownApsFollowupReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
     }
 }

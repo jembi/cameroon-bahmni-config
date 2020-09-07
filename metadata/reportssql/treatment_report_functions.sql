@@ -665,6 +665,33 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getMostRecentProgramAttributeDateCreated
+
+DROP FUNCTION IF EXISTS getMostRecentProgramAttributeDateCreated;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentProgramAttributeDateCreated(
+    p_patientId INT(11),
+    p_uuidProgramAttribute VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT ppa.date_created INTO result
+    FROM patient_program_attribute ppa
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        pat.uuid = p_uuidProgramAttribute
+    ORDER BY ppa.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientIsNewlyInitiatingART
 
 DROP FUNCTION IF EXISTS patientIsNewlyInitiatingART;
