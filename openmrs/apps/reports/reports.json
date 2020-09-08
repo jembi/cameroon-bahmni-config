@@ -1485,5 +1485,42 @@
                 }
             ]
         }
+    },
+    "georgetownIndexServiceReport": {
+        "name": "Georgetown Index Service Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_INDEX_SERVICE_REPORT/template/georgetownIndexServiceReport.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_INDEX_SERVICE_REPORT/sql/georgetownIndexServiceReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
     }
 }
