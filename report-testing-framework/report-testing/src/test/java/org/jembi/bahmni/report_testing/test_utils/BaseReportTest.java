@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.jembi.bahmni.report_testing.test_utils.models.IndicatorTypeEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +50,13 @@ public class BaseReportTest {
 		return rs;
 	}
 
-	protected String readReportQuery(IndicatorTypeEnum reportFolder, String reportFileName, LocalDate startDate, LocalDate endDate) throws IOException {
+	public int getNumberRecords(String query) throws Exception {
+		ResultSet rs = stmt.executeQuery(query);
+		rs.last();
+		return rs.getRow();
+	}
+
+	protected String readReportQuery(ReportEnum reportFolder, String reportFileName, LocalDate startDate, LocalDate endDate) throws IOException {
 		String currentDirectory = System.getProperty("user.dir");
 		File file = new File(currentDirectory);
 
@@ -85,6 +91,18 @@ public class BaseReportTest {
 	}
 
 	private void cleanTestingData() throws SQLException {
+		// Remove patient identifiers
+		executeUpdateQuery("DELETE FROM patient_identifier WHERE patient_id > 72");
+
+		// Remove person names
+		executeUpdateQuery("DELETE FROM person_name WHERE person_id > 72");
+
+		// Remove person attributes
+		executeUpdateQuery("DELETE FROM person_attribute WHERE person_id > 72");
+
+		// Remove relationships
+		executeUpdateQuery("DELETE FROM relationship WHERE person_a > 72 OR person_b > 72");
+
 		// Remove persons
 		executeUpdateQuery("DELETE FROM person WHERE person_id > 72");
 		

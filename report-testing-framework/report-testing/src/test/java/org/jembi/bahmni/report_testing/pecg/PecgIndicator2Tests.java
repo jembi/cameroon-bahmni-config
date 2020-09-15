@@ -8,7 +8,7 @@ import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.DrugNameEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.DurationUnitEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.IndicatorTypeEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
@@ -19,14 +19,19 @@ public class PecgIndicator2Tests extends BaseReportTest{
 	@Test
 	public void shouldCountPatient() throws Exception {
 		// Prepare
-		int patientId = testDataGenerator.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1));
+		int patientId = testDataGenerator.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1), "Alex", "Durin");
 		int encounterId = testDataGenerator.startVisit(patientId, VisitTypeEnum.OPD);
-		testDataGenerator.enrollPatientIntoHIVProgram(patientId, new LocalDate(2019, 8, 1), TherapeuticLineEnum.FIRST_LINE);
+		testDataGenerator.enrollPatientIntoHIVProgram(
+			patientId,
+			new LocalDate(2019, 8, 1),
+			null,
+			TherapeuticLineEnum.FIRST_LINE,
+			new LocalDate(2019, 8, 10));
 		int orderId = testDataGenerator.orderDrug(patientId, encounterId, DrugNameEnum.ABC_3TC_120_60MG, new LocalDateTime(2019, 9, 1, 8, 0, 0), 2, DurationUnitEnum.MONTH);
 		testDataGenerator.dispenseDrugOrder(patientId, orderId);
 
 		// Execute
-		String query = readReportQuery(IndicatorTypeEnum.PECG_REPORT, "indicator2_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
+		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator2_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
 		ResultSet result = getIndicatorResult(query);
 
 		// Assert
