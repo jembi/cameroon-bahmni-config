@@ -1,5 +1,5 @@
 SELECT
-    @a:=@a+1 as "Serial Number",
+    CAST(@a:=@a+1 AS CHAR) as "Serial Number",
     getPatientIndexTestingDateOffered(p.patient_id) as "Date of Service Offered",
     SUBSTRING(getPatientIndexTestingAccepted(p.patient_id),1,3) as "ICT Service Accepted ?",
     getPatientIndexTestingDateAccepted(p.patient_id) as "Date of Service accepted",

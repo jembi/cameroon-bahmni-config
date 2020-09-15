@@ -1,5 +1,5 @@
 SELECT
-    @a:=@a+1 as "Serial Number",
+    CAST(@a:=@a+1 AS CHAR) as "Serial Number",
     getPatientIdentifier(p.patient_id) as "Patient ID",
     getPatientARTNumber(p.patient_id) as "ART Code",
     getPatientBirthdate(p.patient_id) as "Date of birth",
