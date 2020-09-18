@@ -6,10 +6,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.joda.time.LocalDate;
@@ -44,16 +49,23 @@ public class BaseReportTest {
 			throw new Exception("No result found");
 	}
 
-	public ResultSet getIndicatorResult(String query) throws Exception {
+	public List<Map<String,Object>> getReportResult(String query) throws Exception {
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
 		ResultSet rs = stmt.executeQuery(query);
-		rs.next();
-		return rs;
-	}
 
-	public int getNumberRecords(String query) throws Exception {
-		ResultSet rs = stmt.executeQuery(query);
-		rs.last();
-		return rs.getRow();
+		while (rs.next()) {
+			Map<String,Object> record = new HashMap<String,Object>();
+			for(int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+				if (rs.getObject(i+1) instanceof Date) {
+					record.put(rs.getMetaData().getColumnName(i+1), rs.getObject(i+1).toString());
+				} else {
+					record.put(rs.getMetaData().getColumnName(i+1), rs.getObject(i+1));
+				}
+				
+			}
+			result.add(record);
+		}
+		return result;
 	}
 
 	protected String readReportQuery(ReportEnum reportFolder, String reportFileName, LocalDate startDate, LocalDate endDate) throws IOException {

@@ -2,7 +2,8 @@ package org.jembi.bahmni.report_testing.pecg;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.DrugNameEnum;
@@ -27,30 +28,37 @@ public class PecgIndicator2Tests extends BaseReportTest{
 			null,
 			TherapeuticLineEnum.FIRST_LINE,
 			new LocalDate(2019, 8, 10));
-		int orderId = testDataGenerator.orderDrug(patientId, encounterId, DrugNameEnum.ABC_3TC_120_60MG, new LocalDateTime(2019, 9, 1, 8, 0, 0), 2, DurationUnitEnum.MONTH);
-		testDataGenerator.dispenseDrugOrder(patientId, orderId);
+		testDataGenerator.orderDrug(
+			patientId,
+			encounterId,
+			DrugNameEnum.ABC_3TC_120_60MG,
+			new LocalDateTime(2019, 9, 1, 8, 0, 0),
+			2,
+			DurationUnitEnum.MONTH,
+			false
+		);
 
 		// Execute
 		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator2_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
-		ResultSet result = getIndicatorResult(query);
+		List<Map<String,Object>> result = getReportResult(query);
 
 		// Assert
-		assertEquals(result.getString("Title"), "Number of old PLWHA on ARV who came for treatment in the month");
-		assertEquals(result.getInt("<1 M"), 0);
-		assertEquals(result.getInt("<1 F"), 0);
-		assertEquals(result.getInt("1-4 M"), 0);
-		assertEquals(result.getInt("1-4 F"), 0);
-		assertEquals(result.getInt("5-9 M"), 0);
-		assertEquals(result.getInt("5-9 F"), 0);
-		assertEquals(result.getInt("10-14 M"), 0);
-		assertEquals(result.getInt("10-14 F"), 0);
-		assertEquals(result.getInt("15-19 M"), 1);
-		assertEquals(result.getInt("15-19 F"), 0);
-		assertEquals(result.getInt("20-24 M"), 0);
-		assertEquals(result.getInt("20-24 F"), 0);
-		assertEquals(result.getInt("25-49 M"), 0);
-		assertEquals(result.getInt("25-49 F"), 0);
-		assertEquals(result.getInt(">=50 M"), 0);
-		assertEquals(result.getInt(">=50 F"), 0);
+		assertEquals(result.get(0).get("Title"), "Number of old PLWHA on ARV who came for treatment in the month");
+		assertEquals(result.get(0).get("<1 M"), 0);
+		assertEquals(result.get(0).get("<1 F"), 0);
+		assertEquals(result.get(0).get("1-4 M"), 0);
+		assertEquals(result.get(0).get("1-4 F"), 0);
+		assertEquals(result.get(0).get("5-9 M"), 0);
+		assertEquals(result.get(0).get("5-9 F"), 0);
+		assertEquals(result.get(0).get("10-14 M"), 0);
+		assertEquals(result.get(0).get("10-14 F"), 0);
+		assertEquals(result.get(0).get("15-19 M"), 1);
+		assertEquals(result.get(0).get("15-19 F"), 0);
+		assertEquals(result.get(0).get("20-24 M"), 0);
+		assertEquals(result.get(0).get("20-24 F"), 0);
+		assertEquals(result.get(0).get("25-49 M"), 0);
+		assertEquals(result.get(0).get("25-49 F"), 0);
+		assertEquals(result.get(0).get(">=50 M"), 0);
+		assertEquals(result.get(0).get(">=50 F"), 0);
 	}
 }

@@ -6,7 +6,8 @@ import org.joda.time.Years;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
@@ -32,25 +33,25 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
         
 		// Execute
 		String query = readReportQuery(ReportEnum.GEORGETOWN_INDEX_TESTING_REPORT, "georgetownIndexTestingReport.sql", new LocalDate(2020, 9, 1), new LocalDate(2020, 9, 30));
-		ResultSet result = getIndicatorResult(query);
+		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result.getInt("Serial Number"), 1);
-		assertEquals(result.getString("Unique Patient ID"), "BAH203001");
-		assertEquals(result.getString("Date of Birth"), "2000-09-01");
-		assertEquals(result.getInt("Age"), Years.yearsBetween(new LocalDate(2000, 9, 1), LocalDate.now()).getYears());
-		assertEquals(result.getString("Sex"), "m");
-		assertEquals(result.getString("Relation with index"), "PARTNER");
-		assertEquals(result.getString("Notified for Index case testing ?"), "Notification 1");
-		assertEquals(result.getString("Date of Notification"), "2020-08-05");
-		assertEquals(result.getString("Notification Outcome"), "Accepted Testing");
-		assertEquals(result.getString("Contact telephone"), "0123456789");
-		assertEquals(result.getString("Tested for HIV ?"), "Yes");
-		assertEquals(result.getString("HIV Test Date"), "2020-08-15");
-		assertEquals(result.getString("Test results"), "Positive");
-		assertEquals(result.getString("Date of Initiation"), "2020-08-09");
-		assertEquals(result.getString("Index Related ART Code"), "ART 123");
-		assertEquals(result.getString("Index Related Unique ID"), "BAH203002");
+		assertEquals(result.get(0).get("Serial Number"), "1");
+		assertEquals(result.get(0).get("Unique Patient ID"), "BAH203001");
+		assertEquals(result.get(0).get("Date of Birth"), "2000-09-01");
+		assertEquals(result.get(0).get("Age"), Years.yearsBetween(new LocalDate(2000, 9, 1), LocalDate.now()).getYears() + "");
+		assertEquals(result.get(0).get("Sex"), "m");
+		assertEquals(result.get(0).get("Relation with index"), "PARTNER");
+		assertEquals(result.get(0).get("Notified for Index case testing ?"), "Notification 1");
+		assertEquals(result.get(0).get("Date of Notification"), "2020-08-05");
+		assertEquals(result.get(0).get("Notification Outcome"), "Accepted Testing");
+		assertEquals(result.get(0).get("Contact telephone"), "0123456789");
+		assertEquals(result.get(0).get("Tested for HIV ?"), "Yes");
+		assertEquals(result.get(0).get("HIV Test Date"), "2020-08-15");
+		assertEquals(result.get(0).get("Test results"), "Positive");
+		assertEquals(result.get(0).get("Date of Initiation"), "2020-08-09");
+		assertEquals(result.get(0).get("Index Related ART Code"), "ART 123");
+		assertEquals(result.get(0).get("Index Related Unique ID"), "BAH203002");
     }
 
     @Test
@@ -67,10 +68,10 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
         
 		// Execute
 		String query = readReportQuery(ReportEnum.GEORGETOWN_INDEX_TESTING_REPORT, "georgetownIndexTestingReport.sql", new LocalDate(2020, 9, 1), new LocalDate(2020, 9, 30));
-		int result = getNumberRecords(query);
+		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result, 0);
+		assertEquals(result.size(), 0);
     }
 
     @Test
@@ -88,25 +89,25 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
         
 		// Execute
 		String query = readReportQuery(ReportEnum.GEORGETOWN_INDEX_TESTING_REPORT, "georgetownIndexTestingReport.sql", new LocalDate(2020, 9, 1), new LocalDate(2020, 9, 30));
-		ResultSet result = getIndicatorResult(query);
+		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result.getInt("Serial Number"), 1);
-		assertEquals(result.getString("Unique Patient ID"), "BAH203001");
-		assertEquals(result.getString("Date of Birth"), "2000-09-01");
-		assertEquals(result.getInt("Age"), Years.yearsBetween(new LocalDate(2000, 9, 1), LocalDate.now()).getYears());
-		assertEquals(result.getString("Sex"), "m");
-		assertEquals(result.getString("Relation with index"), "PARTNER");
-		assertEquals(result.getString("Notified for Index case testing ?"), "Notification 1");
-		assertEquals(result.getString("Date of Notification"), "2020-08-05");
-		assertEquals(result.getString("Notification Outcome"), "Accepted Testing");
-		assertEquals(result.getString("Contact telephone"), "0123456789");
-		assertEquals(result.getString("Tested for HIV ?"), "");
-		assertEquals(result.getString("HIV Test Date"), null);
-		assertEquals(result.getString("Test results"), null);
-		assertEquals(result.getString("Date of Initiation"), "2020-08-09");
-		assertEquals(result.getString("Index Related ART Code"), "ART 123");
-		assertEquals(result.getString("Index Related Unique ID"), "BAH203002");
+		assertEquals(result.get(0).get("Serial Number"), "1");
+		assertEquals(result.get(0).get("Unique Patient ID"), "BAH203001");
+		assertEquals(result.get(0).get("Date of Birth"), "2000-09-01");
+		assertEquals(result.get(0).get("Age"), Years.yearsBetween(new LocalDate(2000, 9, 1), LocalDate.now()).getYears()+"");
+		assertEquals(result.get(0).get("Sex"), "m");
+		assertEquals(result.get(0).get("Relation with index"), "PARTNER");
+		assertEquals(result.get(0).get("Notified for Index case testing ?"), "Notification 1");
+		assertEquals(result.get(0).get("Date of Notification"), "2020-08-05");
+		assertEquals(result.get(0).get("Notification Outcome"), "Accepted Testing");
+		assertEquals(result.get(0).get("Contact telephone"), "0123456789");
+		assertEquals(result.get(0).get("Tested for HIV ?"), "");
+		assertEquals(result.get(0).get("HIV Test Date"), null);
+		assertEquals(result.get(0).get("Test results"), null);
+		assertEquals(result.get(0).get("Date of Initiation"), "2020-08-09");
+		assertEquals(result.get(0).get("Index Related ART Code"), "ART 123");
+		assertEquals(result.get(0).get("Index Related Unique ID"), "BAH203002");
     }
 
     private void recordIndexTestingOfferAndAcceptance(int patientId) throws Exception {

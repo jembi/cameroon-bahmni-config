@@ -279,7 +279,7 @@ public class TestDataGenerator {
 		stmt.executeUpdate(query);
 	}
 
-	public int orderDrug(int patientId, int encounterId, DrugNameEnum drugName, LocalDateTime startDate, int duration, DurationUnitEnum durationUnit) throws Exception {
+	public int orderDrug(int patientId, int encounterId, DrugNameEnum drugName, LocalDateTime startDate, int duration, DurationUnitEnum durationUnit, boolean dispensed) throws Exception {
 		String uuidOrder = generateUUID();
 		String orderNumber = generateUUID();
 		int drugConceptId = getQueryIntResult("SELECT concept_id FROM drug WHERE name = '" + drugName + "'");
@@ -298,6 +298,10 @@ public class TestDataGenerator {
 				+ "(" + orderId + "," + drugId + ", 1, 0, 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions',1," + duration + "," + durationUnitConceptId + ",342,68,342,1, 0)";
 
 		stmt.executeUpdate(createDrugOrderQuery);
+
+		if (dispensed) {
+			dispenseDrugOrder(patientId, orderId);
+		}
 		
 		return orderId;
 	}
