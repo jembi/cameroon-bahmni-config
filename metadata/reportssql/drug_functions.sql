@@ -440,6 +440,135 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- retrieveINHStartAndEndDate
+
+DROP PROCEDURE IF EXISTS retrieveINHStartAndEndDate;
+
+DELIMITER $$
+CREATE PROCEDURE retrieveINHStartAndEndDate(
+    IN p_index INT(11),
+    IN p_patientId INT(11),
+    IN p_endDate DATE,
+    OUT p_inhStartDate DATE,
+    OUT p_inhEndDate DATE)
+BEGIN
+
+    SELECT
+        DATE(o.scheduled_date),
+        DATE(calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid
+        )) INTO p_inhStartDate, p_inhEndDate
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) <= p_endDate
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT p_index, 1;
+
+END$$
+DELIMITER ;
+
+-- selectINHFollowUpReport
+
+DROP PROCEDURE IF EXISTS selectINHFollowUpReport;
+
+DELIMITER $$
+CREATE PROCEDURE selectINHFollowUpReport(
+    IN p_startDate DATE,
+    IN p_endDate DATE)
+BEGIN
+
+    DECLARE bDone INT;
+    DECLARE bDone2 INT;
+    DECLARE patientId INT(11);
+    DECLARE serialNumber INT(11) DEFAULT 0;
+    DECLARE uniquePatientId VARCHAR(50);
+    DECLARE artCode VARCHAR(50);
+    DECLARE age INT(11);
+    DECLARE dateOfBirth DATE;
+    DECLARE sex VARCHAR(1);
+    DECLARE dateOfARTInitiation DATE;
+    DECLARE inhStartDate DATE;
+    DECLARE inhEndDate DATE;
+    DECLARE inhFullCourseStartDate DATE;
+    DECLARE inhFullCourseEndDate DATE;
+    DECLARE courseDuration INT(11);
+    DECLARE _index INT(11);
+
+
+    DECLARE mainQueryCursor CURSOR FOR
+    SELECT
+        p.patient_id,
+        getPatientIdentifier(p.patient_id) as "Unique Patient ID",
+        getPatientARTNumber(p.patient_id) as "ART Code",
+        getPatientAge(p.patient_id) as "Age",
+        getPatientBirthdate(p.patient_id) as "Date of Birth",
+        getPatientGender(p.patient_id) as "Sex",
+        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of ART Initiation"
+    FROM patient p;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
+
+    DROP TEMPORARY TABLE IF EXISTS tblResults;
+    CREATE TEMPORARY TABLE IF NOT EXISTS tblResults  (
+        serialNumber INT(11),
+        uniquePatientId VARCHAR(50),
+        artCode VARCHAR(50),
+        age INT(11),
+        dateOfBirth DATE,
+        sex VARCHAR(1),
+        dateOfARTInitiation DATE,
+        inhStartDate DATE,
+        inhEndDate DATE
+    );
+
+    OPEN mainQueryCursor;
+
+    SET bDone = 0;
+    REPEAT
+        FETCH mainQueryCursor INTO patientId,uniquePatientId,artCode,age,dateOfBirth,sex,dateOfARTInitiation;
+
+        SET courseDuration = 0;
+        SET _index = 0;
+
+        REPEAT
+            CALL retrieveINHStartAndEndDate(_index, patientId, p_endDate, inhStartDate, inhEndDate);
+
+            IF inhStartDate IS NOT NULL AND inhEndDate IS NOT NULL THEN
+                IF (courseDuration = 0) THEN
+                    SET inhFullCourseEndDate = inhEndDate;
+                END IF;
+
+                SET courseDuration = courseDuration + timestampdiff(MONTH, inhStartDate, timestampadd(DAY, 1,inhEndDate));
+                
+                IF (courseDuration >= 6) THEN
+                    SET inhFullCourseStartDate = inhStartDate;
+                    SET serialNumber = serialNumber + 1;
+                    INSERT INTO tblResults VALUES (serialNumber, uniquePatientId, artCode, age, dateOfBirth, sex, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate);
+                    SET courseDuration = 0;
+                END IF; 
+                
+            END IF;
+
+            SET _index = _index + 1;
+        UNTIL inhStartDate IS NULL END REPEAT;
+
+    UNTIL bDone END REPEAT;
+    CLOSE mainQueryCursor;
+
+    SELECT DISTINCT * FROM tblResults;
+END$$
+DELIMITER ;
+
 -- getLastARVPrescribed
 
 DROP FUNCTION IF EXISTS getLastARVPrescribed;
