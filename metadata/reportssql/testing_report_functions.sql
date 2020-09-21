@@ -1889,3 +1889,41 @@ BEGIN
     RETURN getObsCodedValue(p_patientId, reistanceTestUuid);
 END$$
 DELIMITER ;
+
+-- getDateTBPosDiagnose
+
+DROP FUNCTION IF EXISTS getDateTBPosDiagnose;
+
+DELIMITER $$
+CREATE FUNCTION getDateTBPosDiagnose(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDateBaselineAssessment VARCHAR(38) DEFAULT "1d4a6dc4-c478-4021-982b-62e3c84f7857";
+    DECLARE uuidMTBConfirmation VARCHAR(38) DEFAULT "c4bbc310-2e01-4c6d-be90-decc1b91a800";
+    DECLARE uuidBacteriologicallyConfirmed VARCHAR(38) DEFAULT "41bde817-b2e0-4f58-88be-f875e7b31eed";
+    DECLARE encounterId INT(11);
+
+    SELECT o.encounter_id INTO encounterId
+    FROM obs o
+    WHERE o.voided = 0 AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidMTBConfirmation) AND
+        o.value_coded = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidBacteriologicallyConfirmed)
+    ORDER BY o.date_created DESC;
+
+    IF (encounterId IS NULL) THEN
+        RETURN NULL;
+    END IF;
+
+    SELECT DATE(o.value_datetime) INTO result
+    FROM obs o
+    WHERE o.voided = 0 AND
+        o.encounter_id = encounterId AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidDateBaselineAssessment)
+    ORDER BY o.date_created DESC;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;

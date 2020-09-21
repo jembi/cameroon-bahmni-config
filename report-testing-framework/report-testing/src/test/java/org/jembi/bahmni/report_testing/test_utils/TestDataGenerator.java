@@ -62,7 +62,7 @@ public class TestDataGenerator {
         conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTree.add(ConceptEnum.HTC_HIV_TEST);
         conceptTree.add(ConceptEnum.HIV_TEST_DATE);
-        return recordForDatetimeValue(patientId, obsDateTime, conceptTree, testDate, encounterId);
+        return recordFormDatetimeValue(patientId, obsDateTime, conceptTree, testDate, encounterId);
 	}
 
 	public int setHTCFinalResult(int patientId, LocalDateTime obsDateTime, ConceptEnum testResult, Integer encounterId) throws Exception {
@@ -70,7 +70,7 @@ public class TestDataGenerator {
         conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTree.add(ConceptEnum.FINAL_RESULT);
         conceptTree.add(ConceptEnum.FINAL_TEST_RESULT);
-        return recordForCodedValue(patientId, obsDateTime, conceptTree, testResult, encounterId);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, testResult, encounterId);
 	}
 
 	public int setIndexTestingOffered(int patientId, LocalDateTime obsDateTime, Integer encounterId) throws Exception {
@@ -78,7 +78,7 @@ public class TestDataGenerator {
         conceptTreeOfferedIndexTesting.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTreeOfferedIndexTesting.add(ConceptEnum.HTC_HIV_TEST);
         conceptTreeOfferedIndexTesting.add(ConceptEnum.INDEX_TESTING_OFFERED);
-        return recordForCodedValue(patientId, obsDateTime, conceptTreeOfferedIndexTesting, ConceptEnum.YES, null);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTreeOfferedIndexTesting, ConceptEnum.YES, null);
 	}
 
 	public int setIndexTestingDateOffered(int patientId, LocalDateTime obsDateTime, LocalDate dateOffered, Integer encounterId) throws Exception {
@@ -86,7 +86,7 @@ public class TestDataGenerator {
         conceptTreeDateOfferedIndexTesting.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTreeDateOfferedIndexTesting.add(ConceptEnum.HTC_HIV_TEST);
         conceptTreeDateOfferedIndexTesting.add(ConceptEnum.DATE_INDEX_TESTING_OFFERED);
-        return recordForDatetimeValue(patientId, obsDateTime, conceptTreeDateOfferedIndexTesting, dateOffered, encounterId);
+        return recordFormDatetimeValue(patientId, obsDateTime, conceptTreeDateOfferedIndexTesting, dateOffered, encounterId);
 	}
 
 	public int setIndexTestingAccepted(int patientId, LocalDateTime obsDateTime, Integer encounterId) throws Exception {
@@ -94,7 +94,7 @@ public class TestDataGenerator {
         conceptTreeAcceptedIndexTesting.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTreeAcceptedIndexTesting.add(ConceptEnum.HTC_HIV_TEST);
         conceptTreeAcceptedIndexTesting.add(ConceptEnum.INDEX_TESTING_ACCEPTED);
-        return recordForCodedValue(patientId, obsDateTime, conceptTreeAcceptedIndexTesting, ConceptEnum.YES, null);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTreeAcceptedIndexTesting, ConceptEnum.TRUE, null);
 	}
 
 	public int setIndexTestingDateAccepted(int patientId, LocalDateTime obsDateTime, LocalDate accepted, Integer encounterId) throws Exception {
@@ -102,18 +102,39 @@ public class TestDataGenerator {
         conceptTreeDateAccepedIndexTesting.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTreeDateAccepedIndexTesting.add(ConceptEnum.HTC_HIV_TEST);
         conceptTreeDateAccepedIndexTesting.add(ConceptEnum.DATE_INDEX_TESTING_ACCEPTED);
-        return recordForDatetimeValue(patientId, obsDateTime, conceptTreeDateAccepedIndexTesting, accepted, encounterId);
+        return recordFormDatetimeValue(patientId, obsDateTime, conceptTreeDateAccepedIndexTesting, accepted, encounterId);
+	}
+
+	public int setDateBaselineAssessment(int patientId, LocalDateTime obsDateTime, LocalDate dateBaselineAssessment, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.TB_FORM);
+        conceptTree.add(ConceptEnum.DATE_BASELINE_ASSESSMENT);
+        return recordFormDatetimeValue(patientId, obsDateTime, conceptTree, dateBaselineAssessment, encounterId);
+	}
+
+	public int setTBScreened(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.TB_FORM);
+        conceptTree.add(ConceptEnum.SCREENED);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
+	}
+
+	public int setMTBConfirmation(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.TB_FORM);
+        conceptTree.add(ConceptEnum.MTB_CONFIRMATION);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
 	}
 
 	public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId) throws Exception {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value, ObsValueTypeEnum.TEXT, encounterId);
 	}
 
-	public int recordForDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId) throws Exception {
+	public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId) throws Exception {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId);
 	}
 
-	public int recordForCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId) throws Exception {
+	public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId) throws Exception {
 		Integer conceptId = getConceptId(codedValue);
 		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId);
 	}
@@ -234,6 +255,16 @@ public class TestDataGenerator {
 
 		if (notificationOutcome != null) {
 			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome.toString());
+		}
+	}
+
+	public void enrollPatientIntoTBProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate treatmentStartDate) throws Exception {
+		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.TB_PROGRAM_KEY);
+
+		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
+
+		if (treatmentStartDate != null) {
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
 		}
 	}
 

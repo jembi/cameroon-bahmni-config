@@ -85,7 +85,6 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
 
         recordIndexTestingOfferAndAcceptance(patientIdIndex);
         enrollPatientToIndexAndHIVPrograms(patientIdContact);
-        // recordHivTestDateAndResult(patientIdContact);
         
 		// Execute
 		String query = readReportQuery(ReportEnum.GEORGETOWN_INDEX_TESTING_REPORT, "georgetownIndexTestingReport.sql", new LocalDate(2020, 9, 1), new LocalDate(2020, 9, 30));
