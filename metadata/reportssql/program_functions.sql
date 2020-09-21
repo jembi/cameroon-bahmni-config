@@ -248,6 +248,36 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getMostRecentProgramAttributeValueFromAttributeAndProgramName
+
+DROP FUNCTION IF EXISTS getMostRecentProgramAttributeValueFromAttributeAndProgramName;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentProgramAttributeValueFromAttributeAndProgramName(
+    p_patientId INT(11),
+    p_programAttributeName VARCHAR(255),
+    p_programName VARCHAR(255)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SELECT ppa.value_reference INTO result
+    FROM patient_program_attribute ppa
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+        JOIN program p ON p.program_id = pp.program_id  AND p.retired = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        pat.name = p_programAttributeName AND
+        p.name = p_programName
+    ORDER BY ppa.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getPatientMostRecentProgramAttributeDateValueFromName
 
 DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeDateValueFromName;
@@ -261,6 +291,29 @@ BEGIN
     DECLARE result VARCHAR(255);
 
     SET result = getPatientMostRecentProgramAttributeValueFromName(p_patientId, p_programAttributeName);
+
+    IF (result IS NOT NULL) THEN
+        RETURN DATE(result);
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getProgramAttributeDateValueFromAttributeAndProgramName
+
+DROP FUNCTION IF EXISTS getProgramAttributeDateValueFromAttributeAndProgramName;
+
+DELIMITER $$
+CREATE FUNCTION getProgramAttributeDateValueFromAttributeAndProgramName(
+    p_patientId INT(11),
+    p_programAttributeName VARCHAR(255),
+    p_programName VARCHAR(255)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(255);
+
+    SET result = getMostRecentProgramAttributeValueFromAttributeAndProgramName(p_patientId, p_programAttributeName, p_programName);
 
     IF (result IS NOT NULL) THEN
         RETURN DATE(result);
