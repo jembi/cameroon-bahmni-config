@@ -21,7 +21,7 @@ public class PecgIndicator2Tests extends BaseReportTest{
 	public void shouldCountPatient() throws Exception {
 		// Prepare
 		int patientId = testDataGenerator.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1), "Alex", "Durin");
-		int encounterId = testDataGenerator.startVisit(patientId, VisitTypeEnum.OPD);
+		int encounterId = testDataGenerator.startVisit(patientId, new LocalDate(2019, 8, 1), VisitTypeEnum.VISIT_TYPE_OPD);
 		testDataGenerator.enrollPatientIntoHIVProgram(
 			patientId,
 			new LocalDate(2019, 8, 1),

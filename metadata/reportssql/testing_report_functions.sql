@@ -1927,3 +1927,37 @@ BEGIN
     
 END$$
 DELIMITER ;
+
+-- getReasonLastVLExam
+
+DROP FUNCTION IF EXISTS getReasonLastVLExam;
+
+DELIMITER $$
+CREATE FUNCTION getReasonLastVLExam(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(20);
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE nameVLExam VARCHAR(250);
+
+    SELECT cn.name INTO nameVLExam
+    FROM obs o
+        JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.voided = 0 AND cn.locale = 'en' AND cn.locale_preferred = 1
+    WHERE o.voided = 0
+        AND o.value_numeric IS NOT NULL
+        AND o.person_id = p_patientId
+        AND c.uuid IN (routineViralLoadTestUuid,targetedViralLoadTestUuid,notDocumentedViralLoadTestUuid)
+    ORDER BY o.obs_datetime DESC
+    LIMIT 1;
+
+    IF (nameVLExam IS NOT NULL) THEN
+        RETURN REPLACE(nameVLExam, ' Viral Load', '');
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;

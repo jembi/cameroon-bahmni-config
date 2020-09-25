@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.jembi.bahmni.report_testing.test_utils.models.AppointmentServiceEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.DrugNameEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.DurationUnitEnum;
@@ -13,9 +14,11 @@ import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.NotificationOutcomeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ObsValueTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.PatientIdenfierTypeEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.PreTrackingOutcomeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ProgramNameEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.RelationshipEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.TrackingOutcomeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -63,6 +66,21 @@ public class TestDataGenerator {
         conceptTree.add(ConceptEnum.HTC_HIV_TEST);
         conceptTree.add(ConceptEnum.HIV_TEST_DATE);
         return recordFormDatetimeValue(patientId, obsDateTime, conceptTree, testDate, encounterId);
+	}
+
+	public int setRoutineViralLoadTestDateAndResult(int patientId, LocalDateTime obsDateTime, LocalDate testDate, int testResult, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTreeVL = new ArrayList<ConceptEnum>();
+        conceptTreeVL.add(ConceptEnum.LAB_RESULT_ADD_MANUALLY);
+		conceptTreeVL.add(ConceptEnum.SEROLOGY_DEPT_FORM);
+		
+		List<ConceptEnum> conceptTreeVLTestDate = new ArrayList<ConceptEnum>();
+		conceptTreeVLTestDate.addAll(conceptTreeVL);
+
+		conceptTreeVL.add(ConceptEnum.ROUTINE_VIRAL_LOAD);
+		conceptTreeVLTestDate.add(ConceptEnum.ROUTINE_VIRAL_LOAD_TEST_DATE);
+
+        int encounterIdVL = recordFormNumericValue(patientId, obsDateTime, conceptTreeVL, testResult, encounterId);
+        return recordFormDatetimeValue(patientId, obsDateTime, conceptTreeVLTestDate, testDate, encounterIdVL);
 	}
 
 	public int setHTCFinalResult(int patientId, LocalDateTime obsDateTime, ConceptEnum testResult, Integer encounterId) throws Exception {
@@ -126,8 +144,38 @@ public class TestDataGenerator {
         return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
 	}
 
+	public int setTherapeuticLineOnInitialHivAdultForm(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.PATIENT_WITH_HIV_ADULT_INITIAL);
+        conceptTree.add(ConceptEnum._3_INITIAL_VISIT);
+        conceptTree.add(ConceptEnum._3_3_TREATMENTS);
+        conceptTree.add(ConceptEnum.THERAPEUTIC_LINE);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
+	}
+
+	public int setTherapeuticLineOnInitialHivChildForm(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.PATIENT_WITH_HIV_CHILD_INITIAL);
+        conceptTree.add(ConceptEnum._5_INITIAL_TREATMENT);
+        conceptTree.add(ConceptEnum.PATIENTS_FROM_ANOTHER_CENTER_NON_NAIVE);
+        conceptTree.add(ConceptEnum.ARV_PROTOCOL);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
+	}
+
+	public int setSexualOrientation(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.PATIENT_WITH_HIV_ADULT_INITIAL);
+        conceptTree.add(ConceptEnum.SOCIO_DEMOGRAPHIC_INFORMATION);
+        conceptTree.add(ConceptEnum.SEXUAL_ORIENTATION);
+        return recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId);
+	}
+
 	public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId) throws Exception {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value, ObsValueTypeEnum.TEXT, encounterId);
+	}
+
+	public int recordFormNumericValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, int value, Integer encounterId) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId);
 	}
 
 	public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId) throws Exception {
@@ -207,18 +255,41 @@ public class TestDataGenerator {
 	public void addPersonAttributeTextValue(int patientId, String personAttributeName, String value) throws Exception {
 		int personAttributeId = getQueryIntResult("SELECT person_attribute_type_id FROM person_attribute_type WHERE name = '" + personAttributeName + "'");
 		String queryPersonAttribute = "INSERT INTO person_attribute (person_id, value, person_attribute_type_id, creator, date_created, voided, uuid) VALUES " +
-		"(" + patientId + ", '" + value + "'," + personAttributeId + ",4,now(),0,uuid)";
+		"(" + patientId + ", '" + value + "'," + personAttributeId + ",4,now(),0,'" + generateUUID() + "')";
 		stmt.executeUpdate(queryPersonAttribute);
 	}
 
-	public int startVisit(int patientId, VisitTypeEnum visitType) throws Exception {
+	public void addPersonAttributeCodedValue(int patientId, String personAttributeName, ConceptEnum value) throws Exception {
+		int conceptId = getConceptId(value);
+		int personAttributeId = getQueryIntResult("SELECT person_attribute_type_id FROM person_attribute_type WHERE name = '" + personAttributeName + "'");
+		String queryPersonAttribute = "INSERT INTO person_attribute (person_id, value, person_attribute_type_id, creator, date_created, voided, uuid) VALUES " +
+		"(" + patientId + ", '" + conceptId + "'," + personAttributeId + ",4,now(),0,'" + generateUUID() + "')";
+		stmt.executeUpdate(queryPersonAttribute);
+	}
+
+	public void recordPersonAddress(
+		int patientId,
+		String address1,
+		String address2,
+		String address3,
+		String address4,
+		String cityVillage,
+		String stateProvince,
+		String countryDistrict,
+		String country) throws Exception {
+		String query = "INSERT INTO person_address (person_id, preferred, address1, address2, address3, address4, city_village, state_province, county_district, country, creator, date_created, voided, uuid) VALUES "+
+			"(" + patientId + ",1,'" + address1 +"','" + address2 + "','" + address3 +"','" + address4 +"','" + cityVillage +"','" + stateProvince +"','" + countryDistrict +"','" + country +"',4,now(),0,'" + generateUUID() +"')";
+		stmt.executeUpdate(query);
+	}
+
+	public int startVisit(int patientId, LocalDate dateStarted, VisitTypeEnum visitType) throws Exception {
 		String uuid = generateUUID();
 
         int visitTypeId = getQueryIntResult("SELECT visit_type_id FROM visit_type WHERE name = '" + visitType + "'");
 
 		String createQuery = "INSERT INTO visit "
 				+ "(patient_id, visit_type_id, date_started, creator, date_created, voided, uuid) VALUES"
-				+ "('" + patientId + "', " + visitTypeId + ", now(), 4, now(), 0, '" + uuid + "')";
+				+ "('" + patientId + "', " + visitTypeId + ", '" + dateStarted + "', 4, now(), 0, '" + uuid + "')";
 
 		stmt.executeUpdate(createQuery);
 
@@ -228,7 +299,21 @@ public class TestDataGenerator {
 		return encounterId;
 	}
 
-	public void enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate) throws Exception {
+	public void recordAppointment(
+		int patientId,
+		AppointmentServiceEnum service,
+		LocalDateTime startDateTime,
+		LocalDateTime endDateTime) throws Exception {
+
+		int appointmentServiceId = getQueryIntResult("SELECT appointment_service_id FROM appointment_service WHERE name ='" + service + "'");
+
+		String query = "INSERT INTO patient_appointment (appointment_number, patient_id, start_date_time, end_date_time, appointment_service_id, status, appointment_kind, date_created, creator, uuid, voided) VALUES "
+		 + "('" + generateUUID() + "'," + patientId + ",'" + startDateTime + "','" + endDateTime + "'," + appointmentServiceId + ",'Scheduled','Scheduled',now(),4,'" + generateUUID() + "',0)";
+		
+		stmt.executeUpdate(query);
+	}
+
+	public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate) throws Exception {
 		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.HIV_PROGRAM_KEY);
 
 		if (patientClinicalStage != null) {
@@ -242,6 +327,8 @@ public class TestDataGenerator {
 		if (treatmentStartDate != null) {
 			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
 		}
+
+		return patientProgramId;
 	}
 
 	public void enrollPatientIntoIndexTestingProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate notificationDate, NotificationOutcomeEnum notificationOutcome) throws Exception {
@@ -265,6 +352,35 @@ public class TestDataGenerator {
 
 		if (treatmentStartDate != null) {
 			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
+		}
+	}
+
+	public void enrollPatientIntoDefaulterProgram(
+		int patientId,
+		LocalDate enrollmentDate,
+		ConceptEnum patientClinicalStage,
+		LocalDate treatmentStartDate,
+		LocalDate trackingDate,
+		PreTrackingOutcomeEnum preTrackingOutcome,
+		TrackingOutcomeEnum trackingOutcome) throws Exception {
+
+		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.HIV_DEFAULTERS_PROGRAM_KEY);
+		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
+
+		if (treatmentStartDate != null) {
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
+		}
+
+		if (trackingDate != null) {
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_4_TRACKING_DATE", trackingDate);
+		}
+
+		if (preTrackingOutcome != null) {
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME", preTrackingOutcome.toString());
+		}
+
+		if (trackingOutcome != null) {
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME", trackingOutcome.toString());
 		}
 	}
 
@@ -301,7 +417,7 @@ public class TestDataGenerator {
 		stmt.executeUpdate(query);
 	}
 
-	private void recordProgramAttributeCodedValue(int patientProgramId, String programAttributeName, String conceptName) throws Exception {
+	public void recordProgramAttributeCodedValue(int patientProgramId, String programAttributeName, String conceptName) throws Exception {
 		int attributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = '" + programAttributeName + "'");
 		int conceptId = getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + conceptName + "'");
 		String query =  "INSERT INTO patient_program_attribute "

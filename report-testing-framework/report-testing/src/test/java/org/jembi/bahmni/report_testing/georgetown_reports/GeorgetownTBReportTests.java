@@ -47,7 +47,8 @@ public class GeorgetownTBReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2020, 1, 1),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.setHTCHivTestDate(
             patientId,
@@ -133,7 +134,8 @@ public class GeorgetownTBReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2020, 1, 1),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.setHTCHivTestDate(
             patientId,
@@ -209,7 +211,8 @@ public class GeorgetownTBReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2020, 1, 1),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.setHTCHivTestDate(
             patientId,

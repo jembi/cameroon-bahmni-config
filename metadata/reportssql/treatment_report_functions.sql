@@ -1049,3 +1049,66 @@ BEGIN
  
 END$$
 DELIMITER ;
+
+-- getARVTherapeuticLineAtInitiation
+
+DROP FUNCTION IF EXISTS getARVTherapeuticLineAtInitiation;
+
+DELIMITER $$
+CREATE FUNCTION getARVTherapeuticLineAtInitiation(
+    p_patientId INT(11)
+) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+
+    DECLARE uuiTherapeuticLine VARCHAR(38) DEFAULT "a8bc4608-eaae-4610-a842-d83d6261ea49";
+    DECLARE uuiARVProtocol VARCHAR(38) DEFAULT "cd278ad7-c9f3-4cd5-adc5-9150813ea95f";
+
+    IF (patientAgeAtHivEnrollment(p_patientId) >= 15) THEN
+        RETURN getObsCodedValue(p_patientId, uuiTherapeuticLine);
+    ELSE
+        RETURN getObsCodedValue(p_patientId, uuiARVProtocol);
+    END IF;
+ 
+END$$
+DELIMITER ;
+
+-- patientIsEligibleForVL
+
+DROP FUNCTION IF EXISTS patientIsEligibleForVL;
+
+DELIMITER $$
+CREATE FUNCTION patientIsEligibleForVL(
+    p_patientId INT(11)
+) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    RETURN
+        patientHasEnrolledIntoHivProgram(p_patientId) = "Yes" AND
+        patientIsOnARVTreatment(p_patientId) AND
+        patientIsNotDead(p_patientId) AND
+        patientIsNotLostToFollowUp(p_patientId) AND
+        patientIsNotTransferredOut(p_patientId) AND
+        (
+          (getViralLoadTestDate(p_patientId) IS NOT NULL AND timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 6 )
+          OR
+          (
+            getPatientARVStartDate(p_patientId) IS NOT NULL AND
+            timestampdiff(MONTH, getPatientARVStartDate(p_patientId), NOW()) >= 6 AND
+            (getViralLoadTestDate(p_patientId) IS NULL OR timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 6)
+            )
+          OR
+          (patientHasEnrolledInVlEacProgram(p_patientId) AND timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 3)
+          OR
+          (
+            getViralLoadTestResult(p_patientId) IS NOT NULL AND
+            getViralLoadTestResult(p_patientId) < 1000 AND
+            getViralLoadTestDate(p_patientId) IS NOT NULL AND
+            timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 12 AND
+            patientOnTreatmentForOneYear(p_patientId)
+          )
+        );
+ 
+END$$
+DELIMITER ;

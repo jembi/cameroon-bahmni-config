@@ -29,6 +29,30 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientAgeAtHivEnrollment
+
+DROP FUNCTION IF EXISTS patientAgeAtHivEnrollment;  
+
+DELIMITER $$ 
+CREATE FUNCTION patientAgeAtHivEnrollment(
+    p_patientId INT(11)) RETURNS INT(11) 
+    DETERMINISTIC 
+BEGIN 
+    DECLARE result INT (11); 
+
+    SELECT  
+        timestampdiff(YEAR, p.birthdate, pp.date_enrolled) INTO result  
+    FROM person p 
+        JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0 
+        JOIN program pro ON pp.program_id = pro.program_id AND pro.retired = 0 
+    WHERE p.person_id = p_patientId AND p.voided = 0 
+        AND pro.name = "HIV_PROGRAM_KEY"
+    GROUP BY pro.name;
+
+    RETURN (result ); 
+END$$ 
+DELIMITER ;
+
 -- patientIsPregnant
 
 DROP FUNCTION IF EXISTS patientIsPregnant;

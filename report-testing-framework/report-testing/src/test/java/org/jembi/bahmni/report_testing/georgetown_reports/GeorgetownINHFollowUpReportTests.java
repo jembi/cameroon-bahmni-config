@@ -43,7 +43,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,
@@ -119,7 +120,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,
@@ -194,7 +196,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,
@@ -308,7 +311,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,
@@ -368,7 +372,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,
@@ -419,7 +424,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         int encounterId = testDataGenerator.startVisit(
             patientId,
-            VisitTypeEnum.OPD
+            new LocalDate(2019, 12, 15),
+            VisitTypeEnum.VISIT_TYPE_OPD
         );
         testDataGenerator.orderDrug(
             patientId,

@@ -351,7 +351,7 @@ BEGIN
     WHERE pa.voided = 0
         AND pat.name = p_attributeName
         AND pa.person_id = p_patientId
-        AND cn.locale = 'fr'
+        AND cn.locale = 'en'
     LIMIT 1;
 
     RETURN result;
