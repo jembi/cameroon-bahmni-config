@@ -21,11 +21,11 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     @Test
     public void shouldDisplayReportRecordWhenHIVResultIsAvailable() throws Exception {
         // Prepare
-        int patientIdContact = testDataGenerator.createPatient(
+        int patientIdContact = testDataGenerator.registration.createPatient(
             "BAH203001", GenderEnum.MALE, new LocalDate(2000, 9, 1), "John", "Malonda", "0123456789", null);
-        int patientIdIndex = testDataGenerator.createPatient(
+        int patientIdIndex = testDataGenerator.registration.createPatient(
             "BAH203002", GenderEnum.FEMALE, new LocalDate(2004, 1, 15), "Marie", "Tambwe", null, "ART 123");
-        testDataGenerator.addRelationshipToPatient(patientIdContact, patientIdIndex, RelationshipEnum.RELATIONSHIP_PARTNER, RelationshipEnum.RELATIONSHIP_PARTNER);
+        testDataGenerator.registration.addRelationshipToPatient(patientIdContact, patientIdIndex, RelationshipEnum.RELATIONSHIP_PARTNER, RelationshipEnum.RELATIONSHIP_PARTNER);
 
         recordIndexTestingOfferAndAcceptance(patientIdIndex);
         enrollPatientToIndexAndHIVPrograms(patientIdContact);
@@ -57,9 +57,9 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     @Test
     public void shouldNotDisplayReportRecordWhenPatientIsNotAContact() throws Exception {
         // Prepare
-        int patientIdContact = testDataGenerator.createPatient(
+        int patientIdContact = testDataGenerator.registration.createPatient(
             "BAH203001", GenderEnum.MALE, new LocalDate(2000, 9, 1), "John", "Malonda", "0123456789", null);
-        int patientIdIndex = testDataGenerator.createPatient(
+        int patientIdIndex = testDataGenerator.registration.createPatient(
             "BAH203002", GenderEnum.FEMALE, new LocalDate(2004, 1, 15), "Marie", "Tambwe", null, "ART 123");
 
         recordIndexTestingOfferAndAcceptance(patientIdIndex);
@@ -77,11 +77,11 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     @Test
     public void shouldDisplayReportRecordWithoutHivTestInformationWhenHIVResultIsNotAvailable() throws Exception {
         // Prepare
-        int patientIdContact = testDataGenerator.createPatient(
+        int patientIdContact = testDataGenerator.registration.createPatient(
             "BAH203001", GenderEnum.MALE, new LocalDate(2000, 9, 1), "John", "Malonda", "0123456789", null);
-        int patientIdIndex = testDataGenerator.createPatient(
+        int patientIdIndex = testDataGenerator.registration.createPatient(
             "BAH203002", GenderEnum.FEMALE, new LocalDate(2004, 1, 15), "Marie", "Tambwe", null, "ART 123");
-        testDataGenerator.addRelationshipToPatient(patientIdContact, patientIdIndex, RelationshipEnum.RELATIONSHIP_PARTNER, RelationshipEnum.RELATIONSHIP_PARTNER);
+        testDataGenerator.registration.addRelationshipToPatient(patientIdContact, patientIdIndex, RelationshipEnum.RELATIONSHIP_PARTNER, RelationshipEnum.RELATIONSHIP_PARTNER);
 
         recordIndexTestingOfferAndAcceptance(patientIdIndex);
         enrollPatientToIndexAndHIVPrograms(patientIdContact);
@@ -110,21 +110,21 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     }
 
     private void recordIndexTestingOfferAndAcceptance(int patientId) throws Exception {
-        int encounterId = testDataGenerator.setIndexTestingOffered(patientId, new LocalDateTime(2020, 7, 10, 10,0), null);
-        testDataGenerator.setIndexTestingDateOffered(patientId, new LocalDateTime(2020, 7, 10, 10,0),  new LocalDate(2020, 7, 10), encounterId);
-        testDataGenerator.setIndexTestingAccepted(patientId, new LocalDateTime(2020, 7, 10, 10,0), encounterId);
-        testDataGenerator.setIndexTestingDateAccepted(patientId, new LocalDateTime(2020, 7, 10, 10,0), new LocalDate(2020, 7, 10), encounterId);
+        int encounterId = testDataGenerator.hivTestingAndCounsellingForm.setIndexTestingOffered(patientId, new LocalDateTime(2020, 7, 10, 10,0), null);
+        testDataGenerator.hivTestingAndCounsellingForm.setIndexTestingDateOffered(patientId, new LocalDateTime(2020, 7, 10, 10,0),  new LocalDate(2020, 7, 10), encounterId);
+        testDataGenerator.hivTestingAndCounsellingForm.setIndexTestingAccepted(patientId, new LocalDateTime(2020, 7, 10, 10,0), encounterId);
+        testDataGenerator.hivTestingAndCounsellingForm.setIndexTestingDateAccepted(patientId, new LocalDateTime(2020, 7, 10, 10,0), new LocalDate(2020, 7, 10), encounterId);
     }
 
     private void enrollPatientToIndexAndHIVPrograms(int patientId) throws Exception {
-        testDataGenerator.enrollPatientIntoIndexTestingProgram(
+        testDataGenerator.program.enrollPatientIntoIndexTestingProgram(
             patientId,
             new LocalDate(2020, 8, 1),
             ConceptEnum.NOTIFICATION_1,
             new LocalDate(2020, 8, 5),
             NotificationOutcomeEnum.ACCPETED_TESTING);
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 8, 7),
             ConceptEnum.WHO_STAGE_1,
@@ -133,7 +133,7 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     }
 
     private void recordHivTestDateAndResult(int patientId) throws Exception {
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(patientId, new LocalDateTime(2020, 8, 15, 8, 0), new LocalDate(2020, 8, 15), null);
-        testDataGenerator.setHTCFinalResult(patientId, new LocalDateTime(2020, 8, 15, 8, 0), ConceptEnum.POSITIVE, encounterIdHtc);
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(patientId, new LocalDateTime(2020, 8, 15, 8, 0), new LocalDate(2020, 8, 15), null);
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(patientId, new LocalDateTime(2020, 8, 15, 8, 0), ConceptEnum.POSITIVE, encounterIdHtc);
     }
 }

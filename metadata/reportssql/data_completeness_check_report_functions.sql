@@ -450,6 +450,34 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateLatestARVRelatedVisit
+
+DROP FUNCTION IF EXISTS getDateLatestARVRelatedVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateLatestARVRelatedVisit(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT v.date_started INTO result
+    FROM visit v
+    JOIN visit_type vt ON vt.visit_type_id = v.visit_type_id
+    WHERE v.voided = 0
+        AND v.patient_id = p_patientId
+        AND vt.name IN (
+            "VISIT_TYPE_ANC",
+            "VISIT_TYPE_ART",
+            "VISIT_TYPE_ART_DISPENSATION",
+            "VISIT_TYPE_OPD"
+        )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getNumberOfVisits
 
 DROP FUNCTION IF EXISTS getNumberOfVisits;

@@ -103,6 +103,9 @@ public class BaseReportTest {
 	}
 
 	private void cleanTestingData() throws SQLException {
+		// Remove appointments
+		executeUpdateQuery("DELETE FROM patient_appointment WHERE patient_id > 72");
+
 		// Remove patient identifiers
 		executeUpdateQuery("DELETE FROM patient_identifier WHERE patient_id > 72");
 
