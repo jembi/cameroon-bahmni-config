@@ -27,7 +27,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void patientEnrolledToHiv_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -38,13 +38,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -63,32 +63,32 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* enroll into the HIV program, including reason for consultation */
-        int patientProgramId = testDataGenerator.enrollPatientIntoHIVProgram(
+        int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
             TherapeuticLineEnum.SECOND_LINE,
             new LocalDate(2020, 1, 3)
         );
-        testDataGenerator.recordProgramAttributeCodedValue(
+        testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
             ReasonForConsultationEnum.INITIATION_OF_ART.toString());
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -98,7 +98,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 			true
         );
     
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.INH_100MG,
@@ -109,7 +109,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		);
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -119,28 +119,28 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        int encounterIdAdultHivForm = testDataGenerator.setTherapeuticLineOnInitialHivAdultForm(
+        int encounterIdAdultHivForm = testDataGenerator.hivAdultInitialForm.setTherapeuticLineOnInitialHivAdultForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record the sexual orientation */
-        testDataGenerator.setSexualOrientation(
+        testDataGenerator.hivAdultInitialForm.setSexualOrientation(
             patientId,
             new LocalDateTime(2020, 1, 8, 8, 0, 0),
             ConceptEnum.HETEROSEXUAL,
             encounterIdAdultHivForm);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2020, 1, 9, 8, 0, 0),
             new LocalDate(2020, 1, 9),
@@ -193,7 +193,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void childEnrolledToHiv_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2010, 1, 15),
@@ -204,13 +204,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -229,32 +229,32 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* enroll into the HIV program, including reason for consultation */
-        int patientProgramId = testDataGenerator.enrollPatientIntoHIVProgram(
+        int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
             TherapeuticLineEnum.SECOND_LINE,
             new LocalDate(2020, 1, 3)
         );
-        testDataGenerator.recordProgramAttributeCodedValue(
+        testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
             ReasonForConsultationEnum.INITIATION_OF_ART.toString());
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -264,7 +264,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 			true
         );
     
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.INH_100MG,
@@ -275,7 +275,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		);
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -285,28 +285,28 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        int encounterIdChildHivForm = testDataGenerator.setTherapeuticLineOnInitialHivChildForm(
+        int encounterIdChildHivForm = testDataGenerator.hivChildInitialForm.setTherapeuticLineOnInitialHivChildForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record the sexual orientation */
-        testDataGenerator.setSexualOrientation(
+        testDataGenerator.hivAdultInitialForm.setSexualOrientation(
             patientId,
             new LocalDateTime(2020, 1, 8, 8, 0, 0),
             ConceptEnum.HETEROSEXUAL,
             encounterIdChildHivForm);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2020, 1, 9, 8, 0, 0),
             new LocalDate(2020, 1, 9),
@@ -359,7 +359,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void patientWithNoKPEnrolledToHiv_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -370,13 +370,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -395,32 +395,32 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* enroll into the HIV program, including reason for consultation */
-        int patientProgramId = testDataGenerator.enrollPatientIntoHIVProgram(
+        int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
             TherapeuticLineEnum.SECOND_LINE,
             new LocalDate(2020, 1, 3)
         );
-        testDataGenerator.recordProgramAttributeCodedValue(
+        testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
             ReasonForConsultationEnum.INITIATION_OF_ART.toString());
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -430,7 +430,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 			true
         );
     
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.INH_100MG,
@@ -441,7 +441,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		);
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -451,21 +451,21 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        testDataGenerator.setTherapeuticLineOnInitialHivAdultForm(
+        testDataGenerator.hivAdultInitialForm.setTherapeuticLineOnInitialHivAdultForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2020, 1, 9, 8, 0, 0),
             new LocalDate(2020, 1, 9),
@@ -518,7 +518,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void patientEligibleForVLAndEnrolledToHiv_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -529,13 +529,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -554,32 +554,32 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* enroll into the HIV program, including reason for consultation */
-        int patientProgramId = testDataGenerator.enrollPatientIntoHIVProgram(
+        int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
             TherapeuticLineEnum.SECOND_LINE,
             new LocalDate(2020, 1, 3)
         );
-        testDataGenerator.recordProgramAttributeCodedValue(
+        testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
             ReasonForConsultationEnum.INITIATION_OF_ART.toString());
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -590,7 +590,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -600,28 +600,28 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        int encounterIdAdultHivForm = testDataGenerator.setTherapeuticLineOnInitialHivAdultForm(
+        int encounterIdAdultHivForm = testDataGenerator.hivAdultInitialForm.setTherapeuticLineOnInitialHivAdultForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record the sexual orientation */
-        testDataGenerator.setSexualOrientation(
+        testDataGenerator.hivAdultInitialForm.setSexualOrientation(
             patientId,
             new LocalDateTime(2020, 1, 8, 8, 0, 0),
             ConceptEnum.HETEROSEXUAL,
             encounterIdAdultHivForm);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2019, 1, 9, 8, 0, 0),
             new LocalDate(2019, 1, 9), // the last VL is more than 1 year old; therefore the patient is Eligible for VL
@@ -673,7 +673,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void patientNOTEnrolledToHiv_shouldNOTBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -684,13 +684,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -709,19 +709,19 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -731,7 +731,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 			true
         );
     
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.INH_100MG,
@@ -742,7 +742,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		);
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -752,28 +752,28 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        int encounterIdAdultHivForm = testDataGenerator.setTherapeuticLineOnInitialHivAdultForm(
+        int encounterIdAdultHivForm = testDataGenerator.hivAdultInitialForm.setTherapeuticLineOnInitialHivAdultForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record the sexual orientation */
-        testDataGenerator.setSexualOrientation(
+        testDataGenerator.hivAdultInitialForm.setSexualOrientation(
             patientId,
             new LocalDateTime(2020, 1, 8, 8, 0, 0),
             ConceptEnum.HETEROSEXUAL,
             encounterIdAdultHivForm);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2020, 1, 9, 8, 0, 0),
             new LocalDate(2020, 1, 9),
@@ -797,7 +797,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     public void patientNOTOnTreatmentDuringReportingPeriod_shouldNOTBeReported() throws Exception {
         // Prepare
         /* create a patient */
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -808,13 +808,13 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record profession */
-        testDataGenerator.addPersonAttributeCodedValue(
+        testDataGenerator.registration.addPersonAttributeCodedValue(
             patientId,
             PersonAttributeTypeEnum.OCCUPATION.toString(),
             ConceptEnum.PRIVATE_SECTOR_EMPLOYEE);
 
         /* record the patient address */
-        testDataGenerator.recordPersonAddress(
+        testDataGenerator.registration.recordPersonAddress(
             patientId,
             "14 BAMBI STR", // address1
             "NKUM", // address2
@@ -833,32 +833,32 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         );
 
         /* record the HIV test date and result */
-        int encounterIdHtc = testDataGenerator.setHTCHivTestDate(
+        int encounterIdHtc = testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             new LocalDate(2020, 1, 1),
             null);
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2020, 1, 1, 8, 0),
             ConceptEnum.POSITIVE,
             encounterIdHtc);
 
         /* enroll into the HIV program, including reason for consultation */
-        int patientProgramId = testDataGenerator.enrollPatientIntoHIVProgram(
+        int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
             TherapeuticLineEnum.SECOND_LINE,
             new LocalDate(2020, 1, 3)
         );
-        testDataGenerator.recordProgramAttributeCodedValue(
+        testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
             ReasonForConsultationEnum.INITIATION_OF_ART.toString());
 
         /* dispense ARV */
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.ABC_3TC_120_60MG,
@@ -868,7 +868,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 			true
         );
     
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
 			DrugNameEnum.INH_100MG,
@@ -879,7 +879,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		);
 
         /* enroll into the defaulter program, including pre-tracking and tracking outcomes */
-        testDataGenerator.enrollPatientIntoDefaulterProgram(
+        testDataGenerator.program.enrollPatientIntoDefaulterProgram(
             patientId,
             new LocalDate(2020, 2, 1),
             ConceptEnum.CALL_1,
@@ -889,28 +889,28 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
             TrackingOutcomeEnum.CALLS_NOT_PICKED_UP);
 
         /* record the therapeutic line at initiation in the initial hiv form */
-        int encounterIdAdultHivForm = testDataGenerator.setTherapeuticLineOnInitialHivAdultForm(
+        int encounterIdAdultHivForm = testDataGenerator.hivAdultInitialForm.setTherapeuticLineOnInitialHivAdultForm(
             patientId,
             new LocalDateTime(2020, 1, 7, 8, 0, 0),
             ConceptEnum.FIRST_THERAPEUTIC_LINE,
             null);
 
         /* record the sexual orientation */
-        testDataGenerator.setSexualOrientation(
+        testDataGenerator.hivAdultInitialForm.setSexualOrientation(
             patientId,
             new LocalDateTime(2020, 1, 8, 8, 0, 0),
             ConceptEnum.HETEROSEXUAL,
             encounterIdAdultHivForm);
 
         /* record an ART Dispensation appointment */
-        testDataGenerator.recordAppointment(
+        testDataGenerator.appointment.recordAppointment(
             patientId,
             AppointmentServiceEnum.ART_DISPENSARY,
             new LocalDateTime(2020, 1, 15, 8, 0, 0),
             new LocalDateTime(2020, 1, 15, 10, 0, 0));
 
         /* record VL date and result */
-        testDataGenerator.setRoutineViralLoadTestDateAndResult(
+        testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
             new LocalDateTime(2020, 1, 9, 8, 0, 0),
             new LocalDate(2020, 1, 9),

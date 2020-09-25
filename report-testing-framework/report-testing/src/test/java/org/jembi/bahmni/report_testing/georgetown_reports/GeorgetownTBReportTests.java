@@ -20,7 +20,7 @@ public class GeorgetownTBReportTests extends BaseReportTest {
     @Test
     public void patientThatIsScreenedAndTBPositive_shouldBeIncludedToTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -30,14 +30,14 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             null
         );
 
-        testDataGenerator.enrollPatientIntoTBProgram(
+        testDataGenerator.program.enrollPatientIntoTBProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.INITIAL_TREATMENT_PHASE,
             new LocalDate(2020, 1, 5)
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
@@ -50,31 +50,31 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             new LocalDate(2020, 1, 1),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.setHTCHivTestDate(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 10, 0),
             new LocalDate(2020, 1, 1),
             encounterId);
 
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId, 
             new LocalDateTime(2020, 1, 1, 10, 0),
             ConceptEnum.POSITIVE,
             encounterId);
 
-        encounterId  = testDataGenerator.setDateBaselineAssessment(
+        encounterId  = testDataGenerator.tbForm.setDateBaselineAssessment(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             new LocalDate(2020, 1, 6),
             null);
 
-        testDataGenerator.setTBScreened(
+        testDataGenerator.tbForm.setTBScreened(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.YES,
             encounterId);
         
-        testDataGenerator.setMTBConfirmation(
+        testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.MTB_BACTERIOLOGICALLY_CONFIRMED,
@@ -107,7 +107,7 @@ public class GeorgetownTBReportTests extends BaseReportTest {
     @Test
     public void patientThatIsNotScreenedAndTBPositive_shouldNotBeIncludedToTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -117,14 +117,14 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             null
         );
 
-        testDataGenerator.enrollPatientIntoTBProgram(
+        testDataGenerator.program.enrollPatientIntoTBProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.INITIAL_TREATMENT_PHASE,
             new LocalDate(2020, 1, 5)
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
@@ -137,31 +137,31 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             new LocalDate(2020, 1, 1),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.setHTCHivTestDate(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 10, 0),
             new LocalDate(2020, 1, 1),
             encounterId);
 
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId, 
             new LocalDateTime(2020, 1, 1, 10, 0),
             ConceptEnum.POSITIVE,
             encounterId);
 
-        encounterId  = testDataGenerator.setDateBaselineAssessment(
+        encounterId  = testDataGenerator.tbForm.setDateBaselineAssessment(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             new LocalDate(2020, 1, 6),
             null);
 
-        testDataGenerator.setTBScreened(
+        testDataGenerator.tbForm.setTBScreened(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.NO,
             encounterId);
         
-        testDataGenerator.setMTBConfirmation(
+        testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.MTB_BACTERIOLOGICALLY_CONFIRMED,
@@ -184,7 +184,7 @@ public class GeorgetownTBReportTests extends BaseReportTest {
     @Test
     public void patientThatIsScreenedAndTBNotPositive_shouldNotBeIncludedToTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -194,14 +194,14 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             null
         );
 
-        testDataGenerator.enrollPatientIntoTBProgram(
+        testDataGenerator.program.enrollPatientIntoTBProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.INITIAL_TREATMENT_PHASE,
             new LocalDate(2020, 1, 5)
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2020, 1, 2),
             ConceptEnum.WHO_STAGE_1,
@@ -214,31 +214,31 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             new LocalDate(2020, 1, 1),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.setHTCHivTestDate(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
             new LocalDateTime(2020, 1, 1, 10, 0),
             new LocalDate(2020, 1, 1),
             encounterId);
 
-        testDataGenerator.setHTCFinalResult(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId, 
             new LocalDateTime(2020, 1, 1, 10, 0),
             ConceptEnum.POSITIVE,
             encounterId);
 
-        encounterId  = testDataGenerator.setDateBaselineAssessment(
+        encounterId  = testDataGenerator.tbForm.setDateBaselineAssessment(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             new LocalDate(2020, 1, 6),
             null);
 
-        testDataGenerator.setTBScreened(
+        testDataGenerator.tbForm.setTBScreened(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.YES,
             encounterId);
         
-        testDataGenerator.setMTBConfirmation(
+        testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.MTB_NOT_CONFIRMED,

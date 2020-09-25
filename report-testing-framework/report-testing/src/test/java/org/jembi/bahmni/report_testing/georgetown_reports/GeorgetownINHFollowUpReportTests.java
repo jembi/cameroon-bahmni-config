@@ -23,7 +23,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWithFullINHCourseThatStartedAndEndedWithinReportingPeriod_shouldBeIncludedInTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -33,7 +33,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -46,7 +46,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -55,7 +55,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -64,7 +64,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -100,7 +100,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWithFullINHCourseThatStartedBeforeReportingPeriodAndEndedWithinReportingPeriod_shouldBeIncludedInTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -110,7 +110,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -123,7 +123,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -132,7 +132,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -141,7 +141,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -176,7 +176,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWith2FullINHCourses_shouldReportedIn2Records() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -186,7 +186,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -199,7 +199,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -208,7 +208,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -217,7 +217,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -226,7 +226,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_300MG,
@@ -235,7 +235,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_300MG,
@@ -244,7 +244,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_300MG,
@@ -291,7 +291,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWithPartialINHCourse_shouldNotBeIncludedInTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -301,7 +301,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -314,7 +314,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -323,7 +323,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             DurationUnitEnum.MONTH,
             true
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -352,7 +352,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWithFullNonDispensedINHCourse_shouldBeNotBeIncludedInTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -362,7 +362,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -375,7 +375,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,
@@ -404,7 +404,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
     @Test
     public void patientWithFullINHCourseThatIsNotCompletedByEndOfReportingPeriod_shouldNotBeIncludedInTheReport() throws Exception {
         // Prepare
-        int patientId = testDataGenerator.createPatient(
+        int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
             new LocalDate(2000, 1, 15),
@@ -414,7 +414,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             "ART 123"
         );
 
-        testDataGenerator.enrollPatientIntoHIVProgram(
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
             patientId,
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
@@ -427,7 +427,7 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             VisitTypeEnum.VISIT_TYPE_OPD
         );
-        testDataGenerator.orderDrug(
+        testDataGenerator.drug.orderDrug(
             patientId,
             encounterId,
             DrugNameEnum.INH_100MG,

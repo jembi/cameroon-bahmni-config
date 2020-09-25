@@ -20,15 +20,15 @@ public class PecgIndicator2Tests extends BaseReportTest{
 	@Test
 	public void shouldCountPatient() throws Exception {
 		// Prepare
-		int patientId = testDataGenerator.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1), "Alex", "Durin");
+		int patientId = testDataGenerator.registration.createPatient(GenderEnum.MALE, new LocalDate(2000, 9, 1), "Alex", "Durin");
 		int encounterId = testDataGenerator.startVisit(patientId, new LocalDate(2019, 8, 1), VisitTypeEnum.VISIT_TYPE_OPD);
-		testDataGenerator.enrollPatientIntoHIVProgram(
+		testDataGenerator.program.enrollPatientIntoHIVProgram(
 			patientId,
 			new LocalDate(2019, 8, 1),
 			null,
 			TherapeuticLineEnum.FIRST_LINE,
 			new LocalDate(2019, 8, 10));
-		testDataGenerator.orderDrug(
+		testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterId,
 			DrugNameEnum.ABC_3TC_120_60MG,
