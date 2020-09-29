@@ -27,6 +27,13 @@ public class TBFormDataGenerator {
         conceptTree.add(ConceptEnum.TB_FORM);
         conceptTree.add(ConceptEnum.SCREENED);
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
+	public int setTBScreeningResult(int patientId, LocalDateTime obsDateTime, ConceptEnum result, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.TB_FORM);
+        conceptTree.add(ConceptEnum.TB_STATUS);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
 	}
 
 	public int setMTBConfirmation(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {

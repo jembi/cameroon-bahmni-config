@@ -35,8 +35,6 @@ public class ProgramTestDataGenerator {
 		return patientProgramId;
     }
     
-
-
 	public void enrollPatientIntoIndexTestingProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate notificationDate, NotificationOutcomeEnum notificationOutcome) throws Exception {
 		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.INDEX_TESTING_PROGRAM_KEY);
 
@@ -49,6 +47,12 @@ public class ProgramTestDataGenerator {
 		if (notificationOutcome != null) {
 			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome.toString());
 		}
+	}
+
+	public void recordProgramOutcome(int patientProgramId, ConceptEnum outcome) throws Exception {
+		int conceptId = TestDataGenerator.getConceptId(outcome, stmt);
+		String query = "UPDATE patient_program SET outcome_concept_id = " + conceptId + " WHERE patient_program_id = " + patientProgramId;
+		stmt.executeUpdate(query);
 	}
 
 	public void enrollPatientIntoTBProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate treatmentStartDate) throws Exception {

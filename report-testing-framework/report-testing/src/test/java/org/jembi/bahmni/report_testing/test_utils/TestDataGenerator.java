@@ -23,6 +23,7 @@ public class TestDataGenerator {
 	public HivChildInitialForm hivChildInitialForm;
 	public AppointmentDataGenerator appointment;
 	public DrugDataGenerator drug;
+	public EACFormDataGenerator eacForm;
 
 	public void setStatement(Statement stmt) {
 		this.stmt = stmt;
@@ -34,6 +35,7 @@ public class TestDataGenerator {
 		hivAdultInitialForm = new HivAdultInitialForm(stmt);
 		hivChildInitialForm = new HivChildInitialForm(stmt);
 		appointment = new AppointmentDataGenerator(stmt);
+		eacForm = new EACFormDataGenerator(stmt);
 		drug = new DrugDataGenerator(stmt);
 	}
 
@@ -94,7 +96,7 @@ public class TestDataGenerator {
 
 		String createQuery = "INSERT INTO visit "
 				+ "(patient_id, visit_type_id, date_started, creator, date_created, voided, uuid) VALUES"
-				+ "('" + patientId + "', " + visitTypeId + ", '" + dateStarted + "', 4, now(), 0, '" + uuid + "')";
+				+ "('" + patientId + "', " + visitTypeId + ", '" + dateStarted + "', 4, '" + dateStarted + "', 0, '" + uuid + "')";
 
 		stmt.executeUpdate(createQuery);
 

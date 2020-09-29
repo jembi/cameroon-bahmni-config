@@ -35,7 +35,7 @@ public class PecgIndicator2Tests extends BaseReportTest{
 			new LocalDateTime(2019, 9, 1, 8, 0, 0),
 			2,
 			DurationUnitEnum.MONTH,
-			false
+			true
 		);
 
 		// Execute

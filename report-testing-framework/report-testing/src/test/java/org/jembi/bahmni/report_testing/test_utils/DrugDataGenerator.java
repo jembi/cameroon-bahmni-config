@@ -20,7 +20,7 @@ public class DrugDataGenerator {
 
 		String createOrderQuery = "INSERT INTO orders "
 				+ "(patient_id, scheduled_date, order_type_id, concept_id, orderer, encounter_id, creator, date_created, voided, uuid, urgency, order_number, order_action, care_setting) VALUES"
-				+ "(" + patientId + ",'" + startDate + "', 2," + drugConceptId + ", 2," + encounterId + ", 4,now(),0,'" + uuidOrder + "','ON_SCHEDULED_DATE','" + orderNumber + "','NEW',1)";
+				+ "(" + patientId + ",'" + startDate + "', 2," + drugConceptId + ", 2," + encounterId + ", 4,'" + startDate + "',0,'" + uuidOrder + "','ON_SCHEDULED_DATE','" + orderNumber + "','NEW',1)";
 
 		stmt.executeUpdate(createOrderQuery);
 		int orderId = TestDataGenerator.getQueryIntResult("SELECT order_id FROM orders WHERE uuid = '" + uuidOrder + "'", stmt);
