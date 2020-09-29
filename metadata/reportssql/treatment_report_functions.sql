@@ -927,7 +927,7 @@ CREATE PROCEDURE retrieveTBScreeningDateAndResult(
 
     SELECT DATE(o.date_created), cn.name INTO p_screeningDate, p_screeningStatus
     FROM obs o
-        JOIN concept_name cn ON cn.concept_id = o.value_coded
+        JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale = "en" AND cn.locale_preferred = 1
     WHERE
         o.voided = 0 AND
         o.person_id = p_patientId AND
@@ -937,6 +937,24 @@ CREATE PROCEDURE retrieveTBScreeningDateAndResult(
     LIMIT 1;
 
 END$$ 
+DELIMITER ;
+
+-- getTBScreeningStatus
+
+DROP FUNCTION IF EXISTS getTBScreeningStatus;
+
+DELIMITER $$
+CREATE FUNCTION getTBScreeningStatus(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE tbScreeningStatus VARCHAR(250);
+    DECLARE tbScreeningDate DATE;
+    
+    CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
+
+    RETURN tbScreeningStatus;
+END$$
 DELIMITER ;
 
 -- getTBScreeningStatusAtLastARVRefill

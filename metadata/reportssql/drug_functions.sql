@@ -216,6 +216,35 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDurationMostRecentArvTreatmentInMonths
+
+DROP FUNCTION IF EXISTS getDurationMostRecentArvTreatmentInMonths;
+
+DELIMITER $$
+CREATE FUNCTION getDurationMostRecentArvTreatmentInMonths(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getLocationOfArvRefill
 
 DROP FUNCTION IF EXISTS getLocationOfArvRefill;
@@ -283,7 +312,41 @@ BEGIN
 
     RETURN (result); 
 END$$ 
+DELIMITER ;
 
+-- calculateDurationInMonths
+
+DROP FUNCTION IF EXISTS calculateDurationInMonths;
+
+DELIMITER $$
+CREATE FUNCTION calculateDurationInMonths(
+    p_startDate DATE,
+    p_duration INT(11),
+    p_uuidDurationUnit VARCHAR(38)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result INT(11);
+    DECLARE uuidMinute VARCHAR(38) DEFAULT '33bc78b1-8a92-11e4-977f-0800271c1b75';
+    DECLARE uuidHour VARCHAR(38) DEFAULT 'bb62c684-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidDay VARCHAR(38) DEFAULT '9d7437a9-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidWeek VARCHAR(38) DEFAULT 'bb6436e3-3f10-11e4-adec-0800271c1b75';
+    DECLARE uuidMonth VARCHAR(38) DEFAULT 'bb655344-3f10-11e4-adec-0800271c1b75';
+
+    IF p_uuidDurationUnit = uuidMinute THEN
+        RETURN timestampdiff(MONTH, p_startDate, timestampadd(MINUTE, p_duration, p_startDate));
+    ELSEIF p_uuidDurationUnit = uuidHour THEN
+        RETURN timestampdiff(MONTH, p_startDate, timestampadd(HOUR, p_duration, p_startDate));
+    ELSEIF p_uuidDurationUnit = uuidDay THEN
+        RETURN timestampdiff(MONTH, p_startDate, timestampadd(DAY, p_duration, p_startDate));
+    ELSEIF p_uuidDurationUnit = uuidWeek THEN
+        RETURN timestampdiff(MONTH, p_startDate, timestampadd(WEEK, p_duration, p_startDate));
+    ELSEIF p_uuidDurationUnit = uuidMonth THEN
+        RETURN p_duration;
+    END IF;
+
+    RETURN (result); 
+END$$ 
 DELIMITER ; 
 
 -- getInfantARVProphylaxis
@@ -721,6 +784,7 @@ CREATE PROCEDURE retrieveRegimenSwitchARVandDate(
     IN p_startDate DATE,
     IN p_endDate DATE,
     OUT p_regimen VARCHAR(250),
+    OUT p_previousRegimen VARCHAR(250),
     OUT p_switchDate DATE
     )
     DETERMINISTIC
@@ -764,6 +828,7 @@ CREATE PROCEDURE retrieveRegimenSwitchARVandDate(
 
     SET p_regimen = currentRegimen;
     SET p_switchDate = switchDate;
+    SET p_previousRegimen = previousRegimen;
 
 END$$ 
 DELIMITER ;
@@ -781,11 +846,35 @@ CREATE FUNCTION getRegimenSwitch(
 BEGIN
 
     DECLARE regimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
     DECLARE switchDate DATE;
 
-    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, previousRegimen, switchDate);
 
     RETURN regimen;
+
+END$$
+DELIMITER ;
+
+-- getPreviousRegimen
+
+DROP FUNCTION IF EXISTS getPreviousRegimen;
+
+DELIMITER $$
+CREATE FUNCTION getPreviousRegimen(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE regimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
+    DECLARE switchDate DATE;
+
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, previousRegimen, switchDate);
+
+    RETURN previousRegimen;
 
 END$$
 DELIMITER ;
@@ -803,9 +892,10 @@ CREATE FUNCTION getRegimenSwitchDate(
 BEGIN
 
     DECLARE regimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
     DECLARE switchDate DATE;
 
-    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, switchDate);
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_startDate, p_endDate, regimen, previousRegimen, switchDate);
 
     RETURN switchDate;
 
@@ -823,8 +913,9 @@ CREATE FUNCTION getNewARVRegimenAfterDate(
     DETERMINISTIC
 BEGIN
     DECLARE regimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
     DECLARE switchDate DATE;
-    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, switchDate);
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, previousRegimen, switchDate);
 
     RETURN regimen;
 END$$
@@ -841,8 +932,9 @@ CREATE FUNCTION getDateNewARVRegimenAfterDate(
     DETERMINISTIC
 BEGIN
     DECLARE regimen VARCHAR(250);
+    DECLARE previousRegimen VARCHAR(250);
     DECLARE switchDate DATE;
-    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, switchDate);
+    CALL retrieveRegimenSwitchARVandDate(p_patientId, p_date, '2050-01-01', regimen, previousRegimen, switchDate);
 
     RETURN switchDate;
 END$$
@@ -977,3 +1069,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+-- patientHasBeenPrescribedDrug
+
+DROP FUNCTION IF EXISTS patientHasBeenPrescribedDrug;
+
+DELIMITER $$
+CREATE FUNCTION patientHasBeenPrescribedDrug(
+    p_patientId INT(11),
+    p_drugName VARCHAR(250),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.voided = 0
+        AND o.patient_id = p_patientId
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND d.name LIKE CONCAT("%",p_drugName,"%")
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
