@@ -95,7 +95,7 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
             ConceptEnum.PATIENT_REFUSED,
             encounterId);
 
-             // Execute
+        // Execute
         String query = readReportQuery(ReportEnum.GEORGETOWN_PCR_REPORT, "georgetownPcrReport.sql",
                 new LocalDate(2020, 1, 1), new LocalDate(2020, 1, 31));
         List<Map<String, Object>> result = getReportResult(query);

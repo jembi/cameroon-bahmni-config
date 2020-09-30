@@ -1415,6 +1415,24 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientEligibleForHIVTesting
+
+DROP FUNCTION IF EXISTS patientEligibleForHIVTesting;
+
+DELIMITER $$
+CREATE FUNCTION patientEligibleForHIVTesting(
+    p_patientId INT(11)) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+    RETURN
+        IF (
+            getObsCodedValue(p_patientId, "5b2e5a44-b55b-4436-9948-67143841ee27") IS NOT NULL
+            OR patientIsPregnant(p_patientId)
+            OR getObsCodedValue(p_patientId, "44861d4c-de67-4368-b5cf-279b754e5343") IS NOT NULL
+        ,"Yes","No");
+END$$
+DELIMITER ;
+
 -- patientHadAPositiveVirologicHIVTestResultDuringReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadAPositiveVirologicHIVTestResultDuringReportingPeriod;  
