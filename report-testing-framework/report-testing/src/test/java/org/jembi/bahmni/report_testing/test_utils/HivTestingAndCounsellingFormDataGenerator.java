@@ -30,7 +30,31 @@ public class HivTestingAndCounsellingFormDataGenerator {
         conceptTree.add(ConceptEnum.FINAL_TEST_RESULT);
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, testResult, encounterId, stmt);
     }
-    
+
+    public int recordHTCResult(int patientId, LocalDateTime obsDateTime, ConceptEnum result, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.HTC_RESULT);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
+    }
+
+    public int recordStartTreatment(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.START_TREATMENT);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
+    public int recordReasonForNotStartingATreatment(int patientId, LocalDateTime obsDateTime, ConceptEnum reason, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.REASON_FOR_NOT_STARTING_TREATMENT);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, reason, encounterId, stmt);
+    }
+
 	public int setIndexTestingOffered(int patientId, LocalDateTime obsDateTime, Integer encounterId) throws Exception {
 		List<ConceptEnum> conceptTreeOfferedIndexTesting= new ArrayList<ConceptEnum>();
         conceptTreeOfferedIndexTesting.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);

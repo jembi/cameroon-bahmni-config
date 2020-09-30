@@ -85,7 +85,8 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
-            ReasonForConsultationEnum.INITIATION_OF_ART.toString());
+            ReasonForConsultationEnum.INITIATION_OF_ART.toString(),
+            new LocalDate(2020, 1, 2));
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(
@@ -251,7 +252,8 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
-            ReasonForConsultationEnum.INITIATION_OF_ART.toString());
+            ReasonForConsultationEnum.INITIATION_OF_ART.toString(),
+            new LocalDate(2020, 1, 2));
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(
@@ -417,7 +419,8 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
-            ReasonForConsultationEnum.INITIATION_OF_ART.toString());
+            ReasonForConsultationEnum.INITIATION_OF_ART.toString(),
+            new LocalDate(2020, 1, 2));
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(
@@ -576,7 +579,8 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
-            ReasonForConsultationEnum.INITIATION_OF_ART.toString());
+            ReasonForConsultationEnum.INITIATION_OF_ART.toString(),
+            new LocalDate(2020, 1, 2));
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(
@@ -855,7 +859,8 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramAttributeCodedValue(
             patientProgramId,
             "PROGRAM_MANAGEMENT_5_PATIENT_STAGE",
-            ReasonForConsultationEnum.INITIATION_OF_ART.toString());
+            ReasonForConsultationEnum.INITIATION_OF_ART.toString(),
+            new LocalDate(2020, 1, 2));
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(

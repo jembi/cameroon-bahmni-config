@@ -28,5 +28,20 @@ public class ManualLabAndResultFormDataGenerator {
 
         int encounterIdVL = TestDataGenerator.recordFormNumericValue(patientId, obsDateTime, conceptTreeVL, testResult, encounterId, stmt);
         return TestDataGenerator.recordFormDatetimeValue(patientId, obsDateTime, conceptTreeVLTestDate, testDate, encounterIdVL, stmt);
-	}
+    }
+    
+    public int recordPcrAlerQTestDateAndResult(int patientId, LocalDateTime obsDateTime, LocalDate testDate, ConceptEnum testResult, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTreePCR = new ArrayList<ConceptEnum>();
+        conceptTreePCR.add(ConceptEnum.LAB_RESULT_ADD_MANUALLY);
+		conceptTreePCR.add(ConceptEnum.HAEMATOLOGY_DEPT_FORM);
+		
+		List<ConceptEnum> conceptTreePCRTestDate = new ArrayList<ConceptEnum>();
+		conceptTreePCRTestDate.addAll(conceptTreePCR);
+
+		conceptTreePCR.add(ConceptEnum.PCR_ALERE_Q);
+		conceptTreePCRTestDate.add(ConceptEnum.PCR_ALERE_Q_TEST_DATE);
+
+        int encounterIdPCR = TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTreePCR, testResult, encounterId, stmt);
+        return TestDataGenerator.recordFormDatetimeValue(patientId, obsDateTime, conceptTreePCRTestDate, testDate, encounterIdPCR, stmt);
+    }
 }

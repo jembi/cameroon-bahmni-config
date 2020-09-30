@@ -25,11 +25,11 @@ public class ProgramTestDataGenerator {
 		}
 
 		if (therapeuticLine != null) {
-			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE", therapeuticLine.toString());
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE", therapeuticLine.toString(), enrollmentDate);
 		}
 
 		if (treatmentStartDate != null) {
-			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate, enrollmentDate);
 		}
 
 		return patientProgramId;
@@ -41,11 +41,11 @@ public class ProgramTestDataGenerator {
 		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
 
 		if (notificationDate != null) {
-			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", notificationDate);
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", notificationDate, enrollmentDate);
 		}
 
 		if (notificationOutcome != null) {
-			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome.toString());
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome.toString(), enrollmentDate);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class ProgramTestDataGenerator {
 		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
 
 		if (treatmentStartDate != null) {
-			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate, enrollmentDate);
 		}
 	}
 
@@ -78,19 +78,19 @@ public class ProgramTestDataGenerator {
 		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
 
 		if (treatmentStartDate != null) {
-			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate);
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate, enrollmentDate);
 		}
 
 		if (trackingDate != null) {
-			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_4_TRACKING_DATE", trackingDate);
+			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_4_TRACKING_DATE", trackingDate, enrollmentDate);
 		}
 
 		if (preTrackingOutcome != null) {
-			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME", preTrackingOutcome.toString());
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_PRETRACKING_OUTCOME", preTrackingOutcome.toString(), enrollmentDate);
 		}
 
 		if (trackingOutcome != null) {
-			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME", trackingOutcome.toString());
+			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_6_TRACKING_OUTCOME", trackingOutcome.toString(), enrollmentDate);
 		}
 	}
 
@@ -119,20 +119,20 @@ public class ProgramTestDataGenerator {
 
 	}
 
-	private void recordProgramAttributeDateValue(int patientProgramId, String programAttributeName, LocalDate value) throws Exception {
+	private void recordProgramAttributeDateValue(int patientProgramId, String programAttributeName, LocalDate value, LocalDate dateCreated) throws Exception {
 		int attributeTypeId = TestDataGenerator.getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = '" + programAttributeName + "'", stmt);
 		String query =  "INSERT INTO patient_program_attribute "
 		+ "(patient_program_id, attribute_type_id, value_reference, creator, date_created, voided, uuid) VALUES"
-		+ "(" + patientProgramId + "," + attributeTypeId + ",'" + value + "', 4, now(), 0, '" + TestDataGenerator.generateUUID() + "')";
+		+ "(" + patientProgramId + "," + attributeTypeId + ",'" + value + "', 4, '" + dateCreated + "', 0, '" + TestDataGenerator.generateUUID() + "')";
 		stmt.executeUpdate(query);
 	}
 
-	public void recordProgramAttributeCodedValue(int patientProgramId, String programAttributeName, String conceptName) throws Exception {
+	public void recordProgramAttributeCodedValue(int patientProgramId, String programAttributeName, String conceptName, LocalDate dateCreated) throws Exception {
 		int attributeTypeId = TestDataGenerator.getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = '" + programAttributeName + "'", stmt);
 		int conceptId = TestDataGenerator.getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + conceptName + "'", stmt);
 		String query =  "INSERT INTO patient_program_attribute "
 		+ "(patient_program_id, attribute_type_id, value_reference, creator, date_created, voided, uuid) VALUES"
-		+ "(" + patientProgramId + "," + attributeTypeId + "," + conceptId + ", 4, now(), 0, '" + TestDataGenerator.generateUUID() + "')";
+		+ "(" + patientProgramId + "," + attributeTypeId + "," + conceptId + ", 4, '" + dateCreated + "', 0, '" + TestDataGenerator.generateUUID() + "')";
 		stmt.executeUpdate(query);
 	}
 }

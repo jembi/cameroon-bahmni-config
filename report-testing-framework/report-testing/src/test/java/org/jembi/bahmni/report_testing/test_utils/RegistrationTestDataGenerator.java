@@ -48,25 +48,25 @@ public class RegistrationTestDataGenerator {
     public int createPatient(String uniqueId, GenderEnum gender, LocalDate dateOfBirth,String firstName, String familyName, String telephone, String artCode) throws Exception {
         int patientId = createPatient(gender, dateOfBirth, firstName, familyName);
 
-        addPatientIdentifier(patientId, PatientIdenfierTypeEnum.BAHMNI_IDENTIFIER, uniqueId);
+        addPatientIdentifier(patientId, PatientIdenfierTypeEnum.BAHMNI_IDENTIFIER, uniqueId, true);
 
         if (telephone != null) {
             addPersonAttributeTextValue(patientId, "PERSON_ATTRIBUTE_TYPE_PHONE_NUMBER", telephone);
         }
 
         if (artCode != null) {
-            addPatientIdentifier(patientId, PatientIdenfierTypeEnum.ART, artCode);
+            addPatientIdentifier(patientId, PatientIdenfierTypeEnum.ART, artCode, false);
         }
 
         return patientId;
     }
 
 
-    private void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value) throws Exception {
+    private void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
         int identifierTypeId = TestDataGenerator.getQueryIntResult("SELECT patient_identifier_type_id FROM patient_identifier_type WHERE name = '" + identifierType +"'", stmt);
         String queryPatientIdentifer = "INSERT INTO patient_identifier " +
             "(patient_id, identifier, identifier_type, preferred, creator, date_created, voided, uuid) VALUES " +
-            "(" + patientId + ",'" + value + "'," + identifierTypeId + ",1,4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
+            "(" + patientId + ",'" + value + "'," + identifierTypeId + "," + (preferred ? 1:0) + ",4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
         stmt.executeUpdate(queryPatientIdentifer);
     }
 
