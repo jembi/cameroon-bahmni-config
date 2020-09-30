@@ -47,6 +47,37 @@ public class HivTestingAndCounsellingFormDataGenerator {
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
     }
 
+    public int recordPreTestCounseling(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.HTC_PRE_TEST_COUNSELING_SET);
+        conceptTree.add(ConceptEnum.PRE_TEST_COUNSELING);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
+    public int recordTestingEntryPointAndModality(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.TESTING_ENTRY_POINT_AND_MODALITY);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
+    public int recordPregnancy(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.REASON_FOR_TEST);
+        conceptTree.add(ConceptEnum.PREGNANCY);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
+    public int recordRiskGroup(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.HTC_PRE_TEST_COUNSELING_SET);
+        conceptTree.add(ConceptEnum.RISK_GROUP);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+    }
+
     public int recordReasonForNotStartingATreatment(int patientId, LocalDateTime obsDateTime, ConceptEnum reason, Integer encounterId) throws Exception {
 		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
         conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
