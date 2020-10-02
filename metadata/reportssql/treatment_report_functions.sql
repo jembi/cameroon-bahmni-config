@@ -1130,3 +1130,42 @@ BEGIN
  
 END$$
 DELIMITER ;
+
+-- getDateOfVLEligibility
+
+DROP FUNCTION IF EXISTS getDateOfVLEligibility;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfVLEligibility(
+    p_patientId INT(11)
+) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE dateOfLastVLExam DATE DEFAULT getViralLoadTestDate(p_patientId);
+    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce"));
+    DECLARE eacProgramStartDate DATE DEFAULT getMostRecentProgramEnrollmentDate(p_patientId, "VL_EAC_PROGRAM_KEY");
+    DECLARE eacProgramEndDate DATE DEFAULT getMostRecentProgramCompletionDate(p_patientId, "VL_EAC_PROGRAM_KEY");
+
+    IF (patientOnTreatmentForOneYear(p_patientId) AND getViralLoadTestResult(p_patientId) < 1000) THEN
+        RETURN timestampadd(YEAR, 1, dateOfLastVLExam);
+    END IF;
+
+    IF (dateOfLastVLExam IS NOT NULL) THEN
+        IF (
+            (eacProgramEndDate IS NOT NULL AND dateOfLastVLExam BETWEEN eacProgramStartDate AND eacProgramEndDate)
+            OR (eacProgramEndDate IS NULL AND dateOfLastVLExam >= eacProgramStartDate)
+         ) THEN
+            RETURN timestampadd(MONTH, 3, dateOfLastVLExam);
+        ELSE
+            RETURN timestampadd(MONTH, 6, dateOfLastVLExam);
+        END IF;
+    END IF;
+
+    IF (initiationDate IS NOT NULL) THEN
+        RETURN timestampadd(MONTH, 6, initiationDate);
+    END IF;
+
+    RETURN NULL;
+
+END$$
+DELIMITER ;

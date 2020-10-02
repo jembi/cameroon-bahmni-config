@@ -1979,3 +1979,22 @@ BEGIN
     END IF;
 END$$
 DELIMITER ;
+
+-- getDateVLResultGivenToPatient
+
+DROP FUNCTION IF EXISTS getDateVLResultGivenToPatient;
+
+DELIMITER $$
+CREATE FUNCTION getDateVLResultGivenToPatient(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE DEFAULT getViralLoadTestDate(p_patientId);
+    
+    IF (testDate IS NOT NULL) THEN
+        RETURN getDateOfNextVisit(p_patientId, testDate);
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
