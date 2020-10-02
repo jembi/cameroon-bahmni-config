@@ -27,6 +27,58 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getMostRecentProgramEnrollmentDate
+
+DROP FUNCTION IF EXISTS getMostRecentProgramEnrollmentDate;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentProgramEnrollmentDate(
+    p_patientId INT(11),
+    p_program VARCHAR(250)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT
+        pp.date_enrolled INTO result
+    FROM patient_program pp
+        JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE pp.patient_id = p_patientId
+        AND pp.voided = 0
+        AND pro.name = p_program
+    ORDER BY pp.date_enrolled DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getMostRecentProgramCompletionDate
+
+DROP FUNCTION IF EXISTS getMostRecentProgramCompletionDate;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentProgramCompletionDate(
+    p_patientId INT(11),
+    p_program VARCHAR(250)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT
+        pp.date_completed INTO result
+    FROM patient_program pp
+        JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE pp.patient_id = p_patientId
+        AND pp.voided = 0
+        AND pro.name = p_program
+    ORDER BY pp.date_completed DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientHasEnrolledIntoHivProgramDuringOrBeforeReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHasEnrolledIntoHivProgramDuringOrBeforeReportingPeriod;

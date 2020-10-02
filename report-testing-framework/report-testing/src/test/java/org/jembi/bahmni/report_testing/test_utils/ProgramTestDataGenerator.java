@@ -49,9 +49,11 @@ public class ProgramTestDataGenerator {
 		}
 	}
 
-	public void recordProgramOutcome(int patientProgramId, ConceptEnum outcome) throws Exception {
+	public void recordProgramOutcome(int patientProgramId, ConceptEnum outcome, LocalDate dateCompleted) throws Exception {
 		int conceptId = TestDataGenerator.getConceptId(outcome, stmt);
-		String query = "UPDATE patient_program SET outcome_concept_id = " + conceptId + " WHERE patient_program_id = " + patientProgramId;
+		String stringDateCompleted = dateCompleted != null ? "'" + dateCompleted + "'" : "NOW()";
+		String query = "UPDATE patient_program SET outcome_concept_id = " + conceptId + ", date_completed = " + stringDateCompleted + " " +
+			"WHERE patient_program_id = " + patientProgramId + "";
 		stmt.executeUpdate(query);
 	}
 
@@ -63,6 +65,13 @@ public class ProgramTestDataGenerator {
 		if (treatmentStartDate != null) {
 			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate, enrollmentDate);
 		}
+	}
+
+	public int enrollPatientIntoEACProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage) throws Exception {
+		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.VL_EAC_PROGRAM_KEY);
+
+		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
+		return patientProgramId;
 	}
 
 	public void enrollPatientIntoDefaulterProgram(

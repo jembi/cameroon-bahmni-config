@@ -41,7 +41,7 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(patientId,
                 new LocalDate(2020, 1, 3), ConceptEnum.WHO_STAGE_1, TherapeuticLineEnum.FIRST_LINE,
                 new LocalDate(2020, 1, 4));
-        testDataGenerator.program.recordProgramOutcome(patientProgramId, ConceptEnum.REFUSED_STOPPED_TREATMENT);
+        testDataGenerator.program.recordProgramOutcome(patientProgramId, ConceptEnum.REFUSED_STOPPED_TREATMENT, null);
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(patientId, encounterIdOpdVisit, DrugNameEnum.ABC_3TC_120_60MG,
@@ -117,7 +117,7 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         int patientProgramId = testDataGenerator.program.enrollPatientIntoHIVProgram(patientId,
                 new LocalDate(2020, 1, 3), ConceptEnum.WHO_STAGE_1, TherapeuticLineEnum.FIRST_LINE,
                 new LocalDate(2020, 1, 4));
-        testDataGenerator.program.recordProgramOutcome(patientProgramId, ConceptEnum.REFUSED_STOPPED_TREATMENT);
+        testDataGenerator.program.recordProgramOutcome(patientProgramId, ConceptEnum.REFUSED_STOPPED_TREATMENT, null);
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(patientId, encounterIdOpdVisit, DrugNameEnum.ABC_3TC_120_60MG,

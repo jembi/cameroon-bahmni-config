@@ -157,3 +157,29 @@ BEGIN
     RETURN result;
 END$$
 DELIMITER ;
+
+-- getDateOfNextVisit
+
+DROP FUNCTION IF EXISTS getDateOfNextVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfNextVisit(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT v.date_started INTO result
+    FROM visit v
+        JOIN visit_type vt ON vt.visit_type_id = v.visit_type_id AND vt.name = "VISIT_TYPE_OPD" AND vt.retired = 0
+    WHERE v.voided = 0
+        AND v.patient_id = p_patientId
+        AND v.date_started > p_date
+    ORDER BY v.date_started ASC
+    LIMIT 1;
+
+    RETURN result;
+
+END$$
+DELIMITER ;
