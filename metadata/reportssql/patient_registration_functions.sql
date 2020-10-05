@@ -589,13 +589,36 @@ DROP FUNCTION IF EXISTS getPatientAgeInMonthsAtDate;
 DELIMITER $$
 CREATE FUNCTION getPatientAgeInMonthsAtDate(
     p_patientId INT(11),
-    p_date DATE) RETURNS VARCHAR(50)
+    p_date DATE) RETURNS INT(11)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(50);
+    DECLARE result VARCHAR(11);
 
     SELECT 
         timestampdiff(MONTH, p.birthdate, p_date) INTO result 
+    FROM person p 
+    WHERE p.voided = 0
+        AND p.person_id = p_patientId
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getPatientAgeInYearsAtDate
+
+DROP FUNCTION IF EXISTS getPatientAgeInYearsAtDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientAgeInYearsAtDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT 
+        timestampdiff(YEAR, p.birthdate, p_date) INTO result 
     FROM person p 
     WHERE p.voided = 0
         AND p.person_id = p_patientId

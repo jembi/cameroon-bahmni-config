@@ -1998,3 +1998,27 @@ BEGIN
     END IF;
 END$$
 DELIMITER ;
+
+-- getDateFirstANCVisit
+
+DROP FUNCTION IF EXISTS getDateFirstANCVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateFirstANCVisit(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidServices VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
+
+    SELECT o.obs_datetime INTO result
+    FROM obs o
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidServices)
+    ORDER BY o.obs_datetime ASC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
