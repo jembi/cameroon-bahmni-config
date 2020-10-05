@@ -6,6 +6,7 @@ import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.PatientIdenfierTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.RelationshipEnum;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 public class RegistrationTestDataGenerator {
@@ -62,7 +63,7 @@ public class RegistrationTestDataGenerator {
     }
 
 
-    private void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
+    public void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
         int identifierTypeId = TestDataGenerator.getQueryIntResult("SELECT patient_identifier_type_id FROM patient_identifier_type WHERE name = '" + identifierType +"'", stmt);
         String queryPatientIdentifer = "INSERT INTO patient_identifier " +
             "(patient_id, identifier, identifier_type, preferred, creator, date_created, voided, uuid) VALUES " +
@@ -105,6 +106,14 @@ public class RegistrationTestDataGenerator {
         String country) throws Exception {
         String query = "INSERT INTO person_address (person_id, preferred, address1, address2, address3, address4, city_village, state_province, county_district, country, creator, date_created, voided, uuid) VALUES "+
             "(" + patientId + ",1,'" + address1 +"','" + address2 + "','" + address3 +"','" + address4 +"','" + cityVillage +"','" + stateProvince +"','" + countryDistrict +"','" + country +"',4,now(),0,'" + TestDataGenerator.generateUUID() +"')";
+        stmt.executeUpdate(query);
+    }
+
+    public void recordServiceTypeRequested(int patientId, ConceptEnum service, LocalDate visitDate) throws Exception {
+        int servicesConceptId = TestDataGenerator.getConceptId(ConceptEnum.SERVICES, stmt);
+        int serviceConceptId = TestDataGenerator.getConceptId(service, stmt);
+        String query = "INSERT INTO obs (person_id, concept_id, obs_datetime, value_coded, creator, date_created, voided, status, uuid) VALUES " + 
+        "(" + patientId + "," + servicesConceptId + ",'" + visitDate + "'," + serviceConceptId + ",4,'" + visitDate + "',0,'FINAL','" + TestDataGenerator.generateUUID() + "')";
         stmt.executeUpdate(query);
     }
 }

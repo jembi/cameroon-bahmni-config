@@ -24,6 +24,7 @@ public class TestDataGenerator {
 	public AppointmentDataGenerator appointment;
 	public DrugDataGenerator drug;
 	public EACFormDataGenerator eacForm;
+	public AncInitialFormDataGenerator ancInitialForm;
 
 	public void setStatement(Statement stmt) {
 		this.stmt = stmt;
@@ -37,6 +38,7 @@ public class TestDataGenerator {
 		appointment = new AppointmentDataGenerator(stmt);
 		eacForm = new EACFormDataGenerator(stmt);
 		drug = new DrugDataGenerator(stmt);
+		ancInitialForm = new AncInitialFormDataGenerator(stmt);
 	}
 
 	static public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId, Statement stmt) throws Exception {

@@ -106,7 +106,7 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203002");
         assertEquals(result.get(0).get("nameOfTheChild"), "Tambwe Junior");
         assertEquals(result.get(0).get("dateOfBirth"), "2015-10-01");
-        assertEquals(result.get(0).get("ageInMonths"), Months.monthsBetween(new LocalDate(2015, 10, 01), LocalDate.now()).getMonths() + "");
+        assertEquals(result.get(0).get("ageInMonths"), Months.monthsBetween(new LocalDate(2015, 10, 01), LocalDate.now()).getMonths());
         assertEquals(result.get(0).get("mothersName"), "Tambwe Marie");
         assertEquals(result.get(0).get("mothersAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("mothersContact"), "081234567");
@@ -221,7 +221,7 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203002");
         assertEquals(result.get(0).get("nameOfTheChild"), "Tambwe Junior");
         assertEquals(result.get(0).get("dateOfBirth"), "2015-10-01");
-        assertEquals(result.get(0).get("ageInMonths"), Months.monthsBetween(new LocalDate(2015, 10, 01), LocalDate.now()).getMonths() + "");
+        assertEquals(result.get(0).get("ageInMonths"), Months.monthsBetween(new LocalDate(2015, 10, 01), LocalDate.now()).getMonths());
         assertEquals(result.get(0).get("mothersName"), "Tambwe Marie");
         assertEquals(result.get(0).get("mothersAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("mothersContact"), "081234567");
@@ -234,7 +234,7 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
         assertEquals(result.get(1).get("uniquePatientId"), "BAH203003");
         assertEquals(result.get(1).get("nameOfTheChild"), "Tambwe Eva");
         assertEquals(result.get(1).get("dateOfBirth"), "2018-01-01");
-        assertEquals(result.get(1).get("ageInMonths"), Months.monthsBetween(new LocalDate(2018, 01, 01), LocalDate.now()).getMonths() + "");
+        assertEquals(result.get(1).get("ageInMonths"), Months.monthsBetween(new LocalDate(2018, 01, 01), LocalDate.now()).getMonths());
         assertEquals(result.get(1).get("mothersName"), "Tambwe Marie");
         assertEquals(result.get(1).get("mothersAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(1).get("mothersContact"), "081234567");
