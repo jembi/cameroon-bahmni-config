@@ -2009,16 +2009,19 @@ CREATE FUNCTION getDateFirstANCVisit(
     DETERMINISTIC
 BEGIN
     DECLARE result DATE;
-    DECLARE uuidServices VARCHAR(38) DEFAULT "9818d68b-6cc9-4a37-8e11-0d29389c4b9b";
-
-    SELECT o.obs_datetime INTO result
+    DECLARE uuiddateOfANC1 VARCHAR(38) DEFAULT "57d91463-1b95-4e4d-9448-ee4e88c53cb9";
+    
+    SELECT
+        o.value_datetime INTO result
     FROM obs o
-    WHERE o.voided = 0
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0 
         AND o.person_id = p_patientId
-        AND o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidServices)
-    ORDER BY o.obs_datetime ASC
+        AND c.uuid = uuiddateOfANC1
+    ORDER BY o.date_created DESC
     LIMIT 1;
 
-    RETURN result;
+    RETURN (result);
 END$$
 DELIMITER ;
+
