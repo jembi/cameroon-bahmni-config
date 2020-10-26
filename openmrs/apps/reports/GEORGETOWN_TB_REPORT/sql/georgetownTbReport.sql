@@ -7,7 +7,7 @@ SELECT
     getPatientPhoneNumber(p.patient_id) as "telephone",
     getDateTBPosDiagnose(p.patient_id) as "dateTBPosDiag",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
-    getPatientHIVTestDate(p.patient_id) as "dateOfHivTesting",
+    getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "dateOfHivTesting",
     getHIVResult(p.patient_id,"2000-01-01","2100-01-01") as "hivTestingResult",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "dateOfInitiation"
 FROM patient p, (SELECT @a:= 0) AS a
