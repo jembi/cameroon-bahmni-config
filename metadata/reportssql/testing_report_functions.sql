@@ -1928,7 +1928,8 @@ BEGIN
     WHERE o.voided = 0 AND
         o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidMTBConfirmation) AND
         o.value_coded = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidBacteriologicallyConfirmed)
-    ORDER BY o.date_created DESC;
+    ORDER BY o.date_created DESC
+    LIMIT 1;
 
     IF (encounterId IS NULL) THEN
         RETURN NULL;
