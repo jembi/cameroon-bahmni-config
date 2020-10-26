@@ -1635,7 +1635,7 @@
         }
     },
     "georgetownPatientInformationReport": {
-        "name": "Georgetown Patient Information Report",
+        "name": "Georgetown HIV Patient Information Report",
         "type": "concatenated",
         "config": {
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PATIENT_INFORMATION_REPORT/template/georgetownPatientInformationReport.xls",
