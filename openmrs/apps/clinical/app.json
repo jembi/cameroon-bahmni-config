@@ -354,6 +354,9 @@
             "Appointment date": {
                 "allowFutureDates": true
             },
+            "Expected Date of Delivery": {
+                "allowFutureDates": true
+            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [

@@ -22,4 +22,5 @@ SELECT
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
   p.voided = 0
-  AND getObsDatetimeValue(p.patient_id, "57d91463-1b95-4e4d-9448-ee4e88c53cb9") IS NOT NULL;
+  AND getObsDatetimeValue(p.patient_id, "57d91463-1b95-4e4d-9448-ee4e88c53cb9") IS NOT NULL
+  AND getDateFirstANCVisit(p.patient_id) BETWEEN "#startDate#" AND "#endDate#";
