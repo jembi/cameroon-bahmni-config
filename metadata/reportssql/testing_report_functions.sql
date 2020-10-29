@@ -1743,6 +1743,76 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getTestingEntryPointWithinRepPeriod
+
+DROP FUNCTION IF EXISTS getTestingEntryPointWithinRepPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestingEntryPointWithinRepPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    DECLARE uuidTestingEntryPoint VARCHAR(38) DEFAULT "bc43179d-00b4-4712-a5d6-4dabd4230888";
+
+    SELECT
+        cn.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidTestingEntryPoint
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- wasHIVTestDoneInANCVisitWithinRepPeriod
+
+DROP FUNCTION IF EXISTS wasHIVTestDoneInANCVisitWithinRepPeriod;
+
+DELIMITER $$
+CREATE FUNCTION wasHIVTestDoneInANCVisitWithinRepPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    DECLARE hivTestDateUuid VARCHAR(38) DEFAULT 'c6c08cdc-18dc-4f42-809c-959621bc9a6c';
+    DECLARE priorAncVisitUuid VARCHAR(38) DEFAULT '130e05df-8283-453b-a611-d4f884fac8e0';
+    DECLARE atAncVisitUuid VARCHAR(38) DEFAULT 'd6cc3709-ffa0-42eb-b388-d7def4df30cf';
+
+    SELECT TRUE INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.value_datetime IS NOT NULL
+        AND c.uuid = hivTestDateUuid
+        AND o.person_id = p_patientId
+        AND 
+            (
+                SELECT concept.uuid
+                FROM obs
+                    JOIN concept ON obs.concept_id = concept.concept_id
+                WHERE obs.voided = 0
+                    AND obs.obs_id = o.obs_group_id
+                LIMIT 1
+            ) IN (priorAncVisitUuid, atAncVisitUuid)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientHadActiveVLTestLessThanAMonthAgoWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadActiveVLTestLessThanAMonthAgoWithinReportingPeriod;
