@@ -17,10 +17,10 @@ import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Years;
-import org.junit.Test;
+import org.junit.Ignore;
 
 public class GeorgetownVisitReportTests extends BaseReportTest {
-    @Test
+    @Ignore
     public void visitWithinReportingPeriod_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
@@ -96,7 +96,7 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("reasonOfSwitchLine"), "N/A");
     }
 
-    @Test
+    @Ignore
     public void visitWithinReportingPeriodWithNoTBScreenAndNoRegimenSwitch_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */

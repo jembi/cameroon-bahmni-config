@@ -17,6 +17,7 @@ SELECT
     getHIVResult(v.patient_id, "2000-01-01", "2100-01-01") as "patientStatus",
     getPatientMostRecentProgramAttributeCodedValue(v.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "treatmentLine",
     getDurationMostRecentArvTreatmentInMonths(v.patient_id, "2000-01-01", "2100-01-01") as "numberOfMonthsDispensed",
+    getUnderAMonthDurationMostRecentArvTreatmentInDays(v.patient_id, "2000-01-01", "2100-01-01") as "numberOfDaysDispensed",
     getPatientMostRecentProgramOutcome(v.patient_id, "en", "HIV_PROGRAM_KEY") as "previousOutcome",
     getPreviousRegimen(v.patient_id, "2000-01-01", "2100-01-01") as "previousRegimen",
     IF(getPreviousRegimen(v.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL, "Yes", "No") as "switchedLine",
