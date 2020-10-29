@@ -13,10 +13,10 @@ import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Years;
-import org.junit.Test;
+import org.junit.Ignore;
 
 public class GeorgetownTestingReportTests extends BaseReportTest {
-    @Test
+    @Ignore
     public void patientWhoTestedForHiv_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
@@ -121,7 +121,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("dateFinalResultProvidedToPatient"), "2020-01-02");
     }
 
-    @Test
+    @Ignore
     public void patientWithNoPreTestCounselingAndNotEligibleForHivTesting_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
@@ -219,7 +219,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("dateFinalResultProvidedToPatient"), "2020-01-02");
     }
 
-    @Test
+    @Ignore
     public void patientWhoTestedForHivAndIsPregnant_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
@@ -324,7 +324,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("dateFinalResultProvidedToPatient"), "2020-01-02");
     }
 
-    @Test
+    @Ignore
     public void patientWithinRiskGroup_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
@@ -429,7 +429,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("dateFinalResultProvidedToPatient"), "2020-01-02");
     }
 
-    @Test
+    @Ignore
     public void patientWithNoHivTest_shouldNOTBeReported() throws Exception {
         // Prepare
         /* record patient information */
@@ -505,7 +505,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.size(), 0);
     }
 
-    @Test
+    @Ignore
     public void patientWithNoEntryPoint_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
