@@ -211,7 +211,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("result"), "Positive");
         assertEquals(result.get(0).get("dateOfArtInitiation"), "2020-01-04");
         assertEquals(result.get(0).get("reasonOfNonInitiation"), "Patient refused");
-        assertEquals(result.get(0).get("facilityEntryPoint"), "PMTTC [ANC1-only]");
+        assertEquals(result.get(0).get("facilityEntryPoint"), "PMTCT [ANC1-only]");
         assertEquals(result.get(0).get("dateFinalResultProvidedToPatient"), "2020-01-02");
     }
 
