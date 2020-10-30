@@ -115,7 +115,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), "14 BAMBI STR, NKUM");
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2019-09-01");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");
@@ -200,7 +200,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), null);
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2019-10-01");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");
@@ -295,7 +295,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), null);
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2020-04-15");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");
@@ -386,7 +386,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), null);
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2020-04-15");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");
@@ -558,7 +558,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), null);
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2020-07-03");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");
@@ -801,7 +801,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("sex"), "f");
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("address"), "14 BAMBI STR, NKUM");
-        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg,INH 100mg");
+        assertEquals(result.get(0).get("treatmentRegimen"), "ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("lineAtTheMomentOfVL"), "N/A");
         assertEquals(result.get(0).get("eligibilityDate"), "2019-09-01");
         assertEquals(result.get(0).get("sampleCollectionDate"), "N/A");

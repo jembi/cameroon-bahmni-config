@@ -15,12 +15,11 @@ import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.junit.Ignore;
+import org.junit.Test;
 
 public class GeorgetownANC1ReportTests extends BaseReportTest {
 
-    /* Ignore for now, to be fixed later on */
-    @Ignore
+    @Test
     public void ancPatient_shouldBeReported() throws Exception {
         // Prepare
         /* register a new patient */
@@ -134,13 +133,13 @@ public class GeorgetownANC1ReportTests extends BaseReportTest {
             ancEncounterId);
 
 		// Execute
-		String query = readReportQuery(ReportEnum.GEORGETOWN_ANC1_REPORT, "georgetownAnc1Report.sql", new LocalDate(2020, 1, 1), new LocalDate(2020, 1, 31));
+		String query = readReportQuery(ReportEnum.GEORGETOWN_ANC1_REPORT, "georgetownAnc1Report.sql", new LocalDate(2019, 12, 31), new LocalDate(2020, 1, 31));
 		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
 		assertEquals(result.get(0).get("serialNumber"), "1");
 		assertEquals(result.get(0).get("patientId"), "BAH203001");
-		assertEquals(result.get(0).get("dateOfAncVisit"), "2019-01-01");
+		assertEquals(result.get(0).get("dateOfAncVisit"), "2019-12-31");
 		assertEquals(result.get(0).get("nameOfClient"), "Tambwe Marie");
 		assertEquals(result.get(0).get("pregnancyId"), "ANC 456");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-01");

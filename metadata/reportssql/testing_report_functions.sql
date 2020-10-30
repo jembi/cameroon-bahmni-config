@@ -1761,7 +1761,7 @@ BEGIN
         cn.name INTO result
     FROM obs o
         JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en' AND concept_name_type="SHORT"
     WHERE o.voided = 0
         AND o.person_id = p_patientId
         AND c.uuid = uuidTestingEntryPoint
@@ -1784,7 +1784,7 @@ CREATE FUNCTION wasHIVTestDoneInANCVisitWithinRepPeriod(
     p_endDate DATE) RETURNS VARCHAR(50)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(50);
+    DECLARE result VARCHAR(50) DEFAULT FALSE;
     DECLARE hivTestDateUuid VARCHAR(38) DEFAULT 'c6c08cdc-18dc-4f42-809c-959621bc9a6c';
     DECLARE priorAncVisitUuid VARCHAR(38) DEFAULT '130e05df-8283-453b-a611-d4f884fac8e0';
     DECLARE atAncVisitUuid VARCHAR(38) DEFAULT 'd6cc3709-ffa0-42eb-b388-d7def4df30cf';

@@ -17,10 +17,10 @@ import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Years;
-import org.junit.Ignore;
+import org.junit.Test;
 
 public class GeorgetownVisitReportTests extends BaseReportTest {
-    @Ignore
+    @Test
     public void visitWithinReportingPeriod_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
@@ -44,6 +44,9 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         testDataGenerator.program.recordProgramOutcome(patientProgramId, ConceptEnum.REFUSED_STOPPED_TREATMENT, null);
 
         /* dispense ARV */
+        testDataGenerator.drug.orderDrug(patientId, encounterIdOpdVisit, DrugNameEnum.ABC_3TC_60_30MG,
+        new LocalDateTime(2020, 1, 4, 8, 0, 0), 1, DurationUnitEnum.MONTH, true);
+
         testDataGenerator.drug.orderDrug(patientId, encounterIdOpdVisit, DrugNameEnum.ABC_3TC_120_60MG,
                 new LocalDateTime(2020, 1, 5, 8, 0, 0), 1, DurationUnitEnum.MONTH, true);
 
@@ -82,21 +85,22 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("telephone"), "081234567");
         assertEquals(result.get(0).get("nextAppointmentDate"), "2020-01-15");
         assertEquals(result.get(0).get("arvRegimen"),
-                "ABC/3TC 120/60mg,INH 100mg");
+                "ABC/3TC 60/30mg,ABC/3TC 120/60mg");
         assertEquals(result.get(0).get("cotrim"), "Yes");
         assertEquals(result.get(0).get("tbScreening"), "Yes");
         assertEquals(result.get(0).get("tbScreeningResult"), "Suspected / Probable");
         assertEquals(result.get(0).get("inh"), "Yes");
         assertEquals(result.get(0).get("patientStatus"), "Positive");
         assertEquals(result.get(0).get("treatmentLine"), "1st line");
-        assertEquals(result.get(0).get("numberOfMonthsDispensed"), 3);
+        assertEquals(result.get(0).get("numberOfMonthsDispensed"), 1);
+        assertEquals(result.get(0).get("numberOfDaysDispensed"), null);
         assertEquals(result.get(0).get("previousOutcome"), "Refused (Stopped) Treatment");
-        assertEquals(result.get(0).get("previousRegimen"), "ABC/3TC 120/60mg");
+        assertEquals(result.get(0).get("previousRegimen"), "ABC/3TC 60/30mg");
         assertEquals(result.get(0).get("switchedLine"), "Yes");
         assertEquals(result.get(0).get("reasonOfSwitchLine"), "N/A");
     }
 
-    @Ignore
+    @Test
     public void visitWithinReportingPeriodWithNoTBScreenAndNoRegimenSwitch_shouldBeReported() throws Exception {
         // Prepare
         /* create a patient */
@@ -121,7 +125,7 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
 
         /* dispense ARV */
         testDataGenerator.drug.orderDrug(patientId, encounterIdOpdVisit, DrugNameEnum.ABC_3TC_120_60MG,
-                new LocalDateTime(2020, 1, 5, 8, 0, 0), 9, DurationUnitEnum.WEEK, true);
+                new LocalDateTime(2020, 1, 5, 8, 0, 0), 2, DurationUnitEnum.WEEK, true);
 
         /* record an ART Dispensation appointment */
         testDataGenerator.appointment.recordAppointment(patientId, AppointmentServiceEnum.ART_DISPENSARY,
@@ -155,7 +159,8 @@ public class GeorgetownVisitReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("inh"), "No");
         assertEquals(result.get(0).get("patientStatus"), "Positive");
         assertEquals(result.get(0).get("treatmentLine"), "1st line");
-        assertEquals(result.get(0).get("numberOfMonthsDispensed"), 2);
+        assertEquals(result.get(0).get("numberOfMonthsDispensed"), 0);
+        assertEquals(result.get(0).get("numberOfDaysDispensed"), 14);
         assertEquals(result.get(0).get("previousOutcome"), "Refused (Stopped) Treatment");
         assertEquals(result.get(0).get("previousRegimen"), null);
         assertEquals(result.get(0).get("switchedLine"), "No");

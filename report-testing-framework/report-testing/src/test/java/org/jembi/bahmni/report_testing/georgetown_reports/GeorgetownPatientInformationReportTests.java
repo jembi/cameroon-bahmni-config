@@ -102,7 +102,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
-			DrugNameEnum.INH_100MG,
+			DrugNameEnum.ABC_3TC_60_30MG,
 			new LocalDateTime(2020, 2, 5, 8, 0, 0),
 			1,
 			DurationUnitEnum.MONTH,
@@ -172,7 +172,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		assertEquals(result.get(0).get("clinicalWhoStage"), "WHO stage 1");
 		assertEquals(result.get(0).get("regimentAtArtInitiation"), "ABC/3TC 120/60mg");
 		assertEquals(result.get(0).get("lineAtInitiation"), "1st line");
-		assertEquals(result.get(0).get("currentRegimen"), "INH 100mg");
+		assertEquals(result.get(0).get("currentRegimen"), "ABC/3TC 60/30mg");
 		assertEquals(result.get(0).get("currentLine"), "2nd line");
 		assertEquals(result.get(0).get("eligibilityForVl"), "No");
 		assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
@@ -269,7 +269,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
-			DrugNameEnum.INH_100MG,
+			DrugNameEnum.ABC_3TC_60_30MG,
 			new LocalDateTime(2020, 2, 5, 8, 0, 0),
 			1,
 			DurationUnitEnum.MONTH,
@@ -339,7 +339,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		assertEquals(result.get(0).get("clinicalWhoStage"), "WHO stage 1");
 		assertEquals(result.get(0).get("regimentAtArtInitiation"), "ABC/3TC 120/60mg");
 		assertEquals(result.get(0).get("lineAtInitiation"), "1st line");
-		assertEquals(result.get(0).get("currentRegimen"), "INH 100mg");
+		assertEquals(result.get(0).get("currentRegimen"), "ABC/3TC 60/30mg");
 		assertEquals(result.get(0).get("currentLine"), "2nd line");
 		assertEquals(result.get(0).get("eligibilityForVl"), "No");
 		assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
@@ -436,7 +436,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         testDataGenerator.drug.orderDrug(
 			patientId,
 			encounterIdOpdVisit,
-			DrugNameEnum.INH_100MG,
+			DrugNameEnum.ABC_3TC_60_30MG,
 			new LocalDateTime(2020, 2, 5, 8, 0, 0),
 			1,
 			DurationUnitEnum.MONTH,
@@ -499,7 +499,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
 		assertEquals(result.get(0).get("clinicalWhoStage"), "WHO stage 1");
 		assertEquals(result.get(0).get("regimentAtArtInitiation"), "ABC/3TC 120/60mg");
 		assertEquals(result.get(0).get("lineAtInitiation"), "1st line");
-		assertEquals(result.get(0).get("currentRegimen"), "INH 100mg");
+		assertEquals(result.get(0).get("currentRegimen"), "ABC/3TC 60/30mg");
 		assertEquals(result.get(0).get("currentLine"), "2nd line");
 		assertEquals(result.get(0).get("eligibilityForVl"), "No");
 		assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
