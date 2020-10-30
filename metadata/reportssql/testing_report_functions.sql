@@ -1415,6 +1415,24 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientEligibleForHIVTesting
+
+DROP FUNCTION IF EXISTS patientEligibleForHIVTesting;
+
+DELIMITER $$
+CREATE FUNCTION patientEligibleForHIVTesting(
+    p_patientId INT(11)) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+    RETURN
+        IF (
+            getObsCodedValue(p_patientId, "5b2e5a44-b55b-4436-9948-67143841ee27") IS NOT NULL
+            OR patientIsPregnant(p_patientId)
+            OR getObsCodedValue(p_patientId, "44861d4c-de67-4368-b5cf-279b754e5343") IS NOT NULL
+        ,"Yes","No");
+END$$
+DELIMITER ;
+
 -- patientHadAPositiveVirologicHIVTestResultDuringReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadAPositiveVirologicHIVTestResultDuringReportingPeriod;  
@@ -1725,6 +1743,76 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getTestingEntryPointWithinRepPeriod
+
+DROP FUNCTION IF EXISTS getTestingEntryPointWithinRepPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getTestingEntryPointWithinRepPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50);
+    DECLARE uuidTestingEntryPoint VARCHAR(38) DEFAULT "bc43179d-00b4-4712-a5d6-4dabd4230888";
+
+    SELECT
+        cn.name INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en' AND concept_name_type="SHORT"
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidTestingEntryPoint
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- wasHIVTestDoneInANCVisitWithinRepPeriod
+
+DROP FUNCTION IF EXISTS wasHIVTestDoneInANCVisitWithinRepPeriod;
+
+DELIMITER $$
+CREATE FUNCTION wasHIVTestDoneInANCVisitWithinRepPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(50) DEFAULT FALSE;
+    DECLARE hivTestDateUuid VARCHAR(38) DEFAULT 'c6c08cdc-18dc-4f42-809c-959621bc9a6c';
+    DECLARE priorAncVisitUuid VARCHAR(38) DEFAULT '130e05df-8283-453b-a611-d4f884fac8e0';
+    DECLARE atAncVisitUuid VARCHAR(38) DEFAULT 'd6cc3709-ffa0-42eb-b388-d7def4df30cf';
+
+    SELECT TRUE INTO result
+    FROM obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.value_datetime IS NOT NULL
+        AND c.uuid = hivTestDateUuid
+        AND o.person_id = p_patientId
+        AND 
+            (
+                SELECT concept.uuid
+                FROM obs
+                    JOIN concept ON obs.concept_id = concept.concept_id
+                WHERE obs.voided = 0
+                    AND obs.obs_id = o.obs_group_id
+                LIMIT 1
+            ) IN (priorAncVisitUuid, atAncVisitUuid)
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+    ORDER BY o.value_datetime DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientHadActiveVLTestLessThanAMonthAgoWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS patientHadActiveVLTestLessThanAMonthAgoWithinReportingPeriod;
@@ -1889,3 +1977,122 @@ BEGIN
     RETURN getObsCodedValue(p_patientId, reistanceTestUuid);
 END$$
 DELIMITER ;
+
+-- getDateTBPosDiagnose
+
+DROP FUNCTION IF EXISTS getDateTBPosDiagnose;
+
+DELIMITER $$
+CREATE FUNCTION getDateTBPosDiagnose(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDateBaselineAssessment VARCHAR(38) DEFAULT "1d4a6dc4-c478-4021-982b-62e3c84f7857";
+    DECLARE uuidMTBConfirmation VARCHAR(38) DEFAULT "c4bbc310-2e01-4c6d-be90-decc1b91a800";
+    DECLARE uuidBacteriologicallyConfirmed VARCHAR(38) DEFAULT "41bde817-b2e0-4f58-88be-f875e7b31eed";
+    DECLARE encounterId INT(11);
+
+    SELECT o.encounter_id INTO encounterId
+    FROM obs o
+    WHERE o.voided = 0 AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidMTBConfirmation) AND
+        o.value_coded = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidBacteriologicallyConfirmed)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    IF (encounterId IS NULL) THEN
+        RETURN NULL;
+    END IF;
+
+    SELECT DATE(o.value_datetime) INTO result
+    FROM obs o
+    WHERE o.voided = 0 AND
+        o.encounter_id = encounterId AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = uuidDateBaselineAssessment)
+    ORDER BY o.date_created DESC;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
+-- getReasonLastVLExam
+
+DROP FUNCTION IF EXISTS getReasonLastVLExam;
+
+DELIMITER $$
+CREATE FUNCTION getReasonLastVLExam(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(20);
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE nameVLExam VARCHAR(250);
+
+    SELECT cn.name INTO nameVLExam
+    FROM obs o
+        JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.voided = 0 AND cn.locale = 'en' AND cn.locale_preferred = 1
+    WHERE o.voided = 0
+        AND o.value_numeric IS NOT NULL
+        AND o.person_id = p_patientId
+        AND c.uuid IN (routineViralLoadTestUuid,targetedViralLoadTestUuid,notDocumentedViralLoadTestUuid)
+    ORDER BY o.obs_datetime DESC
+    LIMIT 1;
+
+    IF (nameVLExam IS NOT NULL) THEN
+        RETURN REPLACE(nameVLExam, ' Viral Load', '');
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getDateVLResultGivenToPatient
+
+DROP FUNCTION IF EXISTS getDateVLResultGivenToPatient;
+
+DELIMITER $$
+CREATE FUNCTION getDateVLResultGivenToPatient(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE testDate DATE DEFAULT getViralLoadTestDate(p_patientId);
+    
+    IF (testDate IS NOT NULL) THEN
+        RETURN getDateOfNextVisit(p_patientId, testDate);
+    ELSE
+        RETURN NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getDateFirstANCVisit
+
+DROP FUNCTION IF EXISTS getDateFirstANCVisit;
+
+DELIMITER $$
+CREATE FUNCTION getDateFirstANCVisit(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuiddateOfANC1 VARCHAR(38) DEFAULT "57d91463-1b95-4e4d-9448-ee4e88c53cb9";
+    
+    SELECT
+        o.value_datetime INTO result
+    FROM obs o
+    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+    WHERE o.voided = 0 
+        AND o.person_id = p_patientId
+        AND c.uuid = uuiddateOfANC1
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+

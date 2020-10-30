@@ -665,6 +665,33 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getMostRecentProgramAttributeDateCreated
+
+DROP FUNCTION IF EXISTS getMostRecentProgramAttributeDateCreated;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentProgramAttributeDateCreated(
+    p_patientId INT(11),
+    p_uuidProgramAttribute VARCHAR(38)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT ppa.date_created INTO result
+    FROM patient_program_attribute ppa
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
+        JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+    WHERE
+        ppa.voided = 0 AND
+        pp.patient_id = p_patientId AND
+        pat.uuid = p_uuidProgramAttribute
+    ORDER BY ppa.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientIsNewlyInitiatingART
 
 DROP FUNCTION IF EXISTS patientIsNewlyInitiatingART;
@@ -900,7 +927,7 @@ CREATE PROCEDURE retrieveTBScreeningDateAndResult(
 
     SELECT DATE(o.date_created), cn.name INTO p_screeningDate, p_screeningStatus
     FROM obs o
-        JOIN concept_name cn ON cn.concept_id = o.value_coded
+        JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale = "en" AND cn.locale_preferred = 1
     WHERE
         o.voided = 0 AND
         o.person_id = p_patientId AND
@@ -910,6 +937,24 @@ CREATE PROCEDURE retrieveTBScreeningDateAndResult(
     LIMIT 1;
 
 END$$ 
+DELIMITER ;
+
+-- getTBScreeningStatus
+
+DROP FUNCTION IF EXISTS getTBScreeningStatus;
+
+DELIMITER $$
+CREATE FUNCTION getTBScreeningStatus(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    DECLARE tbScreeningStatus VARCHAR(250);
+    DECLARE tbScreeningDate DATE;
+    
+    CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
+
+    RETURN tbScreeningStatus;
+END$$
 DELIMITER ;
 
 -- getTBScreeningStatusAtLastARVRefill
@@ -1020,5 +1065,107 @@ BEGIN
 
     RETURN result;
  
+END$$
+DELIMITER ;
+
+-- getARVTherapeuticLineAtInitiation
+
+DROP FUNCTION IF EXISTS getARVTherapeuticLineAtInitiation;
+
+DELIMITER $$
+CREATE FUNCTION getARVTherapeuticLineAtInitiation(
+    p_patientId INT(11)
+) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+
+    DECLARE uuiTherapeuticLine VARCHAR(38) DEFAULT "a8bc4608-eaae-4610-a842-d83d6261ea49";
+    DECLARE uuiARVProtocol VARCHAR(38) DEFAULT "cd278ad7-c9f3-4cd5-adc5-9150813ea95f";
+
+    IF (patientAgeAtHivEnrollment(p_patientId) >= 15) THEN
+        RETURN getObsCodedValue(p_patientId, uuiTherapeuticLine);
+    ELSE
+        RETURN getObsCodedValue(p_patientId, uuiARVProtocol);
+    END IF;
+ 
+END$$
+DELIMITER ;
+
+-- patientIsEligibleForVL
+
+DROP FUNCTION IF EXISTS patientIsEligibleForVL;
+
+DELIMITER $$
+CREATE FUNCTION patientIsEligibleForVL(
+    p_patientId INT(11)
+) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    RETURN
+        patientHasEnrolledIntoHivProgram(p_patientId) = "Yes" AND
+        patientIsOnARVTreatment(p_patientId) AND
+        patientIsNotDead(p_patientId) AND
+        patientIsNotLostToFollowUp(p_patientId) AND
+        patientIsNotTransferredOut(p_patientId) AND
+        (
+          (getViralLoadTestDate(p_patientId) IS NOT NULL AND timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 6 )
+          OR
+          (
+            getPatientARVStartDate(p_patientId) IS NOT NULL AND
+            timestampdiff(MONTH, getPatientARVStartDate(p_patientId), NOW()) >= 6 AND
+            (getViralLoadTestDate(p_patientId) IS NULL OR timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 6)
+            )
+          OR
+          (patientHasEnrolledInVlEacProgram(p_patientId) AND timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 3)
+          OR
+          (
+            getViralLoadTestResult(p_patientId) IS NOT NULL AND
+            getViralLoadTestResult(p_patientId) < 1000 AND
+            getViralLoadTestDate(p_patientId) IS NOT NULL AND
+            timestampdiff(MONTH, getViralLoadTestDate(p_patientId), NOW()) >= 12 AND
+            patientOnTreatmentForOneYear(p_patientId)
+          )
+        );
+ 
+END$$
+DELIMITER ;
+
+-- getDateOfVLEligibility
+
+DROP FUNCTION IF EXISTS getDateOfVLEligibility;
+
+DELIMITER $$
+CREATE FUNCTION getDateOfVLEligibility(
+    p_patientId INT(11)
+) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE dateOfLastVLExam DATE DEFAULT getViralLoadTestDate(p_patientId);
+    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce"));
+    DECLARE eacProgramStartDate DATE DEFAULT getMostRecentProgramEnrollmentDate(p_patientId, "VL_EAC_PROGRAM_KEY");
+    DECLARE eacProgramEndDate DATE DEFAULT getMostRecentProgramCompletionDate(p_patientId, "VL_EAC_PROGRAM_KEY");
+
+    IF (patientOnTreatmentForOneYear(p_patientId) AND getViralLoadTestResult(p_patientId) < 1000) THEN
+        RETURN timestampadd(YEAR, 1, dateOfLastVLExam);
+    END IF;
+
+    IF (dateOfLastVLExam IS NOT NULL) THEN
+        IF (
+            (eacProgramEndDate IS NOT NULL AND dateOfLastVLExam BETWEEN eacProgramStartDate AND eacProgramEndDate)
+            OR (eacProgramEndDate IS NULL AND dateOfLastVLExam >= eacProgramStartDate)
+         ) THEN
+            RETURN timestampadd(MONTH, 3, dateOfLastVLExam);
+        ELSE
+            RETURN timestampadd(MONTH, 6, dateOfLastVLExam);
+        END IF;
+    END IF;
+
+    IF (initiationDate IS NOT NULL) THEN
+        RETURN timestampadd(MONTH, 6, initiationDate);
+    END IF;
+
+    RETURN NULL;
+
 END$$
 DELIMITER ;

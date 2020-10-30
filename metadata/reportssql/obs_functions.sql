@@ -57,11 +57,11 @@ DROP FUNCTION IF EXISTS getObsCodedValueInSectionByNames;
 DELIMITER $$
 CREATE FUNCTION getObsCodedValueInSectionByNames(
     p_patientId INT(11),
-    p_questionName VARCHAR(38),
-    p_sectionName VARCHAR(38)) RETURNS VARCHAR(38)
+    p_questionName VARCHAR(250),
+    p_sectionName VARCHAR(250)) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
-    DECLARE result VARCHAR(38);
+    DECLARE result VARCHAR(250);
 
     SELECT
         cn_answer.name INTO result

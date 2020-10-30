@@ -6,12 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.jembi.bahmni.report_testing.test_utils.models.IndicatorTypeEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
@@ -44,13 +49,26 @@ public class BaseReportTest {
 			throw new Exception("No result found");
 	}
 
-	public ResultSet getIndicatorResult(String query) throws Exception {
+	public List<Map<String,Object>> getReportResult(String query) throws Exception {
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
 		ResultSet rs = stmt.executeQuery(query);
-		rs.next();
-		return rs;
+
+		while (rs.next()) {
+			Map<String,Object> record = new HashMap<String,Object>();
+			for(int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+				if (rs.getObject(i+1) instanceof Date) {
+					record.put(rs.getMetaData().getColumnName(i+1), rs.getObject(i+1).toString());
+				} else {
+					record.put(rs.getMetaData().getColumnName(i+1), rs.getObject(i+1));
+				}
+				
+			}
+			result.add(record);
+		}
+		return result;
 	}
 
-	protected String readReportQuery(IndicatorTypeEnum reportFolder, String reportFileName, LocalDate startDate, LocalDate endDate) throws IOException {
+	protected String readReportQuery(ReportEnum reportFolder, String reportFileName, LocalDate startDate, LocalDate endDate) throws IOException {
 		String currentDirectory = System.getProperty("user.dir");
 		File file = new File(currentDirectory);
 
@@ -85,6 +103,21 @@ public class BaseReportTest {
 	}
 
 	private void cleanTestingData() throws SQLException {
+		// Remove appointments
+		executeUpdateQuery("DELETE FROM patient_appointment WHERE patient_id > 72");
+
+		// Remove patient identifiers
+		executeUpdateQuery("DELETE FROM patient_identifier WHERE patient_id > 72");
+
+		// Remove person names
+		executeUpdateQuery("DELETE FROM person_name WHERE person_id > 72");
+
+		// Remove person attributes
+		executeUpdateQuery("DELETE FROM person_attribute WHERE person_id > 72");
+
+		// Remove relationships
+		executeUpdateQuery("DELETE FROM relationship WHERE person_a > 72 OR person_b > 72");
+
 		// Remove persons
 		executeUpdateQuery("DELETE FROM person WHERE person_id > 72");
 		

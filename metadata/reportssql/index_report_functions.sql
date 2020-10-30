@@ -86,6 +86,94 @@ DELIMITER ;
 
 DROP FUNCTION IF EXISTS Index_Indicator1d;
 
+-- getNumberBiologicalChildrenOfIndex
+
+DROP FUNCTION IF EXISTS getNumberBiologicalChildrenOfIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberBiologicalChildrenOfIndex(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT count(r.relationship_id) INTO result
+    FROM relationship r
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientRegistrationDate(r.person_b) BETWEEN p_startDate AND p_endDate AND
+        r.person_a = p_patientId AND
+        rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD"
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNumberBiologicalParentsOfIndex
+
+DROP FUNCTION IF EXISTS getNumberBiologicalParentsOfIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberBiologicalParentsOfIndex(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT count(r.relationship_id) INTO result
+    FROM relationship r
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientRegistrationDate(r.person_a) BETWEEN p_startDate AND p_endDate AND
+        r.person_b = p_patientId AND
+        rt.b_is_to_a = "RELATIONSHIP_BIO_CHILD"
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+DELIMITER ;
+
+-- getNumberSiblingsOfIndex
+
+DROP FUNCTION IF EXISTS getNumberSiblingsOfIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberSiblingsOfIndex(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+    SELECT count(r.relationship_id) INTO result
+    FROM relationship r
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        rt.a_is_to_b = "RELATIONSHIP_SIBLING" AND
+        (
+            (
+                getPatientRegistrationDate(r.person_a) BETWEEN p_startDate AND p_endDate AND
+                r.person_b = p_patientId
+            )
+            OR
+            (
+                getPatientRegistrationDate(r.person_b) BETWEEN p_startDate AND p_endDate AND
+                r.person_a = p_patientId
+            )
+        )
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- Number of biological parents for index patient
 
 DELIMITER $$

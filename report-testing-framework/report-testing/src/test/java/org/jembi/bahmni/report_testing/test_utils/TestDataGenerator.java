@@ -2,12 +2,12 @@ package org.jembi.bahmni.report_testing.test_utils;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import org.jembi.bahmni.report_testing.test_utils.models.DrugNameEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.DurationUnitEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
+import org.jembi.bahmni.report_testing.test_utils.models.ObsValueTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -15,103 +15,141 @@ import org.joda.time.LocalDateTime;
 public class TestDataGenerator {
 	Statement stmt;
 
+	public RegistrationTestDataGenerator registration;
+	public ProgramTestDataGenerator program;
+	public HivTestingAndCounsellingFormDataGenerator hivTestingAndCounsellingForm ;
+	public ManualLabAndResultFormDataGenerator manualLabAndResultForm;
+	public TBFormDataGenerator tbForm;
+	public HivAdultInitialForm hivAdultInitialForm;
+	public HivChildInitialForm hivChildInitialForm;
+	public AppointmentDataGenerator appointment;
+	public DrugDataGenerator drug;
+	public EACFormDataGenerator eacForm;
+	public AncInitialFormDataGenerator ancInitialForm;
+
 	public void setStatement(Statement stmt) {
 		this.stmt = stmt;
+		registration = new RegistrationTestDataGenerator(stmt);
+		program = new ProgramTestDataGenerator(stmt);
+		hivTestingAndCounsellingForm = new HivTestingAndCounsellingFormDataGenerator(stmt);
+		manualLabAndResultForm = new ManualLabAndResultFormDataGenerator(stmt);
+		tbForm = new TBFormDataGenerator(stmt);
+		hivAdultInitialForm = new HivAdultInitialForm(stmt);
+		hivChildInitialForm = new HivChildInitialForm(stmt);
+		appointment = new AppointmentDataGenerator(stmt);
+		eacForm = new EACFormDataGenerator(stmt);
+		drug = new DrugDataGenerator(stmt);
+		ancInitialForm = new AncInitialFormDataGenerator(stmt);
 	}
 
-	public int createPerson(GenderEnum gender, LocalDate dateOfBirth) throws Exception {
-		String uuid = generateUUID();
+	static public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value, ObsValueTypeEnum.TEXT, encounterId, null, stmt);
+	}
 
-		String updateQuery = "INSERT INTO person "
-				+ "(gender, birthdate, birthdate_estimated, dead, date_created, voided, uuid, deathdate_estimated) VALUES"
-				+ "('" + gender + "', '" + dateOfBirth + "', 0, 0, now(), 0, '" + uuid + "', 0)";
+	static public int recordFormNumericValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, int value, Integer encounterId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId, null, stmt);
+	}
 
-		stmt.executeUpdate(updateQuery);
+	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, null, stmt);
+	}
 
-		String query = "SELECT person_id FROM person WHERE uuid = '" + uuid + "'";
-		ResultSet rs = stmt.executeQuery(query);
-		while (rs.next()) {
-			return rs.getInt(1);
+	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, groupId, stmt);
+	}
+
+	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Statement stmt) throws Exception {
+		Integer conceptId = getConceptId(codedValue, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, null, stmt);
+	}
+
+	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
+		Integer conceptId = getConceptId(codedValue, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, groupId, stmt);
+	}
+
+	static public List<Integer> recordEmptyFormRecord(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, Integer encounterId, Statement stmt) throws Exception {
+		List<Integer> result = new ArrayList<Integer>();
+
+		if (encounterId == null) {
+			String uuid = generateUUID();
+			String query = "INSERT INTO encounter (encounter_type, patient_id, encounter_datetime, creator, date_created, voided, uuid) VALUES " +
+			"(1," + patientId + ",'" + observationDateTime + "',4,'" + observationDateTime + "',0,'" + uuid + "')";
+			stmt.executeUpdate(query);
+			encounterId = getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuid + "'", stmt);
+		}
+		result.add(encounterId);
+
+		Integer obsGroupId = null;
+		for(int i = 0; i < conceptTree.size(); i++) {
+			ConceptEnum concept = conceptTree.get(i);
+			int conceptId = getConceptId(concept, stmt);
+			String uuid = generateUUID();
+			if (i < conceptTree.size() -1) {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + "creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
+			} else {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + " creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId) + ",4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
+			}
 		}
 
-		throw new Exception("Person creation failed");
+		result.add(obsGroupId);
+
+		return result;
 	}
 
-	public int createPatient(GenderEnum gender, LocalDate dateOfBirth) throws Exception {
-		int personId = createPerson(gender, dateOfBirth);
+	static public int recordFormValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, ObsValueTypeEnum dataType, Integer encounterId, Integer obsGroupId, Statement stmt) throws Exception {
+		if (encounterId == null) {
+			String uuid = generateUUID();
+			String query = "INSERT INTO encounter (encounter_type, patient_id, encounter_datetime, creator, date_created, voided, uuid) VALUES " +
+			"(1," + patientId + ",'" + observationDateTime + "',4,'" + observationDateTime + "',0,'" + uuid + "')";
+			stmt.executeUpdate(query);
+			encounterId = getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuid + "'", stmt);
+		}
 
-		String createQuery = "INSERT INTO patient "
-				+ "(patient_id, creator, date_created, voided, allergy_status) VALUES"
-				+ "('" + personId + "', 1, now(), 0, '')";
-
-		stmt.executeUpdate(createQuery);
-
-		return personId;
-	}
-
-	public int startVisit(int patientId, VisitTypeEnum visitType) throws Exception {
-		String uuid = generateUUID();
-
-        int visitTypeId = getQueryIntResult("SELECT visit_type_id FROM visit_type WHERE name = '" + visitType + "'");
-
-		String createQuery = "INSERT INTO visit "
-				+ "(patient_id, visit_type_id, date_started, creator, date_created, voided, uuid) VALUES"
-				+ "('" + patientId + "', " + visitTypeId + ", now(), 4, now(), 0, '" + uuid + "')";
-
-		stmt.executeUpdate(createQuery);
-
-		int visitId =  getQueryIntResult("SELECT visit_id FROM visit WHERE uuid = '" + uuid + "'");
-		int encounterId = addConsultationEncounter(patientId, visitId);
+		for(int i = 0; i < conceptTree.size(); i++) {
+			ConceptEnum concept = conceptTree.get(i);
+			int conceptId = getConceptId(concept, stmt);
+			String uuid = generateUUID();
+			if (i < conceptTree.size() -1) {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + "creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
+			} else {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + dataType + (dataType != null ? ",":"") + " creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "'" + value + "',4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+			}
+		}
 
 		return encounterId;
 	}
 
-	public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, TherapeuticLineEnum therapeuticLine) throws Exception {
-		String uuidPatientProgram = generateUUID();
-		String uuidPatientProgramAttribute = generateUUID();
-
-		int programId = getQueryIntResult("SELECT program_id FROM program WHERE name = 'HIV_PROGRAM_KEY'");
-	
-		String createPatientProgramQuery = "INSERT INTO patient_program "
-				+ "(patient_id, program_id, date_enrolled, creator, date_created, voided, uuid) VALUES"
-				+ "('" + patientId + "','" + programId + "', '" + enrollmentDate + "',4,now(),0,'" + uuidPatientProgram + "')";
-
-		stmt.executeUpdate(createPatientProgramQuery);
-
-		int patientProgramId = getQueryIntResult("SELECT patient_program_id FROM patient_program WHERE uuid = '" + uuidPatientProgram + "'");
-		int therapeuticLineAttributeTypeId = getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = 'PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE'");
-		int therapeuticLineConceptId = getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + therapeuticLine + "'");
-
-		String createPatientProgramAttributeQuery = "INSERT INTO patient_program_attribute "
-				+ "(patient_program_id, attribute_type_id, value_reference, creator, date_created, voided, uuid) VALUES"
-				+ "(" + patientProgramId + "," + therapeuticLineAttributeTypeId + "," + therapeuticLineConceptId + ", 4, now(), 0, '" + uuidPatientProgramAttribute + "')";
-
-		stmt.executeUpdate(createPatientProgramAttributeQuery);
-
-		return getQueryIntResult("SELECT patient_program_attribute_id FROM patient_program_attribute WHERE uuid = '" + uuidPatientProgramAttribute + "'");
+	public static int getConceptId(ConceptEnum concept, Statement stmt) throws Exception {
+		return getQueryIntResult("SELECT concept_id FROM concept WHERE uuid = '" + concept + "'", stmt);
 	}
 
-	public int orderDrug(int patientId, int encounterId, DrugNameEnum drugName, LocalDateTime startDate, int duration, DurationUnitEnum durationUnit) throws Exception {
-		String uuidOrder = generateUUID();
-		String orderNumber = generateUUID();
-		int drugConceptId = getQueryIntResult("SELECT concept_id FROM drug WHERE name = '" + drugName + "'");
-		int drugId = getQueryIntResult("SELECT drug_id FROM drug WHERE name = '" + drugName + "'");
+	public int startVisit(int patientId, LocalDate dateStarted, VisitTypeEnum visitType) throws Exception {
+		String uuid = generateUUID();
 
-		String createOrderQuery = "INSERT INTO orders "
-				+ "(patient_id, scheduled_date, order_type_id, concept_id, orderer, encounter_id, creator, date_created, voided, uuid, urgency, order_number, order_action, care_setting) VALUES"
-				+ "(" + patientId + ",'" + startDate + "', 2," + drugConceptId + ", 2," + encounterId + ", 4,now(),0,'" + uuidOrder + "','ON_SCHEDULED_DATE','" + orderNumber + "','NEW',1)";
+        int visitTypeId = getQueryIntResult("SELECT visit_type_id FROM visit_type WHERE name = '" + visitType + "'", stmt);
 
-		stmt.executeUpdate(createOrderQuery);
-		int orderId = getQueryIntResult("SELECT order_id FROM orders WHERE uuid = '" + uuidOrder + "'");
-		int durationUnitConceptId = getQueryIntResult("SELECT concept_id FROM concept_name WHERE name = '" + durationUnit + "'");
+		String createQuery = "INSERT INTO visit "
+				+ "(patient_id, visit_type_id, date_started, creator, date_created, voided, uuid) VALUES"
+				+ "('" + patientId + "', " + visitTypeId + ", '" + dateStarted + "', 4, '" + dateStarted + "', 0, '" + uuid + "')";
 
-		String createDrugOrderQuery = "INSERT INTO drug_order "
-				+ "(order_id, drug_inventory_id, dose, as_needed, dosing_type, quantity, duration, duration_units, quantity_units, route, dose_units, frequency, dispense_as_written) VALUES"
-				+ "(" + orderId + "," + drugId + ", 1, 0, 'org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions',1," + duration + "," + durationUnitConceptId + ",342,68,342,1, 0)";
+		stmt.executeUpdate(createQuery);
 
-		stmt.executeUpdate(createDrugOrderQuery);
-		
-		return orderId;
+		int visitId =  getQueryIntResult("SELECT visit_id FROM visit WHERE uuid = '" + uuid + "'", stmt);
+		int encounterId = addConsultationEncounter(patientId, visitId);
+
+		return encounterId;
 	}
 
 	private int addConsultationEncounter(int patientId, int visitId) throws Exception {
@@ -123,28 +161,15 @@ public class TestDataGenerator {
 
 		stmt.executeUpdate(createEncounterQuery);
 
-		return getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuidEncounter + "'");
+		return getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuidEncounter + "'", stmt);
 	}
 
-	public void dispenseDrugOrder(int patientId, int drugOrderId) throws Exception {
-		String uuidObs = generateUUID();
-		String uuidDispensedConcept = "ff0d6d6a-e276-11e4-900f-080027b662ec";
-
-		int dispensedConceptConceptId = getQueryIntResult("SELECT concept_id FROM concept WHERE uuid = '" + uuidDispensedConcept + "'");
-
-		String createObservationQuery = "INSERT INTO obs "
-				+ "(person_id, concept_id, obs_datetime, creator, date_created, voided, uuid, status, order_id) VALUES"
-				+ "(" + patientId + "," + dispensedConceptConceptId + ", now(), 4, now(), 0,'" + uuidObs + "','FINAL'," + drugOrderId + ")";
-
-		stmt.executeUpdate(createObservationQuery);
-	}
-
-	private String generateUUID() {
+	public static String generateUUID() {
 		UUID uuid = UUID.randomUUID();
         return uuid.toString();
 	}
 
-	public int getQueryIntResult(String query) throws Exception {
+	public static int getQueryIntResult(String query, Statement stmt) throws Exception {
 		ResultSet rs = stmt.executeQuery(query);
 		while (rs.next()) {
 			return rs.getInt(1);
@@ -152,11 +177,12 @@ public class TestDataGenerator {
 		throw new Exception("No result found");
 	}
 
-	public String getQueryStringResult(String query) throws Exception {
+	public static String getQueryStringResult(String query, Statement stmt) throws Exception {
 		ResultSet rs = stmt.executeQuery(query);
 		while (rs.next()) {
 			return rs.getString(1);
 		}
 		throw new Exception("No result found");
 	}
+
 }
