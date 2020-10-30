@@ -37,24 +37,26 @@ public class AncInitialFormDataGenerator {
     }
 
     public int recordAtAncEnrolmentHivTestDateAndResult(int patientId, LocalDateTime obsDateTime, LocalDate testDate, ConceptEnum result, Integer encounterId) throws Exception {
-		List<ConceptEnum> conceptTreeHivTested = new ArrayList<ConceptEnum>();
-        conceptTreeHivTested.add(ConceptEnum.ANC_INITIAL_FORM);
-        conceptTreeHivTested.add(ConceptEnum.HIV_STATUS);
-        conceptTreeHivTested.add(ConceptEnum.AT_ANC_ENROLMENT);
+		List<ConceptEnum> conceptTree = new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.ANC_INITIAL_FORM);
+        conceptTree.add(ConceptEnum.HIV_STATUS);
+        conceptTree.add(ConceptEnum.AT_ANC_ENROLMENT);
+
+        List<Integer> encounterIdAndObsGroupId = TestDataGenerator.recordEmptyFormRecord(patientId, obsDateTime, conceptTree, encounterId, stmt);
+        int _encounterId = encounterIdAndObsGroupId.get(0);
+        int obsGroupId = encounterIdAndObsGroupId.get(1);
 
         List<ConceptEnum> conceptTreeHivTestDate = new ArrayList<ConceptEnum>();
-        conceptTreeHivTestDate.addAll(conceptTreeHivTested);
-
+        List<ConceptEnum> conceptTreeHivTested = new ArrayList<ConceptEnum>();
         List<ConceptEnum> conceptTreeHivTestResult = new ArrayList<ConceptEnum>();
-        conceptTreeHivTestResult.addAll(conceptTreeHivTested);
 
         conceptTreeHivTested.add(ConceptEnum.HIV_TESTED);
         conceptTreeHivTestDate.add(ConceptEnum.HIV_TEST_DATE);
         conceptTreeHivTestResult.add(ConceptEnum.HTC_RESULT);
 
-        Integer _encounterId = TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTreeHivTested, ConceptEnum.YES, encounterId, stmt);
-        TestDataGenerator.recordFormDatetimeValue(patientId, obsDateTime, conceptTreeHivTestDate, testDate, _encounterId, stmt);
-        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTreeHivTestResult, result, _encounterId, stmt);
+        TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTreeHivTested, ConceptEnum.YES, encounterId, obsGroupId, stmt);
+        TestDataGenerator.recordFormDatetimeValue(patientId, obsDateTime, conceptTreeHivTestDate, testDate, _encounterId, obsGroupId, stmt);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTreeHivTestResult, result, _encounterId, obsGroupId, stmt);
     }
 
     public int recordArtStatus(int patientId, LocalDateTime obsDateTime, ConceptEnum status, Integer encounterId) throws Exception {

@@ -17,7 +17,6 @@ import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Years;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class GeorgetownVisitReportTests extends BaseReportTest {

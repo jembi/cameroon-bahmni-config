@@ -2,6 +2,7 @@ package org.jembi.bahmni.report_testing.test_utils;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,30 +43,42 @@ public class TestDataGenerator {
 	}
 
 	static public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId, Statement stmt) throws Exception {
-		return recordFormValue(patientId, observationDateTime, conceptTree, value, ObsValueTypeEnum.TEXT, encounterId, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, value, ObsValueTypeEnum.TEXT, encounterId, null, stmt);
 	}
 
 	static public int recordFormNumericValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, int value, Integer encounterId, Statement stmt) throws Exception {
-		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId, null, stmt);
 	}
 
 	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Statement stmt) throws Exception {
-		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, null, stmt);
+	}
+
+	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, groupId, stmt);
 	}
 
 	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Statement stmt) throws Exception {
 		Integer conceptId = getConceptId(codedValue, stmt);
-		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, null, stmt);
 	}
 
-	static public int recordFormValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, ObsValueTypeEnum dataType, Integer encounterId, Statement stmt) throws Exception {
+	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
+		Integer conceptId = getConceptId(codedValue, stmt);
+		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, groupId, stmt);
+	}
+
+	static public List<Integer> recordEmptyFormRecord(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, Integer encounterId, Statement stmt) throws Exception {
+		List<Integer> result = new ArrayList<Integer>();
+
 		if (encounterId == null) {
 			String uuid = generateUUID();
 			String query = "INSERT INTO encounter (encounter_type, patient_id, encounter_datetime, creator, date_created, voided, uuid) VALUES " +
-			"(1," + patientId + ",'" + observationDateTime + "',4,now(),0,'" + uuid + "')";
+			"(1," + patientId + ",'" + observationDateTime + "',4,'" + observationDateTime + "',0,'" + uuid + "')";
 			stmt.executeUpdate(query);
 			encounterId = getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuid + "'", stmt);
 		}
+		result.add(encounterId);
 
 		Integer obsGroupId = null;
 		for(int i = 0; i < conceptTree.size(); i++) {
@@ -74,12 +87,43 @@ public class TestDataGenerator {
 			String uuid = generateUUID();
 			if (i < conceptTree.size() -1) {
 				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + "creator, date_created, voided, uuid, status) VALUES " + 
-				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "4,now(),0,'" + uuid + "','')";
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "4,'" + observationDateTime + "',0,'" + uuid + "','')";
 				stmt.executeUpdate(query);
 				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
 			} else {
-				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + dataType + ", creator, date_created, voided, uuid, status) VALUES " + 
-				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "'" + value + "',4,now(),0,'" + uuid + "','')";
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + " creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId) + ",4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
+			}
+		}
+
+		result.add(obsGroupId);
+
+		return result;
+	}
+
+	static public int recordFormValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, ObsValueTypeEnum dataType, Integer encounterId, Integer obsGroupId, Statement stmt) throws Exception {
+		if (encounterId == null) {
+			String uuid = generateUUID();
+			String query = "INSERT INTO encounter (encounter_type, patient_id, encounter_datetime, creator, date_created, voided, uuid) VALUES " +
+			"(1," + patientId + ",'" + observationDateTime + "',4,'" + observationDateTime + "',0,'" + uuid + "')";
+			stmt.executeUpdate(query);
+			encounterId = getQueryIntResult("SELECT encounter_id FROM encounter WHERE uuid = '" + uuid + "'", stmt);
+		}
+
+		for(int i = 0; i < conceptTree.size(); i++) {
+			ConceptEnum concept = conceptTree.get(i);
+			int conceptId = getConceptId(concept, stmt);
+			String uuid = generateUUID();
+			if (i < conceptTree.size() -1) {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + "creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "4,'" + observationDateTime + "',0,'" + uuid + "','')";
+				stmt.executeUpdate(query);
+				obsGroupId = getQueryIntResult("SELECT obs_id FROM obs WHERE uuid = '" + uuid + "'", stmt);
+			} else {
+				String query = "INSERT INTO obs (person_id, concept_id, encounter_id, obs_datetime," + (obsGroupId == null ? "": "obs_group_id,") + dataType + (dataType != null ? ",":"") + " creator, date_created, voided, uuid, status) VALUES " + 
+				"(" + patientId + "," + conceptId + "," + encounterId + ",'" + observationDateTime + "'," + (obsGroupId == null ? "": obsGroupId + ",") + "'" + value + "',4,'" + observationDateTime + "',0,'" + uuid + "','')";
 				stmt.executeUpdate(query);
 			}
 		}
