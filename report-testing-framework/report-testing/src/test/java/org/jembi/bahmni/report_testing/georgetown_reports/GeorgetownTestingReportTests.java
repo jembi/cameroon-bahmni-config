@@ -218,7 +218,7 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
     @Test
     public void patientWithNoPreTestCounselingAndNotEligibleForHivTesting_shouldBeReported() throws Exception {
         // Prepare
-        /* record patient information */
+        /* record patient information  */
         int patientId = testDataGenerator.registration.createPatient(
             "BAH203001",
             GenderEnum.FEMALE,
