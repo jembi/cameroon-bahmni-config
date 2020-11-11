@@ -1855,6 +1855,13 @@
                 }
             ]
         }
+    },
+    "pcrVlTestingReport": {
+        "name": "PCR and VL testing report",
+        "type": "ElisGeneric",
+        "config": {
+          "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/OPENELIS/sql/pcrVlTestingReport.sql"
+        }
     }
 
 }
