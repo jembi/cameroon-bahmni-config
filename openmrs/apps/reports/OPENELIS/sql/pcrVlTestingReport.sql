@@ -26,6 +26,6 @@ FROM analysis a
     LEFT OUTER JOIN result r ON r.analysis_id = a.id
     LEFT OUTER JOIN referral ref ON ref.analysis_id = a.id
 WHERE
-    t.name IN ('PCR(ALERE-Q)', 'Routine Viral Load', 'Targeted Viral Load', 'Not Documented Viral Load)', 'ARV Resistance Test') AND
+    t.name IN ('PCR(ALERE-Q)', 'Routine Viral Load', 'Targeted Viral Load', 'Not Documented Viral Load', 'ARV Resistance Test') AND
     s.received_date BETWEEN '#startDate#' AND '#endDate#'
 ORDER BY s.received_date DESC;
