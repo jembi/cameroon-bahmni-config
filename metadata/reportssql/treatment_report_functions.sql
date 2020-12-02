@@ -130,7 +130,6 @@ WHERE
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -577,9 +576,7 @@ BEGIN
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
-        AND patientHasTherapeuticLine(p_patientId, 0)
         AND o.scheduled_date < p_startDate
-        AND drugOrderIsDispensed(p_patientId, o.order_id)
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -589,8 +586,8 @@ BEGIN
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
-            ) BETWEEN timestampadd(MONTH, p_minDuration, o.scheduled_date) 
-                AND timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date))    
+            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
+                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))    
     GROUP BY o.patient_id;
 
     RETURN (result );
@@ -620,15 +617,13 @@ BEGIN
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
-        AND patientHasTherapeuticLine(p_patientId, 0)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
-        AND drugOrderIsDispensed(p_patientId, o.order_id)
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
-            ) BETWEEN timestampadd(MONTH, p_minDuration, o.scheduled_date) 
-                AND timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date))
+            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
+                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))
     GROUP BY o.patient_id;
 
     RETURN (result );
