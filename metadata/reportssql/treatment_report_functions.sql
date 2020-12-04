@@ -92,7 +92,7 @@ WHERE
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
-        (patientOnARTDuringEntireReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration) OR
+        (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_minDuration, p_maxDuration) OR
             patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)),
         patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)
     ) AND
@@ -582,6 +582,46 @@ BEGIN
             do.duration,
             c.uuid -- uuid of the duration unit concept
             ) >= p_endDate
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
+                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))    
+    GROUP BY o.patient_id;
+
+    RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- patientOnARTDuringPartOfReportingPeriodAndDurationBetween
+
+DROP FUNCTION IF EXISTS patientOnARTDuringPartOfReportingPeriodAndDurationBetween;
+
+DELIMITER $$
+CREATE FUNCTION patientOnARTDuringPartOfReportingPeriodAndDurationBetween(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_minDuration INT(11),
+    p_maxDuration INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date < p_startDate
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) >= p_startDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
