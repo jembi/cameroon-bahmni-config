@@ -98,7 +98,10 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    (
+        patientIsNotTransferredOut(pat.patient_id) OR
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+    );
 
     RETURN (result);
 END$$ 
@@ -130,10 +133,13 @@ WHERE
     patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    (
+        patientIsNotTransferredOut(pat.patient_id) OR
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+    );
 
     RETURN (result);
 END$$ 
@@ -617,6 +623,7 @@ BEGIN
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND o.scheduled_date < p_startDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
@@ -658,6 +665,7 @@ BEGIN
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
