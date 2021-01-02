@@ -2,7 +2,6 @@ SELECT
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
     getPatientIdentifier(p.patient_id) as "uniquePatientId",
     getFacilityName() as "healthFacility",
-    getPatientFullName(p.patient_id) as "clientsName",
     getPatientPhoneNumber(p.patient_id) as "telOfClient",
     CONCAT(getPatientPreciseLocation(p.patient_id), ", ", getPatientVillage(p.patient_id)) as "clientsAddress",
     getPatientAge(p.patient_id) as "age",
