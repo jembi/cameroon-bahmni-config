@@ -585,11 +585,15 @@ BEGIN
     DECLARE bDone2 INT;
     DECLARE patientId INT(11);
     DECLARE serialNumber INT(11) DEFAULT 0;
+    DECLARE facilityName VARCHAR(50);
     DECLARE uniquePatientId VARCHAR(50);
     DECLARE artCode VARCHAR(50);
     DECLARE age INT(11);
     DECLARE dateOfBirth DATE;
     DECLARE sex VARCHAR(1);
+    DECLARE screenedforTB VARCHAR(50);
+    DECLARE tbscreeningdate DATE;
+    DECLARE tbscreeningResult VARCHAR(50);
     DECLARE dateOfARTInitiation DATE;
     DECLARE inhStartDate DATE;
     DECLARE inhEndDate DATE;
@@ -602,11 +606,15 @@ BEGIN
     DECLARE mainQueryCursor CURSOR FOR
     SELECT
         p.patient_id,
+        getFacilityName() as "Facility Name",
         getPatientIdentifier(p.patient_id) as "Unique Patient ID",
         getPatientARTNumber(p.patient_id) as "ART Code",
         getPatientAge(p.patient_id) as "Age",
         getPatientBirthdate(p.patient_id) as "Date of Birth",
         getPatientGender(p.patient_id) as "Sex",
+        IF(getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "Screened for TB",
+        getObsDatetimeValue(p.patient_id, "f79780e8-72de-4162-be89-dd908ab2e5bb") as "TB Screening Date",
+        getObsCodedValue(p.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") as "TB Screening Result",
         DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of ART Initiation"
     FROM patient p;
 
@@ -615,11 +623,15 @@ BEGIN
     DROP TEMPORARY TABLE IF EXISTS tblResults;
     CREATE TEMPORARY TABLE IF NOT EXISTS tblResults  (
         serialNumber INT(11),
+        facilityName VARCHAR(50),
         uniquePatientId VARCHAR(50),
         artCode VARCHAR(50),
         age INT(11),
         dateOfBirth DATE,
         sex VARCHAR(1),
+        screenedforTB VARCHAR(50),
+        tbscreeningdate DATE,
+        tbscreeningResult VARCHAR(50),
         dateOfARTInitiation DATE,
         inhStartDate DATE,
         inhEndDate DATE
@@ -629,7 +641,7 @@ BEGIN
 
     SET bDone = 0;
     REPEAT
-        FETCH mainQueryCursor INTO patientId,uniquePatientId,artCode,age,dateOfBirth,sex,dateOfARTInitiation;
+        FETCH mainQueryCursor INTO patientId,facilityName,uniquePatientId,artCode,age,dateOfBirth,sex,screenedforTB,tbscreeningdate,tbscreeningResult,dateOfARTInitiation;
 
         SET courseDuration = 0;
         SET _index = 0;
@@ -647,7 +659,7 @@ BEGIN
                 IF (courseDuration >= 6) THEN
                     SET inhFullCourseStartDate = inhStartDate;
                     SET serialNumber = serialNumber + 1;
-                    INSERT INTO tblResults VALUES (serialNumber, uniquePatientId, artCode, age, dateOfBirth, sex, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate);
+                    INSERT INTO tblResults VALUES (serialNumber, facilityName, uniquePatientId, artCode, age, dateOfBirth, sex, screenedforTB, tbscreeningdate, tbscreeningResult, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate);
                     SET courseDuration = 0;
                 END IF; 
                 
