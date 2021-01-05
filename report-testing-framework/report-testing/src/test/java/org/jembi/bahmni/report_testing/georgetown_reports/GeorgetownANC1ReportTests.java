@@ -138,9 +138,9 @@ public class GeorgetownANC1ReportTests extends BaseReportTest {
 
         // Assert
 		assertEquals(result.get(0).get("serialNumber"), "1");
+		assertEquals(result.get(0).get("facilityName"), "CENTRE");
 		assertEquals(result.get(0).get("patientId"), "BAH203001");
 		assertEquals(result.get(0).get("dateOfAncVisit"), "2019-12-31");
-		assertEquals(result.get(0).get("nameOfClient"), "Tambwe Marie");
 		assertEquals(result.get(0).get("pregnancyId"), "ANC 456");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-01");
 		assertEquals(result.get(0).get("ageAtFirstAnc"), 19);
