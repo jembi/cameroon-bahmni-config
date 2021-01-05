@@ -3,7 +3,7 @@ SELECT
     getPatientIdentifier(r.person_b) as "uniquePatientId",
     getPatientBirthdate(r.person_b) as "dateOfBirth",
     getPatientAgeInMonthsAtDate(r.person_b, NOW()) as "ageInMonths",
-    getPatientIdentifier(r.person_a) as "Mother ID",
+    getPatientIdentifier(r.person_a) as "motherId",
     CONCAT(getPatientPreciseLocation(r.person_a),", ",getPatientVillage(r.person_a)) as "mothersAddress",
     getPatientPhoneNumber(r.person_a) as "mothersContact",
     getMostRecentTestResultDate(r.person_b,"a5239a85-6f75-4882-9b9b-60168e54b7da","9bb7b360-3790-4e1a-8aca-0d1341663040") as "resultDatePcr",
