@@ -312,6 +312,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientWithIndexPartnerall
+
+DROP FUNCTION IF EXISTS patientWithIndexPartnerall;
+
+DELIMITER $$
+CREATE FUNCTION patientWithIndexPartnerall(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT count(TRUE) INTO result
+    FROM relationship r
+        JOIN person pIndex ON (r.person_a = p_patientId AND r.person_b = pIndex.person_id) OR
+            (r.person_a = pIndex.person_id AND r.person_b = p_patientId)
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        getPatientIndexTestingDateAccepted(pIndex.person_id) IS NOT NULL AND
+        rt.a_is_to_b = "RELATIONSHIP_PARTNER"
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- patientWithIndexChild
 
 DROP FUNCTION IF EXISTS patientWithIndexChild;
