@@ -1,10 +1,12 @@
 SELECT
     CAST(@a:=@a+1 AS CHAR) as "Serial Number",
+    getFacilityName() as "Facility Name",
     getPatientIdentifier(p.patient_id) as "Patient ID",
     getPatientARTNumber(p.patient_id) as "ART Code",
     getPatientBirthdate(p.patient_id) as "Date of birth",
     getPatientAge(p.patient_id) as "Age",
     getPatientGender(p.patient_id) as "Sex",
+    getDateLatestARTOrARTDispensaryVisit(p.patient_id) as "Last Visit Date",
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "9b4b2dd5-bc5e-44b9-ad95-333a7bbfee3c")) as "Date patient was reached",
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b") as "APS Name",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "0a51d8d0-c775-48a2-9ca2-42c269d00bc2", "en") as "Pre-tracking Outcome",
