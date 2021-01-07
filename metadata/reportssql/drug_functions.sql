@@ -534,6 +534,35 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateofINHdrugOrderDispensed
+
+DROP FUNCTION IF EXISTS getDateofINHdrugOrderDispensed;
+
+DELIMITER $$
+CREATE FUNCTION `getDateofINHdrugOrderDispensed`(
+    p_patientId INT(11)) RETURNS date
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDispensedConcept VARCHAR(38) DEFAULT "ff0d6d6a-e276-11e4-900f-080027b662ec";
+
+    SELECT
+    o.obs_datetime INTO result
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    JOIN patient p ON o.person_id = p.patient_id
+    WHERE o.voided = 0
+        AND o.person_id = p.patient_id
+        AND c.uuid = uuidDispensedConcept
+        AND d.name LIKE "INH%"
+        ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END
+
 -- retrieveINHStartAndEndDate
 
 DROP PROCEDURE IF EXISTS retrieveINHStartAndEndDate;
@@ -597,6 +626,7 @@ BEGIN
     DECLARE dateOfARTInitiation DATE;
     DECLARE inhStartDate DATE;
     DECLARE inhEndDate DATE;
+    DECLARE daysCompleted DATE;
     DECLARE inhFullCourseStartDate DATE;
     DECLARE inhFullCourseEndDate DATE;
     DECLARE courseDuration INT(11);
@@ -613,9 +643,21 @@ BEGIN
         getPatientBirthdate(p.patient_id) as "Date of Birth",
         getPatientGender(p.patient_id) as "Sex",
         IF(getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "Screened for TB",
-        getObsDatetimeValue(p.patient_id, "f79780e8-72de-4162-be89-dd908ab2e5bb") as "TB Screening Date",
-        getObsCodedValue(p.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") as "TB Screening Result",
-        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of ART Initiation"
+         (
+    CASE
+        WHEN getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "%Yes%"
+        && getObsCodedValue(p.patient_id, "c4bbc310-2e01-4c6d-be90-decc1b91a800") LIKE "%Bacteriologically confirmed%"
+        THEN getObsDatetimeValue(p.patient_id, "1d4a6dc4-c478-4021-982b-62e3c84f7857")
+        ELSE NULL
+    END) AS "TB Screening Date",
+     (
+    CASE
+        WHEN getObsCodedValue(p.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") LIKE "%Suspected / Probable%" THEN 'Positive'
+        WHEN getObsCodedValue(p.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") LIKE "%Not Suspected%" THEN 'Negative'
+        ELSE NULL
+    END) AS "TB Screening Result",
+        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of ART Initiation",
+        DATEDIFF(p_endDate,getDateofINHdrugOrderDispensed(p.patient_id)) as 'Days Completed'
     FROM patient p;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
@@ -634,14 +676,15 @@ BEGIN
         tbscreeningResult VARCHAR(50),
         dateOfARTInitiation DATE,
         inhStartDate DATE,
-        inhEndDate DATE
+        inhEndDate DATE,
+        daysCompleted DATE
     );
 
     OPEN mainQueryCursor;
 
     SET bDone = 0;
     REPEAT
-        FETCH mainQueryCursor INTO patientId,facilityName,uniquePatientId,artCode,age,dateOfBirth,sex,screenedforTB,tbscreeningdate,tbscreeningResult,dateOfARTInitiation;
+        FETCH mainQueryCursor INTO patientId,facilityName,uniquePatientId,artCode,age,dateOfBirth,sex,screenedforTB,tbscreeningdate,tbscreeningResult,dateOfARTInitiation,dayscompleted;
 
         SET courseDuration = 0;
         SET _index = 0;
@@ -659,7 +702,7 @@ BEGIN
                 IF (courseDuration >= 6) THEN
                     SET inhFullCourseStartDate = inhStartDate;
                     SET serialNumber = serialNumber + 1;
-                    INSERT INTO tblResults VALUES (serialNumber, facilityName, uniquePatientId, artCode, age, dateOfBirth, sex, screenedforTB, tbscreeningdate, tbscreeningResult, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate);
+                    INSERT INTO tblResults VALUES (serialNumber, facilityName, uniquePatientId, artCode, age, dateOfBirth, sex, screenedforTB, tbscreeningdate, tbscreeningResult, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate,dayscompleted);
                     SET courseDuration = 0;
                 END IF; 
                 
