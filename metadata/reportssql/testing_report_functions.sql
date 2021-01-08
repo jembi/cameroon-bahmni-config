@@ -2096,3 +2096,53 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getHistoricalDateOfNotification
+
+DROP FUNCTION IF EXISTS getHistoricalDateOfNotification;
+
+DELIMITER $$
+CREATE FUNCTION getHistoricalDateOfNotification(
+    p_patientProgramId INT(11),
+    p_maxDate DATETIME) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+    JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+    WHERE ppah.patient_program_id = p_patientProgramId
+        AND ppah.date_created <= p_maxDate
+        AND pat.name = "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNotificationOutcome
+
+DROP FUNCTION IF EXISTS getNotificationOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getNotificationOutcome(
+    p_patientProgramId INT(11),
+    p_maxDate DATETIME) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+    
+    SELECT cn.name INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN concept_name cn ON cn.concept_id = ppah.value_reference AND cn.locale = "en"
+    WHERE ppah.patient_program_id = p_patientProgramId
+        AND ppah.date_created <= p_maxDate
+        AND pat.name = "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
