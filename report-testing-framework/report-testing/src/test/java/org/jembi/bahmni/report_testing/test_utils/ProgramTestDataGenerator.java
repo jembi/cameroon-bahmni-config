@@ -9,12 +9,24 @@ import org.jembi.bahmni.report_testing.test_utils.models.ProgramNameEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.TrackingOutcomeEnum;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 public class ProgramTestDataGenerator {
 	Statement stmt;
 
     public ProgramTestDataGenerator(Statement stmt) {
         this.stmt = stmt;
+	}
+
+	public void recordIndexNotificationDateAndOutcome(int patientProgramId, LocalDate notificationDate, String notificationOutcome) throws Exception {
+		recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", notificationDate, notificationDate);
+		recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome, notificationDate);
+	}
+
+	public void recordProgramHistoricalData(int patientProgramId, int attributeTypeId, LocalDateTime dateCreated, String value) throws Exception {
+		String query = "INSERT INTO patient_program_attribute_history (patient_program_id, attribute_type_id, value_reference, uuid, creator, date_created) VALUES "+
+		"(" + patientProgramId + "," + attributeTypeId + ",'" + value + "',UUID(),4,'" + dateCreated + "')";
+		stmt.executeUpdate(query);
     }
 
     public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate) throws Exception {
@@ -35,7 +47,7 @@ public class ProgramTestDataGenerator {
 		return patientProgramId;
     }
     
-	public void enrollPatientIntoIndexTestingProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate notificationDate, NotificationOutcomeEnum notificationOutcome) throws Exception {
+	public int enrollPatientIntoIndexTestingProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, LocalDate notificationDate, NotificationOutcomeEnum notificationOutcome) throws Exception {
 		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.INDEX_TESTING_PROGRAM_KEY);
 
 		addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
@@ -47,6 +59,8 @@ public class ProgramTestDataGenerator {
 		if (notificationOutcome != null) {
 			recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", notificationOutcome.toString(), enrollmentDate);
 		}
+
+		return patientProgramId;
 	}
 
 	public void recordProgramOutcome(int patientProgramId, ConceptEnum outcome, LocalDate dateCompleted) throws Exception {
