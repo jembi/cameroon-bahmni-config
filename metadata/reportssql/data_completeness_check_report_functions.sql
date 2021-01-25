@@ -470,7 +470,8 @@ BEGIN
             "VISIT_TYPE_ANC",
             "VISIT_TYPE_ART",
             "VISIT_TYPE_ART_DISPENSATION",
-            "VISIT_TYPE_OPD"
+            "VISIT_TYPE_OPD",
+            "Special OPD"
         )
     LIMIT 1;
 
