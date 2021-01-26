@@ -10,13 +10,13 @@ SELECT
     (SELECT gender FROM patient WHERE id = sh.patient_id) AS Gender,
     (SELECT TO_CHAR(birth_date :: DATE, 'dd-Mon-yyyy') FROM patient WHERE id = sh.patient_id) AS date_of_birth,
     s.accession_number AS Sample_ID,
-    TO_CHAR(to_date(substring(s.accession_number FOR 10), 'DDMMYYYY'):: DATE, 'dd-Mon-yyyy') AS Sample_collection_date,
+    DATE(s.received_date) AS Sample_collection_date,
     (SELECT substring(name FROM 10) FROM sample_source WHERE id = s.sample_source_id) AS Service,
     (SELECT name FROM organization WHERE id = ref.organization_id) AS Referral_Lab,
     TO_CHAR(ref.referral_request_date :: DATE, 'dd-Mon-yyyy') AS Referral_Date,
     TO_CHAR(r.lastupdated :: DATE, 'dd-Mon-yyyy') AS Result_Date,
     CASE WHEN r.result_type != 'D' THEN r.value
-        ELSE (SELECT dict_entry from dictionary WHERE id = CAST(r.value AS INTEGER))
+        ELSE (SELECT dict_entry from dictionary WHERE r.value != '' AND id = CAST(r.value AS INTEGER))
     END AS Result_Value
 FROM analysis a
     INNER JOIN test t on t.id = a.test_id
