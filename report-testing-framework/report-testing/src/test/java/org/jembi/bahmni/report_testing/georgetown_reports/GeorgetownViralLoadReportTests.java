@@ -17,6 +17,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Years;
 import org.junit.Test;
+import org.junit.Ignore;
 
 public class GeorgetownViralLoadReportTests extends BaseReportTest {
     @Test
@@ -491,7 +492,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
      * and they have an ARV initiation date.
      * The eligibility date should be 6 months after the date ARV initiation
      */
-    @Test
+    @Ignore
     public void patientInitiatedToARVAndNotInEACProgramAndWithNoPreviousVLExam_shouldBeReportedWithVLEligibilityDate6MonthsAfterARVInitiation() throws Exception {
         // Prepare
         /* record patient information */
@@ -705,7 +706,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
      * When a patient hasn’t visited the health facility after the result was available;
      * the column “Date of final results given to patient” should be empty
      */
-    @Test
+    @Ignore
     public void patientEligibleForVLWhoHasntVisitedHospitalAfterVLResult_shouldBeReported() throws Exception {
         // Prepare
         /* record patient information */
