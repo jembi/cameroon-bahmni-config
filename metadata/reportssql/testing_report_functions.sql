@@ -16,6 +16,63 @@ CREATE FUNCTION Testing_Indicator1(
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
 
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidCounselingForm VARCHAR(38) DEFAULT "6bfd85ce-22c8-4b54-af0e-ab0af24240e3";
+
+    DECLARE uuidHIVTestFinalResult VARCHAR(38) DEFAULT "41e48d08-2235-47d5-af12-87a009057603";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM patient pat
+    WHERE
+        (
+            SELECT p.gender = p_gender
+            FROM person p
+            WHERE p.person_id = pat.patient_id AND p.voided = 0
+        ) AND
+        (
+            (
+                SELECT
+                    cn.name = p_hivResult
+                FROM obs o
+                    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+                    JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+                WHERE o.voided = 0
+                    AND o.person_id = pat.patient_id
+                    AND c.uuid = uuidHIVTestFinalResult
+                    AND o.date_created BETWEEN p_startDate AND p_endDate
+                ORDER BY o.date_created DESC
+                LIMIT 1
+            ) AND
+            getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate
+            AND getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) IS NOT NULL
+        ) AND
+        getTestingEntryPoint(pat.patient_id) = p_testingEntryPoint AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- Testing Report
+
+DROP FUNCTION IF EXISTS Testing_Indicator;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1),
+    p_hivResult VARCHAR(8),
+    p_testingEntryPoint VARCHAR(50)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
     SELECT
         COUNT(DISTINCT pat.patient_id) INTO result
     FROM
