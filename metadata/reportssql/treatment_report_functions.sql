@@ -19,15 +19,20 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNewlyInitiatingART(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsPregnant(pat.patient_id) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    (
+        patientIsPregnant(pat.patient_id) OR
+        patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
+        thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
+    ) AND
+    (
+        patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
+        patientIsNewlyInitiatingART(pat.patient_id)
+    ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
+
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -52,12 +57,16 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramBefore(pat.patient_id, p_startDate) AND
-    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
-    patientAlreadyOnART(pat.patient_id, p_startDate) AND
-    patientIsPregnant(pat.patient_id) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    (
+        patientIsPregnant(pat.patient_id) OR
+        patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
+        thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
+    ) AND
+    (
+        patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) OR
+        patientAlreadyOnART(pat.patient_id)
+    ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -630,12 +639,9 @@ BEGIN
             do.duration,
             c.uuid -- uuid of the duration unit concept
             ) >= p_startDate
-        AND calculateTreatmentEndDate(
-            o.scheduled_date,
-            do.duration,
-            c.uuid -- uuid of the duration unit concept
-            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
-                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))    
+        AND o.scheduled_date IS NOT NULL
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration   
     GROUP BY o.patient_id;
 
     RETURN (result );
@@ -666,13 +672,10 @@ BEGIN
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
-        AND calculateTreatmentEndDate(
-            o.scheduled_date,
-            do.duration,
-            c.uuid -- uuid of the duration unit concept
-            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
-                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration
     GROUP BY o.patient_id;
 
     RETURN (result );
@@ -742,19 +745,15 @@ DROP FUNCTION IF EXISTS patientIsNewlyInitiatingART;
 
 DELIMITER $$
 CREATE FUNCTION patientIsNewlyInitiatingART(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS TINYINT(1)
+    p_patientId INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE isNewlyInitiatingART TINYINT(1) DEFAULT 0;
-    DECLARE artStartedDuringReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
     DECLARE uuidNewlyInitiatingART VARCHAR(38) DEFAULT "31314c4c-c0b9-4b86-bd68-3449ff0ad20c";
-    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
 
     SELECT
-        TRUE INTO isNewlyInitiatingART
+        TRUE INTO result
     FROM obs o
     JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
     WHERE o.voided = 0
@@ -763,17 +762,7 @@ BEGIN
         AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidNewlyInitiatingART)
     LIMIT 1;
 
-    SELECT
-        TRUE INTO artStartedDuringReportingPeriod
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidStartDate
-        AND cast(o.value_datetime AS DATE) BETWEEN p_startDate AND p_endDate
-    LIMIT 1;
-
-    RETURN (isNewlyInitiatingART && artStartedDuringReportingPeriod);
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -863,18 +852,15 @@ DROP FUNCTION IF EXISTS patientAlreadyOnART;
 
 DELIMITER $$
 CREATE FUNCTION patientAlreadyOnART(
-    p_patientId INT(11),
-    p_startDate DATE) RETURNS TINYINT(1)
+    p_patientId INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE isAlreadyOnART TINYINT(1) DEFAULT 0;
-    DECLARE artStartedBeforeReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
     DECLARE uuidAlreadyOnART VARCHAR(38) DEFAULT "6122279f-93a8-4e5a-ac5e-b347b60c989b";
-    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
 
     SELECT
-        TRUE INTO isAlreadyOnART
+        TRUE INTO result
     FROM obs o
     JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
     WHERE o.voided = 0
@@ -883,17 +869,7 @@ BEGIN
         AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidAlreadyOnART)
     LIMIT 1;
 
-    SELECT
-        TRUE INTO artStartedBeforeReportingPeriod
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidStartDate
-        AND cast(o.value_datetime AS DATE) < p_startDate
-    LIMIT 1;
-
-    RETURN (isAlreadyOnART && artStartedBeforeReportingPeriod);
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -1210,6 +1186,34 @@ BEGIN
     END IF;
 
     RETURN NULL;
+
+END$$
+DELIMITER ;
+
+-- thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE
+) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidANCFollowUpForm VARCHAR(38) DEFAULT "bf0c145e-5e7a-41a2-a081-a98fc3723ffd";
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM obs o
+    WHERE
+        o.voided = 0 AND
+        o.person_id = p_patientId AND
+        o.obs_datetime BETWEEN p_startDate AND p_endDate
+    LIMIT 1;
+
+    RETURN result;
 
 END$$
 DELIMITER ;
