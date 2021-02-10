@@ -21,7 +21,6 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     (
-        patientIsPregnant(pat.patient_id) OR
         patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
         thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
     ) AND
@@ -59,7 +58,6 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
     (
-        patientIsPregnant(pat.patient_id) OR
         patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
         thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
     ) AND
