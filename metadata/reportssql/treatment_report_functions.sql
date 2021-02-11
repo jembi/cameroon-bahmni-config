@@ -20,10 +20,7 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
-    (
-        patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
-        thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
-    ) AND
+    patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     (
         patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
         patientIsNewlyInitiatingART(pat.patient_id)
@@ -57,10 +54,7 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
-    (
-        patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
-        thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
-    ) AND
+    patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     (
         patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) OR
         patientAlreadyOnART(pat.patient_id)
