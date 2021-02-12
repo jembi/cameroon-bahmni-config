@@ -3,7 +3,7 @@ SELECT
     getPatientARTNumber(pat.patient_id) as "existingArtCode",
     getFacilityName() as "facilityName",
     getPatientIdentifier(pat.patient_id) as "uniquePatientID",
-    getPatientAgeInYearsAtDate(pat.patient_id,getPatientDateOfEnrolmentInProgram(pat.patient_id, "HIV_PROGRAM_KEY")) as "ageAtHIVEnrollement",
+    getPatientAgeInYearsAtDate(pat.patient_id,"#endDate#") as "age",
     getPatientBirthdate(pat.patient_id) as "dateOfBirth",
     getPatientGender(pat.patient_id) as "sex",
     getPatientHIVTestDate(pat.patient_id) as "hivTestDate",
@@ -26,8 +26,7 @@ SELECT
     getProgramAttributeDateValueFromAttributeAndProgramName(pat.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
     getLastArvPickupDate(pat.patient_id,"#startDate#", "#endDate#") as "lastARVDispenseDate",
     getLastARVDispensed(pat.patient_id,"#startDate#", "#endDate#") as "getLastARVDispensed",
-    getDurationMostRecentArvTreatmentInMonths(pat.patient_id,"#startDate#", "#endDate#") as "durationMostRecentArv",
-    getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "5eb7c731-1f52-4b0b-ad61-971a39b9185e") as "reasonForConsultation",
+    getDurationMostRecentArvTreatmentInDays(pat.patient_id,"#startDate#", "#endDate#") as "durationMostRecentArv",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonForInitiation",
     IF(patientIsNotTransferredOut(pat.patient_id),"No","Yes") as "patientIsTransferedOut",
     IF(getObsCodedValue(pat.patient_id, "211f0857-61a3-4049-9777-374c4a592453") IS NOT NULL, "True", "False") as "kp",
@@ -37,13 +36,19 @@ SELECT
     getReasonLastVLExam(pat.patient_id) as "reasonOfLastVL"
 FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
-    patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#") AND
     (
-        patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#") OR
-        patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
-    ) AND 
+        (
+            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#") AND
+            patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
+        )
+        OR
+        (
+            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
+            patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, "#startDate#", 0, 2000)
+        )
+    ) AND
+    patientIsLostToFollowUp(pat.patient_id, "#startDate#", "#endDate#") AND
     patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
         patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, "#startDate#", 0, 2000)
