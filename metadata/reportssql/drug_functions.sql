@@ -688,6 +688,35 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getLastARVDispensed
+
+DROP FUNCTION IF EXISTS getLastARVDispensed;
+
+DELIMITER $$
+CREATE FUNCTION getLastARVDispensed(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+
+    SELECT d.name INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+    
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- getFirstARVPrescribed
 
 DROP FUNCTION IF EXISTS getFirstARVPrescribed;
