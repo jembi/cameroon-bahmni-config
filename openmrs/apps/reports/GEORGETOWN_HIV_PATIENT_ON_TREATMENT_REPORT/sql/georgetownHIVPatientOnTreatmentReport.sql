@@ -44,12 +44,12 @@ WHERE
         OR
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
-            patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, "#startDate#", 0, 2000)
+            patientPrescribedARTDuringPartOfReportingPeriod(pat.patient_id, "#startDate#")
         )
     ) AND
-    patientIsLostToFollowUp(pat.patient_id, "#startDate#", "#endDate#") AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotDead(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, "#startDate#", 0, 2000)
+        patientPrescribedARTDuringPartOfReportingPeriod(pat.patient_id, "#startDate#")
     );
