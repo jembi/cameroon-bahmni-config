@@ -640,6 +640,39 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientPrescribedARTDuringPartOfReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTDuringPartOfReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTDuringPartOfReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date < p_startDate
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) >= p_startDate
+        AND o.scheduled_date IS NOT NULL
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 -- patientPickedARVDrugDuringReportingPeriodAndDurationBetween
 
 DROP FUNCTION IF EXISTS patientPickedARVDrugDuringReportingPeriodAndDurationBetween;
