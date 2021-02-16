@@ -315,21 +315,23 @@ BEGIN
 END$$
 DELIMITER ;
 
--- getPatientANCStatus
+-- getPatientARTStatus
 
-DROP FUNCTION IF EXISTS getPatientANCStatus;
+DROP FUNCTION IF EXISTS getPatientARTStatus;
 
 DELIMITER $$
-CREATE FUNCTION getPatientANCStatus(
-    p_patientId INT(11)) RETURNS VARCHAR(250)
+CREATE FUNCTION getPatientARTStatus(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
     
-    IF (patientHasStartedARVTreatmentDuringReportingPeriod(p_patientId, "#startDate#", "#endDate#")) THEN
+    IF (patientHasStartedARVTreatmentDuringReportingPeriod(p_patientId, p_startDate, p_endDate)) THEN
         RETURN "Newly enrolled";
     END IF;
 
-    IF (patientHasStartedARVTreatmentBefore(p_patientId, "#startDate#")) THEN
+    IF (patientHasStartedARVTreatmentBefore(p_patientId, p_startDate)) THEN
         RETURN "Already enrolled";
     END IF;
 
