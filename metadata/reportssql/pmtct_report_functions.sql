@@ -325,11 +325,11 @@ CREATE FUNCTION getPatientANCStatus(
     DETERMINISTIC
 BEGIN
     
-    IF ((patientIsNewlyInitiatingART(p_patientId) OR patientHasStartedARVTreatmentDuringReportingPeriod(p_patientId, "#startDate#", "#endDate#")) AND patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(p_patientId, "#startDate#", "#endDate#")) THEN
+    IF (patientHasStartedARVTreatmentDuringReportingPeriod(p_patientId, "#startDate#", "#endDate#")) THEN
         RETURN "Newly enrolled";
     END IF;
 
-    IF (patientAlreadyOnART(p_patientId) OR patientHasStartedARVTreatmentBefore(p_patientId, "#startDate#")) THEN
+    IF (patientHasStartedARVTreatmentBefore(p_patientId, "#startDate#")) THEN
         RETURN "Already enrolled";
     END IF;
 
