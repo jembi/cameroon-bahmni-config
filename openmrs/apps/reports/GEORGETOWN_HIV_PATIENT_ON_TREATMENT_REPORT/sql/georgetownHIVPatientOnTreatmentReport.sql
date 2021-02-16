@@ -16,6 +16,7 @@ SELECT
     getActiveARVWithLowestDispensationPeriod(pat.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
+    getDateLatestARVRelatedVisit(pat.patient_id) as "dateOfLastVisit",
     getDateMostRecentARVAppointment(pat.patient_id) as "lastAppointmentDate",
     getPatientANCStatus(pat.patient_id) as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
