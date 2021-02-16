@@ -315,3 +315,24 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientANCStatus
+
+DROP FUNCTION IF EXISTS getPatientANCStatus;
+
+DELIMITER $$
+CREATE FUNCTION getPatientANCStatus(
+    p_patientId INT(11)) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    
+    IF ((patientIsNewlyInitiatingART(p_patientId) OR patientHasStartedARVTreatmentDuringReportingPeriod(p_patientId, "#startDate#", "#endDate#")) AND patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(p_patientId, "#startDate#", "#endDate#")) THEN
+        RETURN "Newly enrolled";
+    END IF;
+
+    IF (patientAlreadyOnART(p_patientId) OR patientHasStartedARVTreatmentBefore(p_patientId, "#startDate#")) THEN
+        RETURN "Already enrolled";
+    END IF;
+
+    RETURN NULL;
+END$$
+DELIMITER ;
