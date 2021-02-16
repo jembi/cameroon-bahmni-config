@@ -17,7 +17,7 @@ SELECT
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
     getDateMostRecentARVAppointment(pat.patient_id) as "lastAppointmentDate",
-    IF(patientIsNewlyInitiatingART(pat.patient_id) OR patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#"), "Newly enrolled", IF (patientAlreadyOnART(pat.patient_id) OR patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#"), "Already enrolled", "")) as "newOrAlreadyEnrolled",
+    getPatientANCStatus(pat.patient_id) as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb")="true","Yes","No") as "patientIsBreastfeeding",
     IF(getObsCodedValue(pat.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "tbScreening",
