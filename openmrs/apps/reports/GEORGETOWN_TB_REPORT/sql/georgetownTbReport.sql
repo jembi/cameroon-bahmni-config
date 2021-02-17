@@ -1,10 +1,12 @@
 SELECT
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
+    getFacilityName() as "Facility Name",
     getPatientIdentifier(p.patient_id) as "uniquePatientId",
     getPatientBirthdate(p.patient_id) as "dateOfBirth",
     getPatientAge(p.patient_id) as "age",
     getPatientGender(p.patient_id) as "sex",
     getPatientPhoneNumber(p.patient_id) as "telephone",
+    getMostRecentCodedObservation(p.patient_id,"Method of confirmation","en") as "Type of Exam",
     getDateTBPosDiagnose(p.patient_id) as "dateTBPosDiag",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
     getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "dateOfHivTesting",

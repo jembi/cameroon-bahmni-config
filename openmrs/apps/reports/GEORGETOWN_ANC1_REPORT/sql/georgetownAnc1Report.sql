@@ -1,8 +1,8 @@
 SELECT
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
+    getFacilityName() as "facilityName",
     getPatientIdentifier(p.patient_id) as "patientId",
     getDateFirstANCVisit(p.patient_id) as "dateOfAncVisit",
-    getPatientFullName(p.patient_id) as "nameOfClient",
     getPatientANCNumber(p.patient_id) as "pregnancyId",
     getPatientBirthdate(p.patient_id) as "dateOfBirth",
     getPatientAgeInYearsAtDate(p.patient_id, getDateFirstANCVisit(p.patient_id)) as "ageAtFirstAnc",

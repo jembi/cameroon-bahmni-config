@@ -1,13 +1,15 @@
-SELECT
-    CAST(@a:=@a+1 AS CHAR) as "Serial Number",
+SELECT DISTINCT
+    '' as "Serial Number",
+    getFacilityName() as "Facility Name",
     getPatientIdentifier(p.patient_id) as "Unique Patient ID",
     getPatientBirthdate(p.patient_id) as "Date of Birth",
     getPatientAge(p.patient_id) as "Age",
     getPatientGender(p.patient_id) as "Sex",
+    CONCAT(getPatientVillage(p.patient_id),",",getPatientPreciseLocation(p.patient_id)) as "Address",
     getFirstIndexRelationship(p.patient_id) as "Relation with index",
     getPatientMostRecentProgramTrackingStateValue(p.patient_id,"en","INDEX_TESTING_PROGRAM_KEY") as "Notified for Index case testing ?",
-    DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "c4e1106e-1644-45be-86c2-88392e73a507")) as "Date of Notification",
-    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "19a7ef7b-5748-477b-a973-2f170e687624", "en") as "Notification Outcome",
+    getHistoricalDateOfNotification(ppah.patient_program_id, ppah.date_created) as "Date of Notification",
+    getNotificationOutcome(ppah.patient_program_id, ppah.date_created) as "Notification Outcome",
     getPatientPhoneNumber(p.patient_id) as "Contact telephone",
     IF(getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") IS NOT NULL, "Yes", "") as "Tested for HIV ?",
     getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "HIV Test Date",
@@ -15,5 +17,11 @@ SELECT
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of Initiation",
     getPatientARTNumber(getFirstIndexID(p.patient_id)) as "Index Related ART Code",
     getPatientIdentifier(getFirstIndexID(p.patient_id)) as "Index Related Unique ID"
-FROM patient p, (SELECT @a:= 0) AS a
-WHERE patientIsContact(p.patient_id);
+FROM patient p, patient_program_attribute_history ppah, patient_program pp, program_attribute_type pat
+WHERE
+    ppah.patient_program_id = pp.patient_program_id AND
+    pp.patient_id = p.patient_id AND
+    pat.program_attribute_type_id = ppah.attribute_type_id AND
+    pat.name IN ("PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME") AND
+    patientIsContact(p.patient_id)
+ORDER BY ppah.date_created DESC;

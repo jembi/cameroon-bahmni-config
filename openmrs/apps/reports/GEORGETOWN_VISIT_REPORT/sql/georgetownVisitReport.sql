@@ -23,7 +23,5 @@ SELECT
     IF(getPreviousRegimen(v.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL, "Yes", "No") as "switchedLine",
     "N/A" as "reasonOfSwitchLine"
 FROM (SELECT @a:= 0) AS a, visit v
-    JOIN visit_type vt ON v.visit_type_id = vt.visit_type_id
 WHERE
-    vt.name = "VISIT_TYPE_OPD" AND
     v.date_started BETWEEN "#startDate#" AND "#endDate#";

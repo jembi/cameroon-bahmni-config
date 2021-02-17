@@ -106,6 +106,9 @@ public class BaseReportTest {
 		// Remove appointments
 		executeUpdateQuery("DELETE FROM patient_appointment WHERE patient_id > 72");
 
+		// Remove person addresses 
+		executeUpdateQuery("DELETE FROM person_address WHERE person_id > 72");
+
 		// Remove patient identifiers
 		executeUpdateQuery("DELETE FROM patient_identifier WHERE patient_id > 72");
 
@@ -118,14 +121,23 @@ public class BaseReportTest {
 		// Remove relationships
 		executeUpdateQuery("DELETE FROM relationship WHERE person_a > 72 OR person_b > 72");
 
-		// Remove persons
-		executeUpdateQuery("DELETE FROM person WHERE person_id > 72");
-		
-		// Remove patients
-		executeUpdateQuery("DELETE FROM patient WHERE patient_id > 72");
+		// Remove drug orders
+		executeUpdateQuery("DELETE FROM drug_order");
+
+		// Remove observations
+		executeUpdateQuery("DELETE FROM obs");
+
+		// Remove orders
+		executeUpdateQuery("DELETE FROM orders");
+
+		// Remove encounters
+		executeUpdateQuery("DELETE FROM encounter");
 
 		// Remove patient program attributes
 		executeUpdateQuery("DELETE FROM patient_program_attribute");
+
+		// Remove program attribute history
+		executeUpdateQuery("DELETE FROM patient_program_attribute_history");
 
 		// Remove patient programs
 		executeUpdateQuery("DELETE FROM patient_program");
@@ -133,17 +145,12 @@ public class BaseReportTest {
 		// Remove visits
 		executeUpdateQuery("DELETE FROM visit");
 
-		// Remove observations
-		executeUpdateQuery("DELETE FROM obs");
+		// Remove patients
+		executeUpdateQuery("DELETE FROM patient WHERE patient_id > 72");
 
-		// Remove drug orders
-		executeUpdateQuery("DELETE FROM drug_order");
+		// Remove persons
+		executeUpdateQuery("DELETE FROM person WHERE person_id > 72");
 
-		// Remove orders
-		executeUpdateQuery("DELETE FROM orders");
-
-		// Remove encounters
-		executeUpdateQuery("DELETE FROM encounter");
 	}
 
 	private void executeUpdateQuery(String query) throws SQLException {
