@@ -55,8 +55,8 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
 
         /* record relationship between mother and child */
         testDataGenerator.registration.addRelationshipToPatient(
-            patientIdMother,
             patientIdChild,
+            patientIdMother,
             RelationshipEnum.RELATIONSHIP_BIO_MOTHER,
             RelationshipEnum.RELATIONSHIP_BIO_CHILD);
 
@@ -163,13 +163,13 @@ public class GeorgetownPCRReportTests extends BaseReportTest {
 
         /* record relationship between mother and child */
         testDataGenerator.registration.addRelationshipToPatient(
-            patientIdMother,
             patientIdChild1,
+            patientIdMother,
             RelationshipEnum.RELATIONSHIP_BIO_MOTHER,
             RelationshipEnum.RELATIONSHIP_BIO_CHILD);
         testDataGenerator.registration.addRelationshipToPatient(
-            patientIdMother,
             patientIdChild2,
+            patientIdMother,
             RelationshipEnum.RELATIONSHIP_BIO_MOTHER,
             RelationshipEnum.RELATIONSHIP_BIO_CHILD);
 
