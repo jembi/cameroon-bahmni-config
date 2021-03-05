@@ -17,11 +17,11 @@ SELECT DISTINCT
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of Initiation",
     getPatientARTNumber(getFirstIndexID(p.patient_id)) as "Index Related ART Code",
     getPatientIdentifier(getFirstIndexID(p.patient_id)) as "Index Related Unique ID"
-FROM patient p, patient_program_attribute_history ppah, patient_program pp, program_attribute_type pat
+FROM patient p
+    LEFT JOIN patient_program pp ON pp.patient_id = p.patient_id
+    LEFT JOIN patient_program_attribute_history ppah ON ppah.patient_program_id = pp.patient_program_id
+    LEFT JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        AND pat.name IN ("PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME")
 WHERE
-    ppah.patient_program_id = pp.patient_program_id AND
-    pp.patient_id = p.patient_id AND
-    pat.program_attribute_type_id = ppah.attribute_type_id AND
-    pat.name IN ("PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME") AND
     patientIsContact(p.patient_id)
 ORDER BY ppah.date_created DESC;
