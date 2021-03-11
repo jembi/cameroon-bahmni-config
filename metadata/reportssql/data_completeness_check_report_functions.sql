@@ -473,6 +473,7 @@ BEGIN
             "VISIT_TYPE_OPD",
             "Special OPD"
         )
+    ORDER BY v.date_started DESC
     LIMIT 1;
 
     RETURN (result);
