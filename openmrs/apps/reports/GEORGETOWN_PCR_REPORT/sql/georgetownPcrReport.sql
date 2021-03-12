@@ -12,4 +12,5 @@ SELECT
     getObsCodedValue(r.person_a, "3447254f-501f-4b07-815c-cd0f6da98158") as "reasonOfNonInitiation"
 FROM (SELECT @a:= 0) AS a, relationship r
     JOIN relationship_type rt ON rt.relationship_type_id = r.relationship AND rt.a_is_to_b = "RELATIONSHIP_BIO_MOTHER"
-    JOIN patient_identifier pi ON pi.patient_id = r.person_a AND pi.preferred = 1;  
+    JOIN patient_identifier pi ON pi.patient_id = r.person_a AND pi.preferred = 1
+WHERE getPatientAgeInMonthsAtDate(r.person_a, NOW()) <= 24;
