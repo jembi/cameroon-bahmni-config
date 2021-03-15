@@ -13,4 +13,6 @@ SELECT
 FROM (SELECT @a:= 0) AS a, relationship r
     JOIN relationship_type rt ON rt.relationship_type_id = r.relationship AND rt.a_is_to_b = "RELATIONSHIP_BIO_MOTHER"
     JOIN patient_identifier pi ON pi.patient_id = r.person_a AND pi.preferred = 1
-WHERE getPatientAgeInMonthsAtDate(r.person_a, NOW()) <= 24;
+WHERE
+    getPatientAgeInMonthsAtDate(r.person_a, NOW()) <= 24 AND
+    patientHasEnrolledIntoHivProgram(r.person_b) = "Yes";
