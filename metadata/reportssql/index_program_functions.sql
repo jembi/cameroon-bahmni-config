@@ -141,14 +141,14 @@ CREATE FUNCTION getFirstIndexID(
     p_contactPatientId INT(11)) RETURNS INT(11)
     DETERMINISTIC
 BEGIN
-    DECLARE result TEXT DEFAULT 0;
+    DECLARE result INT(11);
 
     SELECT p.patient_id INTO result
     FROM patient p
     WHERE patientsAreRelated(p_contactPatientId, p.patient_id) AND
         patientIsIndex(p.patient_id)
-        ORDER BY p.date_created ASC 
-        LIMIT 1;
+    ORDER BY p.date_created ASC 
+    LIMIT 1;
 
     RETURN (result);
 END$$
@@ -191,10 +191,9 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM relationship r
-    JOIN person pIndex ON (r.person_a = p_contactId AND r.person_b = pIndex.person_id) OR
-            (r.person_a = pIndex.person_id AND r.person_b = p_contactId)
-    WHERE 
-        patientIsIndex(pIndex.person_id)
+    JOIN person pIndex ON (r.person_a = p_contactId AND r.person_b = pIndex.person_id AND patientIsIndex(r.person_b)) OR
+            (r.person_a = pIndex.person_id AND r.person_b = p_contactId AND patientIsIndex(r.person_a))
+    WHERE r.voided = 0
     LIMIT 1;
 
     RETURN (result);
