@@ -13,7 +13,7 @@ SELECT
     getHIVResult(p.patient_id,"#startDate#", "#endDate#") as "result",
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-12-31", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "dateOfArtInitiation",
     getObsCodedValue(p.patient_id, "3447254f-501f-4b07-815c-cd0f6da98158") as "reasonOfNonInitiation",
-    IF(wasHIVTestDoneInANCVisitWithinRepPeriod(p.patient_id, "#startDate#", "#endDate#"),"PMTCT [ANC1-only]",getTestingEntryPointWithinRepPeriod(p.patient_id, "#startDate#", "#endDate#")) as "facilityEntryPoint",
+    IF(wasHIVTestDoneInANCVisitWithinRepPeriod(p.patient_id, "#startDate#", "#endDate#"),"PMTCT [ANC1-only]",getTestingEntryPointWithinRepPeriod(p.patient_id)) as "facilityEntryPoint",
     getHIVTestDate(p.patient_id,"#startDate#", "#endDate#") as "dateFinalResultProvidedToPatient"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE getHIVTestDate(p.patient_id, "#startDate#", "#endDate#") IS NOT NULL;
