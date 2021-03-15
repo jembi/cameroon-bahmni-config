@@ -1806,9 +1806,7 @@ DROP FUNCTION IF EXISTS getTestingEntryPointWithinRepPeriod;
 
 DELIMITER $$
 CREATE FUNCTION getTestingEntryPointWithinRepPeriod(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS VARCHAR(50)
+    p_patientId INT(11)) RETURNS VARCHAR(50)
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(50);
@@ -1822,7 +1820,6 @@ BEGIN
     WHERE o.voided = 0
         AND o.person_id = p_patientId
         AND c.uuid = uuidTestingEntryPoint
-        AND o.date_created BETWEEN p_startDate AND p_endDate
     ORDER BY o.date_created DESC
     LIMIT 1;
 
