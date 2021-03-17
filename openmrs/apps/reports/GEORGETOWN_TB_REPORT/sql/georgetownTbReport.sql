@@ -8,6 +8,8 @@ SELECT
     getPatientPhoneNumber(p.patient_id) as "telephone",
     getMostRecentCodedObservation(p.patient_id,"Method of confirmation","en") as "Type of Exam",
     getDateTBPosDiagnose(p.patient_id) as "dateTBPosDiag",
+    getMostRecentCodedObservation(p.patient_id,"TB Diagnostic Result","en") as "tbDiagnosticResult",
+    getMostRecentDateObservation(p.patient_id,"MDR-TB diagnosis date") as "tbDiagnosticDate",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
     getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "dateOfHivTesting",
     getHIVResult(p.patient_id,"2000-01-01","2100-01-01") as "hivTestingResult",

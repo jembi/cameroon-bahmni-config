@@ -73,7 +73,7 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.YES,
             encounterId);
-        
+
         testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
