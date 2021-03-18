@@ -17,4 +17,4 @@ SELECT
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
     getDateTBPosDiagnose(p.patient_id) IS NOT NULL AND
-    getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%";
+    getObsCodedValue(p.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable";

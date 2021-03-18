@@ -74,6 +74,12 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             ConceptEnum.YES,
             encounterId);
 
+        testDataGenerator.tbForm.setTBScreeningResult(
+            patientId,
+            new LocalDateTime(2020, 1, 6, 10, 0),
+            ConceptEnum.SUSPECTED_PROBABLE,
+            encounterId);
+
         testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
