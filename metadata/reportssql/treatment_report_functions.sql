@@ -93,7 +93,7 @@ WHERE
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
-        (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_minDuration, p_maxDuration) OR
+        (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration) OR
             patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)),
         patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)
     ) AND
@@ -101,7 +101,7 @@ WHERE
     patientIsNotLostToFollowUp(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
     );
 
     RETURN (result);
@@ -139,7 +139,7 @@ WHERE
     patientIsNotLostToFollowUp(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
     );
 
     RETURN (result);
@@ -610,12 +610,27 @@ DELIMITER $$
 CREATE FUNCTION patientOnARTDuringPartOfReportingPeriodAndDurationBetween(
     p_patientId INT(11),
     p_startDate DATE,
+    p_endDate DATE,
     p_minDuration INT(11),
     p_maxDuration INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
 
     DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE orderIdMostRecentDispense INT(11);
+
+    SELECT o.order_id INTO orderIdMostRecentDispense
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.scheduled_date IS NOT NULL
+        AND o.scheduled_date <= p_endDate
+    ORDER BY o.scheduled_date
+    LIMIT 1;
 
     SELECT TRUE INTO result
     FROM orders o
@@ -633,7 +648,9 @@ BEGIN
             ) >= p_startDate
         AND o.scheduled_date IS NOT NULL
         AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
-        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration   
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration
+        AND orderIdMostRecentDispense IS NOT NULL
+        AND o.order_id = orderIdMostRecentDispense
     GROUP BY o.patient_id;
 
     RETURN (result );
@@ -687,6 +704,20 @@ CREATE FUNCTION patientPickedARVDrugDuringReportingPeriodAndDurationBetween(
 BEGIN
 
     DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE orderIdMostRecentDispense INT(11);
+
+    SELECT o.order_id INTO orderIdMostRecentDispense
+    FROM orders o
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.scheduled_date IS NOT NULL
+        AND o.scheduled_date <= p_endDate
+    ORDER BY o.scheduled_date
+    LIMIT 1;
 
     SELECT TRUE INTO result
     FROM orders o
@@ -700,6 +731,8 @@ BEGIN
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
         AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration
+        AND orderIdMostRecentDispense IS NOT NULL
+        AND o.order_id = orderIdMostRecentDispense
     GROUP BY o.patient_id;
 
     RETURN (result );

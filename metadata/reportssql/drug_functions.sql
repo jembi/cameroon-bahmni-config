@@ -93,7 +93,8 @@ BEGIN
     WHERE o.voided = 0
         AND o.person_id = p_patientId
         AND o.order_id = p_orderId
-        AND c.uuid = uuidDispensedConcept;
+        AND c.uuid = uuidDispensedConcept
+    LIMIT 1;
 
     SELECT TRUE INTO retrospectiveDrugEntry
     FROM orders o
@@ -105,7 +106,8 @@ BEGIN
         AND o.date_created > calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
-            c.uuid);
+            c.uuid)
+    LIMIT 1;
 
     RETURN (drugDispensed OR retrospectiveDrugEntry); 
 END$$ 
