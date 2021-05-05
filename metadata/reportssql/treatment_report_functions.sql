@@ -130,7 +130,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding) = 'true') AND
+    (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding, "HIV_PROGRAM_KEY") = 'true') AND
     patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
@@ -748,7 +748,8 @@ CREATE FUNCTION getProgramAttributeValueWithinReportingPeriod(
     p_patientId INT(11),
     p_startDate DATE,
     p_endDate DATE,
-    p_uuidProgramAttribute VARCHAR(38)) RETURNS VARCHAR(250)
+    p_uuidProgramAttribute VARCHAR(38),
+    p_program VARCHAR(240)) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(250);
@@ -757,10 +758,12 @@ BEGIN
     FROM patient_program_attribute ppa
         JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
         JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+        JOIN program p ON pp.program_id = p.program_id
     WHERE
         ppa.voided = 0 AND
         pp.patient_id = p_patientId AND
         pat.uuid = p_uuidProgramAttribute AND
+        p.name = p_program AND
         ppa.date_created BETWEEN p_startDate AND p_endDate
     ORDER BY ppa.date_created DESC
     LIMIT 1;
@@ -894,7 +897,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -940,7 +943,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBefore(
     p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -959,7 +962,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentAfter(
     p_date DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -979,7 +982,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
     p_extendedMonths INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -1085,7 +1088,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -1219,7 +1222,7 @@ CREATE FUNCTION getDateOfVLEligibility(
     DETERMINISTIC
 BEGIN
     DECLARE dateOfLastVLExam DATE DEFAULT getViralLoadTestDate(p_patientId);
-    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce"));
+    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY"));
     DECLARE eacProgramStartDate DATE DEFAULT getMostRecentProgramEnrollmentDate(p_patientId, "VL_EAC_PROGRAM_KEY");
     DECLARE eacProgramEndDate DATE DEFAULT getMostRecentProgramCompletionDate(p_patientId, "VL_EAC_PROGRAM_KEY");
 

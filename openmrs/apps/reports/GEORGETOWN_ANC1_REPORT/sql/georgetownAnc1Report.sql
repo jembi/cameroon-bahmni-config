@@ -11,7 +11,7 @@ SELECT
     getObsDatetimeValueInSection(p.patient_id,"c6c08cdc-18dc-4f42-809c-959621bc9a6c", "d6cc3709-ffa0-42eb-b388-d7def4df30cf") as "dateOfTestAtAnc1",
     getObsCodedValueInSectionByNames(p.patient_id,"HTC, Result","At ANC Enrolment") as "resultTestAtAnc1",
     IF(getObsCodedValueInSectionByNames(p.patient_id,"HTC, Result","At ANC Enrolment") IS NOT NULL, "Yes", "No") as "resultReceived",
-    DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "dateArtInitiation",
+    DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "dateArtInitiation",
     getObsCodedValue(p.patient_id, "f961ec41-cd5d-4b45-91e0-0f5a408fea4b") as "arvStatus",
     getListOfActiveARVDrugs(p.patient_id, '#startDate#', '#endDate#') as "arvRegiment",
     IF(getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "screenForTB",
