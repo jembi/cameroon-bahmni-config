@@ -638,7 +638,7 @@ BEGIN
         getPatientAge(p.patient_id) as "Age",
         getPatientBirthdate(p.patient_id) as "Date of Birth",
         getPatientGender(p.patient_id) as "Sex",
-        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of ART Initiation"
+        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "Date of ART Initiation"
     FROM patient p;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;

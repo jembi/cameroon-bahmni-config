@@ -3,7 +3,7 @@ SELECT
     getPatientARTNumber(v.patient_id) as "artCode",
     getPatientIdentifier(v.patient_id) as "uniquePatientId",
     getFacilityName() as "healthFacility",
-    DATE(getProgramAttributeValueWithinReportingPeriod(v.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "artStartDate",
+    DATE(getProgramAttributeValueWithinReportingPeriod(v.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "artStartDate",
     getPatientAge(v.patient_id) as "age",
     getPatientGender(v.patient_id) as "sex",
     getPatientPhoneNumber(v.patient_id) as "telephone",
