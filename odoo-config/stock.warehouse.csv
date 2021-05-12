@@ -1,0 +1,2 @@
+id,code,name,active,partner_id/id,create_date,in_type_id/id,wh_input_stock_loc_id/id,int_type_id/id,lot_stock_id/id
+stock.warehouse0,CW,Cental Warehouse,TRUE,base.main_partner,05/05/2021 10:06,stock.picking_type_in,stock.stock_location_company,stock.picking_type_internal,stock.stock_location_stock
