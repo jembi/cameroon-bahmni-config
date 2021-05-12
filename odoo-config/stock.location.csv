@@ -1,0 +1,5 @@
+id,active,comment,barcode,company_id/id,child_ids/id,create_uid/id,create_date,name,usage,location_id/id
+init.stock_location_opd_pharmacy,TRUE,,,base.main_company,,base.user_root,05/05/2021 07:29,OPD Pharmacy,Internal Location,__export__.stock_location_11
+init.stock_location_care_treatment_pharmacy,TRUE,,,base.main_company,,base.user_root,05/05/2021 07:29,Care and Treatment Pharmacy,Internal Location,__export__.stock_location_11
+init.stock_location_ncd_pharmacy,TRUE,,,base.main_company,,base.user_root,05/05/2021 07:29,NCD Pharmacy,Internal Location,__export__.stock_location_11
+init.stock_location_eye_dental_pharmacy,TRUE,,,base.main_company,,base.user_root,05/05/2021 07:29,EYE/DENTAL Pharmacy,Internal Location,__export__.stock_location_11
