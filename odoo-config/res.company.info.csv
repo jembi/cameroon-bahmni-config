@@ -1,0 +1,2 @@
+id,name,street,city,state,country_id/id,currency_id/id,phone,email,logo,website,zip
+base.main_company,Etoug-Ebe Baptist Hospital,Etoug Ebe - Biyem Assi Yaounde Cameroon,Yaounde,Center,base.cm,base.XOF,"(+237) 677 509 444, (+237) 699 901 495",EBHY@cbchealthservices.org,,www.cbchealthservices.org,P.O. BOX 2039 Grand Messa
