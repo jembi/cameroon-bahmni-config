@@ -1,0 +1,290 @@
+id,name,categ_id/id,type,Sale Price,Cost,mrp,active,purchase_ok,sale_ok,default_code,tracking,uom_id/id,uom_po_id/id
+__export__.product_template_1195,1st Test / Determine,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1197,2nd Test / Oraquick or KHB,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_31,ABO,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2506,Acid phosphatase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_996,AFB Culture,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1169,AH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1171,AH Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1235,Alanine Aminophosphatase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_838,Alanine Aminotransferase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1248,Albumin-Sugar-Aceton-Bile salt-Bile-pigment,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2483,Alkaline phosphatase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2480,Alpha-fetoprotein (AFP),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_305,Amylase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1191,Anti Strepto Lysine O / A.S.L.O.,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1165,AO,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1167,AO Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1143,APTT test,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1545,ARV Resistance Test,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2492,Ascorbic Acid - Vitamin C (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_839,Aspartate Aminotransferase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_79,Basophils,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1177,BH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1179,BH Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1271,Bicarbonate (HCO3),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2481,Biopsy,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_37,Bleeding time,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_452,Blood (Culture),services_laboratory_fees_microbiology_microscopy,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1490,Blood Culture Antibiogram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1488,Blood Culture Germs,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2508,Blood Film,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1138,Blood grouping,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2490,Blood (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1173,BO,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2502,Bone Marrow Aspirates,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2503,Bone Marrow Biopsies,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1175,BO Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_256,Calcium,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1273,Calcium Ionized,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1133,CBC (NFS),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_48,CD4,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1145,Cephalin-Kaolin time,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1440,Cerebro-spinal fluid,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1185,CH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_227,Chlamydia,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1515,Chlamydia IgG,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1517,Chlamydia IgM,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_247,Chloride,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1252,Chloride (CSF),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1279,Chloride (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1187,CH Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_39,Clotting Time,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1181,CO,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1291,Cortisol (plasma) 4 PM,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1289,Cortisol (plasma) 8 AM,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1183,CO Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1227,C reactive protein,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1275,Creatine kinase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_245,Creatinine,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1281,Creatinine (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1246,Creatinuria (24 hours),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1438,CSF Antibiogram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1425,CSF Aspect,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1434,CSF Cryptococcus,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1436,CSF Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1427,CSF Number of epithelial cells per ml,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1431,CSF Number of erythrocytes per ml,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1429,CSF Number of leucocytes per ml,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_478,Culture (Stool),services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1407,Cyto Bacterial exam of urine Antibiogram S.I.R,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1389,Cyto Bacterial exam of urine Bacteria (ml),services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1395,Cyto Bacterial exam of urine Crystals,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1387,Cyto Bacterial exam of urine Epithelial cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1396,Cyto Bacterial exam of urine Flagellés,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1403,Cyto Bacterial exam of urine Isolated germs,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1393,Cyto Bacterial exam of urine Number of red blood cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1391,Cyto Bacterial exam of urine Number of white blood cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1401,Cyto Bacterial exam of urine Urinary germs count,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1399,Cyto Bacterial exam of urine Yeast,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1405,Cyto Bacteriological examination of urine,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1539,DBS,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2478,D-dimeres IFA,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2491,Density (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2484,Direct coombs test (DAT),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_836,Direct or conjugate Bilirubin,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1222,Electrolytes,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1147,Emmel test (P/N),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_75,Eosinophils,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_774,Erythrocyte Sedimentation Rate,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1240,Fasting blood glucose,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2499,Fehling Test,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1269,Ferritin,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1509,Fibrinogen test,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2500,Fine Needle Aspirate FNA (cytopunction),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1530,FSH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1547,Glucose-6-phosphate dehydrogenase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_332,Glucose (CSF),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2494,Glycosuria (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1310,Growth hormone (hGH) fasting,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1128,Haematocrit,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_740,Haemoglobin,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1263,HbA1C,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1205,HBs Antigen,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_169,HDL,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2479,Helicobacter Pylori,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1259,Hemoglobin electrophoresis,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1087,Herpes simplex virus (HSV),services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2505,Histology – large Specimens,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2504,Histology – Small biopsies,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1203,HIV Tests,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1207,HVC antibodies,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2485,Indirect coombs test (IAT),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_27,INR,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1267,Iron binding capacity (TIBC),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1265,Iron level,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2493,Ketone (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_171,LDL,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_768,LH,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1549,Lipase,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_611,Lipid profile,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_77,Lymphocytes,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_267,Magnésium,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1283,Magnesium (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_110,MCH,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_113,MCHC,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_102,MCV,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_81,Monocytes,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1579,Mycoplasma,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1575,Mycoplasma hominis,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1577,Mycoplasma urealyticum,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1150,Myelogramm,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1218,Not Documented Viral Load,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1543,Oestrogen,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1277,Osmolality (serum),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1285,Osmolality (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1293,Oxygen (arterial saturation),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1295,pCO2 (arterial),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1537,PCR(ALERE-Q),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1299,pH (arterial),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1243,Phosphate,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_128,pH (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_94,Platelets,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1297,pO2 (arterial),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_252,Potassium,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1532,Progesterone,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_770,Prolactin,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_771,Prostate specific antigen (PSA),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_326,Protein (CSF),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1261,Protein electrophoresis,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1231,Protein (serum) - Albumin,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1229,Protein (serum) - Total,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2489,Proteinuria,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1287,Protein (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_777,Prothrombin time (PT),services_laboratory_fees_clinical_pathology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_964,PTH,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1463,Puncture liquid,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1461,Puncture liquid Antibiogram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1442,Puncture liquid Aspect,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1446,Puncture liquid Biochemestry,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1444,Puncture liquid Cytology,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1452,Puncture liquid Gram - bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1450,Puncture liquid Gram + bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1456,Puncture liquid Gram - cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1454,Puncture liquid Gram + cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1459,Puncture liquid Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1448,Puncture liquid Yeast cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2501,Purified protein derivative (PPD),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1573,PUS culture,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1551,PUS smear Antibiogram S.I.R,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1559,PUS smear Clue cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1563,PUS smear Epithelial cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1567,PUS smear Gram - Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1556,PUS smear Gram + Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1555,PUS smear Gram - Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1565,PUS smear Gram + Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1569,PUS smear Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1571,PUS smear Leucocytes per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1553,PUS smear Macroscopic appearance,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1561,PUS smear Yeast cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_843,Rapid Diagnosis Malaria Test,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_96,RBC,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2510,Red Cell Indices,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1199,Retest 1,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1201,Retest 2,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_104,Reticulocytes,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1136,Rh +/-,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1193,Rheumatoid factors,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2482,Rheumatoid factor Test,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1214,Routine Viral Load,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1212,Rubella,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1524,Rubella IgG,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1526,Rubella IgM,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1250,Serum HCG (Pregnancy test),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_63,Sickling Test,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_241,Sodium,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1257,Sodium (urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_877,Specific gravity,services_laboratory_fees_urine,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1312,Sperm count,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1511,Spermoculture,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1513,Spermogram,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1483,Sputum analysis,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1486,Sputum excudates antibiogram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1465,Sputum excudates Aspect,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1467,Sputum excudates Epithelial cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1475,Sputum excudates Gram - bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1473,Sputum excudates Gram + bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1479,Sputum excudates Gram - cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1477,Sputum excudates Gram + cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1482,Sputum excudates Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1469,Sputum excudates Leucocytes per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1471,Sputum excudates Yeast cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1498,Stool analysis,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1496,Stool Culture Antibiogram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1494,Stool Culture Germs,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1492,Stool Culture Gram,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1154,Syphilis Serology,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1216,Targeted Viral Load,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1535,Testosterone,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1161,TH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1141,Thrombin Time,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1163,TH Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1308,Thyroxine free (FT4),services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1306,Thyroxine total (T4),services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1156,TO,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2513,TORCH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_841,Total Bilirubin,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_167,Total cholesterol,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_69,Total Leucocyte count,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1158,TO Titre,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1210,Toxoplasmosis,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1520,Toxoplasmosis IgG,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1521,Toxoplasmosis IgM,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1080,TPHA,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1237,Transaminases,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_157,Triglycerides,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1303,Triiodothyronine free (FT3),services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1301,Triiodothyronine total (T3),services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1528,TSH,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2486,Typhoid fever rapid test,services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_315,Urea,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1385,Urethral smear,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1366,Urethral smear Antibiogram S.I.R,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1368,Urethral smear Aspect macroscopique,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1378,Urethral smear Bacteries,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1382,Urethral smear Celleles vesicales,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1374,Urethral smear Cristaux,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1372,Urethral smear Cylindre,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1376,Urethral smear Elements levuriformes,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1347,Urethral smear Epithelial cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1358,Urethral smear Gram - Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1356,Urethral smear Gram + Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1362,Urethral smear Gram - Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1360,Urethral smear Gram + Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1370,Urethral smear Hematies,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1364,Urethral smear Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1349,Urethral smear Leucocytes (WBC),services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1354,Urethral smear Neisseria diplococci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1380,Urethral smear Oeufs de parasites,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1351,Urethral smear Yeast,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_254,Uric acid,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2512,Urine Analyse,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1254,Urine dipstick,services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1423,Urine Sediments,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1421,Urine Sediments Bacteria,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1415,Urine Sediments Crystals,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1409,Urine Sediments Epithelial cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1417,Urine Sediments Flagellates,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1413,Urine Sediments Number of erythrocytes seen per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1411,Urine Sediments Number of leucocytes seen per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1419,Urine Sediments Yeast cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_147,Urobilinogen (Urine),services_laboratory_fees_biochemistry,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1345,Vaginal Cervical smear,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1341,Vaginal Cervical smear Antibiogram S.I.R,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1315,Vaginal Cervical smear Clue cells,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1325,Vaginal Cervical smear Doderlein flora,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1319,Vaginal Cervical smear Epithelial cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1329,Vaginal Cervical smear Gardenerella vaginalis,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1331,Vaginal Cervical smear Gram - Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1327,Vaginal Cervical smear Gram + Bacilli,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1335,Vaginal Cervical smear Gram - Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1333,Vaginal Cervical smear Gram + Cocci,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1339,Vaginal Cervical smear Identified germ,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1321,Vaginal Cervical smear Leucocytes per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1343,Vaginal Cervical smear Macroscopic appearance,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1323,Vaginal Cervical smear Trichomonas vaginalis 1 ou 0,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1337,Vaginal Cervical smear Type of vaginal flora,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1317,Vaginal Cervical smear Yeast cells per field,services_laboratory_fees_bacteriology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1152,VDRL,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_2509,WBC (Diff count),services_laboratory_fees_hematology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
+__export__.product_template_1189,Widal Test,services_laboratory_fees_serology,Service,2,1,2,TRUE,FALSE,TRUE,,No Tracking,product.product_uom_unit,product.product_uom_unit
