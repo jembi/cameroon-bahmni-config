@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_reason_view_inventory_form" model="ir.ui.view">
+			<field name="name">stock.inventory.inherit</field>
+			<field name="model">stock.inventory</field>
+			<field name="inherit_id" ref="stock.view_inventory_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/group/group[2]/field[@name='company_id']" position="after">
+					<field name="reason"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="add_reason_view_inventory_tree" model="ir.ui.view">
+			<field name="name">stock.inventory.inherit</field>
+			<field name="model">stock.inventory</field>
+			<field name="inherit_id" ref="stock.view_inventory_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//tree/field[@name='state']" position="after">
+					<field name="reason"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
