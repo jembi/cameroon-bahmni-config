@@ -6,19 +6,9 @@
 			<field name="model">stock.inventory</field>
 			<field name="inherit_id" ref="stock.view_inventory_form"/>
 			<field name="arch" type="xml">
-				<xpath expr="//form/sheet/group/group[2]/field[@name='company_id']" position="after">
-					<field name="reason"/>
-				</xpath>
-			</field>
-		</record>
-		
-		<record id="add_reason_view_inventory_tree" model="ir.ui.view">
-			<field name="name">stock.inventory.inherit</field>
-			<field name="model">stock.inventory</field>
-			<field name="inherit_id" ref="stock.view_inventory_tree"/>
-			<field name="arch" type="xml">
-				<xpath expr="//tree/field[@name='state']" position="after">
-					<field name="reason"/>
+				<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_ids']/tree/field[@name='product_qty']" position="after">
+					<field name="reason" attrs="{'required': [('is_reason_req', '=', True)]}"/>
+					<field name="is_reason_req" invisible="1"/>
 				</xpath>
 			</field>
 		</record>
