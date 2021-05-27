@@ -5,7 +5,7 @@
     'summary': 'Add Reason field in Stock Adjustment',
     'sequence': 1,
     'description': """
-Bahmni Purchase
+Add Reason field in Stock Adjustment Line
 ====================
 """,
     'category': 'Stock',
