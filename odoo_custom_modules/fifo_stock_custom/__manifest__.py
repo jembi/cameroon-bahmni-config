@@ -2,10 +2,10 @@
 {
     'name': 'FIFO Stock Custom',
     'version': '1.0',
-    'summary': 'Short Batch No(lot_id) base on expirey date',
+    'summary': 'Sort Batch No (or Lot Id) based on the expiry date',
     'sequence': 1,
     'description': """
-Bahmni Purchase
+This module sorts the Batch No (or Lot Id) based on the expiry date using the first-in first-out strategy
 ====================
 """,
     'category': 'Stock',
