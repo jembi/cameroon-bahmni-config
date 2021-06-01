@@ -6,6 +6,7 @@ before_install:
 - chmod 600 /tmp/deploy_key
 - ssh-add /tmp/deploy_key
 - cd report-testing-framework
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 - sh start_mysql_test_db.sh
 addons:
   ssh_known_hosts:
