@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-#from datetime import datetime
-
-from odoo import fields, models, api, _
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
+from odoo import models, api, _
+from odoo.tools import float_compare
 
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
