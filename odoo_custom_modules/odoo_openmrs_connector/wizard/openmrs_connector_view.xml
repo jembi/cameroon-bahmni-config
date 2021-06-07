@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="openmrs_connector_form_view" model="ir.ui.view">
+            <field name="name">openmrs.connector.form</field>
+            <field name="model">openmrs.connector</field>
+            <field name="arch" type="xml">
+                <form class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
+                    </header>
+                    <group string="Openmrs Configuration">
+                        <field name="host"/>
+                        <field name="database"/>
+                        <field name="username"/>
+                        <field name="password" password="True"/>
+                        <field name="port"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="action_openmrs_connector" model="ir.actions.act_window">
+            <field name="name">Openmrs Configuration</field>
+            <field name="res_model">openmrs.connector</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem 
+            id="menu_openmrs_connector" 
+            name="Openmrs Configuration" 
+            parent="base.menu_administration" 
+            sequence="2" 
+            action="action_openmrs_connector"/>
+</odoo>

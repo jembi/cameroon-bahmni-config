@@ -1,0 +1,258 @@
+# -*- coding: utf-8 -*-
+from odoo import fields, models, api, _
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
+from odoo.exceptions import Warning
+from itertools import groupby
+from datetime import date,datetime
+import logging
+_logger = logging.getLogger(__name__)
+import json
+import MySQLdb
+
+class OrderSaveService(models.Model):
+    _inherit = 'order.save.service'
+    
+    @api.model
+    def create_orders(self, vals):
+        customer_id = vals.get("customer_id")
+        location_name = vals.get("locationName")
+        all_orders = self._get_openerp_orders(vals)
+
+        if not all_orders:
+            return ""
+
+        customer_ids = self.env['res.partner'].search([('ref', '=', customer_id)])
+        if customer_ids:
+            cus_id = customer_ids[0]
+
+            for orderType, ordersGroup in groupby(all_orders, lambda order: order.get('type')):
+
+                order_type_def = self.env['order.type'].search([('name','=',orderType)])
+                if (not order_type_def):
+                    _logger.info("\nOrder Type is not defined. Ignoring %s for Customer %s",orderType,cus_id)
+                    continue
+
+                orders = list(ordersGroup)
+                care_setting = orders[0].get('visitType').lower()
+                provider_name = orders[0].get('providerName')
+                # will return order line data for products which exists in the system, either with productID passed
+                # or with conceptName
+                unprocessed_orders = self._filter_processed_orders(orders)
+                _logger.info("\n DEBUG: Unprocessed Orders: %s", unprocessed_orders)
+                shop_id, location_id = self._get_shop_and_location_id(orderType, location_name, order_type_def)
+                # shop_id = tup[0]
+                # location_id = tup[1]
+
+                if (not shop_id):
+                    err_message = "Can not process order. Order type:{} - should be matched to a shop".format(orderType)
+                    _logger.info(err_message)
+                    raise Warning(err_message)
+                    
+                
+                shop_obj = self.env['sale.shop'].search([('id','=',shop_id)])
+                warehouse_id = shop_obj.warehouse_id.id
+                _logger.warning("warehouse_id: %s"%(warehouse_id))
+
+                name = self.env['ir.sequence'].next_by_code('sale.order')
+                #Adding both the ids to the unprocessed array of orders, Separating to dispensed and non-dispensed orders
+                unprocessed_dispensed_order = []
+                unprocessed_non_dispensed_order = []
+                for unprocessed_order in unprocessed_orders:
+                    unprocessed_order['location_id'] = location_id
+                    unprocessed_order['warehouse_id'] = warehouse_id
+                    if(unprocessed_order.get('dispensed', 'false') == 'true'):
+                        unprocessed_dispensed_order.append(unprocessed_order)
+                    else:
+                        unprocessed_non_dispensed_order.append(unprocessed_order)
+
+                if(len(unprocessed_non_dispensed_order) > 0):
+                    _logger.debug("\n Processing Unprocessed non dispensed Orders: %s", list(unprocessed_non_dispensed_order))
+                    sale_order_ids = self.env['sale.order'].search([('partner_id', '=', cus_id.id),
+                                                                    ('shop_id', '=', shop_id),
+                                                                    ('state', '=', 'draft'),
+                                                                    ('origin', '=', 'ATOMFEED SYNC')])
+                    if(not sale_order_ids):
+                        # Non Dispensed New
+                        # replaced create_sale_order method call
+                        _logger.debug("\n No existing sale order for Unprocessed non dispensed Orders. Creating .. ")
+                        sale_order_vals = {'partner_id': cus_id.id,
+                                           'location_id': unprocessed_non_dispensed_order[0]['location_id'],
+                                           'warehouse_id': unprocessed_non_dispensed_order[0]['warehouse_id'],
+                                           'care_setting': care_setting,
+                                           'provider_name': provider_name,
+                                           'date_order': datetime.strftime(datetime.now(), DTF),
+                                           'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
+                                           'payment_term_id': shop_obj.payment_default_id.id,
+                                           'project_id': shop_obj.project_id.id if shop_obj.project_id else False,
+                                           'picking_policy': 'direct',
+                                           'state': 'draft',
+                                           'shop_id': shop_id,
+                                           'origin': 'ATOMFEED SYNC',
+                                           'location_name': location_name
+                                           }
+                        if shop_obj.pricelist_id:
+                            sale_order_vals.update({'pricelist_id': shop_obj.pricelist_id.id})
+                        sale_order = self.env['sale.order'].create(sale_order_vals)
+                        _logger.debug("\n Created a new Sale Order for non dispensed orders. ID: %s. Processing order lines ..", sale_order.id)
+                        for rec in unprocessed_non_dispensed_order:
+                            self._process_orders(sale_order, unprocessed_non_dispensed_order, rec)
+                    else:
+                        # Non Dispensed Update
+                        # replaced update_sale_order method call
+                        for order in sale_order_ids:
+                            order.write({'care_setting': care_setting, 'provider_name': provider_name})
+                            for rec in unprocessed_non_dispensed_order:
+                                self._process_orders(order, unprocessed_non_dispensed_order, rec)
+                            # break from the outer loop
+                            break
+
+
+                if (len(unprocessed_dispensed_order) > 0):
+                    _logger.debug("\n Processing Unprocessed dispensed Orders: %s", list(unprocessed_dispensed_order))
+                    auto_convert_dispensed = self.env['ir.values'].search([('model', '=', 'sale.config.settings'),
+                                                                           ('name', '=', 'convert_dispensed')]).value
+                    auto_invoice_dispensed = self.env.ref('bahmni_sale.auto_register_invoice_payment_for_dispensed').value
+
+
+                    sale_order_ids = self.env['sale.order'].search([('partner_id', '=', cus_id.id),
+                                                                    ('shop_id', '=', shop_id),
+                                                                    ('state', '=', 'draft'),
+                                                                    ('origin', '=', 'ATOMFEED SYNC')])
+
+                    if any(sale_order_ids):
+                        _logger.debug("\n For exsiting sale orders for the shop, trying to unlink any openmrs order if any")
+                        self._unlink_sale_order_lines_and_remove_empty_orders(sale_order_ids,unprocessed_dispensed_order)
+
+                    sale_order_ids_for_dispensed = self.env['sale.order'].search([('partner_id', '=', cus_id.id),
+                                                                                  ('shop_id', '=', shop_id),
+                                                                                  ('location_id', '=', location_id),
+                                                                                  ('state', '=', 'draft'),
+                                                                                  ('origin', '=', 'ATOMFEED SYNC')])
+
+                    if not sale_order_ids_for_dispensed:
+                        _logger.debug("\n Could not find any sale_order at specified shop and stock location. Creating a new Sale order for dispensed orders")
+
+                        sale_order_dict = {'partner_id': cus_id.id,
+                                           'location_id': location_id,
+                                           'warehouse_id': warehouse_id,
+                                           'care_setting': care_setting,
+                                           'provider_name': provider_name,
+                                           'date_order': datetime.strftime(datetime.now(), DTF),
+                                           'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
+                                           'payment_term_id': shop_obj.payment_default_id.id,
+                                           'project_id': shop_obj.project_id.id if shop_obj.project_id else False,
+                                           'picking_policy': 'direct',
+                                           'state': 'draft',
+                                           'shop_id': shop_id,
+                                           'origin': 'ATOMFEED SYNC',
+                                           'location_name': location_name,
+                                           }
+                        if shop_obj.pricelist_id:
+                            sale_order_dict.update({'pricelist_id': shop_obj.pricelist_id.id})
+                        new_sale_order = self.env['sale.order'].create(sale_order_dict)
+                        _logger.debug("\n Created a new Sale Order. ID: %s. Processing order lines ..", new_sale_order.id)
+                        for line in unprocessed_dispensed_order:
+                            self._process_orders(new_sale_order, unprocessed_dispensed_order, line)
+
+                        if auto_convert_dispensed:
+                            _logger.debug("\n Confirming delivery and payment for the newly created sale order..")
+                            new_sale_order.auto_validate_delivery()
+                            if auto_invoice_dispensed == '1':
+                                new_sale_order.validate_payment()
+
+                    else:
+                        _logger.debug("\n There are other sale_orders at specified shop and stock location.")
+                        sale_order_to_process = None
+                        if not auto_convert_dispensed:
+                            # try to find an existing sale order to add the openmrs orders to
+                            if any(sale_order_ids_for_dispensed):
+                                _logger.debug("\n Found a sale order to append dispensed lines. ID : %s",sale_order_ids_for_dispensed[0].id)
+                                sale_order_to_process = sale_order_ids_for_dispensed[0]
+
+                        if not sale_order_to_process:
+                            # create new sale order
+                            _logger.debug("\n Post unlinking of order lines. Could not find  a sale order to append dispensed lines. Creating .. ")
+                            sales_order_obj = {'partner_id': cus_id.id,
+                                               'location_id': location_id,
+                                               'warehouse_id': warehouse_id,
+                                               'care_setting': care_setting,
+                                               'provider_name': provider_name,
+                                               'date_order': datetime.strftime(datetime.now(), DTF),
+                                               'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
+                                               'payment_term_id': shop_obj.payment_default_id.id,
+                                               'project_id': shop_obj.project_id.id if shop_obj.project_id else False,
+                                               'picking_policy': 'direct',
+                                               'state': 'draft',
+                                               'shop_id': shop_id,
+                                               'origin': 'ATOMFEED SYNC'}
+
+                            if shop_obj.pricelist_id:
+                                sales_order_obj.update({'pricelist_id': shop_obj.pricelist_id.id})
+                            sale_order_to_process = self.env['sale.order'].create(sales_order_obj)
+                            _logger.info("\n DEBUG: Created a new Sale Order. ID: %s", sale_order_to_process.id)
+
+                        _logger.debug("\n Processing dispensed lines. Appending to Order ID %s", sale_order_to_process.id)
+                        for line in unprocessed_dispensed_order:
+                            self._process_orders(sale_order_to_process, unprocessed_dispensed_order, line)
+
+                        if auto_convert_dispensed and sale_order_to_process:
+                            _logger.debug("\n Confirming delivery and payment ..")
+                            sale_order_to_process.auto_validate_delivery()
+                            # TODO: payment validation checks
+                            # TODO: 1) Should be done through a config "sale.config.settings"[auto_invoice_dispensed]"
+                            # TODO: 2) Should check the invoice amount. Odoo fails/throws-error if the invoice amount is 0.
+                            if auto_invoice_dispensed == '1':
+                                sale_order_to_process.validate_payment()
+
+        else:
+            raise Warning("Patient Id not found in Odoo")
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+    
+    location_name = fields.Char('Location Name')
+
+    @api.multi
+    def action_confirm(self):
+        res = super(SaleOrder,self).action_confirm()
+        host = self.env.ref('odoo_openmrs_connector.host').value
+        database = self.env.ref('odoo_openmrs_connector.database_name').value
+        username = self.env.ref('odoo_openmrs_connector.username').value
+        password = self.env.ref('odoo_openmrs_connector.password').value
+        port = self.env.ref('odoo_openmrs_connector.port').value
+        
+        db = MySQLdb.connect(host=host, port=int(port), user=username, passwd=password, db=database)
+        cursor = db.cursor()
+        
+        now = datetime.now()
+        for line in self.order_line:
+            if line.external_order_id:
+                # For concept ID
+                cursor.execute("select concept_id from concept_name where name='dispensed'")
+                concept_result = cursor.fetchone()
+                # For Orders
+                cursor.execute("SELECT patient_id,encounter_id,order_id,creator,voided,order_type_id from orders where uuid='%s'"%line.external_order_id)
+                order_result = cursor.fetchone()
+                
+                #STOPPPP
+                #if self.order_line:
+                    #for line in self.order_line:
+                location_name = ''
+                if self.location_name:
+                    location_name = self.location_name
+                    
+                # For Location ID
+                cursor.execute("SELECT location_id from location where name='%s'"%location_name)
+                location_name_result = cursor.fetchone()
+                if order_result and location_name_result:
+                    # Insert in OBS Table
+                    cursor.execute("INSERT INTO obs(person_id,concept_id,encounter_id,order_id,obs_datetime,status,uuid,creator, date_created,voided,value_coded,location_id) values (%d,%d,%d,%d,now(),'FINAL',UUID(),%d,now(),%d,1,%d) " %(order_result[0],concept_result[0],order_result[1],order_result[2],order_result[3],order_result[4],location_name_result[0]))
+                    db.commit()
+        #except MySQLdb.Error, e:
+        #    _logger.error("Error %d: %s" % (e.args[0], e.args[1]))
+        #finally:
+        #    if cursor and db:
+        #        cursor.close()
+        #        db.close()
+        return res
+
