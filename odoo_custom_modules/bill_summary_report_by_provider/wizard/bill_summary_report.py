@@ -93,9 +93,9 @@ class bill_summary_report_wizard(models.TransientModel):
                         worksheet.write(row, col, lines_category.name, style_border)
                         #category amount
                         categ_total_amount = 0.00
-                        lines_price_subtotal = categ_so_lines.mapped('price_subtotal')
-                        if lines_price_subtotal:
-                            categ_total_amount = sum(lines_price_subtotal)
+                        lines_price_total = categ_so_lines.mapped('price_total')
+                        if lines_price_total:
+                            categ_total_amount = sum(lines_price_total)
                         if categ_total_amount:
                             total_provider += categ_total_amount
                             col += 1
