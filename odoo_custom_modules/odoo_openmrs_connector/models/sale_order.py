@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, api, _
+from odoo import fields, models, api, tools, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from odoo.exceptions import Warning
 from itertools import groupby
@@ -11,6 +11,76 @@ import MySQLdb
 
 class OrderSaveService(models.Model):
     _inherit = 'order.save.service'
+    
+    @api.model
+    def _create_sale_order_line_function(self, sale_order, order):
+        stored_prod_ids = self._get_product_ids(order)
+
+        if(stored_prod_ids):
+            prod_id = stored_prod_ids[0]
+            prod_obj = self.env['product.product'].browse(prod_id)
+            sale_order_line_obj = self.env['sale.order.line']
+            prod_lot = sale_order_line_obj.get_available_batch_details(prod_id, sale_order)
+
+            actual_quantity = order['quantity']
+            comments = " ".join([tools.ustr(actual_quantity), tools.ustr(order.get('quantityUnits', None))])
+
+            default_quantity_total = self.env.ref('bahmni_sale.group_default_quantity')
+            _logger.info("DEFAULT QUANTITY TOTAL")
+            _logger.info(default_quantity_total)
+            default_quantity_value = 1
+            if default_quantity_total and len(default_quantity_total.users) > 0:
+                default_quantity_value = -1
+
+            order['quantity'] = self._get_order_quantity(order, default_quantity_value)
+            product_uom_qty = order['quantity']
+            if(prod_lot != None and order['quantity'] > prod_lot.stock_forecast):
+                product_uom_qty = prod_lot.stock_forecast
+
+            order_line_dispensed = True if order.get('dispensed') == 'true' or (order.get('dispensed') and order.get('dispensed') != 'false') else False
+            sale_order_line = {
+                'product_id': prod_id,
+                'price_unit': prod_obj.list_price,
+                'comments': comments,
+                'product_uom_qty': product_uom_qty,
+                'product_uom': prod_obj.uom_id.id,
+                'order_id': sale_order,
+                'external_id':order['encounterId'],
+                'external_order_id':order['orderId'],
+                'name': prod_obj.name,
+                'type': 'make_to_stock',
+                'state': 'draft',
+                'dispensed': order_line_dispensed
+            }
+
+            if prod_lot != None:
+                life_date = prod_lot.life_date and datetime.strptime(prod_lot.life_date, DTF)
+                if self.env.ref('bahmni_sale.sale_price_basedon_cost_price_markup').value == '1':
+                    sale_order_line['price_unit'] = prod_lot.sale_price if prod_lot.sale_price > 0.0 else sale_order_line['price_unit']
+                sale_order_line['batch_name'] = prod_lot.name
+                sale_order_line['batch_id'] = prod_lot.id
+                sale_order_line['expiry_date'] = life_date and life_date.strftime(DTF)
+            
+            
+            sale_obj = self.env['sale.order'].browse(sale_order)
+            sale_line = sale_order_line_obj.create(sale_order_line)
+            
+            sale_line._compute_tax_id()
+            if sale_obj.pricelist_id:
+                line_product = prod_obj.with_context(
+                    lang = sale_obj.partner_id.lang,
+                    partner = sale_obj.partner_id.id,
+                    quantity = sale_line.product_uom_qty,
+                    date = sale_obj.date_order,
+                    pricelist = sale_obj.pricelist_id.id,
+                    uom = prod_obj.uom_id.id
+                )
+                price = self.env['account.tax']._fix_tax_included_price_company(sale_line._get_display_price(prod_obj), prod_obj.taxes_id, sale_line.tax_id, sale_line.company_id)
+                sale_line.price_unit = price
+
+            if product_uom_qty != order['quantity']:
+                order['quantity'] = order['quantity'] - product_uom_qty
+                self._create_sale_order_line_function(sale_order, order)
     
     @api.model
     def create_orders(self, vals):
