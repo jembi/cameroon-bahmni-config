@@ -101,9 +101,9 @@ class balance_sheet_report_wizard(models.TransientModel):
             if grand_total:
                 worksheet.write(row, col, "{:,.2f}".format(grand_total,0.00), style_total_amount)
         
-        filename = 'Balance Sheet Report.xlsx'
-        workbook.save("/tmp/Balance Sheet Report.xlsx")
-        file = open("/tmp/Balance Sheet Report.xlsx", "rb")
+        filename = 'Balance Sheet Report.xls'
+        workbook.save("/tmp/Balance Sheet Report.xls")
+        file = open("/tmp/Balance Sheet Report.xls", "rb")
         file_data = file.read()
         out = base64.encodestring(file_data)
         export_id = self.env['excel.balance.sheet.report'].create({'excel_file':out, 'file_name':filename})
