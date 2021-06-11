@@ -100,6 +100,9 @@ class bill_summary_report_wizard(models.TransientModel):
                             total_provider += categ_total_amount
                             col += 1
                             worksheet.write(row, col, "{:,.2f}".format(categ_total_amount,0.00), style_amount)
+                        else:
+                            col += 1
+                            worksheet.write(row, col, "0.00", style_amount)
                         row +=1
                         col = 0
                         worksheet.write(row, col, '', style_border)
@@ -117,9 +120,9 @@ class bill_summary_report_wizard(models.TransientModel):
         col += 2
         if grand_total:
             worksheet.write(row, col, "{:,.2f}".format(grand_total,0.00), style_total_amount)
-        filename = 'Billing Summary Report.xlsx'
-        workbook.save(filename)
-        file = open(filename, "rb")
+        filename = 'Billing Summary Report.xls'
+        workbook.save("/tmp/Billing Summary Report.xls")
+        file = open("/tmp/Billing Summary Report.xls", "rb")
         file_data = file.read()
         out = base64.encodestring(file_data)
         export_id = self.env['excel.bill.summary.report'].create({'excel_file':out, 'file_name':filename})
