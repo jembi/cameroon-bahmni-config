@@ -325,4 +325,46 @@ class SaleOrder(models.Model):
         #        cursor.close()
         #        db.close()
         return res
+        
+class StockProductionLot(models.Model):
+    _inherit = 'stock.production.lot'
+    
+    @api.depends('product_id')
+    def _get_future_stock_forecast(self):
+        """ Gets stock of products for locations
+        @return: Dictionary of values
+        """
+        for lot in self:
+            if self._context is None:
+                context = {}
+            else:
+                context = self._context.copy()
+            if 'location_id' not in context or context['location_id'] is None:
+                locations = self.env['stock.location'].search([('usage', '=', 'internal')])
+            elif context.get('search_in_child', False):
+                #locations = self.env['stock.location'].search([('location_id', 'child_of', context['location_id'])]) or [context['location_id']]
+                locations = self.env['stock.location'].search([('location_id', 'child_of', context['location_id'])])
+            else:
+                context['location_id'] = 15
+                locations = self.env['stock.production.lot'].browse(context.get('location_id'))
+            if locations:
+                self._cr.execute('''select
+                        lot_id,
+                        sum(qty)
+                    from
+                        stock_quant
+                    where
+                        location_id IN %s and lot_id = %s 
+                        group by lot_id''',
+                        (tuple(locations.ids), lot.id,))
+                result = self._cr.dictfetchall()
+                if result and result[0]:
+                    lot.stock_forecast = result[0].get('sum')
+
+                    product_uom_id = context.get('product_uom', None)
+                    if(product_uom_id):
+                        product_uom = self.env['product.uom'].browse(product_uom_id)
+                        lot.stock_forecast = result[0].get('sum') * product_uom.factor
+    
+    
 
