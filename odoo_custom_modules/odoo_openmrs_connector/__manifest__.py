@@ -12,7 +12,7 @@ This module use for odoo to openmrs connection
     'author': 'Satvix Informatics',
     'website': 'http://www.satvix.com',
     'images': [],
-    'depends': ['sale', 'bahmni_sale', 'base', 'bahmni_atom_feed'],
+    'depends': ['sale', 'bahmni_sale', 'base', 'bahmni_atom_feed', 'bahmni_stock'],
     'data': ['data/ir_config_parameter_data.xml',
              'wizard/openmrs_connector_view.xml',
              'views/sale_order.xml',
