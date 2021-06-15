@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_billing_summary_report_wizard" model="ir.ui.view">
+            <field name="name">bill.summary.report.wizard.form</field>
+            <field name="model">bill.summary.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Billing Summary Report by Provider and Category">
+                    <group>
+                        <group>
+                            <field name="start_date" required="True"/>
+					    </group>
+					    <group>
+							<field name="end_date" required="True"/>
+					    </group>
+					</group>
+                    <footer>
+                        <button string="Print Excel" name="print_excel_report" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="action_billing_summary_report_wizard" model="ir.actions.act_window">
+            <field name="name">Billing Summary Report by Provider and Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bill.summary.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_billing_summary_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+        
+		<menuitem action="action_billing_summary_report_wizard"
+				  id="menu_billing_summary_report"
+				  parent="account.menu_finance_reports" 
+        		  name = "Billing Summary Report" sequence="10"
+        		  />
+
+        <record id="view_excel_excel_bill_summary_report_form" model="ir.ui.view">
+            <field name="name">excel.bill.summary.report.form</field>
+            <field name="model">excel.bill.summary.report</field>
+            <field name="arch" type="xml">
+                <form >
+                    <group>
+                        <b><h4>Click on the report file name to download the excel file.</h4></b><br/>
+                    </group>
+                    <group>
+                        <field name="excel_file" readonly="1" filename="file_name"/>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+                    <footer>
+                      <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
