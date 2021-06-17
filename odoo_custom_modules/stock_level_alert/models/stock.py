@@ -32,7 +32,6 @@ class PurchaseOrderLine(models.Model):
         if not self.product_id or not self.product_qty or not self.product_uom:
             return
         if self.product_id.type == 'product':
-            precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
             product_qty = self.product_uom._compute_quantity(self.product_qty, self.product_id.uom_po_id)
             orderpoint_id = self.env['stock.warehouse.orderpoint'].search([('product_id', '=', self.product_id.id)], limit=1)
             if orderpoint_id:
@@ -46,9 +45,8 @@ class PurchaseOrderLine(models.Model):
         
         if (self.state == 'purchase' or self.state == 'to approve') and self.product_id.type in ['product', 'consu'] and self.product_qty < self._origin.product_qty:
             warning_mess = {
-                'title': _('Ordered quantity decreased!'),
+                'title': _('Maximum quantity allowed exceeded!'),
                 'message' : _('You are decreasing the ordered quantity!\nYou must update the quantities on the reception and/or bills.'),
             }
             return {'warning': warning_mess}
     
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
