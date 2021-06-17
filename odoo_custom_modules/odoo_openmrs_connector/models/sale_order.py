@@ -304,20 +304,21 @@ class SaleOrder(models.Model):
                 cursor.execute("SELECT patient_id,encounter_id,order_id,creator,voided,order_type_id from orders where uuid='%s'"%line.external_order_id)
                 order_result = cursor.fetchone()
                 
-                #STOPPPP
-                #if self.order_line:
-                    #for line in self.order_line:
-                location_name = ''
-                if self.location_name:
-                    location_name = self.location_name
-                    
-                # For Location ID
-                cursor.execute("SELECT location_id from location where name='%s'"%location_name)
-                location_name_result = cursor.fetchone()
-                if order_result and location_name_result:
-                    # Insert in OBS Table
-                    cursor.execute("INSERT INTO obs(person_id,concept_id,encounter_id,order_id,obs_datetime,status,uuid,creator, date_created,voided,value_coded,location_id) values (%d,%d,%d,%d,now(),'FINAL',UUID(),%d,now(),%d,1,%d) " %(order_result[0],concept_result[0],order_result[1],order_result[2],order_result[3],order_result[4],location_name_result[0]))
-                    db.commit()
+                # For Order Type
+                cursor.execute("SELECT name from order_type where order_type_id='%d'"%order_result[5])
+                order_type_name = cursor.fetchone()
+                
+                if order_type_name[0] == 'Drug Order':
+                    location_name = ''
+                    if self.location_name:
+                        location_name = self.location_name
+                    # For Location ID
+                    cursor.execute("SELECT location_id from location where name='%s'"%location_name)
+                    location_name_result = cursor.fetchone()
+                    if order_result and location_name_result:
+                        # Insert in OBS Table
+                        cursor.execute("INSERT INTO obs(person_id,concept_id,encounter_id,order_id,obs_datetime,status,uuid,creator, date_created,voided,value_coded,location_id) values (%d,%d,%d,%d,now(),'FINAL',UUID(),%d,now(),%d,1,%d) " %(order_result[0],concept_result[0],order_result[1],order_result[2],order_result[3],order_result[4],location_name_result[0]))
+                        db.commit()
         #except MySQLdb.Error, e:
         #    _logger.error("Error %d: %s" % (e.args[0], e.args[1]))
         #finally:
