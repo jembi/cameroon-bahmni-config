@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Price list -->
+        <record id="prvt_pricelist_data_id" model="product.pricelist">
+            <field name="name">Private Pricelist</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_fields_inherit_sale_order_form" model="ir.ui.view">
+			<field name="name">sale.order.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="bahmni_sale.inherit_sale_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='provider_name']" position="after">
+					<field name="insurance_comp_id" domain="[('is_insurance_company','=',True)]" options="{'no_create_edit': True}" attrs="{'required': [('co_pay', '!=', 100)]}"/>
+					<field name="care_voucher"/>
+				</xpath>
+				<xpath expr="//field[@name='shop_id']" position="after">
+					<field name="co_pay" attrs="{'required': [('insurance_comp_id', '!=', False)]}"/>
+					<field name="care_voucher_date" attrs="{'required': [('insurance_comp_id', '!=', False)]}"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
