@@ -26,7 +26,7 @@ class SaleOrder(models.Model):
     
     care_voucher = fields.Char('Care Voucher')
     insurance_comp_id = fields.Many2one('res.partner', 'Insurance Company')
-    co_pay = fields.Float("%Co-pay by client")
+    co_pay = fields.Float("%Co-pay by client", default=100.0)
     care_voucher_date = fields.Date('Care Voucher Date')
     
     @api.multi
