@@ -6,7 +6,7 @@
                 <div class="row" style="margin-top:-20px;">
                     <div class="col-xs-5" style="font-size:15px;font-weight:bold;">
                         <center>
-                            <t t-if="company.country_id"><br/><span t-field="company.country_id" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.country_eng"><br/><span t-field="company.country_eng" style="border-bottom:1px dotted;"/></t>
                             <t t-if="company.ministry_partner_eng"><br/><span t-field="company.ministry_partner_eng" style="border-bottom:1px dotted;"/></t>
                             <t t-if="company.hf_level_eng"><br/><span t-field="company.hf_level_eng" style="border-bottom:1px dotted;"/></t>
                             <t t-if="company.district_eng"><br/><span t-field="company.district_eng" style="border-bottom:1px dotted;"/></t>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-xs-5" style="font-size:15px;font-weight:bold;">
                         <center>
-                        <t t-if="company.country_id"><br/><span t-field="company.country_id" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.country_frn"><br/><span t-field="company.country_frn" style="border-bottom:1px dotted;"/></t>
                         <t t-if="company.ministry_partner_frn"><br/><span t-field="company.ministry_partner_frn" style="border-bottom:1px dotted;"/></t>
                         <t t-if="company.hf_level_frn"><br/><span t-field="company.hf_level_frn" style="border-bottom:1px dotted;"/></t>
                         <t t-if="company.district_frn"><br/><span t-field="company.district_frn" style="border-bottom:1px dotted;"/></t>
