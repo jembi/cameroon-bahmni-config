@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--Cheque-->
+        <record model="account.journal" id="payment_cheque">
+            <field name="name">Cheque</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="type">bank</field>
+            <field name="code">CHEQ</field>
+            <field name="show_on_dashboard">True</field>
+        </record>
+        
+        <!--Credit card / Debit card-->
+        <record model="account.journal" id="payment_credit_debit_card">
+            <field name="name">Credit card / Debit card</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="type">bank</field>
+            <field name="code">CDCAD</field>
+            <field name="show_on_dashboard">True</field>
+        </record>
+        
+        <!--Active deposit ( Deposit which can be utilized in any visit Type)-->
+        <record model="account.journal" id="payment_active_deposit">
+            <field name="name">Active deposit ( Deposit which can be utilized in any visit Type)</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="type">bank</field>
+            <field name="code">ADEPO</field>
+            <field name="show_on_dashboard">True</field>
+        </record>
+        
+        <!--Orange Mobile Money-->
+        <record model="account.journal" id="payment_omm">
+            <field name="name">Orange Mobile Money</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="type">bank</field>
+            <field name="code">OMM</field>
+            <field name="show_on_dashboard">True</field>
+        </record>
+        
+        <!--MTN Mobile Money-->
+        <record model="account.journal" id="payment_mtn">
+            <field name="name">MTN Mobile Money</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="type">bank</field>
+            <field name="code">MTNMM</field>
+            <field name="show_on_dashboard">True</field>
+        </record>
+    </data>
+</odoo>
