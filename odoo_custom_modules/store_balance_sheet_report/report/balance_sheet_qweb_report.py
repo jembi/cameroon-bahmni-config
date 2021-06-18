@@ -22,7 +22,7 @@ class ReportBy_tax_reportCs(models.AbstractModel):
                 vals = {}
                 total = 0
                 product_so_lines = so_lines.filtered(lambda r: r.product_id.id == line_product_id.id)
-                currency = product_so_lines.mapped('currency_id').symbol
+                currency = self.env.user.company_id.currency_id.symbol
                 if product_so_lines:
                     vals['product_id'] = line_product_id
                     lines_price_total = product_so_lines.mapped('price_total')
@@ -44,7 +44,7 @@ class ReportBy_tax_reportCs(models.AbstractModel):
         sale_records = self.env['sale.order'].sudo().search([('confirmation_date', '>=', start_date),('confirmation_date', '<=', end_date),('state', 'in', ['sale','done'])])
         if sale_records:
             so_lines = sale_records.mapped('order_line')
-            currency = so_lines.mapped('currency_id').symbol
+            currency = self.env.user.company_id.currency_id.symbol
             lines_price_total = so_lines.mapped('price_total')
             if lines_price_total:
                 grand_total = sum(lines_price_total)
