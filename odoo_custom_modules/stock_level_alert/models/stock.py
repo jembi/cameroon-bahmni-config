@@ -37,7 +37,7 @@ class PurchaseOrderLine(models.Model):
             if orderpoint_id:
                 if product_qty > orderpoint_id.product_max_qty:
                     warning_mess = {
-                        'title': _('Ordered quantity decreased!'),
+                        'title': _('Maximum quantity allowed exceeded!'),
                         'message' : _('%s is more than the maximum quantity allowed') % (self.product_qty)
                     }
                     return {'warning': warning_mess}
@@ -45,7 +45,7 @@ class PurchaseOrderLine(models.Model):
         
         if (self.state == 'purchase' or self.state == 'to approve') and self.product_id.type in ['product', 'consu'] and self.product_qty < self._origin.product_qty:
             warning_mess = {
-                'title': _('Maximum quantity allowed exceeded!'),
+                'title': _('Ordered quantity decreased!'),
                 'message' : _('You are decreasing the ordered quantity!\nYou must update the quantities on the reception and/or bills.'),
             }
             return {'warning': warning_mess}
