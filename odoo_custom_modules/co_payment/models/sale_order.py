@@ -64,10 +64,14 @@ class SaleOrder(models.Model):
             fiscal_position_id = self.partner_invoice_id.property_account_position_id.id
         ####
         sale_order_id = self.id
+        discount = self.discount
         if partner_id == self.partner_id.id:
             co_pay = self.co_pay
+            discount = (self.discount * co_pay) /100
         else:
             co_pay = 100 - self.co_pay
+            discount = (self.discount * co_pay) /100
+            
         ####    
         self.ensure_one()
         journal_id = self.env['account.invoice'].default_get(['journal_id'])['journal_id']
@@ -91,7 +95,7 @@ class SaleOrder(models.Model):
             'discount_type': self.discount_type,
             'discount_percentage': self.discount_percentage,
             'disc_acc_id': self.disc_acc_id.id,
-            'discount': self.discount,
+            'discount': discount,
             'co_pay': co_pay,##
             'sale_order_id':sale_order_id,##
             'so_partner_id':self.partner_id.id##
@@ -102,6 +106,7 @@ class SaleOrder(models.Model):
             care_voucher_date = self.care_voucher_date
             invoice_vals.update({'care_voucher': care_voucher, 'insurance_comp_id': insurance_comp_id, 'care_voucher_date': care_voucher_date,})
         return invoice_vals
+        
     @api.multi
     def action_invoice_create(self, grouped=False, final=False):
         """
@@ -128,7 +133,6 @@ class SaleOrder(models.Model):
                     partner_shipping_id = addr['delivery'],
                     partner_invoice_id = partner_invoice_id[0]
                     partner_shipping_id = partner_shipping_id[0]
-
                     group_key = order.id if grouped else (partner_invoice_id, order.currency_id.id)
                     for line in order.order_line.sorted(key=lambda l: l.qty_to_invoice < 0):
                         ####same line of diff invoice
@@ -151,19 +155,7 @@ class SaleOrder(models.Model):
                                 invoices_name[group_key].append(order.client_order_ref)
                         
                         if line.qty_to_invoice > 0:
-                            line.invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
-                            for inv_line in invoice.invoice_line_ids:
-                                if line.price_unit > 0:
-                                    if order.partner_id == invoice.partner_id:
-                                        ##add custom
-                                        inv_line.paid_percentage = order.co_pay
-                                        inv_line.price_unit_cpy = line.price_unit
-                                        inv_line.price_unit = (line.price_unit * order.co_pay)/100
-                                        
-                                    else:
-                                        inv_line.paid_percentage = (100 - order.co_pay)
-                                        inv_line.price_unit_cpy = line.price_unit
-                                        inv_line.price_unit = (line.price_unit *(100- order.co_pay))/100
+                            line.with_context(invoice_id_pass=invoice).invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
                         elif line.qty_to_invoice < 0 and final:
                             line.invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
             else:
@@ -194,17 +186,7 @@ class SaleOrder(models.Model):
                             invoices_name[group_key].append(order.client_order_ref)
 
                     if line.qty_to_invoice > 0:
-                        line.invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
-                        ####
-                        for inv_line in invoice.invoice_line_ids:
-                            if line.price_unit > 0:
-                                if order.partner_id == invoice.partner_id:
-                                    inv_line.paid_percentage = order.co_pay
-                                    inv_line.price_unit_cpy = line.price_unit
-                                else:
-                                    inv_line.paid_percentage = (100 - order.co_pay)
-                                    inv_line.price_unit_cpy = line.price_unit
-                        ####
+                        line.with_context(invoice_id_pass=invoice).invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
                     elif line.qty_to_invoice < 0 and final:
                         line.invoice_line_create(invoices[group_key].id, line.qty_to_invoice)
             if references.get(invoices.get(group_key)):
@@ -259,6 +241,64 @@ class SaleOrderLine(models.Model):
                     if line.order_id.co_pay > 0 and line.order_id.co_pay < 100:
                         qty_invoiced = line.product_uom_qty
             line.qty_invoiced = qty_invoiced
+
+    @api.multi
+    def _prepare_invoice_line(self, qty):
+        """
+        Prepare the dict of values to create the new invoice line for a sales order line.
+
+        :param qty: float quantity to invoice
+        """
+        invoice = False
+        paid_percentage = False
+        price_unit_cpy = False
+        price_unit = False
+        if self._context.has_key("invoice_id_pass"):
+            invoice = self._context.get("invoice_id_pass")
+        if invoice and self.price_unit > 0:
+            if self.order_id.partner_id == invoice.partner_id:
+                paid_percentage = invoice.co_pay
+                price_unit_cpy = self.price_unit
+                price_unit = (self.price_unit * paid_percentage)/100
+            else:
+                paid_percentage = invoice.co_pay
+                price_unit_cpy = self.price_unit
+                price_unit = (self.price_unit *invoice.co_pay)/100
+        if not paid_percentage:
+            paid_percentage = 0
+        if not price_unit_cpy:
+            price_unit_cpy = self.price_unit
+        if not price_unit:
+            price_unit = self.price_unit
+        self.ensure_one()
+        res = {}
+        account = self.product_id.property_account_income_id or self.product_id.categ_id.property_account_income_categ_id
+        if not account:
+            raise UserError(_('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
+                (self.product_id.name, self.product_id.id, self.product_id.categ_id.name))
+
+        fpos = self.order_id.fiscal_position_id or self.order_id.partner_id.property_account_position_id
+        if fpos:
+            account = fpos.map_account(account)
+
+        res = {
+            'name': self.name,
+            'sequence': self.sequence,
+            'origin': self.order_id.name,
+            'account_id': account.id,
+            'price_unit': price_unit,
+            'quantity': qty,
+            'discount': self.discount,
+            'uom_id': self.product_uom.id,
+            'product_id': self.product_id.id or False,
+            'layout_category_id': self.layout_category_id and self.layout_category_id.id or False,
+            'invoice_line_tax_ids': [(6, 0, self.tax_id.ids)],
+            'account_analytic_id': self.order_id.project_id.id,
+            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
+            'price_unit_cpy': price_unit_cpy,
+            'paid_percentage': paid_percentage,
+        }
+        return res
             
 class AccountInvoiceLine(models.Model):
     _inherit = "account.invoice.line"
@@ -366,4 +406,3 @@ class AccountInvoice(models.Model):
                 record.check_visible = False
             if record.so_partner_id.id == record.partner_id.id:
                 record.customer_same = True
-    
