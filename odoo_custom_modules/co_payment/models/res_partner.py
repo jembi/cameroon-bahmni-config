@@ -11,7 +11,6 @@ class Partner(models.Model):
     is_insurance_company = fields.Boolean(string='Is a Insurance Company', default=False,
         help="Check if the contact is a company, otherwise it is a person")
         
-    #@api.multi
     @api.depends('is_company')
     def _compute_company_type(self):
         for partner in self:
@@ -26,7 +25,6 @@ class Partner(models.Model):
             if not partner.is_company and not partner.is_insurance_company: 
                 partner.company_type = 'person'
                 partner.property_product_pricelist = self.env.ref('product.list0').id
-            
             
     def _write_company_type(self):
         for partner in self:
