@@ -10,6 +10,7 @@
 					<page string="Report Fields">
                         <group>
                             <group name="eng" string="English">
+                                <field name="country_eng"/>
                                 <field name="ministry_partner_eng"/>
                                 <field name="hf_level_eng"/>
                                 <field name="district_eng"/>
@@ -17,6 +18,7 @@
                                 <field name="hf_name_eng"/>
                             </group>
                             <group name="frn" string="French">
+                                <field name="country_frn"/>
                                 <field name="ministry_partner_frn"/>
                                 <field name="hf_level_frn"/>
                                 <field name="district_frn"/>
