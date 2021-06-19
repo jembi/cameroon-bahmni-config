@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_fields_inherit_invoice_form" model="ir.ui.view">
+			<field name="name">account.invoice.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+			<field name="arch" type="xml">
+			    <xpath expr="//form/sheet/group/group/field[@name='payment_term_id']" position="after">
+			        <field name="check_visible" invisible="1"/>
+			        <field name="customer_same" invisible="1"/>
+			        <field name="sale_order_id" readonly="True" invisible="1"/>
+			        <field name="care_voucher" readonly="True" attrs="{'invisible': [('check_visible', '=', True)]}"/>
+			        <field name="insurance_comp_id" readonly="True" attrs="{'invisible': [('check_visible', '=', True)]}"/>
+			        <field name="co_pay" readonly="True" attrs="{'invisible': [('check_visible', '=', True)]}"/>
+			        <field name="care_voucher_date" readonly="True" attrs="{'invisible': [('check_visible', '=', True)]}"/>
+			        <field name="so_partner_id" readonly="True" attrs="{'invisible': [('customer_same', '=', True)]}"/>
+			    </xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="before">
+					<field name="price_unit_cpy"/>
+					<field name="paid_percentage"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="change_field_string_invoice_supplier_form" model="ir.ui.view">
+			<field name="name">account.invoice.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes">
+					<attribute name="string">Unit Price</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

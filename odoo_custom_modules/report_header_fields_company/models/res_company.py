@@ -3,7 +3,7 @@ from odoo import fields, models, _
 
 class Company(models.Model):
     _inherit = "res.company"
-    
+
     country_eng = fields.Char('Country Name', required=True)
     ministry_partner_eng = fields.Char('Ministry/Partner', required=True)
     hf_level_eng = fields.Char('Health Facility Level/Region')

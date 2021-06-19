@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'FIFO Stock Custom',
+    'name': 'Adjustment Stock Reason',
     'version': '1.0',
-    'summary': 'Sort Batch No (or Lot Id) based on the expiry date',
+    'summary': 'Add Reason field in Stock Adjustment',
     'sequence': 1,
     'description': """
-This module sorts the Batch No (or Lot Id) based on the expiry date using the first-in first-out strategy
+Add Reason field in Stock Adjustment Line
 ====================
 """,
     'category': 'Stock',
     'website': '',
     'images': [],
-    'depends': ['stock', 'bahmni_sale', 'bahmni_stock', 'product_expiry'],
-    'data': [
+    'depends': ['stock',],
+    'data': ['views/stock_inventory.xml',
              ],
     'demo': [],
     'qweb': [],

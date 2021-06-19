@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-#from datetime import datetime
-
-from odoo import fields, models, api, _
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_compare
+from odoo import models, api, _
+from odoo.tools import float_compare
 
 class StockProductionLot(models.Model):
     _inherit = 'stock.production.lot'
@@ -28,7 +26,7 @@ class SaleOrderLine(models.Model):
                             (self.product_uom_qty, self.product_uom.name, self.product_id.virtual_available, self.product_id.uom_id.name, self.product_id.qty_available, self.product_id.uom_id.name)
                     }
                     return {'warning': warning_mess}
-        if self.product_id.tracking	 == 'lot' or self.product_id.tracking == 'serial':
+        if self.product_id.tracking == 'lot' or self.product_id.tracking == 'serial':
             lot_sr_id = self.env['stock.production.lot'].search([('product_id','=',self.product_id.id)],limit=1, order='life_date asc')
             if lot_sr_id:
                 self.lot_id = lot_sr_id.id 

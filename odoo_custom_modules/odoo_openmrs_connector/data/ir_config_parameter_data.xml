@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="host" model="ir.config_parameter">
+            <field name="key">Host</field>
+            <field name="value">127.0.0.1</field>
+        </record>
+        <record id="database_name" model="ir.config_parameter">
+            <field name="key">Database Name</field>
+            <field name="value">openmrs</field>
+        </record>
+        <record id="username" model="ir.config_parameter">
+            <field name="key">Username</field>
+            <field name="value">openmrs-user</field>
+        </record>
+        <record id="password" model="ir.config_parameter">
+            <field name="key">Password</field>
+            <field name="value">P@ssw0rd</field>
+        </record>
+        
+        <record id="port" model="ir.config_parameter">
+            <field name="key">Port</field>
+            <field name="value">3306</field>
+        </record>
+        
+    </data>
+</odoo>
