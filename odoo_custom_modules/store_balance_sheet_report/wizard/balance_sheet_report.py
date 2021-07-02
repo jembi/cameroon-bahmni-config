@@ -57,49 +57,61 @@ class balance_sheet_report_wizard(models.TransientModel):
             end_date = datetime_object.strftime("%d/%m/%Y")
             row = 4
             col = 0
-            worksheet.write_merge(row,row,col,col+1,'Period of time : '+ start_date + ' to ' + end_date,xlwt.easyxf('font: bold on; align:vertical center, horizontal center;'))
+            worksheet.write_merge(row,row,col,col+1,'Period of time : '+ start_date + ' to ' + end_date,xlwt.easyxf('font: bold on; align:vertical center, horizontal center; border: top thin, bottom thin, right thin, left thin;'))
         datetime_object = datetime.strptime(self.start_date, '%Y-%m-%d')
         start_date = datetime_object.strftime("%Y-%m-%d 00:00:00")
         datetime_object = datetime.strptime(self.end_date, '%Y-%m-%d')
         end_date = datetime_object.strftime("%Y-%m-%d 23:59:59")
-        sale_records = self.env['sale.order'].sudo().search([('confirmation_date', '>=', start_date),('confirmation_date', '<=', end_date),('state', 'in', ['sale','done'])])
-        so_lines = sale_records.mapped('order_line')
-        lines_product_ids = so_lines.mapped('product_id')
-        row +=1
-        col = 0
-        #Title of table head
-        worksheet.write(row, col, 'Billing Items', style_left)
-        worksheet.col(col).width = 256 * 48
-        col += 1
-        worksheet.write(row, col, 'Amount', style_left)
-        grand_total = 0
-        #records
-        for line_product_id in set(lines_product_ids):
-            product_total_amount = 0
-            product_so_lines = so_lines.filtered(lambda r: r.product_id.id == line_product_id.id)
-            #values
-            if product_so_lines:
-                lines_price_total = product_so_lines.mapped('price_total')
-                #product amount
-                if lines_price_total:
-                    product_total_amount = sum(lines_price_total)
-                if product_total_amount:
-                    row +=1
-                    col=0
-                    #product
-                    worksheet.write(row, col, line_product_id.name, style_border)
-                    #product amount
-                    grand_total += product_total_amount
-                    col += 1
-                    worksheet.write(row, col, "{:,.2f}".format(product_total_amount,0.00), style_amount)
-        #Grand total
-        if grand_total:
+        partner_id = self.env.user.partner_id
+        
+        ##get payments data
+        if not self.env.user.has_group('account.group_account_manager'):
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('create_uid', '=', self.env.user.id),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+        else:
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+           
+        invoice_ids = False
+        if account_payments:
+            invoice_ids = account_payments.mapped('invoice_ids')
+        
+        if invoice_ids: 
+            invoice_lines = invoice_ids.mapped('invoice_line_ids')
+            lines_product_ids = invoice_lines.mapped('product_id')
             row +=1
             col = 0
-            worksheet.write(row,col,'Total for the period' , xlwt.easyxf('font: bold on; align:horiz left; border: top thin, bottom thin, right thin, left thin;'))
+            #Title of table head
+            worksheet.write(row, col, 'Billing Items', style_left)
+            worksheet.col(col).width = 256 * 48
             col += 1
+            worksheet.write(row, col, 'Amount', style_left)
+            grand_total = 0
+            #records
+            for line_product_id in set(lines_product_ids):
+                product_total_amount = 0
+                product_invoice_lines = invoice_lines.filtered(lambda r: r.product_id.id == line_product_id.id)
+                #values
+                if product_invoice_lines:
+                    lines_price_subtotal = product_invoice_lines.mapped('price_subtotal')
+                    #product amount
+                    if lines_price_subtotal:
+                        product_total_amount = sum(lines_price_subtotal)
+                    if product_total_amount:
+                        row +=1
+                        col=0
+                        #product
+                        worksheet.write(row, col, line_product_id.name, style_border)
+                        #product amount
+                        grand_total += product_total_amount
+                        col += 1
+                        worksheet.write(row, col, "{:,.2f}".format(product_total_amount,0.00), style_amount)
+            #Grand total
             if grand_total:
-                worksheet.write(row, col, "{:,.2f}".format(grand_total,0.00), style_total_amount)
+                row +=1
+                col = 0
+                worksheet.write(row,col,'Total for the period' , xlwt.easyxf('font: bold on; align:horiz left; border: top thin, bottom thin, right thin, left thin;'))
+                col += 1
+                if grand_total:
+                    worksheet.write(row, col, "{:,.2f}".format(grand_total,0.00), style_total_amount)
         
         filename = 'Balance Sheet Report.xls'
         workbook.save("/tmp/Balance Sheet Report.xls")

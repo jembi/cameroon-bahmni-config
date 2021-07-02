@@ -14,20 +14,27 @@ class ReportBy_tax_reportCs(models.AbstractModel):
         start_date = datetime_object.strftime("%Y-%m-%d 00:00:00")
         datetime_object = datetime.strptime(end_date, '%Y-%m-%d')
         end_date = datetime_object.strftime("%Y-%m-%d 23:59:59")
-        sale_records = self.env['sale.order'].sudo().search([('confirmation_date', '>=', start_date),('confirmation_date', '<=', end_date),('state', 'in', ['sale','done'])])
-        if sale_records:
-            so_lines = sale_records.mapped('order_line')
-            lines_product_ids = so_lines.mapped('product_id')
+        if not self.env.user.has_group('account.group_account_manager'):
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('create_uid', '=', self.env.user.id),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+        else:
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+        
+        invoice_ids = False
+        if account_payments:
+            invoice_ids = account_payments.mapped('invoice_ids')
+        if invoice_ids:
+            invoice_lines = invoice_ids.mapped('invoice_line_ids')
+            lines_product_ids = invoice_lines.mapped('product_id')
             for line_product_id in lines_product_ids:
                 vals = {}
                 total = 0
-                product_so_lines = so_lines.filtered(lambda r: r.product_id.id == line_product_id.id)
+                product_invoice_lines = invoice_lines.filtered(lambda r: r.product_id.id == line_product_id.id)
                 currency = self.env.user.company_id.currency_id.symbol
-                if product_so_lines:
+                if product_invoice_lines:
                     vals['product_id'] = line_product_id
-                    lines_price_total = product_so_lines.mapped('price_total')
-                    if lines_price_total:
-                        product_total_amount = sum(lines_price_total)
+                    lines_price_subtotal = product_invoice_lines.mapped('price_subtotal')
+                    if lines_price_subtotal:
+                        product_total_amount = sum(lines_price_subtotal)
                         if product_total_amount:
                             total = product_total_amount
                     vals['amount'] = total
@@ -41,13 +48,20 @@ class ReportBy_tax_reportCs(models.AbstractModel):
         start_date = datetime_object.strftime("%Y-%m-%d 00:00:00")
         datetime_object = datetime.strptime(end_date, '%Y-%m-%d')
         end_date = datetime_object.strftime("%Y-%m-%d 23:59:59")
-        sale_records = self.env['sale.order'].sudo().search([('confirmation_date', '>=', start_date),('confirmation_date', '<=', end_date),('state', 'in', ['sale','done'])])
-        if sale_records:
-            so_lines = sale_records.mapped('order_line')
+        if not self.env.user.has_group('account.group_account_manager'):
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('create_uid', '=', self.env.user.id),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+        else:
+            account_payments = self.env['account.payment'].sudo().search([('partner_type', '=', 'customer'),('payment_date', '>=', start_date),('payment_date', '<=', end_date),('invoice_ids','!=', False)])
+        
+        invoice_ids = False
+        if account_payments:
+            invoice_ids = account_payments.mapped('invoice_ids')
+        if invoice_ids:
+            invoice_lines = invoice_ids.mapped('invoice_line_ids')
             currency = self.env.user.company_id.currency_id.symbol
-            lines_price_total = so_lines.mapped('price_total')
-            if lines_price_total:
-                grand_total = sum(lines_price_total)
+            lines_price_subtotal = invoice_lines.mapped('price_subtotal')
+            if lines_price_subtotal:
+                grand_total = sum(lines_price_subtotal)
                 grand_total = "{:,.2f}".format(grand_total,0.00) + currency
         return grand_total
             
