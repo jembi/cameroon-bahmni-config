@@ -13,6 +13,7 @@ This module sorts the Batch No (or Lot Id) based on the expiry date using the fi
     'images': [],
     'depends': ['stock', 'bahmni_sale', 'bahmni_stock', 'product_expiry'],
     'data': [
+            'views/sale_order_views.xml',
              ],
     'demo': [],
     'qweb': [],

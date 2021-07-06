@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="add_ctx_lit_id_inherit_sale_order_form" model="ir.ui.view">
+		<field name="name">inherit.sale.order.form</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="bahmni_sale.inherit_sale_order_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='order_line']/tree/field[@name='lot_id']" position="attributes">
+				<attribute name="context">{'is_sale_order_line': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form/group/group/field[@name='lot_id']" position="attributes">
+				<attribute name="context">{'is_sale_order_line': True}</attribute>
+			</xpath>
+		</field>
+	</record>
+</odoo>
