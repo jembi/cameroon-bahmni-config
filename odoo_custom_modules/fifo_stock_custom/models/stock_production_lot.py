@@ -13,9 +13,10 @@ class StockProductionLot(models.Model):
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         args = args or []
-        today_date = datetime.datetime.utcnow().date()
-        today_start = fields.Datetime.to_string(today_date)
-        args += [('life_date', '>=', today_start)]
+        if self._context.get('is_sale_order_line'):
+            today_date = datetime.datetime.utcnow().date()
+            today_start = fields.Datetime.to_string(today_date)
+            args += [('life_date', '>=', today_start)]
         return super(StockProductionLot, self).name_search(name, args, operator=operator, limit=limit)
     
 
