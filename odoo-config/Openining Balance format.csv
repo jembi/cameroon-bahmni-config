@@ -1,0 +1,5 @@
+id,name,location_id/id,line_ids/product_id/id,line_ids/product_qty,line_ids/location_id/id,line_ids/prod_lot_id,,line_ids/product_uom_id/id
+__export__.stock_inventory_3,Opening stock 2,stock.stock_location_stock,Acide Acétyl Salicylique (AAS) 100mg,229,stock.stock_location_stock,Bwww-1,,product.product_uom_unit
+,,,Acide Acétyl Salicylique (AAS) 100mg,200,stock.stock_location_stock,Bwww-2,,product.product_uom_unit
+,,,Aciclovir 3%,150,stock.stock_location_stock,ACi-1,,product.product_uom_unit
+,,,Aciclovir 3%,135,stock.stock_location_stock,Aci-2,,product.product_uom_unit
