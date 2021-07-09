@@ -3,9 +3,11 @@ ENV=$1
 MYSQL_PWD=$2
 ssh bahmni@cmr-$ENV.jembi.org "
 cd ~/git/cameroon-bahmni-config
+cp openmrs/apps/home/whiteLabel.json ~
 git reset --hard origin/$ENV
 git checkout $ENV
 git pull
+cp ~/whiteLabel.json openmrs/apps/home/whiteLabel.json
 scripts/travis/restart-openmrs.sh
 mysql -uroot -p$MYSQL_PWD openmrs < <(cat metadata/sql/*.sql);
 mysql -uroot -p$MYSQL_PWD openmrs < <(cat metadata/reportssql/*.sql);

@@ -515,7 +515,7 @@ e8e7a705-ec09-4da1-acf2-838a20eca5ef,,,D-dimers IFA,D-dimeres IFA,D-dimers IFA,D
 81b0153a-a182-4874-bec5-ffc0b773d0a1,,,aFP (IFA),Alpha-fetoprotein (AFP),aFP (IFA),Alpha-fetoprotein (AFP),LabTest,Numeric,,8,ng/ml,,,
 451c4c37-a913-43e6-a22f-f25e7c789692,,,Biopsie,Biopsy,Biopsie,Biopsy,LabTest,Text,,,,,,
 4d66787c-3497-4bec-a2b5-e276c5c9827c,,,CRP – Facteur Rhumatoïde,Rheumatoid factor Test,CRP – Facteur Rhumatoïde,Rheumatoid factor Test,LabTest,Numeric,,6,ng/ml,,,
-980774e6-9ebf-4971-b354-e9fa8ec40c01,,,Crachats (BAAR),AFB culture,Crachats (BAAR),AFB culture,LabTest,Text,,,,,,
+eb893f23-6982-4b7b-85b4-22efa789e51d,,,Crachats (BAAR),AFB culture,Crachats (BAAR),AFB culture,LabTest,Text,,,,,,
 97c321a0-a814-49d4-b564-9c8ee8ec4145,,,Phosphatase Alcaline,Alkaline phosphatase,PAL,ALP,LabTest,Numeric,400,35,,,,
 fb9a9aba-9d58-4528-99b9-60f39c8fa7cb,,,Test de Drépanocytose,Sickling Test,Test de Drépanocytose,Sickling Test,LabTest,Text,,,,,,
 bc223216-5f51-4919-ba4f-67391c2107c8,,,Test Direct Antiglobuline,Direct coombs test (DAT),TTDA,DAT,LabTest,Text,,,,,,
