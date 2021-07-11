@@ -406,3 +406,12 @@ class AccountInvoice(models.Model):
                 record.check_visible = False
             if record.so_partner_id.id == record.partner_id.id:
                 record.customer_same = True
+
+    @api.multi
+    def action_invoice_paid(self):
+        res = super(AccountInvoice, self).action_invoice_paid()
+        if self.sale_order_id:
+            invoice_id = self.sale_order_id.invoice_ids.filtered(lambda rec: rec.state == 'draft' and rec.partner_id.id != self.sale_order_id.partner_id.id)
+            if invoice_id:
+                invoice_id.action_invoice_open()
+        return res
