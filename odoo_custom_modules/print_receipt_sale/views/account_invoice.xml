@@ -8,6 +8,7 @@
 			<field name="arch" type="xml">
 				<xpath expr="//form/sheet/label[1]" position="before">
 					<div class="oe_button_box" name="button_box">
+					    <field name="payment_ids" invisible="1"/>
 					    <button name="print_payment" string="Register Payment" type="object" class="oe_highlight" attrs="{'invisible':[('payment_ids','=',[])]}"/>
 					</div>
 				</xpath>
