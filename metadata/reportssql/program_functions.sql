@@ -115,7 +115,7 @@ CREATE FUNCTION getPatientARVStartDate(
     p_patientId INT(11)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    RETURN getPatientProgramTreatmentStartDate(p_patientId);
+    RETURN getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
 END$$
 DELIMITER ;
 
@@ -212,13 +212,14 @@ DROP FUNCTION IF EXISTS getPatientProgramTreatmentStartDate;
 
 DELIMITER $$
 CREATE FUNCTION getPatientProgramTreatmentStartDate(
-    p_patientId INT(11)) RETURNS DATE
+    p_patientId INT(11),
+    p_program VARCHAR(250)) RETURNS DATE
     DETERMINISTIC
 BEGIN
     DECLARE result DATE;
     DECLARE uuidProgramTreatmentStartDate VARCHAR(38) DEFAULT "2dc1aafd-a708-11e6-91e9-0800270d80ce";
 
-    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramTreatmentStartDate);
+    SET result = getPatientMostRecentProgramAttributeValueInProgram(p_patientId, uuidProgramTreatmentStartDate, p_program);
 
     RETURN (result);
 END$$
@@ -613,7 +614,7 @@ CREATE FUNCTION arvInitiationDateSpecified(
     p_patientId INT(11)) RETURNS VARCHAR(3)
     DETERMINISTIC
 BEGIN
-    IF getPatientProgramTreatmentStartDate(p_patientId) IS NOT NULL THEN
+    IF getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY") IS NOT NULL THEN
         RETURN "Yes";
     ELSE
         RETURN "No";

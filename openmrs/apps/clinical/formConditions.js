@@ -1293,13 +1293,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Neutrolphils': function(formName, formFieldValues) {
+	'Neutrophils': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Neutrolphils'];
+		var value = formFieldValues['Neutrophils'];
 		if (value && value !== "") {	
-			conditions.show.push("Neutrolphils Test Date");
+			conditions.show.push("Neutrophils Test Date");
 		} else {	
-			conditions.hide.push("Neutrolphils Test Date");
+			conditions.hide.push("Neutrophils Test Date");
 		}	
 		return conditions;	
 	},	
@@ -2589,9 +2589,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Gama GT': function(formName, formFieldValues) {
+	'GGT (Gamma-Glutamyl Transferase) Test': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Gama GT'];
+		var value = formFieldValues['GGT (Gamma-Glutamyl Transferase) Test'];
 		if (value && value !== "") {	
 			conditions.show.push("Gama GT Test Date");
 		} else {	

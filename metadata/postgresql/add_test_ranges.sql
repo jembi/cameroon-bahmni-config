@@ -2,7 +2,7 @@
 delete from result_limits;
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (1,(select id from test where description = 'Bleeding time'),4,0,5,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (2,(select id from test where description = 'Total Leucocyte count'),4,3.5,12,'f', now());
-insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (3,(select id from test where description = 'Neutrolphils'),4,3,5.8,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (3,(select id from test where description = 'Neutrophils'),4,3,5.8,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (4,(select id from test where description = 'Eosinophils'),4,0.05,0.25,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (5,(select id from test where description = 'Lymphocytes'),4,1.5,3,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (6,(select id from test where description = 'Basophils'),4,0.01,0.05,'f', now());
@@ -74,6 +74,11 @@ insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (73,(select id from test where description = 'Thyroxine free (FT4)'),4,13,27,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (74,(select id from test where description = 'Growth hormone (hGH) fasting'),4,0,10,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (75,(select id from test where description = 'Sperm count'),4,20,150,'f', now());
-insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (76,(select id from test where description = 'Gama GT'),4,9,48,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (76,(select id from test where description = 'GGT (Gamma-Glutamyl Transferase) Test'),4,9,48,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (77,(select id from test where description = 'Lipase'),4,0,1.6,'f', now());
 insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (78,(select id from test where description = 'Glucose-6-phosphate dehydrogenase'),4,5.5,20.5,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (79,(select id from test where description = 'D-dimeres IFA'),4,0,500,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (80,(select id from test where description = 'Alpha-fetoprotein (AFP)'),4,0,8,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (81,(select id from test where description = 'Rheumatoid factor Test'),4,0,6,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (82,(select id from test where description = 'Alkaline phosphatase'),4,35,400,'f', now());
+insert into result_limits (id,test_id,test_result_type_id,low_normal,high_normal, always_validate,lastupdated) values (83,(select id from test where description = 'Urobilinogen (Urine)'),4,0.2,32,'f', now());

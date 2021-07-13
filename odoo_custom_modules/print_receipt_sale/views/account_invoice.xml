@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_print_receipt_btn_invoice_form" model="ir.ui.view">
+			<field name="name">account.invoice.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/label[1]" position="before">
+					<div class="oe_button_box" name="button_box">
+					    <field name="payment_ids" invisible="1"/>
+					    <button name="print_payment" string="Print Receipt" type="object" class="oe_highlight" attrs="{'invisible':[('payment_ids','=',[])]}"/>
+					</div>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</odoo>

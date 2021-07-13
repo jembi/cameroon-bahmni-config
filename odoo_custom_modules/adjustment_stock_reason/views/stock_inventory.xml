@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_reason_view_inventory_form" model="ir.ui.view">
+			<field name="name">stock.inventory.inherit</field>
+			<field name="model">stock.inventory</field>
+			<field name="inherit_id" ref="stock.view_inventory_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/notebook/page[1]/field[@name='line_ids']/tree/field[@name='product_qty']" position="after">
+					<field name="is_reason_req" invisible="1"/>
+					<field name="reason" attrs="{'required': [('is_reason_req', '=', True)]}"/>
+				</xpath>
+			</field>
+		</record>
+		<record id="add_reason_stock_inventory_line_tree2" model="ir.ui.view">
+			<field name="name">stock.inventory.line.inherit</field>
+			<field name="model">stock.inventory.line</field>
+			<field name="inherit_id" ref="stock.stock_inventory_line_tree2"/>
+			<field name="arch" type="xml">
+				<xpath expr="//tree/field[@name='inventory_location_id']" position="after">
+					<field name="is_reason_req" invisible="1"/>
+					<field name="reason" attrs="{'required': [('is_reason_req', '=', True)]}"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

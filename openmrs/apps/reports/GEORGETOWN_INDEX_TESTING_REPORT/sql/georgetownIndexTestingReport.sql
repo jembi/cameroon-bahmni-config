@@ -14,7 +14,7 @@ SELECT DISTINCT
     IF(getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") IS NOT NULL, "Yes", "") as "Tested for HIV ?",
     getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "HIV Test Date",
     getHIVResult(p.patient_id,"2000-01-01","2100-01-01") as "Test results",
-    DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce")) as "Date of Initiation",
+    DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "Date of Initiation",
     getPatientARTNumber(getFirstIndexID(p.patient_id)) as "Index Related ART Code",
     getPatientIdentifier(getFirstIndexID(p.patient_id)) as "Index Related Unique ID"
 FROM patient p

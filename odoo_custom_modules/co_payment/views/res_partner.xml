@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="add_insurance_com_view_partner_form" model="ir.ui.view">
+			<field name="name">res.partner.inherit</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/div[2]/div/field[@name='parent_id']" position="after">
+				    <field name="is_insurance_company" invisible="1"/>
+				</xpath>
+				<xpath expr="//form/sheet/div[2]/div/field[@name='parent_id']" position="attributes">
+					<attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('is_insurance_company','=', True), ('company_name', '!=', False),('company_name', '!=', '')]}</attribute>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

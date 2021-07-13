@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="stock.external_layout_barcode_right" inherit_id="report.external_layout" primary="True">
+            <xpath expr="//t[@t-call='report.external_layout_header']" position="attributes">
+                <!--attribute name="t-call">stock.external_layout_header_barcode_right</attribute-->
+                <!--attribute name="t-call">report.external_layout</attribute-->
+            </xpath>
+        </template>
+    </data>
+</odoo>

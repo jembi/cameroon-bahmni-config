@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="add_ctx_lit_id_inherit_sale_order_form" model="ir.ui.view">
+		<field name="name">inherit.sale.order.form</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="bahmni_sale.inherit_sale_order_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='order_line']/tree/field[@name='lot_id']" position="attributes">
+				<attribute name="context">{'is_sale_order_line': True}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form/group/group/field[@name='lot_id']" position="attributes">
+				<attribute name="context">{'is_sale_order_line': True}</attribute>
+			</xpath>
+		</field>
+	</record>
+	
+	<!-- Lot and sr number in DO-->
+	<record id="add_ctx_lot_id_view_pack_operation_lot_form" model="ir.ui.view">
+		<field name="name">inherit.stock.pack.operation</field>
+		<field name="model">stock.pack.operation</field>
+		<field name="inherit_id" ref="stock.view_pack_operation_lot_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='pack_lot_ids']/tree/field[@name='lot_id']" position="attributes">
+				<attribute name="context">{'default_product_id': parent.product_id, 'active_pack_operation': parent.id, 'is_sale_order_line': True}</attribute>
+			</xpath>
+			
+		</field>
+	</record>
+</odoo>

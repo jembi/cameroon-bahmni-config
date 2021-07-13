@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="balance_sheet_report_tmpl_id">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                <center>
+                    <h2>Cashier Closing Report</h2>
+                </center>
+                <div>
+                    <center>
+                        <span t-if="data['form']['start_date'] and data['form']['end_date']">
+                            From :-&amp;nbsp;&amp;nbsp;&amp;nbsp;<b><span t-esc="time.strftime('%d/%m/%Y',time.strptime(data['form']['start_date'], '%Y-%m-%d'))"/></b> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            To :-&amp;nbsp;&amp;nbsp;&amp;nbsp;<b><span t-esc="time.strftime('%d/%m/%Y',time.strptime(data['form']['end_date'], '%Y-%m-%d'))"/></b>
+                        </span>
+                    </center>
+			    </div>
+			    <div class="row col-xs-12">
+                    <t t-set="grand_total" t-value="0"/>
+                    <table class="table table-condensed" name="inv_tax_table" width="100%">
+                        <thead style="page-break-inside: avoid;">
+                            <tr style="page-break-inside: avoid;">
+                                <th width="80%">
+                                    <span>Billing Items</span>
+                                </th>
+                                <th width="20%" class="text-right">
+                                    <span>Amount</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="get_report_vals(data['form']['start_date'],data['form']['end_date'])" t-as="l">
+                                <t t-if="l['amount']">
+                                    <tr style="page-break-inside: avoid;">
+                                        <td>
+                                            <span t-esc="l['product_id'].name"/>
+                                        </td>
+                                        <td class="text-right">
+                                             <span t-esc="'{0:,.2f}'.format(l['amount'])"/>
+                                             <span t-esc="l['currency_id']"/>
+                                             <t t-set="grand_total" t-value="grand_total+l['amount']"/>
+                                        </td>
+                                    </tr>    
+                                </t>
+                            </t>
+                            <t t-if="grand_total">
+                                <tr style="page-break-inside: avoid;">
+                                    <td>
+                                        <span><b>Total for the period</b></span><span t-esc="currency"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <b>
+                                            <span t-esc="get_grand_total(data['form']['start_date'],data['form']['end_date'])"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
