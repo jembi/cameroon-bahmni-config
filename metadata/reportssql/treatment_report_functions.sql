@@ -561,6 +561,38 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientIsEligibleForCommunityDispensation
+
+DROP FUNCTION IF EXISTS patientIsEligibleForCommunityDispensation;
+
+DELIMITER $$
+CREATE FUNCTION patientIsEligibleForCommunityDispensation(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE dateEligibleCommunityART DATE;
+    DECLARE dateStoppedCommunityART DATE;
+
+    SET dateEligibleCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_90_DATE_ELIGIBLE_COMMUNITY_ART');
+    SET dateStoppedCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART');
+
+    IF (
+        dateEligibleCommunityART IS NOT NULL AND
+        dateEligibleCommunityART < p_endDate AND
+        ( dateStoppedCommunityART IS NULL OR
+          dateStoppedCommunityART < dateEligibleCommunityART OR
+          dateStoppedCommunityART > p_endDate
+        )
+       ) THEN
+        RETURN "Yes";
+    ELSE
+        RETURN "No";
+    END IF;
+END$$ 
+DELIMITER ;
+
 -- patientOnARTDuringEntireReportingPeriodAndDurationBetween
 
 DROP FUNCTION IF EXISTS patientOnARTDuringEntireReportingPeriodAndDurationBetween;
