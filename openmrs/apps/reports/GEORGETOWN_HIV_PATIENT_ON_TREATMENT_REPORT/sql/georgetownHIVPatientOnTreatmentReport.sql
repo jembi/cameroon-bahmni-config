@@ -45,7 +45,10 @@ WHERE
         OR
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
-            patientPrescribedARTDuringPartOfReportingPeriod(pat.patient_id, "#startDate#")
+            (
+                patientPrescribedARTForEntireReportingPeriod(pat.patient_id,"#startDate#", "#endDate#") OR
+                patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
+            )
         )
     ) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
