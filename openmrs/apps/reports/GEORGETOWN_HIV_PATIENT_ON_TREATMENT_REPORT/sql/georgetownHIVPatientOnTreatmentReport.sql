@@ -19,6 +19,7 @@ SELECT
     getDateLatestARVRelatedVisit(pat.patient_id) as "dateOfLastVisit",
     getDateMostRecentARVAppointment(pat.patient_id) as "lastAppointmentDate",
     getPatientARTStatus(pat.patient_id, "#startDate#", "#endDate#") as "newOrAlreadyEnrolled",
+    getPatientMostRecentProgramOutcome(pat.patient_id, "en", "HIV_PROGRAM_KEY") as "artStatus",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
     getViralLoadTestDate(pat.patient_id) as "lastVLRequestDate",
@@ -57,6 +58,8 @@ WHERE
         )
     ) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHadViralLoadTestDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#") AND
     patientIsNotDead(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
