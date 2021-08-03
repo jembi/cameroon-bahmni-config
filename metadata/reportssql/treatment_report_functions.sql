@@ -742,12 +742,12 @@ BEGIN
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
-        AND o.scheduled_date >= p_startDate
+        AND o.scheduled_date <= p_startDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
-            ) <= p_endDate
+            ) >= p_endDate
         AND o.scheduled_date IS NOT NULL
     GROUP BY o.patient_id;
 
