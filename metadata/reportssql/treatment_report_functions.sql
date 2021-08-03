@@ -1163,6 +1163,63 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientHadViralLoadTestDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHadViralLoadTestDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHadViralLoadTestDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE routineViralLoadTestDateUuid VARCHAR(38) DEFAULT 'cac6bf44-f671-4f85-ab76-71e7f099d3cb';
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac479522-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac4797de-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE testDateFromForm DATE;
+    DECLARE testDateFromOpenElis DATE;
+
+    -- Read and store latest test date from form "LAB RESULTS - ADD MANUALLY"
+    SELECT o.value_datetime INTO testDateFromForm
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NULL
+        AND o.value_datetime IS NOT NULL
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestDateUuid OR c.uuid = targetedViralLoadTestDateUuid OR c.uuid = notDocumentedViralLoadTestDateUuid)
+    ORDER BY o.value_datetime DESC, o.obs_datetime DESC
+    LIMIT 1;
+
+    -- read and store latest test date from elis
+    SELECT o.obs_datetime INTO testDateFromOpenElis
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NOT NULL
+        AND o.value_numeric IS NOT NULL
+        AND o.obs_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestUuid OR c.uuid = targetedViralLoadTestUuid OR c.uuid = notDocumentedViralLoadTestUuid)
+    ORDER BY o.obs_datetime DESC
+    LIMIT 1;
+
+    -- if both dates are null, return NULL
+    IF (testDateFromForm IS NULL AND testDateFromOpenElis IS NULL) THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
+
+END$$
+DELIMITER ;
+
 -- getEacDate
 
 DROP FUNCTION IF EXISTS getEacDate;
