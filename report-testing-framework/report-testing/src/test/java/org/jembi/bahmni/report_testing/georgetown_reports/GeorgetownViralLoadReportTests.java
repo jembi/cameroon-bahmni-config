@@ -156,6 +156,15 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
             VisitTypeEnum.VISIT_TYPE_OPD
         );
 
+        /* enroll into the HIV program */
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
+            patientId,
+            new LocalDate(2020, 1, 2),
+            ConceptEnum.WHO_STAGE_1,
+            TherapeuticLineEnum.SECOND_LINE,
+            new LocalDate(2020, 1, 3)
+        );
+
         /* record VL test */
         testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
@@ -195,7 +204,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("artStartDate"), null);
+        assertEquals(result.get(0).get("artStartDate"), "2020-01-03");
         assertEquals(result.get(0).get("age"),
             Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
         assertEquals(result.get(0).get("sex"), "f");
@@ -239,6 +248,15 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
             patientId,
             new LocalDate(2020, 1, 1),
             VisitTypeEnum.VISIT_TYPE_OPD
+        );
+
+        /* enroll into the HIV program */
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
+            patientId,
+            new LocalDate(2020, 1, 2),
+            ConceptEnum.WHO_STAGE_1,
+            TherapeuticLineEnum.SECOND_LINE,
+            new LocalDate(2020, 1, 3)
         );
 
         /* record VL test */
@@ -290,7 +308,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("artStartDate"), null);
+        assertEquals(result.get(0).get("artStartDate"), "2020-01-03");
         assertEquals(result.get(0).get("age"),
             Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
         assertEquals(result.get(0).get("sex"), "f");
@@ -334,6 +352,15 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
             patientId,
             new LocalDate(2020, 1, 1),
             VisitTypeEnum.VISIT_TYPE_OPD
+        );
+
+        /* enroll into the HIV program */
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
+            patientId,
+            new LocalDate(2020, 1, 2),
+            ConceptEnum.WHO_STAGE_1,
+            TherapeuticLineEnum.SECOND_LINE,
+            new LocalDate(2020, 1, 3)
         );
 
         /* record VL test */
@@ -381,7 +408,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("artStartDate"), null);
+        assertEquals(result.get(0).get("artStartDate"), "2020-01-03");
         assertEquals(result.get(0).get("age"),
             Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
         assertEquals(result.get(0).get("sex"), "f");
@@ -427,6 +454,15 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
             VisitTypeEnum.VISIT_TYPE_OPD
         );
 
+        /* enroll into the HIV program */
+        testDataGenerator.program.enrollPatientIntoHIVProgram(
+            patientId,
+            new LocalDate(2020, 1, 2),
+            ConceptEnum.WHO_STAGE_1,
+            TherapeuticLineEnum.SECOND_LINE,
+            new LocalDate(2020, 1, 3)
+        );
+
         /* record VL test */
         testDataGenerator.manualLabAndResultForm.setRoutineViralLoadTestDateAndResult(
             patientId,
@@ -466,7 +502,7 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("artStartDate"), null);
+        assertEquals(result.get(0).get("artStartDate"), "2020-01-03");
         assertEquals(result.get(0).get("age"),
             Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
         assertEquals(result.get(0).get("sex"), "f");
