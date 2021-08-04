@@ -174,15 +174,15 @@ CREATE FUNCTION getLastArvPickupDate(
 BEGIN
     DECLARE result DATE;
 
-    SELECT DATE(o.date_created) INTO result
+    SELECT DATE(o.scheduled_date) INTO result
     FROM orders o
     JOIN drug_order do ON do.order_id = o.order_id
     JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
-        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(p_patientId, o.order_id)
-    ORDER BY o.date_created DESC
+    ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
     RETURN (result);
