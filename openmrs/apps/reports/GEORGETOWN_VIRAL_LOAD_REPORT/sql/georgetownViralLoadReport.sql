@@ -4,6 +4,7 @@ SELECT
     getPatientIdentifier(v.patient_id) as "uniquePatientId",
     getFacilityName() as "healthFacility",
     DATE(getProgramAttributeValueWithinReportingPeriod(v.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "artStartDate",
+    getPatientMostRecentProgramOutcome(v.patient_id, "en", "HIV_PROGRAM_KEY") as "artStatus",
     getPatientAge(v.patient_id) as "age",
     getPatientGender(v.patient_id) as "sex",
     getPatientPhoneNumber(v.patient_id) as "telephone",
@@ -22,4 +23,5 @@ SELECT
     getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone"
 FROM visit v, (SELECT @a:= 0) AS a
 WHERE getViralLoadTestResult(v.patient_id) IS NOT NULL AND
-    v.date_started BETWEEN "#startDate#" AND "#endDate#";
+    patientHasEnrolledIntoHivProgram(v.patient_id) = "Yes" AND
+    patientHadViralLoadTestDuringReportingPeriod(v.patient_id, "#startDate#", "#endDate#");
