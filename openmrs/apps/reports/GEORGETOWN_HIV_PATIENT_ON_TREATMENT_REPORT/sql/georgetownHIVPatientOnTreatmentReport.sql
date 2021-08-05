@@ -30,7 +30,7 @@ SELECT
     getTBScreeningStatus(pat.patient_id) as "tbScreeningResult",
     IF(patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#"),"Yes","No") as "inh",
     getProgramAttributeDateValueFromAttributeAndProgramName(pat.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
-    getLastArvPickupDate(pat.patient_id,"#startDate#", "#endDate#") as "lastARVDispenseDate",
+    getMostRecentArvPickupDateBeforeReportEndDate(pat.patient_id, "#endDate#") as "lastARVDispenseDate",
     getLastARVDispensed(pat.patient_id,"#startDate#", "#endDate#") as "getLastARVDispensed",
     getDurationMostRecentArvTreatmentInDays(pat.patient_id,"#startDate#", "#endDate#") as "durationMostRecentArv",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonForInitiation",
