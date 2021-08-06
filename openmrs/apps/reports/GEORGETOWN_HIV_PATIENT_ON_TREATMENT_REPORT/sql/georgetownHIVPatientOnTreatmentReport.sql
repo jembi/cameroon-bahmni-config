@@ -51,6 +51,7 @@ WHERE
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
             (
+                patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", IF(LAST_DAY("#startDate#") > "#endDate#", "#endDate#" , LAST_DAY("#startDate#"))) OR
                 patientPrescribedARTForEntireReportingPeriod(pat.patient_id,"#startDate#", IF(LAST_DAY("#startDate#") > "#endDate#", "#endDate#" , LAST_DAY("#startDate#"))) OR
                 patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
             )
