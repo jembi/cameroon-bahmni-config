@@ -23,5 +23,9 @@ FROM patient p
     LEFT JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
         AND pat.name IN ("PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME")
 WHERE
-    patientIsContact(p.patient_id)
+    patientIsContact(p.patient_id) AND
+    (
+        getHIVTestDate(p.patient_id,"#startDate#", "#endDate#") IS NOT NULL OR
+        patientHasEnrolledIntoProgramDuringReportingPeriod(p.patient_id,"#startDate#", "#endDate#","INDEX_TESTING_PROGRAM_KEY")
+    )
 ORDER BY ppah.date_created DESC;
