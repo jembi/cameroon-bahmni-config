@@ -1,4 +1,4 @@
--- patientHasScheduledAnARTAppointmentDuringReportingPeriod
+-- patientHasScheduledAnARTAppointment
 
 DROP FUNCTION IF EXISTS patientHasScheduledAnARTAppointment;
 
@@ -22,6 +22,22 @@ BEGIN
     GROUP BY pa.patient_id;
 
     RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- getDayBetweenLastAppointmentAndLastArvPickupDate
+
+DROP FUNCTION IF EXISTS getDayBetweenLastAppointmentAndLastArvPickupDate;
+
+DELIMITER $$
+CREATE FUNCTION getDayBetweenLastAppointmentAndLastArvPickupDate(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    SET result = DATEDIFF(getDateLatestARVRelatedVisit(p_patientId), getDateMostRecentARVAppointmentBeforeOrEqualToDate(p_patientId, p_endDate));
+    RETURN (result);
 END$$ 
 DELIMITER ;
 
