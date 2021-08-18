@@ -1,5 +1,5 @@
-SELECT
-    CAST(@a:=@a+1 AS CHAR) as "serialNumber",
+SELECT DISTINCT
+    '' as "serialNumber",
     getPatientARTNumber(v.patient_id) as "artCode",
     getPatientIdentifier(v.patient_id) as "uniquePatientId",
     getFacilityName() as "healthFacility",
@@ -21,7 +21,7 @@ SELECT
     getMostRecentProgramEnrollmentDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacStartDate",
     getMostRecentProgramCompletionDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacEndDate",
     getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone"
-FROM visit v, (SELECT @a:= 0) AS a
+FROM visit v
 WHERE getViralLoadTestResult(v.patient_id) IS NOT NULL AND
     patientHasEnrolledIntoHivProgram(v.patient_id) = "Yes" AND
     patientHadViralLoadTestDuringReportingPeriod(v.patient_id, "#startDate#", "#endDate#");

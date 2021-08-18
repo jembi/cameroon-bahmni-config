@@ -106,7 +106,6 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         List<Map<String, Object>> result = getReportResult(query);
 
         // Assert
-        assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
@@ -200,7 +199,6 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         List<Map<String, Object>> result = getReportResult(query);
 
         // Assert
-        assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
@@ -304,7 +302,6 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         List<Map<String, Object>> result = getReportResult(query);
 
         // Assert
-        assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
@@ -404,7 +401,6 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         List<Map<String, Object>> result = getReportResult(query);
 
         // Assert
-        assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
@@ -498,7 +494,6 @@ public class GeorgetownViralLoadReportTests extends BaseReportTest {
         List<Map<String, Object>> result = getReportResult(query);
 
         // Assert
-        assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("artCode"), "ART 123");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
