@@ -35,4 +35,4 @@ SELECT
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
     patientHasScheduledAnARTAppointment(p.patient_id, "#startDate#", "#endDate#", 0) OR
-    patientWasPrescribedARVDrugDuringReportingPeriod(p.patient_id,"#startDate#", "#endDate#") IS NOT NULL;
+    patientWasPrescribedARVDrugDuringReportingPeriod(p.patient_id,"#startDate#", "#endDate#");
