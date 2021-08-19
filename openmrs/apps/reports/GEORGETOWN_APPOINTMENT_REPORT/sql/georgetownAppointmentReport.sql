@@ -1,0 +1,38 @@
+SELECT
+    CAST(@a:=@a+1 AS CHAR) as "Serial Number",
+    getPatientARTNumber(p.patient_id) as "ART Code",
+    getFacilityName() as "Facility Name",
+    getPatientIdentifier(p.patient_id) as "Patient ID",
+    patientAgeAtHivEnrollment(p.patient_id) as "Age At Enrollment",
+    getPatientBirthdate(p.patient_id) as "Date of birth",
+    getPatientGender(p.patient_id) as "Sex",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "Date Arv Initiation",
+    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "Reason ForI nitiation",
+    CONCAT(getPatientVillage(p.patient_id),",",getPatientPreciseLocation(p.patient_id)) as "Address",
+    getPatientPhoneNumber(p.patient_id) as "telephone",
+    getPatientMostRecentProgramTrackingStateValue(p.patient_id,"en","HIV_PROGRAM_KEY") as "Clinical Who Stage",
+    getActiveARVWithLowestDispensationPeriod(p.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
+    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
+    getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS In Charge",
+    getDateSecondMostRecentARVAppointmentBeforeOrEqualToDate(p.patient_id, "#endDate#") as "Previous Appointment Date",
+    getMostRecentArvPickupDateBeforeReportEndDate(p.patient_id, "#endDate#") as "Dispensed ARV Date",
+    getLastARVDispensed(p.patient_id,"2000-01-01", "#endDate#") as "Last ARV Dispensed",
+    getDurationMostRecentArvTreatmentInDays(p.patient_id,"2000-01-01", "#endDate#") as "Number of Days Dispensed",
+    getDateARVAppointmentAfterDate(p.patient_id, "#endDate#") as "Next Appointment Date",
+    getDateMostRecentARVAppointmentBeforeOrEqualToDate(p.patient_id, "#endDate#") as "Last Appointment Date",
+    getDayBetweenLastAppointmentAndLastArvPickupDate(p.patient_id, "#endDate#") as "Number days between last appointment and visit date",
+    IF(patientIsEligibleForVL(p.patient_id), "Yes", "No") as "Eligibility for Viral Load",
+    getPregnancyStatus(p.patient_id) as "Patient is Pregnant",
+    IF(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "Patient is Breastfeeding",
+    IF(getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "TB Screening",
+    getTBScreeningStatus(p.patient_id) as "TB Screening Result",
+    IF(patientHasBeenPrescribedDrug(p.patient_id, "INH","#startDate#", "#endDate#"),"Yes","No") as "inh",
+    IF(getObsCodedValue(p.patient_id, "211f0857-61a3-4049-9777-374c4a592453") IS NOT NULL, "True", "False") as "KP",
+    getObsCodedValue(p.patient_id, "211f0857-61a3-4049-9777-374c4a592453") as "KP Type",
+    getViralLoadTestDate(p.patient_id) as "Last Viral Load Result Date",
+    getViralLoadTestResult(p.patient_id) as "Last Viral Load Result",
+    getReasonLastVLExam(p.patient_id) as "Reason Of Last Viral Load"
+FROM patient p, (SELECT @a:= 0) AS a
+WHERE
+    patientHasScheduledAnARTAppointment(p.patient_id, "#startDate#", "#endDate#", 0) OR
+    patientWasPrescribedARVDrugDuringReportingPeriod(p.patient_id,"#startDate#", "#endDate#") IS NOT NULL;

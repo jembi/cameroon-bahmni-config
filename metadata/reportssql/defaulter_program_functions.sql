@@ -26,6 +26,96 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateMostRecentARVAppointmentBeforeOrEqualToDate
+
+DROP FUNCTION IF EXISTS getDateMostRecentARVAppointmentBeforeOrEqualToDate;
+
+DELIMITER $$
+CREATE FUNCTION getDateMostRecentARVAppointmentBeforeOrEqualToDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(pa.start_date_time) INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time <= p_date
+        AND (
+            aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_OPD_KEY")
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDateSecondMostRecentARVAppointmentBeforeOrEqualToDate
+
+DROP FUNCTION IF EXISTS getDateSecondMostRecentARVAppointmentBeforeOrEqualToDate;
+
+DELIMITER $$
+CREATE FUNCTION getDateSecondMostRecentARVAppointmentBeforeOrEqualToDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(pa.start_date_time) INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time <= p_date
+        AND (
+            aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_OPD_KEY")
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1, 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getDateARVAppointmentAfterDate
+
+DROP FUNCTION IF EXISTS getDateARVAppointmentAfterDate;
+
+DELIMITER $$
+CREATE FUNCTION getDateARVAppointmentAfterDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(pa.start_date_time) INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time > p_date
+        AND (
+            aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_OPD_KEY")
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getDateMostRecentHIVRelatedEncounter
 
 DROP FUNCTION IF EXISTS getDateMostRecentHIVRelatedEncounter;
