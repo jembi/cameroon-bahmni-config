@@ -18,7 +18,7 @@ SELECT
     getDateMostRecentARVAppointmentBeforeOrEqualToDate(p.patient_id, "#endDate#") as "Appointment Date",
     getMostRecentArvPickupDateBeforeReportEndDate(p.patient_id, "#endDate#") as "Dispensed ARV Date",
     getDateARVAppointmentAfterDate(p.patient_id, "#endDate#") as "Next Appointment Date",
-    getDateARVAppointmentAfterDate(p.patient_id, "2100-01-01") as "Most Recent Appointment Date",
+    getDateARVAppointmentAfterDate(p.patient_id, "2000-01-01") as "Most Recent Appointment Date",
     getLastARVDispensed(p.patient_id,"2000-01-01", "#endDate#") as "Last ARV Dispensed",
     getDurationMostRecentArvTreatmentInDays(p.patient_id,"2000-01-01", "#endDate#") as "Number of Days Dispensed",
     getDayBetweenLastAppointmentAndLastArvPickupDate(p.patient_id, "#endDate#") as "Number days between last appointment and visit date",
