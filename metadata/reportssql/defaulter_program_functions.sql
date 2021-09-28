@@ -116,6 +116,37 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateARVAppointmentWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS getDateARVAppointmentWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getDateARVAppointmentWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(pa.start_date_time) INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND pa.start_date_time BETWEEN p_startDate AND p_endDate
+        AND (
+            aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_OPD_KEY")
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getDateMostRecentHIVRelatedEncounter
 
 DROP FUNCTION IF EXISTS getDateMostRecentHIVRelatedEncounter;
