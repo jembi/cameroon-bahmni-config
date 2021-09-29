@@ -13,6 +13,7 @@ BEGIN
     FROM patient_appointment pa
     JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
     WHERE pa.voided = 0
+        AND pa.status = "Scheduled"
         AND pa.patient_id = p_patientId
         AND (
             aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
@@ -42,6 +43,7 @@ BEGIN
     FROM patient_appointment pa
     JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
     WHERE pa.voided = 0
+        AND pa.status = "Scheduled"
         AND pa.patient_id = p_patientId
         AND pa.start_date_time <= p_date
         AND (
@@ -72,6 +74,7 @@ BEGIN
     FROM patient_appointment pa
     JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
     WHERE pa.voided = 0
+        AND pa.status = "Scheduled"
         AND pa.patient_id = p_patientId
         AND pa.start_date_time <= p_date
         AND (
@@ -102,6 +105,7 @@ BEGIN
     FROM patient_appointment pa
     JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
     WHERE pa.voided = 0
+        AND pa.status = "Scheduled"
         AND pa.patient_id = p_patientId
         AND pa.start_date_time > p_date
         AND (
@@ -133,6 +137,7 @@ BEGIN
     FROM patient_appointment pa
     JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
     WHERE pa.voided = 0
+        AND pa.status = "Scheduled"
         AND pa.patient_id = p_patientId
         AND pa.start_date_time BETWEEN p_startDate AND p_endDate
         AND (
