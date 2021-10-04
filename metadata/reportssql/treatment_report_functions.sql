@@ -549,11 +549,13 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
     GROUP BY o.patient_id;
 
@@ -611,12 +613,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date < p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -653,12 +657,14 @@ BEGIN
 
     SELECT o.order_id INTO orderIdMostRecentDispense
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date <= p_endDate
     ORDER BY o.scheduled_date
@@ -666,12 +672,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date < p_startDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
@@ -704,11 +712,13 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -737,12 +747,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date <= p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -774,12 +786,14 @@ BEGIN
 
     SELECT o.order_id INTO orderIdMostRecentDispense
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date <= p_endDate
     ORDER BY o.scheduled_date
@@ -787,12 +801,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
@@ -908,12 +924,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     GROUP BY o.patient_id;
 
@@ -936,11 +954,13 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,

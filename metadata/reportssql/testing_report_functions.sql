@@ -2175,6 +2175,64 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getMostRecentDateOfNotification
+
+DROP FUNCTION IF EXISTS getMostRecentDateOfNotification;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentDateOfNotification(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN patient_program pp ON pp.patient_program_id = ppah.patient_program_id
+        JOIN program p ON p.program_id = pp.program_id
+    WHERE
+        ppah.date_created BETWEEN p_startDate AND p_endDate AND
+        pat.name = "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE" AND
+        p.name = "INDEX_TESTING_PROGRAM_KEY"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getMostRecentNotificationOutcome
+
+DROP FUNCTION IF EXISTS getMostRecentNotificationOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentNotificationOutcome(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN patient_program pp ON pp.patient_program_id = ppah.patient_program_id
+        JOIN program p ON p.program_id = pp.program_id
+    WHERE
+        ppah.date_created BETWEEN p_startDate AND p_endDate AND
+        pat.name = "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME" AND
+        p.name = "INDEX_TESTING_PROGRAM_KEY"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getNotificationOutcome
 
 DROP FUNCTION IF EXISTS getNotificationOutcome;
