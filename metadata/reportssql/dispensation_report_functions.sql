@@ -23,6 +23,8 @@ BEGIN
         JOIN concept_name cn ON cn.concept_id = d.concept_id AND cn.locale = "en"
     WHERE o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND cn.name = p_arvName
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
@@ -63,6 +65,8 @@ BEGIN
     WHERE o.voided = 0
         AND drugIsARV(d.concept_id)
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND patientTherapeuticLineSpecified(o.patient_id) = "No"
@@ -101,6 +105,8 @@ BEGIN
     WHERE o.voided = 0
         AND drugIsARV(d.concept_id)
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND patientAgeIsBetween(o.patient_id, p_startAge, p_endAge, p_includeEndAge)
@@ -140,6 +146,8 @@ BEGIN
             drugIsAdultProphylaxis(d.concept_id),
             drugIsChildProphylaxis(d.concept_id))
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND patientAgeIsBetween(o.patient_id, p_startAge, p_endAge, p_includeEndAge)
@@ -173,6 +181,8 @@ BEGIN
         AND patientReasonForConsultationIsUnplannedAid(o.patient_id)
         AND drugIsARV(d.concept_id)
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
         AND patientAgeIsBetween(o.patient_id, p_startAge, p_endAge, p_includeEndAge)
@@ -206,6 +216,8 @@ BEGIN
     WHERE o.voided = 0
         AND drugIsARV(d.concept_id)
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate;
 
     RETURN (result);
@@ -233,6 +245,8 @@ BEGIN
     WHERE o.voided = 0
         AND drugIsARV(d.concept_id)
         AND cn.name = p_arvName
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND drugOrderIsDispensed(o.patient_id, o.order_id);
 

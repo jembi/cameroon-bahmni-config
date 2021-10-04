@@ -110,11 +110,13 @@ BEGIN
 
     SELECT o.scheduled_date INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     ORDER BY o.scheduled_date DESC
     LIMIT 1;
