@@ -42,6 +42,18 @@ f51cb3ed-1e31-4709-8354-a30223e76ac9,Age Sibling 7;Living/DCD;Tested;On treatmen
 06cdee43-3dc7-45cc-9b19-2b0a36d9ea63,,,Consultation de PTME,PMTCT Consultation,Consultation de PTME,PMTCT Consultation,Misc,N/A,,
 cd8dd320-a4ac-4ed8-be65-369ac10ccd67,,,Dépistage après un cas indexé,Screening after an indexed case,Dépistage après un cas indexé,Screening after an indexed case,Misc,N/A,,
 7b70c5a3-5950-46ee-a011-4ccc6351b86c,,,Service des urgences,Emergency Department,Service des urgences,Emergency Department,Misc,N/A,,
+c279a4bc-7304-4ca0-9e99-2414137f6912,,,Banque de Sang,Blood Bank,Banque de Sang,Blood Bank,Misc,N/A,,
+27dd7401-3521-4feb-82d3-672b1de5718e,,,Dépistage Communautaire - Campagne de masse,Community Testing-Outreach,Dépistage Communautaire - Campagne de masse,Community Testing-Outreach,Misc,N/A,,
+
+79529609-3509-4b10-8083-380db4e578b3,,,Dépistage Communautaire - Site satelite,Community Testing-Satellite Site,Dépistage Communautaire - Site satelite,Community Testing-Satellite Site,Misc,N/A,,
+7373be75-9775-44c0-b8d0-4d8468ec3f3c,,,Unité de Prise en Charge (UPEC),Treatment Unit (UPEC),Unité de Prise en Charge (UPEC),Treatment Unit (UPEC),Misc,N/A,,
+f4793bb6-4018-4d20-9632-96cdebf684b2,,,Partenaire de Femmes Enceinte,Partners of PW,Partenaire de Femmes Enceinte,Partners of PW,Misc,N/A,,
+41749ff4-66d6-433b-a3ec-7add4e3d4dec,,,Partenaire de Femmes Allaitante,Partners of BFW,Partenaire de Femmes Allaitante,Partners of BFW,Misc,N/A,,
+24f73765-43a0-4e75-ad5b-b442a3b2a276,,,Autre Test en CPN,Other testing at ANC,Autre Test en CPN,Other testing at ANC,Misc,N/A,,
+ae6faa93-4a50-4036-b03c-5ac6fe4fbd82,,,Autre Test en Hospitalisation,Other testing at Inpatient,Autre Test en Hospitalisation,Other testing at Inpatient,Misc,N/A,,
+59f82cad-f1c7-4272-9886-c7dc4ce2d4fe,,,Autre Test a l’unité de TB,Other testing at TB Unit,Autre Test a l’unité de TB,Other testing at TB Unit,Misc,N/A,,
+703f2a8e-74ba-4e8c-93ef-64272c1e1733,,,"CDIPS ( Consultation Externe, accidenté)","PITC (Outpatient Department, casuality)","CDIPS ( Consultation Externe, accidenté)","PITC (Outpatient Department, casuality)",Misc,N/A,,
+
 a6534470-c3df-474c-adaf-b6924d66615c,,,Consultation extemes,External Consultation,Consultation extemes,External Consultation,Misc,N/A,,
 d009d68e-04ac-4d6c-81bc-488a5ebe7e55,,,Prise en charge nutritionnelle,Nutritional Management,Prise en charge nutritionnelle,Nutritional Management,Misc,N/A,,
 e3af6d64-8652-43e8-9d57-4edeebefb2bd,,,Prise en charge de la tuberculose,Management of tuberculosis,Prise en charge de la tuberculose,Management of tuberculosis,Misc,N/A,,
@@ -120,7 +132,9 @@ a39acdbf-02f1-4bad-ab30-805e40e3e7ae,,,Allergies,Allergies,Allergies,Allergies,M
 6624a3e9-abb2-42ff-8b5c-92bcdae1c928,,,Duration in hospital (day),Duration in hospital (day),Duration in hospital (day),Duration in hospital (day),Misc,Numeric,,
 ef95725f-cfe3-435d-9443-c0e858d39802,,,MOTIF,Pattern,MOTIF,Pattern,Misc,Text,,
 30dcc74a-5554-482f-a5a0-9f6fb3c2a556,Has the child ever been hospitalized for more than 24 hours;Date of hospitalization;Duration in hospital (day);Pattern,,Hospitalisation,Inpatient,Hospitalisation,Inpatient,Misc,N/A,,
-735e2bec-ea5b-48bb-8deb-e1926999023f,,PMTCT Consultation;Screening after an indexed case;Inpatient;Emergency Department;External Consultation;Nutritional Management;Management of tuberculosis;cb279713-3373-44be-91bf-ead37122d098,Porte d'entrée,Entry Point,Porte d'entrée,Entry Point,Misc,Coded,,
+
+735e2bec-ea5b-48bb-8deb-e1926999023f,,PMTCT Consultation;Screening after an indexed case;Inpatient;Emergency Department;External Consultation;Nutritional Management;Management of tuberculosis;Blood Bank;LOCATION_LABORATORY;Community Testing-Outreach;Community Testing-Satellite Site;Treatment Unit (UPEC);Partners of PW;Partners of BFW;Other testing at ANC;Other testing at Inpatient;Other testing at TB Unit;703f2a8e-74ba-4e8c-93ef-64272c1e1733;cb279713-3373-44be-91bf-ead37122d098,Porte d'entrée,Entry Point,Porte d'entrée,Entry Point,Misc,Coded,,
+
 d788d341-9144-42a7-aa70-8b4fa0fb92af,,,Transféré d'une UPEC (laquelle),Transferred to a UPEC (which),Transféré d'une UPEC (laquelle),Transferred to a UPEC (which),Misc,Text,,
 f056289f-85bb-45c7-8977-497fa8062e33,"735e2bec-ea5b-48bb-8deb-e1926999023f;If other specify;Transferred to a UPEC (which);Provider Initiated Testing and Couseling;Circumstance initial screening;Other circumstances;The diagnosis is based on;Date of diagnosis;Path of transmission;If other routes specify;Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.);If yes, select ARV used",,Histoire de l'exposition,History of the HIV exposure,Histoire de l'exposition,History of the HIV exposure,Misc,N/A,,
 bd4439cc-bdaf-4868-a777-e359282b0db7,,,BCG - Naissance,BCG - Birth,BCG,BCG,Misc,Date,,
