@@ -15,7 +15,8 @@ SELECT
     getNumberBiologicalChildrenOfIndex(p.patient_id, "#startDate#", "#endDate#") as "Number of Biological Children",
     getNumberBiologicalParentsOfIndex(p.patient_id, "#startDate#", "#endDate#") as "Number of Biological Parents",
     getNumberSiblingsOfIndex(p.patient_id, "#startDate#", "#endDate#") as "Number of Siblings",
-    getNumberSexualContactsOfIndex(p.patient_id) as "Number of Sexual Contact"
+    getNumberSexualContactsOfIndex(p.patient_id) as "Number of Sexual Contact",
+    getObsTextValue(p.patient_id, "2af46f9c-d572-4362-aa14-43d72eacb2aa") as "APS Tester Name"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
     getPatientHIVFinalTestResult(p.patient_id) LIKE "Positive%"  AND
