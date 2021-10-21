@@ -16,7 +16,8 @@ SELECT DISTINCT
     getHIVResult(p.patient_id,"2000-01-01","2100-01-01") as "Test results",
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "Date of Initiation",
     getPatientARTNumber(getFirstIndexID(p.patient_id)) as "Index Related ART Code",
-    getPatientIdentifier(getFirstIndexID(p.patient_id)) as "Index Related Unique ID"
+    getPatientIdentifier(getFirstIndexID(p.patient_id)) as "Index Related Unique ID",
+    getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "d7246eea-5161-43e0-b840-d315c24cc95e", "INDEX_TESTING_PROGRAM_KEY") as "APS Name"
 FROM patient p
     LEFT JOIN patient_program pp ON pp.patient_id = p.patient_id
     LEFT JOIN patient_program_attribute_history ppah ON ppah.patient_program_id = pp.patient_program_id

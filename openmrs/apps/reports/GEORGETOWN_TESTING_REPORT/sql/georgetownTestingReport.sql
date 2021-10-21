@@ -14,6 +14,7 @@ SELECT
     DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-12-31", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "dateOfArtInitiation",
     getObsCodedValue(p.patient_id, "3447254f-501f-4b07-815c-cd0f6da98158") as "reasonOfNonInitiation",
     IF(wasHIVTestDoneInANCVisitWithinRepPeriod(p.patient_id, "#startDate#", "#endDate#"),"PMTCT [ANC1-only]",getTestingEntryPointWithinRepPeriod(p.patient_id)) as "facilityEntryPoint",
-    getHIVTestDate(p.patient_id,"#startDate#", "#endDate#") as "dateFinalResultProvidedToPatient"
+    getHIVTestDate(p.patient_id,"#startDate#", "#endDate#") as "dateFinalResultProvidedToPatient",
+    getObsTextValue(p.patient_id, "2af46f9c-d572-4362-aa14-43d72eacb2aa") as "APS Tester Name"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE getHIVTestDate(p.patient_id, "#startDate#", "#endDate#") IS NOT NULL;

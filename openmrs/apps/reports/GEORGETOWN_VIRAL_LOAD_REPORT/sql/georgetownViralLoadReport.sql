@@ -20,7 +20,8 @@ SELECT DISTINCT
     IF(getMostRecentProgramEnrollmentDate(v.patient_id, "VL_EAC_PROGRAM_KEY") IS NOT NULL, "Yes", "No") as "eacDone",
     getMostRecentProgramEnrollmentDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacStartDate",
     getMostRecentProgramCompletionDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacEndDate",
-    getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone"
+    getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone",
+    getProgramAttributeValueWithinReportingPeriod(v.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "VL_EAC_PROGRAM_KEY") as "APS Name"
 FROM visit v
 WHERE getViralLoadTestResult(v.patient_id) IS NOT NULL AND
     patientHasEnrolledIntoHivProgram(v.patient_id) = "Yes" AND

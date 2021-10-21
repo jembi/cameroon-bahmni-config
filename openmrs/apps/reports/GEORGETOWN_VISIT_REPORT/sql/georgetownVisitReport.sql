@@ -21,7 +21,8 @@ SELECT
     getPatientMostRecentProgramOutcome(v.patient_id, "en", "HIV_PROGRAM_KEY") as "previousOutcome",
     getPreviousRegimen(v.patient_id, "2000-01-01", "2100-01-01") as "previousRegimen",
     IF(getPreviousRegimen(v.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL, "Yes", "No") as "switchedLine",
-    "N/A" as "reasonOfSwitchLine"
+    "N/A" as "reasonOfSwitchLine",
+    getProgramAttributeValueWithinReportingPeriod(v.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name"
 FROM (SELECT @a:= 0) AS a, visit v
 WHERE
     v.date_started BETWEEN "#startDate#" AND "#endDate#";
