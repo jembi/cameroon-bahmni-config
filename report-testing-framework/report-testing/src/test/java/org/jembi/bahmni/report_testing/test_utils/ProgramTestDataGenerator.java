@@ -30,6 +30,10 @@ public class ProgramTestDataGenerator {
     }
 
     public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate) throws Exception {
+		return enrollPatientIntoHIVProgram(patientId, enrollmentDate, patientClinicalStage, therapeuticLine, treatmentStartDate, null);
+    }
+
+    public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate, String apsName) throws Exception {
 		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.HIV_PROGRAM_KEY);
 
 		if (patientClinicalStage != null) {
@@ -42,6 +46,10 @@ public class ProgramTestDataGenerator {
 
 		if (treatmentStartDate != null) {
 			recordProgramAttributeDateValue(patientProgramId, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", treatmentStartDate, enrollmentDate);
+		}
+
+		if (apsName != null) {
+			recordProgramAttributeTextValue(patientProgramId, "PROGRAM_MANAGEMENT_5_APS_NAME", apsName, enrollmentDate);
 		}
 
 		return patientProgramId;
@@ -156,6 +164,14 @@ public class ProgramTestDataGenerator {
 		String query =  "INSERT INTO patient_program_attribute "
 		+ "(patient_program_id, attribute_type_id, value_reference, creator, date_created, voided, uuid) VALUES"
 		+ "(" + patientProgramId + "," + attributeTypeId + "," + conceptId + ", 4, '" + dateCreated + "', 0, '" + TestDataGenerator.generateUUID() + "')";
+		stmt.executeUpdate(query);
+	}
+
+	public void recordProgramAttributeTextValue(int patientProgramId, String programAttributeName, String value, LocalDate dateCreated) throws Exception {
+		int attributeTypeId = TestDataGenerator.getQueryIntResult("SELECT program_attribute_type_id FROM program_attribute_type WHERE name = '" + programAttributeName + "'", stmt);
+		String query =  "INSERT INTO patient_program_attribute "
+		+ "(patient_program_id, attribute_type_id, value_reference, creator, date_created, voided, uuid) VALUES"
+		+ "(" + patientProgramId + "," + attributeTypeId + ",'" + value + "', 4, '" + dateCreated + "', 0, '" + TestDataGenerator.generateUUID() + "')";
 		stmt.executeUpdate(query);
 	}
 }
