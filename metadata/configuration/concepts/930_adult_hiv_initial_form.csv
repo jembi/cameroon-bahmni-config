@@ -8,10 +8,14 @@ e7a002be-8afc-48b1-a81b-634e37f2961c,,,Date Accepté,Date Accepted,Date Accepté
 b2031349-b60a-433d-880a-8668cc040d2f,,,Hétérosexuel,Heterosexual,Hétérosexuel,Heterosexual,Misc,N/A,,
 9801e8cd-da10-4c52-adee-27cd6939adbb,,,Bisexuel,Bisexual,Bisexuel,Bisexual,Misc,N/A,,
 c540d003-cdb5-434c-baa4-0b2b3e5e3205,,,Homosexuel,Homosexual,Homosexuel,Homosexual,Misc,N/A,,
-b1824734-c5d8-46d0-86c7-a4c8f73fce80,,,Lesbienne,Lesbian,Lesbienne,Lesbian,Misc,N/A,,
+
+b9c5c9c4-6290-4c79-b344-6928572ac57c,,,Travailleuses de Sexe,Female Sex Workers,Travailleuses de Sexe,Female Sex Workers,Misc,N/A,,
+b1824734-c5d8-46d0-86c7-a4c8f73fce80,,,Hommes ayant des rapports sexuels avec des hommes,Men who have a Sex with Men,Hommes ayant des rapports sexuels avec des hommes,Men who have a Sex with Men,Misc,N/A,,
 425b6957-a360-4b5a-9a30-eb9705d9fc75,,,Prisoniers et Autres,Prisoners and Other enclose settings,Prisoniers et Autres,Prisoners and Other enclose settings,Misc,N/A,,
-d06914fe-b11d-42d1-9e5d-7c6eb6d44c13,,,Drogués,PWID,Drogués,PWID,Misc,N/A,,
-211f0857-61a3-4049-9777-374c4a592453,,b2031349-b60a-433d-880a-8668cc040d2f;9801e8cd-da10-4c52-adee-27cd6939adbb;c540d003-cdb5-434c-baa4-0b2b3e5e3205;b1824734-c5d8-46d0-86c7-a4c8f73fce80;425b6957-a360-4b5a-9a30-eb9705d9fc75;d06914fe-b11d-42d1-9e5d-7c6eb6d44c13,Type Population Clé,KP Type,Type Population Clé,KP Type,Misc,Coded,,
+
+211f0857-61a3-4049-9777-374c4a592453,,b2031349-b60a-433d-880a-8668cc040d2f;9801e8cd-da10-4c52-adee-27cd6939adbb;c540d003-cdb5-434c-baa4-0b2b3e5e3205,Orientation sexuelle,Sexual orientation,Orientation sexuelle,Sexual orientation,Misc,Coded,,
+248e21db-98f8-49fc-b596-fe9042b013ac,,b9c5c9c4-6290-4c79-b344-6928572ac57c;b1824734-c5d8-46d0-86c7-a4c8f73fce80;425b6957-a360-4b5a-9a30-eb9705d9fc75;762af91a-d2c1-4edc-9ec4-47a82c6f6485,Type Population Clé,KP Type,Type Population Clé,KP Type,Misc,Coded,,
+
 a2065636-5326-40f5-aed6-0cc2cca81ccc,,,Oui full name,Yes full name,Oui,Yes,Misc,N/A,,
 b497171e-0410-4d8d-bbd4-7e1a8f8b504e,,,Non full name,No full name,Non,No,Misc,N/A,,
 b7648479-e480-4772-b646-a5abc07bc4f7,,Yes full name;No full name,Partenaire informé,Informed partner,Partenaire informé,Informed partner,Misc,Coded,,
@@ -25,7 +29,7 @@ b9bcbad0-3d5d-43f8-9cb8-b0a80ea440c7,,Yes full name;No full name,Partage des ré
 2d1bf419-16a9-44a7-a11c-98d39b170cec,,Yes full name;No full name;Unknown;9d26a59c-fe56-4509-b931-e380303a72c3,Couples discordants,Discordant couples,Couples discordants,Discordant couples,Misc,Coded,,
 d2b400ea-7510-432c-9ea4-27ea88736bb7,,Yes full name;No full name,Utilisation systématique du préservatif,Condom use systematically,Utilisation systématique du préservatif,Condom use systematically,Misc,Coded,,
 d27e92b4-8122-4636-9b20-9b8b8b91e9dd,,,Nombre de partenaires sexuels dans les 12 derniers mois,Number of sexual partners in the last 12 months,Nombre de partenaires sexuels dans les 12 derniers mois,Number of sexual partners in the last 12 months,Misc,Numeric,,
-83e4df0e-5723-4c53-ae8b-7411b2337bef,5f38b80a-d4e2-4623-bb15-6662c33ab4f9;6221e521-79c9-4a28-b3e5-e96df371b855;211f0857-61a3-4049-9777-374c4a592453;b7648479-e480-4772-b646-a5abc07bc4f7;351d2ae2-597e-471d-859c-ac0f782e06ec;b9bcbad0-3d5d-43f8-9cb8-b0a80ea440c7;2d1bf419-16a9-44a7-a11c-98d39b170cec;d2b400ea-7510-432c-9ea4-27ea88736bb7;d27e92b4-8122-4636-9b20-9b8b8b91e9dd,,1. Information socio-demographiques,1. Socio-demographic information,1. Information socio-demographiques,1. Socio-demographic information,Misc,N/A,,
+83e4df0e-5723-4c53-ae8b-7411b2337bef,5f38b80a-d4e2-4623-bb15-6662c33ab4f9;6221e521-79c9-4a28-b3e5-e96df371b855;211f0857-61a3-4049-9777-374c4a592453;248e21db-98f8-49fc-b596-fe9042b013ac;b7648479-e480-4772-b646-a5abc07bc4f7;351d2ae2-597e-471d-859c-ac0f782e06ec;b9bcbad0-3d5d-43f8-9cb8-b0a80ea440c7;2d1bf419-16a9-44a7-a11c-98d39b170cec;d2b400ea-7510-432c-9ea4-27ea88736bb7;d27e92b4-8122-4636-9b20-9b8b8b91e9dd,,1. Information socio-demographiques,1. Socio-demographic information,1. Information socio-demographiques,1. Socio-demographic information,Misc,N/A,,
 0d9692be-a4ea-48b8-bf44-3c6c8eb7ecf5,,,Date du diagnostic,Date of diagnosis,Date du diagnostic,Date of diagnosis,Misc,Date,,
 c5472ee7-c57a-4e27-afce-334fcd497f1c,,,AES,AES,AES,AES,Misc,N/A,,
 7bd7c899-6f77-4070-a905-f79da3726f79,,,Age gestationnel au moment du diagnostic (En semaines),Gestational Age at Diagnosis (Week of Amenorrhea),Age gestationnel au moment du diagnostic (En semaines),Gestational Age at Diagnosis (Week of Amenorrhea),Misc,Numeric,,
