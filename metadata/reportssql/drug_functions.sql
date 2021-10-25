@@ -616,6 +616,47 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateFullINHCourse
+
+DROP FUNCTION IF EXISTS getDateFullINHCourse;
+
+DELIMITER $$
+CREATE FUNCTION getDateFullINHCourse(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND o.scheduled_date >= p_startDate
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND timestampdiff(
+            MONTH,
+            p_startDate,
+            calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid)
+            ) >= 6
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
 -- retrieveINHStartAndEndDate
 
 DROP PROCEDURE IF EXISTS retrieveINHStartAndEndDate;
@@ -663,85 +704,39 @@ CREATE PROCEDURE selectINHFollowUpReport(
     IN p_endDate DATE)
 BEGIN
 
-    DECLARE bDone INT;
-    DECLARE bDone2 INT;
-    DECLARE patientId INT(11);
-    DECLARE serialNumber INT(11) DEFAULT 0;
-    DECLARE uniquePatientId VARCHAR(50);
-    DECLARE artCode VARCHAR(50);
-    DECLARE age INT(11);
-    DECLARE dateOfBirth DATE;
-    DECLARE sex VARCHAR(1);
-    DECLARE dateOfARTInitiation DATE;
-    DECLARE inhStartDate DATE;
-    DECLARE inhEndDate DATE;
-    DECLARE inhFullCourseStartDate DATE;
-    DECLARE inhFullCourseEndDate DATE;
-    DECLARE courseDuration INT(11);
-    DECLARE _index INT(11);
+    SET @prev_inh_end_date = null;
+    SET @prev_patient_id = null;
 
-
-    DECLARE mainQueryCursor CURSOR FOR
     SELECT
-        p.patient_id,
-        getPatientIdentifier(p.patient_id) as "Unique Patient ID",
-        getPatientARTNumber(p.patient_id) as "ART Code",
-        getPatientAge(p.patient_id) as "Age",
-        getPatientBirthdate(p.patient_id) as "Date of Birth",
-        getPatientGender(p.patient_id) as "Sex",
-        DATE(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "Date of ART Initiation"
-    FROM patient p;
+        CAST(@a:=@a+1 AS CHAR) AS "serialNumber",
+        getPatientIdentifier(o.patient_id) AS "uniquePatientId",
+        getPatientARTNumber(o.patient_id) AS "artCode",
+        getPatientAge(o.patient_id) as "age",
+        getPatientBirthdate(o.patient_id) as "dateOfBirth",
+        getPatientGender(o.patient_id) as "sex",
+        DATE(getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "dateOfArtInitiation",
+        o.scheduled_date AS "inhStartDate",
+        @prev_inh_end_date :=  getDateFullINHCourse(o.patient_id, o.scheduled_date) AS "inhEndDate",
+        getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
+        @prev_patient_id := o.patient_id AS "patient_id"
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+        , (SELECT @a:= 0) AS a
+    WHERE 
+        getDateFullINHCourse(o.patient_id, o.scheduled_date) IS NOT NULL
+        AND getDateFullINHCourse(o.patient_id, o.scheduled_date) BETWEEN p_startDate AND p_endDate
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND (
+                @prev_inh_end_date IS NULL
+                OR @prev_patient_id IS NULL 
+                OR @prev_inh_end_date  <=  o.scheduled_date
+                OR @prev_patient_id <> o.patient_id
+            )
+    ORDER BY o.patient_id ASC, o.scheduled_date ASC;
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
-
-    DROP TEMPORARY TABLE IF EXISTS tblResults;
-    CREATE TEMPORARY TABLE IF NOT EXISTS tblResults  (
-        serialNumber INT(11),
-        uniquePatientId VARCHAR(50),
-        artCode VARCHAR(50),
-        age INT(11),
-        dateOfBirth DATE,
-        sex VARCHAR(1),
-        dateOfARTInitiation DATE,
-        inhStartDate DATE,
-        inhEndDate DATE
-    );
-
-    OPEN mainQueryCursor;
-
-    SET bDone = 0;
-    REPEAT
-        FETCH mainQueryCursor INTO patientId,uniquePatientId,artCode,age,dateOfBirth,sex,dateOfARTInitiation;
-
-        SET courseDuration = 0;
-        SET _index = 0;
-
-        REPEAT
-            CALL retrieveINHStartAndEndDate(_index, patientId, p_endDate, inhStartDate, inhEndDate);
-
-            IF inhStartDate IS NOT NULL AND inhEndDate IS NOT NULL THEN
-                IF (courseDuration = 0) THEN
-                    SET inhFullCourseEndDate = inhEndDate;
-                END IF;
-
-                SET courseDuration = courseDuration + timestampdiff(MONTH, inhStartDate, timestampadd(DAY, 1,inhEndDate));
-                
-                IF (courseDuration >= 6) THEN
-                    SET inhFullCourseStartDate = inhStartDate;
-                    SET serialNumber = serialNumber + 1;
-                    INSERT INTO tblResults VALUES (serialNumber, uniquePatientId, artCode, age, dateOfBirth, sex, dateOfARTInitiation, inhFullCourseStartDate, inhFullCourseEndDate);
-                    SET courseDuration = 0;
-                END IF; 
-                
-            END IF;
-
-            SET _index = _index + 1;
-        UNTIL inhStartDate IS NULL END REPEAT;
-
-    UNTIL bDone END REPEAT;
-    CLOSE mainQueryCursor;
-
-    SELECT DISTINCT * FROM tblResults;
 END$$
 DELIMITER ;
 
