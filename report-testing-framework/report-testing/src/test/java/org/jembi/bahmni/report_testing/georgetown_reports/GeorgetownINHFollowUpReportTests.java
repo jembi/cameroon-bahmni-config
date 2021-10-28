@@ -38,7 +38,8 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
             new LocalDate(2019, 12, 15),
             ConceptEnum.WHO_STAGE_1,
             null,
-            new LocalDate(2019, 12, 20)
+            new LocalDate(2019, 12, 20),
+            "Name of APS"
         );
 
         int encounterId = testDataGenerator.startVisit(
@@ -84,15 +85,16 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result.get(0).get("serialNumber"), 1);
+		assertEquals(result.get(0).get("serialNumber"), "1");
 		assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
 		assertEquals(result.get(0).get("artCode"), "ART 123");
-		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears());
+		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-15");
 		assertEquals(result.get(0).get("sex"), "f");
-		assertEquals(result.get(0).get("dateOfARTInitiation"), "2019-12-20");
-		assertEquals(result.get(0).get("inhStartDate"), "2020-01-01");
+		assertEquals(result.get(0).get("dateOfArtInitiation"), "2019-12-20");
+		assertEquals(result.get(0).get("scheduled_date").toString(), "2020-01-01 10:00:00.0");
 		assertEquals(result.get(0).get("inhEndDate"), "2020-08-01");
+		assertEquals(result.get(0).get("APS Name"), "Name of APS");
     }
 
     /** A patient with a full INH course that has started before the reporting period
@@ -161,14 +163,14 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 		List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result.get(0).get("serialNumber"), 1);
+		assertEquals(result.get(0).get("serialNumber"), "1");
 		assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
 		assertEquals(result.get(0).get("artCode"), "ART 123");
-		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears());
+		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-15");
 		assertEquals(result.get(0).get("sex"), "f");
-		assertEquals(result.get(0).get("dateOfARTInitiation"), "2019-12-20");
-		assertEquals(result.get(0).get("inhStartDate"), "2020-01-01");
+		assertEquals(result.get(0).get("dateOfArtInitiation"), "2019-12-20");
+		assertEquals(result.get(0).get("scheduled_date").toString(), "2020-01-01 10:00:00.0");
 		assertEquals(result.get(0).get("inhEndDate"), "2020-08-01");
     }
 
@@ -266,24 +268,24 @@ public class GeorgetownINHFollowUpReportTests extends BaseReportTest {
 
         // Assert
         assertEquals(result.size(), 2);
-		assertEquals(result.get(0).get("serialNumber"), 1);
+		assertEquals(result.get(0).get("serialNumber"), "1");
 		assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
 		assertEquals(result.get(0).get("artCode"), "ART 123");
-		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears());
+		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-15");
 		assertEquals(result.get(0).get("sex"), "f");
-		assertEquals(result.get(0).get("dateOfARTInitiation"), "2019-12-20");
-		assertEquals(result.get(0).get("inhStartDate"), "2020-07-01");
-		assertEquals(result.get(0).get("inhEndDate"), "2021-01-01");
-		assertEquals(result.get(1).get("serialNumber"), 2);
+		assertEquals(result.get(0).get("dateOfArtInitiation"), "2019-12-20");
+		assertEquals(result.get(0).get("scheduled_date").toString(), "2020-01-01 10:00:00.0");
+		assertEquals(result.get(0).get("inhEndDate"), "2020-07-01");
+		assertEquals(result.get(1).get("serialNumber"), "2");
 		assertEquals(result.get(1).get("uniquePatientId"), "BAH203001");
 		assertEquals(result.get(1).get("artCode"), "ART 123");
-		assertEquals(result.get(1).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears());
+		assertEquals(result.get(1).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears() + "");
 		assertEquals(result.get(1).get("dateOfBirth"), "2000-01-15");
 		assertEquals(result.get(1).get("sex"), "f");
-		assertEquals(result.get(1).get("dateOfARTInitiation"), "2019-12-20");
-		assertEquals(result.get(1).get("inhStartDate"), "2020-01-01");
-		assertEquals(result.get(1).get("inhEndDate"), "2020-07-01");
+		assertEquals(result.get(1).get("dateOfArtInitiation"), "2019-12-20");
+		assertEquals(result.get(1).get("scheduled_date").toString(), "2020-07-01 10:00:00.0");
+		assertEquals(result.get(1).get("inhEndDate"), "2021-01-01");
     }
 
     /** a patient that has been prescribed a partial course of INH (i.e. less than 6 months)

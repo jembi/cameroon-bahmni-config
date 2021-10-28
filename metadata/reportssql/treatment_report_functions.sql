@@ -549,15 +549,49 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
     GROUP BY o.patient_id;
 
     RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- patientIsEligibleForCommunityDispensation
+
+DROP FUNCTION IF EXISTS patientIsEligibleForCommunityDispensation;
+
+DELIMITER $$
+CREATE FUNCTION patientIsEligibleForCommunityDispensation(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE dateEligibleCommunityART DATE;
+    DECLARE dateStoppedCommunityART DATE;
+
+    SET dateEligibleCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_90_DATE_ELIGIBLE_COMMUNITY_ART');
+    SET dateStoppedCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART');
+
+    IF (
+        dateEligibleCommunityART IS NOT NULL AND
+        dateEligibleCommunityART < p_endDate AND
+        ( dateStoppedCommunityART IS NULL OR
+          dateStoppedCommunityART < dateEligibleCommunityART OR
+          dateStoppedCommunityART > p_endDate
+        )
+       ) THEN
+        RETURN "Yes";
+    ELSE
+        RETURN "No";
+    END IF;
 END$$ 
 DELIMITER ;
 
@@ -579,12 +613,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date < p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -621,12 +657,14 @@ BEGIN
 
     SELECT o.order_id INTO orderIdMostRecentDispense
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date <= p_endDate
     ORDER BY o.scheduled_date
@@ -634,12 +672,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date < p_startDate
         AND calculateTreatmentEndDate(
             o.scheduled_date,
@@ -672,16 +712,54 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
             ) >= p_startDate
+        AND o.scheduled_date IS NOT NULL
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientPrescribedARTForEntireReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTForEntireReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTForEntireReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date <= p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) >= p_endDate
         AND o.scheduled_date IS NOT NULL
     GROUP BY o.patient_id;
 
@@ -708,12 +786,14 @@ BEGIN
 
     SELECT o.order_id INTO orderIdMostRecentDispense
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date <= p_endDate
     ORDER BY o.scheduled_date
@@ -721,12 +801,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
         AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
@@ -842,12 +924,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     GROUP BY o.patient_id;
 
@@ -870,11 +954,13 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -1094,6 +1180,63 @@ BEGIN
     ELSE
         RETURN enrolmentDate BETWEEN p_startDate AND p_endDate;
     END IF;
+END$$
+DELIMITER ;
+
+-- patientHadViralLoadTestDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHadViralLoadTestDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHadViralLoadTestDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE routineViralLoadTestDateUuid VARCHAR(38) DEFAULT 'cac6bf44-f671-4f85-ab76-71e7f099d3cb';
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac479522-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac4797de-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE testDateFromForm DATE;
+    DECLARE testDateFromOpenElis DATE;
+
+    -- Read and store latest test date from form "LAB RESULTS - ADD MANUALLY"
+    SELECT o.value_datetime INTO testDateFromForm
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NULL
+        AND o.value_datetime IS NOT NULL
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestDateUuid OR c.uuid = targetedViralLoadTestDateUuid OR c.uuid = notDocumentedViralLoadTestDateUuid)
+    ORDER BY o.value_datetime DESC, o.obs_datetime DESC
+    LIMIT 1;
+
+    -- read and store latest test date from elis
+    SELECT o.obs_datetime INTO testDateFromOpenElis
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NOT NULL
+        AND o.value_numeric IS NOT NULL
+        AND o.obs_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestUuid OR c.uuid = targetedViralLoadTestUuid OR c.uuid = notDocumentedViralLoadTestUuid)
+    ORDER BY o.obs_datetime DESC
+    LIMIT 1;
+
+    -- if both dates are null, return NULL
+    IF (testDateFromForm IS NULL AND testDateFromOpenElis IS NULL) THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
+
 END$$
 DELIMITER ;
 

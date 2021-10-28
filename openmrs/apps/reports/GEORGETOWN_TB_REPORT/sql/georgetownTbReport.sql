@@ -13,7 +13,8 @@ SELECT
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "TB_PROGRAM_KEY") as "dateOfTxTbStart",
     getHIVTestDate(p.patient_id,"2000-01-01","2100-01-01") as "dateOfHivTesting",
     getHIVResult(p.patient_id,"2000-01-01","2100-01-01") as "hivTestingResult",
-    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "dateOfInitiation"
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "dateOfInitiation",
+    getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "TB_PROGRAM_KEY") as "APS Name"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
     getDateTBPosDiagnose(p.patient_id) IS NOT NULL AND

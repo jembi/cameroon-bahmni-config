@@ -28,7 +28,8 @@ SELECT
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "caf6d807-861d-4393-9d6e-940b98fa712d", "en") as "trackingOutcome",
     getViralLoadTestDate(p.patient_id) as "lastViralLoadResultDate",
     getViralLoadTestResult(p.patient_id) as "lastViralLoadResult",
-    getReasonLastVLExam(p.patient_id) as "reasonOfLastVL"
+    getReasonLastVLExam(p.patient_id) as "reasonOfLastVL",
+    getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
     patientHasEnrolledIntoHivProgram(p.patient_id) = "Yes" AND

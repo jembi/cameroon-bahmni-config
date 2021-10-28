@@ -1,9 +1,10 @@
-SELECT
-    CAST(@a:=@a+1 AS CHAR) as "serialNumber",
+SELECT DISTINCT
+    '' as "serialNumber",
     getPatientARTNumber(v.patient_id) as "artCode",
     getPatientIdentifier(v.patient_id) as "uniquePatientId",
     getFacilityName() as "healthFacility",
     DATE(getProgramAttributeValueWithinReportingPeriod(v.patient_id, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "artStartDate",
+    getPatientMostRecentProgramOutcome(v.patient_id, "en", "HIV_PROGRAM_KEY") as "artStatus",
     getPatientAge(v.patient_id) as "age",
     getPatientGender(v.patient_id) as "sex",
     getPatientPhoneNumber(v.patient_id) as "telephone",
@@ -19,7 +20,9 @@ SELECT
     IF(getMostRecentProgramEnrollmentDate(v.patient_id, "VL_EAC_PROGRAM_KEY") IS NOT NULL, "Yes", "No") as "eacDone",
     getMostRecentProgramEnrollmentDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacStartDate",
     getMostRecentProgramCompletionDate(v.patient_id, "VL_EAC_PROGRAM_KEY") as "eacEndDate",
-    getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone"
-FROM visit v, (SELECT @a:= 0) AS a
+    getPatientMostRecentProgramTrackingStateValue(v.patient_id, "en", "VL_EAC_PROGRAM_KEY") as "numberOfEacDone",
+    getProgramAttributeValueWithinReportingPeriod(v.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "VL_EAC_PROGRAM_KEY") as "APS Name"
+FROM visit v
 WHERE getViralLoadTestResult(v.patient_id) IS NOT NULL AND
-    v.date_started BETWEEN "#startDate#" AND "#endDate#";
+    patientHasEnrolledIntoHivProgram(v.patient_id) = "Yes" AND
+    patientHadViralLoadTestDuringReportingPeriod(v.patient_id, "#startDate#", "#endDate#");

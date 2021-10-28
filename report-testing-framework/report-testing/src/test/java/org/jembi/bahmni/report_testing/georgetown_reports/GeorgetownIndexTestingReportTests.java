@@ -95,6 +95,25 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
     }
 
     @Test
+    public void shouldNotDisplayReportRecordWhenPatientIsNotEnrolledToIndexTestingAndHasNotTestedForHIV() throws Exception {
+        // Prepare
+        int patientIdContact = testDataGenerator.registration.createPatient(
+            "BAH203001", GenderEnum.MALE, new LocalDate(2000, 9, 1), "John", "Malonda", "0123456789", null);
+        int patientIdIndex = testDataGenerator.registration.createPatient(
+            "BAH203002", GenderEnum.FEMALE, new LocalDate(2004, 1, 15), "Marie", "Tambwe", null, "ART 123");
+            testDataGenerator.registration.addRelationshipToPatient(patientIdContact, patientIdIndex, RelationshipEnum.RELATIONSHIP_PARTNER, RelationshipEnum.RELATIONSHIP_PARTNER);
+
+        recordIndexTestingOfferAndAcceptance(patientIdIndex);
+        
+		// Execute
+		String query = readReportQuery(ReportEnum.GEORGETOWN_INDEX_TESTING_REPORT, "georgetownIndexTestingReport.sql", new LocalDate(2020, 9, 1), new LocalDate(2020, 9, 30));
+		List<Map<String,Object>> result = getReportResult(query);
+
+        // Assert
+		assertEquals(result.size(), 0);
+    }
+
+    @Test
     public void shouldDisplayReportRecordWithoutHivTestInformationWhenHIVResultIsNotAvailable() throws Exception {
         // Prepare
         int patientIdContact = testDataGenerator.registration.createPatient(
@@ -151,9 +170,9 @@ public class GeorgetownIndexTestingReportTests extends BaseReportTest {
 
         return testDataGenerator.program.enrollPatientIntoIndexTestingProgram(
             patientId,
-            new LocalDate(2020, 8, 1),
+            new LocalDate(2020, 9, 1),
             ConceptEnum.NOTIFICATION_1,
-            new LocalDate(2020, 8, 5),
+            new LocalDate(2020, 9, 5),
             NotificationOutcomeEnum.ACCPETED_TESTING);
     }
 
