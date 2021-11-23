@@ -51,11 +51,11 @@ jobs:
           - npm run cy:verify
 
       script:
-        # start server in the background
+        # run e2e tests
         - cd e2e
-        - npm run start:ci &
+        - npm test
         # run all Cypress tests and record on the dashboard
-        - npm run cy:run -- --record
+        # - npm run cy:run -- --record
         # after all tests finish running we need
         # to kill all background jobs (like "npm start &")
         # this avoids flake in Travis jobs
