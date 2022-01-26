@@ -6,6 +6,12 @@ Scenario: All the custom patient identifiers should exist on the registration fo
   And I click on create new patient
   Then all custom patient identifiers should exist
 
+Scenario: It should be possible to register a new patient
+  Given the database has been cleaned
+  And I log in with superman and Admin123
+  And I create and save a new 41 years old female patient called Marie Williams
+  Then I should be able to search and find the patient "Williams Marie" in the registration module
+
 Scenario Outline: The <identifier> cannot be duplicated
   Given the database has been cleaned
   And I log in with superman and Admin123

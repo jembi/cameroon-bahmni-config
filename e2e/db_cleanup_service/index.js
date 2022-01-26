@@ -56,6 +56,7 @@ app.get('/cleanup', async (req, res) => {
     await deletedOrders();
 
     let query = '';
+    query += 'DELETE FROM person_merge_log;';
     query += 'DELETE FROM patient_appointment_audit;';
     query += 'DELETE FROM patient_appointment WHERE patient_id > 72;';
     query += 'DELETE FROM person_address WHERE person_id > 72;';
