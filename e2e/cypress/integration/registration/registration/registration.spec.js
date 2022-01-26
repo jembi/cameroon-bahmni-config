@@ -22,19 +22,6 @@ Given('I create a new {word} years old {word} patient called {word} {word} witho
     .get('input[id="ageYears"]').type(age);
 });
 
-Given('I create and save a new {word} years old {word} patient called {word} {word}', (age, gender, firstName, familyName) => {
-  let _gender = 'F';
-  if (gender === 'male') _gender = 'M';
-  cy.get('a[id="bahmni.registration"]').click()
-    .get('span').contains('Create').click()
-    .get('input[id="givenName"]').type(firstName)
-    .get('input[id="familyName"]').type(familyName)
-    .get('select[id="gender"]').select(_gender)
-    .get('input[id="ageYears"]').type(age)
-    .get('button').contains('ave').click()
-    .visit('/bahmni/home/index.html#/dashboard');
-});
-
 Given('I capture {word} on the {word} field', (value, idenifier) => {
   if (idenifier === 'Nic_number') {
     cy.get('input[id="2042b38a-fbee-4d58-812e-496022130419"]')
