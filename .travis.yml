@@ -1,27 +1,62 @@
-language: java
-jdk: openjdk8
-before_install:
-- openssl aes-256-cbc -K $encrypted_c5f977eaf718_key -iv $encrypted_c5f977eaf718_iv -in .deploy_key.enc -out /tmp/deploy_key -d
-- eval "$(ssh-agent -s)"
-- chmod 600 /tmp/deploy_key
-- ssh-add /tmp/deploy_key
-- cd report-testing-framework
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- sh start_mysql_test_db.sh
-addons:
-  ssh_known_hosts:
-  - cmr-dev.jembi.org
-  - cmr-staging.jembi.org
-script:
-  - cd report-testing
-  - mvn test
-  - cd ../..
-deploy:
-- provider: script
-  script: bash scripts/travis/deploy.sh dev $mysql_password
-  on:
-    branch: dev
-- provider: script
-  script: bash scripts/travis/deploy.sh staging $mysql_password
-  on:
-    branch: staging
+jobs:
+  include:
+    - language: java
+      jdk: openjdk8
+      before_install:
+      - openssl aes-256-cbc -K $encrypted_c5f977eaf718_key -iv $encrypted_c5f977eaf718_iv -in .deploy_key.enc -out /tmp/deploy_key -d
+      - eval "$(ssh-agent -s)"
+      - chmod 600 /tmp/deploy_key
+      - ssh-add /tmp/deploy_key
+      - cd report-testing-framework
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - sh start_mysql_test_db.sh
+      addons:
+        ssh_known_hosts:
+        - cmr-dev.jembi.org
+        - cmr-staging.jembi.org
+      script:
+        - cd report-testing
+        - mvn test
+        - cd ../..
+      deploy:
+      - provider: script
+        script: bash scripts/travis/deploy.sh dev $mysql_password
+        on:
+          branch: dev
+      - provider: script
+        script: bash scripts/travis/deploy.sh staging $mysql_password
+        on:
+          branch: staging
+
+    - language: node_js
+      node_js:
+        # Node 10.3+ includes npm@6 which has good "npm ci" command
+        - 10.8
+
+      # if using Ubuntu 16 need this library
+      # https://github.com/cypress-io/cypress-documentation/pull/1647
+      addons:
+        apt:
+          packages:
+          - libgconf-2-4
+
+      cache:
+        # cache both npm modules and Cypress binary
+        directories:
+          - ~/.npm
+          - ~/.cache
+        # install dependencies and check that Cypress can run
+        override:
+          - npm ci
+          - npm run cy:verify
+
+      script:
+        # run e2e tests
+        - cd e2e
+        - npm test
+        # run all Cypress tests and record on the dashboard
+        # - npm run cy:run -- --record
+        # after all tests finish running we need
+        # to kill all background jobs (like "npm start &")
+        # this avoids flake in Travis jobs
+        - kill $(jobs -p) || true

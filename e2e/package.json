@@ -1,0 +1,16 @@
+{
+  "name": "emr-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress run --browser chrome --headless"
+  },
+  "cypress-cucumber-preprocessor": {"nonGlobalStepDefinitions": true},
+  "author": "tmvumbi",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^8.7.0",
+    "cypress-cucumber-preprocessor": "^4.3.0"
+  }
+}
