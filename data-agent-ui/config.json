@@ -1,0 +1,11 @@
+{
+    "username": "admin1",
+    "password": "Admin123",
+    "db_user": "root",
+    "db_password": "Jembi@123",
+    "db_host": "localhost",
+    "dhis2_org_unit": "SLU03042",
+    "path_metadata_config": "/opt/openmrs/etc/metadata.json",
+    "path_report_folder": "/opt/openmrs/dhis2_report_folder",
+    "path_archive_folder": "/opt/openmrs/dhis2_archives"
+}
