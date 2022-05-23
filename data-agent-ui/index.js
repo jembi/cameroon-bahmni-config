@@ -12,7 +12,7 @@ const port = 3000;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Jembi@123",
+  password: "Admin@123",
   database: 'openmrs'
 });
 
@@ -56,8 +56,18 @@ app.get('/generate-report', (req, res) => {
   });
 });
 
+app.get('/config', (req, res) => {
+  const config = JSON.parse(fs.readFileSync('config.json'));
+  res.send(config);
+});
+
 app.post('/save-report', (req, res) => {
   saveReportDataLocally(req.body);
+  res.send();
+});
+
+app.post('/save-config', (req, res) => {
+  saveConfig(req.body);
   res.send();
 });
 
@@ -68,6 +78,10 @@ const getListOfReports = function () {
   const metadata = JSON.parse(fs.readFileSync(config.path_metadata_config));
 
   return metadata.reports.map(r => r.reportName);
+}
+
+const saveConfig = function(newConfig) {
+  fs.writeFileSync('config.json', JSON.stringify(newConfig, null, 2) , 'utf-8');
 }
 
 const generateReport = async function (reportIndex, startDate, endDate) {

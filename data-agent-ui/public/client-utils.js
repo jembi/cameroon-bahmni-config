@@ -1,5 +1,38 @@
 let reportData = [];
 
+$( "#report-menu" ).on('click', function() {
+  document.location = 'index.html';
+});
+
+$( "#config-menu" ).on('click', function() {
+    document.location = 'config.html';
+});
+
+$( "#save-config" ).on('click', function() {
+    $('#save-config').hide();
+
+    let config = {
+        username: $('#username').val(),
+        password: $('#password').val(),
+        db_user: $('#db-host').val(),
+        db_password: $('#db-user').val(),
+        db_host: $('#db-password').val(),
+        dhis2_org_unit: $('#org-unit').val(), 
+        path_metadata_config: $('#report-definition-file').val(), 
+        path_report_folder: $('#path-report-folder').val(), 
+        path_archive_folder: $('#path-archive-folder').val()
+    };
+
+    $.ajax('save-config', {
+        data : JSON.stringify(config),
+        contentType : 'application/json',
+        type : 'POST',
+    }).done(response => {
+        $('#config-saved-alert').show();
+    });
+
+   
+});
 
 const updatePeriod = function() {
     $('[id^="report-data-"]').html('');
@@ -64,6 +97,22 @@ const pushToDhis2 = function(reportName) {
     </div>
     `);
 
+}
+
+const displayConfiguration = function() {
+    $('#config-saved-alert').hide();
+    $.get('config', function (data, status) {
+        console.log(data);
+        $( "#username" ).val(data.username);
+        $( "#password" ).val(data.password);
+        $( "#db-host" ).val(data.db_host);
+        $( "#db-user" ).val(data.db_user);
+        $( "#db-password" ).val(data.db_password);
+        $( "#org-unit" ).val(data.dhis2_org_unit);
+        $( "#report-definition-file" ).val(data.path_metadata_config);
+        $( "#path-report-folder" ).val(data.path_report_folder);
+        $( "#path-archive-folder" ).val(data.path_archive_folder);
+    });
 }
 
 const getListOfReports = function () {
