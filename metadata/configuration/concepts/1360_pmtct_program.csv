@@ -1,0 +1,10 @@
+Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1360
+B2722382-F514-42D6-AC43-476D45E668F3,,,Programme PTME,PMTCT Program,Programme PTME,PMTCT Program,Misc,Text,,
+B3D04698-0EA3-4AE1-BC1A-E52EB80F081E,,,Active dans la cohorte PTME,Active in the PMTCT cohort,Active dans la cohorte PTME,Active in the PMTCT cohort,Misc,N/A,,
+634B8D09-88E1-4B47-8ACC-E4718C8AE015,,,Transférer dans une autre cohorte PTME (Nouvelle grossesse),Transfer to another PMTCT cohort (New pregnancy),Transférer dans une autre cohorte PTME (Nouvelle grossesse),Transfer to another PMTCT cohort (New pregnancy),Misc,N/A,,
+4B12A9ED-70DE-40EA-940B-EA2CCB9D5E48,,,Initié au Traitement ARV (enfant),Initiated on ARV Treatment (child),Initié au Traitement ARV (enfant),Initiated on ARV Treatment (child),Misc,N/A,,
+95ABFC55-1A2F-4CC3-A173-42C0CBB4DBC7,,,Non initié au traitement ARV (enfant),Not initiated on ARV treatment (child),Non initié au traitement ARV (enfant),Not initiated on ARV treatment (child),Misc,N/A,,
+B043630E-623F-4406-8F6B-2F66CF8B6269,,,VIH neg n'est Plus sous allaitement maternel (enfant),HIV neg no longer breastfeeding (child),VIH neg n'est Plus sous allaitement maternel (enfant),HIV neg no longer breastfeeding (child),Misc,N/A,,
+723E3E00-5846-4001-A68F-CB474CA11122,,,VIH neg est toujours allaité (enfant),HIV neg still breastfed (child),VIH neg est toujours allaité (enfant),HIV neg still breastfed (child),Misc,N/A,,
+32E8D2FA-2F98-43DD-B8C3-DF1B641803B4,Active in the PMTCT cohort;Transfer Out - TO;Transfer to another PMTCT cohort (New pregnancy);Stopped Treatment;Lost to Follow-up;Died;Initiated on ARV Treatment (child);Not initiated on ARV treatment (child);HIV neg no longer breastfeeding (child);HIV neg still breastfed (child),,Résultat du programme PTME,PMTCT Program outcome,Misc,Coded,,
+5C46E4E3-EC62-4F4B-B08E-1623FCED4688,,,Flux de travail du programme PMTCT,PMTCT Program Workflow,Flux de travail du programme PMTCT,PMTCT Program Workflow,Misc,N/A,,
