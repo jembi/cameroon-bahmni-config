@@ -1,0 +1,5 @@
+Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_order:1360
+42ff2076-d570-4703-a826-53432386d529,,,"Death Note, Brought dead [FR]","Death Note, Brought dead","Ramené mort ?","Brought dead ?",Misc,Boolean,
+01cd61d8-c854-4746-a369-b83dbc080574,,,"Avis de décès, cause tertiaire de décès","Death Note, Tertiary Cause of Death","Avis de décès, cause tertiaire de décès","Death Note, Tertiary Cause of Death",Misc,Text,
+6d18b9d9-f237-4cd3-9adf-f13ae400d74d,,,"Death Note, cause secondaire du décès","Death Note, Secondary Cause of Death","Cause secondaire de décès","Secondary Cause of Death",Misc,Text,
+2007f389-084d-4c81-af8f-2f862197b951,,,"Death Note, cause principale du décès","Death Note, Primary Cause of Death","Cause principale de décès","Primary Cause of Death",Misc,Text,
