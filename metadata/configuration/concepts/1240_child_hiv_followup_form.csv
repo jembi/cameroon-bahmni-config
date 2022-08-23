@@ -23,7 +23,7 @@ d5b6d715-624c-4204-a0a2-1f0ee64ba17c,,,Initiation ART,Starting ART,Initiation AR
 3cf7578c-73a9-4f65-bb39-9ab3d1c22ac8,,,Reprise TARV,Restarting ART,Reprise TARV,Restarting ART,,Misc,N/A,,
 7c732627-bee3-46ef-a828-97c95323ee31,,,Reconduction,Contintue ART,Reconduction,Contintue ART,,Misc,N/A,,
 2f02df8b-3745-4864-8bf6-ccbf831c020c,,Starting ART;Changing ART;Restarting ART;Contintue ART,Decision therapeutique,Possible therapeutic change,Decision therapeutique,Possible therapeutic change,,Misc,Coded,,
-19584516-3c76-4169-b250-37cbe0c4e3df,Possible therapeutic change;ARV Protocol,,4. Traitement,4. Treatment,4. Traitement,4. Treatment,,Misc,N/A,,
+19584516-3c76-4169-b250-37cbe0c4e3df,Possible therapeutic change;93abe599-63f4-4a94-9614-1d7d824e1e82;880dad2e-d582-4f81-a52d-68488897328f;ARV Protocol,,4. Traitement,4. Treatment,4. Traitement,4. Treatment,,Misc,N/A,,
 2fff7421-f93f-430c-8d44-68fc931e777b,Referal to;Other Referral;Care Plan,,5. Référence/plan de soins,5. Referrals/care plan,5. Référence/plan de soins,5. Referrals/care plan,,Misc,N/A,,
 02979ae4-b423-4927-9846-29970da5187a,,,Commentaires Agent de sante communautaire (ASC),Comments of the community health agent,Commentaires Agent de sante communautaire (ASC),Comments of the community health agent,,Misc,Text,,
 f6121a49-f198-44a4-86a4-4be45fbd1d27,,,Nom et visa du prestataire de soins,Name and visa of the care provider,Nom et visa du prestataire de soins,Name and visa of the care provider,,Misc,Text,,
