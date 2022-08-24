@@ -357,6 +357,11 @@
             "Expected Date of Delivery": {
                 "allowFutureDates": true
             },
+            "Place of Birth": {
+                "required": true
+            },"Person who assisted the mother at the time of childbirth": {
+                "multiSelect": true
+            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [
