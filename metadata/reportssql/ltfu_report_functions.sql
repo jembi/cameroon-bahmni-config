@@ -138,26 +138,17 @@ CREATE FUNCTION patientIsLostToFollowUp(
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
 
-    DECLARE dateOfARVAppointment DATE;
-    DECLARE dateOfMostRecentHIVRelatedEncounterWithinReportingPeriod DATE;
     DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
-    DECLARE ltfuStartDate DATE;
+    DECLARE ltfuDays INT(11);
 
-    SET dateOfARVAppointment = getDateMostRecentARVAppointmentThatIsBeforeReportEndDate(p_patientId, p_endDate);
-    SET dateOfMostRecentHIVRelatedEncounterWithinReportingPeriod = getDateMostRecentHIVRelatedEncounterWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
     SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
 
-    IF dateOfARVAppointment IS NOT NULL THEN
-        SET ltfuStartDate = timestampadd(DAY, 28, dateOfARVAppointment);
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET ltfuDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
     END IF;
 
     SET result =
-        ltfuStartDate <= p_endDate AND
-        dateOfLastARVPickupWithinReportingPeriod IS NULL AND
-        (
-            dateOfMostRecentHIVRelatedEncounterWithinReportingPeriod IS NULL OR
-            dateOfMostRecentHIVRelatedEncounterWithinReportingPeriod > ltfuStartDate
-        );
+        ltfuDays >= 90;
 
     RETURN (result);
 END$$
