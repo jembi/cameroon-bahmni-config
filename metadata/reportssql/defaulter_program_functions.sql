@@ -267,3 +267,32 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientIsDefaulterBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsDefaulterBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsDefaulterBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+  DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+END IF;
+
+    SET result =
+        defaulterDays > 1 AND defaulterDays < 90;
+
+RETURN (result);
+END$$
+DELIMITER ;
+
