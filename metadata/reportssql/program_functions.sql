@@ -811,11 +811,32 @@ BEGIN
     DECLARE transferOut TINYINT(1) DEFAULT 0;
     DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out”") THEN
+IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out") THEN
   SET transferOut = 1;
 END IF
 
 RETURN transferOut;
+
+END$$
+DELIMITER ;
+
+-- getUnplannedAidReasonForConsultation
+
+DROP FUNCTION IF EXISTS getUnplannedAidReasonForConsultation;
+
+DELIMITER $$
+CREATE FUNCTION getUnplannedAidReasonForConsultation(
+  p_patientId INT) RETURNS TINYINT(1)
+  DETERMINISTIC
+BEGIN
+    DECLARE unplanned TINYINT(1) DEFAULT 0;
+    DECLARE patientStatus VARCHAR(250) DEFAULT getPatientMostRecentProgramTrackingStateValue(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
+
+IF (patientStatus IS NOT NULL AND patientStatus = "Unplanned Aid") THEN
+  SET unplanned = 1;
+END IF
+
+RETURN unplanned;
 
 END$$
 DELIMITER ;
