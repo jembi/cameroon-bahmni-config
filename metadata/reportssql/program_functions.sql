@@ -777,14 +777,25 @@ BEGIN
     WHERE
         ps.voided = 0 AND
         pp.patient_id = p_patientId AND
-        p.name = 'HIV_DEFAULTERS_PROGRAM_KEY'
-    ORDER BY ps.start_date DESC
-    LIMIT 1;
 
-    IF (result = 'Home visit') THEN
-        RETURN result;
-    ELSE
-        RETURN null;
-    END IF;
+-- getDeadPatientsPerProgramOutcome
+
+DROP FUNCTION IF EXISTS getDeadPatientsPerProgramOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getDeadPatientsPerProgramOutcome(
+  p_patientId INT) RETURNS TINYINT(1)
+  DETERMINISTIC
+BEGIN
+    DECLARE dead TINYINT(1) DEFAULT 0;
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
+
+IF (programOutcome IS NOT NULL AND programOutcome = "Dead") THEN
+  SET dead = 1;
+END IF
+
+RETURN dead;
+
 END$$
 DELIMITER ;
+
