@@ -25,7 +25,8 @@ WHERE
     patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -56,8 +57,8 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
-
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -91,7 +92,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -126,7 +128,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -161,7 +164,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -196,7 +200,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -227,7 +232,8 @@ WHERE
     patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -259,7 +265,8 @@ WHERE
     patientHadViralLoadTest3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -290,7 +297,8 @@ WHERE
     patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -322,7 +330,8 @@ WHERE
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -355,7 +364,8 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -391,7 +401,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -423,7 +434,8 @@ WHERE
     patientIsVirallySuppressed3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -456,7 +468,8 @@ WHERE
     patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -490,7 +503,8 @@ WHERE
     patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -522,7 +536,8 @@ WHERE
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -1072,12 +1087,12 @@ BEGIN
 END$$
 DELIMITER ;
 
--- patientIsDefaulterBasedOnDays
+-- patientIsNotDefaulterBasedOnDays
 
-DROP FUNCTION IF EXISTS patientIsDefaulterBasedOnDays;
+DROP FUNCTION IF EXISTS patientIsNotDefaulterBasedOnDays;
 
 DELIMITER $$
-CREATE FUNCTION patientIsDefaulterBasedOnDays(
+CREATE FUNCTION patientIsNotDefaulterBasedOnDays(
   p_patientId INT(11),
   p_startDate DATE,
   p_endDate DATE) RETURNS TINYINT(1)
