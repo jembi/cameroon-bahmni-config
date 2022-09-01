@@ -791,7 +791,7 @@ BEGIN
     DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
 IF (programOutcome IS NOT NULL AND programOutcome = "Dead") THEN
-  SET dead = 1;
+  SET dead = TRUE;
 END IF
 
 RETURN dead;
@@ -812,7 +812,7 @@ BEGIN
     DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
 IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out") THEN
-  SET transferOut = 1;
+  SET transferOut = TRUE;
 END IF
 
 RETURN transferOut;
