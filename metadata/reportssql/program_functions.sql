@@ -799,3 +799,24 @@ RETURN dead;
 END$$
 DELIMITER ;
 
+-- getTransferOutPatientsPerProgramOutcome
+
+DROP FUNCTION IF EXISTS getTransferOutPatientsPerProgramOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getTransferOutPatientsPerProgramOutcome(
+  p_patientId INT) RETURNS TINYINT(1)
+  DETERMINISTIC
+BEGIN
+    DECLARE transferOut TINYINT(1) DEFAULT 0;
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
+
+IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out”") THEN
+  SET transferOut = 1;
+END IF
+
+RETURN transferOut;
+
+END$$
+DELIMITER ;
+
