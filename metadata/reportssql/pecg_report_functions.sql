@@ -768,10 +768,11 @@ CREATE FUNCTION patientIsNotDead(
     DETERMINISTIC
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-    SELECT p.dead INTO result
-    FROM person p
-    WHERE p.person_id = p_patientId AND p.voided = 0;
+    IF (programOutcome IS NOT NULL AND programOutcome = "Dead") THEN
+    SET result = TRUE;
+    END IF
 
     RETURN (!result );
 
@@ -789,14 +790,17 @@ CREATE FUNCTION patientIsNotLostToFollowUp(
 BEGIN 
     DECLARE patientLostToFollowUp TINYINT(1) DEFAULT 0;
 
-    DECLARE uuidPatientLostToFollowUp VARCHAR(38) DEFAULT "7ca4f879-4862-4cd5-84b3-e1ead8ff54ff";
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE ltfuDays INT(11);
 
-    SELECT TRUE INTO patientLostToFollowUp
-    FROM person p
-    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
-    WHERE p.person_id = p_patientId AND p.voided = 0
-        AND c.uuid = uuidPatientLostToFollowUp;
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET ltfuDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+    END IF;
+    IF ltfuDays >= 90 THEN
+      SET patientLostToFollowUp = TRUE;
+    END IF
 
     RETURN (!patientLostToFollowUp );
 END$$
@@ -813,15 +817,11 @@ CREATE FUNCTION patientIsNotTransferredOut(
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
 
-    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "c614b7a3-9ffa-4047-8c20-f42e6a347deb";
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-    SELECT TRUE INTO patientTransferedOut
-    FROM person p
-    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
-    WHERE p.person_id = p_patientId
-        AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut;
+  IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out") THEN
+    SET patientTransferedOut = TRUE;
+  END IF
 
     RETURN (!patientTransferedOut); 
 
@@ -848,7 +848,7 @@ BEGIN
     WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
         AND c.uuid = uuidPatientIsUnplannedAid
     LIMIT 1;
-    RETURN (patientIsUnplannedAid );
+    RETURN (patientIsUnplannedAid);
 END$$
 DELIMITER ;
 
@@ -1069,5 +1069,35 @@ BEGIN
         RETURN 0;
     END IF;
 
+END$$
+DELIMITER ;
+
+-- patientIsDefaulterBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsDefaulterBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsDefaulterBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+                                 DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 90 THEN
+      SET result = TRUE;
+    END IF
+
+
+RETURN (result);
 END$$
 DELIMITER ;

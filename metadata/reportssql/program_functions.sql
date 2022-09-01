@@ -820,24 +820,3 @@ RETURN transferOut;
 END$$
 DELIMITER ;
 
--- getUnplannedAidReasonForConsultation
-
-DROP FUNCTION IF EXISTS getUnplannedAidReasonForConsultation;
-
-DELIMITER $$
-CREATE FUNCTION getUnplannedAidReasonForConsultation(
-  p_patientId INT) RETURNS TINYINT(1)
-  DETERMINISTIC
-BEGIN
-    DECLARE unplanned TINYINT(1) DEFAULT 0;
-    DECLARE patientStatus VARCHAR(250) DEFAULT getPatientMostRecentProgramTrackingStateValue(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
-
-IF (patientStatus IS NOT NULL AND patientStatus = "Unplanned Aid") THEN
-  SET unplanned = 1;
-END IF
-
-RETURN unplanned;
-
-END$$
-DELIMITER ;
-
