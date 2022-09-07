@@ -1,5 +1,5 @@
 Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_order:1380
-9112D94B-73D4-492D-AAB1-65DAF27E9EFB,,,Date de notification,Date of notification,Date de notification,Date of notification,Misc,Datetime,
+9112D94B-73D4-492D-AAB1-65DAF27E9EFB,,,Date de notification,Date of notification,Date de notification,Date of notification,Misc,Date,
 6441BFC0-8069-4823-AA56-99D46419B4A9,,,Ville,Town,Ville,Town,Misc,Text,
 E6D82864-F301-4280-92A7-676D6A43805D,,,Village,Village,Village,Village,Misc,Text,
 B4FCCCE3-6C20-478E-93E0-BF4285ED796D,,,Type de naissance,Type of birth,Type de naissance,Type of birth,Misc,Text,
