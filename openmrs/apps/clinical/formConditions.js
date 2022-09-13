@@ -3397,6 +3397,18 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		return conditions;
 	},
 
-	
-	
+	/*
+	*  Handling conditions for LABOR AND DELIVERY Form
+	*/
+	'Prophylaxis ARV': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis ARV'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("L&D_Protocol");
+			
+		} else {
+			conditions.hide.push("L&D_Protocol");
+		}
+		return conditions;
+	}
 };
