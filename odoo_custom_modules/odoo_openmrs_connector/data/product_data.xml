@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="product_category_hiv_program" model="product.category">
+            <field name="name">HIV Program</field>
+        </record>
+
+    </data>
+</odoo>
