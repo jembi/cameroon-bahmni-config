@@ -9,6 +9,29 @@ _logger = logging.getLogger(__name__)
 import json
 import MySQLdb
 
+class ProviderProvider(models.Model):
+    _name = "provider.provider"
+    _description = 'Provider'
+
+    name = fields.Char('Name', required=True)
+    uuid = fields.Char('UUID', help='Synced from Bahmni')
+    
+class ProductTempalte(models.Model):
+    _inherit = "product.template"
+
+    drug_type = fields.Selection([
+        ('solid', 'Solid'),
+        ('fluid', 'Fluid'),
+        ('liquid', 'Liquid'),
+        ], string='Drug Type', copy=False)
+
+#class ProductProduct(models.Model):
+#    _inherit = "product.product"
+#
+#    def get_onhand_qty(self):
+#        qty_available = self.qty_available
+#        return qty_available
+
 class OrderSaveService(models.Model):
     _inherit = 'order.save.service'
     
@@ -149,7 +172,6 @@ class OrderSaveService(models.Model):
                                            'location_id': unprocessed_non_dispensed_order[0]['location_id'],
                                            'warehouse_id': unprocessed_non_dispensed_order[0]['warehouse_id'],
                                            'care_setting': care_setting,
-                                           'provider_name': provider_name,
                                            'date_order': datetime.strftime(datetime.now(), DTF),
                                            'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
                                            'payment_term_id': shop_obj.payment_default_id.id,
@@ -160,6 +182,13 @@ class OrderSaveService(models.Model):
                                            'origin': 'ATOMFEED SYNC',
                                            'location_name': location_name
                                            }
+                        provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
+                        if provider_exit:
+                            sale_order_vals.update({'provider_name': provider_exit and provider_exit.id or False})
+                        else:
+                            provider_vals = {'name': provider_name}
+                            provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+                            sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
                         if shop_obj.pricelist_id:
                             sale_order_vals.update({'pricelist_id': shop_obj.pricelist_id.id})
                         sale_order = self.env['sale.order'].create(sale_order_vals)
@@ -170,7 +199,14 @@ class OrderSaveService(models.Model):
                         # Non Dispensed Update
                         # replaced update_sale_order method call
                         for order in sale_order_ids:
-                            order.write({'care_setting': care_setting, 'provider_name': provider_name})
+                            order.write({'care_setting': care_setting})
+                            provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
+                            if provider_exit:
+                                order.write({'provider_name': provider_exit and provider_exit.id or False})
+                            else:
+                                provider_vals = {'name': provider_name}
+                                provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+                                order.write({'provider_name': provider_id and provider_id.id or False})
                             for rec in unprocessed_non_dispensed_order:
                                 self._process_orders(order, unprocessed_non_dispensed_order, rec)
                             # break from the outer loop
@@ -206,7 +242,6 @@ class OrderSaveService(models.Model):
                                            'location_id': location_id,
                                            'warehouse_id': warehouse_id,
                                            'care_setting': care_setting,
-                                           'provider_name': provider_name,
                                            'date_order': datetime.strftime(datetime.now(), DTF),
                                            'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
                                            'payment_term_id': shop_obj.payment_default_id.id,
@@ -217,6 +252,13 @@ class OrderSaveService(models.Model):
                                            'origin': 'ATOMFEED SYNC',
                                            'location_name': location_name,
                                            }
+                        provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
+                        if provider_exit:
+                            sale_order_vals.update({'provider_name': provider_exit and provider_exit.id or False})
+                        else:
+                            provider_vals = {'name': provider_name}
+                            provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+                            sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
                         if shop_obj.pricelist_id:
                             sale_order_dict.update({'pricelist_id': shop_obj.pricelist_id.id})
                         new_sale_order = self.env['sale.order'].create(sale_order_dict)
@@ -246,7 +288,6 @@ class OrderSaveService(models.Model):
                                                'location_id': location_id,
                                                'warehouse_id': warehouse_id,
                                                'care_setting': care_setting,
-                                               'provider_name': provider_name,
                                                'date_order': datetime.strftime(datetime.now(), DTF),
                                                'pricelist_id': cus_id.property_product_pricelist and cus_id.property_product_pricelist.id or False,
                                                'payment_term_id': shop_obj.payment_default_id.id,
@@ -255,6 +296,13 @@ class OrderSaveService(models.Model):
                                                'state': 'draft',
                                                'shop_id': shop_id,
                                                'origin': 'ATOMFEED SYNC'}
+                            provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
+                            if provider_exit:
+                                sale_order_vals.update({'provider_name': provider_exit and provider_exit.id or False})
+                            else:
+                                provider_vals = {'name': provider_name}
+                                provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+                                sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
 
                             if shop_obj.pricelist_id:
                                 sales_order_obj.update({'pricelist_id': shop_obj.pricelist_id.id})
@@ -281,6 +329,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     location_name = fields.Char('Location Name')
+    provider_name = fields.Many2one('provider.provider', string="Provider Name", required=True)
 
     @api.multi
     def action_confirm(self):
@@ -367,5 +416,5 @@ class StockProductionLot(models.Model):
                         product_uom = self.env['product.uom'].browse(product_uom_id)
                         lot.stock_forecast = result[0].get('sum') * product_uom.factor
     
-    
+
 
