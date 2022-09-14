@@ -10,21 +10,21 @@
                     "name": "Report",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator1_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator1_ARV_old_treatment.sql"
                     }
                 },
                 {
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator2_ARV_old_treatment.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator2_ARV_new_treatment.sql"
                     }
                 },
                 {
                     "name": "Report3",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator3_ARV_new_treatment.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator3_total_no_of_ARV.sql"
                     }
                 },
                 {
@@ -45,7 +45,7 @@
                     "name": "Report6",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_2nd_line_ARV_protocol.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_PLWHA_TB_investigated_documented.sql"
                     }
                 },
                 {
@@ -94,7 +94,7 @@
                     "name": "Report13",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator13_had_viral_load_exam_12_months_after_initiation.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator13_punctual_aids_during_the_month.sql"
                     }
                 },
                 {

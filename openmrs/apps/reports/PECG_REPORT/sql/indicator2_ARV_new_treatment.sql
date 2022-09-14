@@ -1,5 +1,5 @@
 SELECT
-    'Number of old PLWHA on ARV who came for treatment in the month' AS 'Title',
+    'Number of new PLWHA placed on ARV who took treatment in the month' AS 'Title',
     PECG_Indicator2('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
     PECG_Indicator2('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
     PECG_Indicator2('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

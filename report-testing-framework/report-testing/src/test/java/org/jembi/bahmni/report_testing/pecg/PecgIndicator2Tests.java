@@ -16,7 +16,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-public class PecgIndicator2Tests extends BaseReportTest{
+public class PecgIndicator1Tests extends BaseReportTest{
 	@Test
 	public void shouldCountPatient() throws Exception {
 		// Prepare
@@ -39,7 +39,7 @@ public class PecgIndicator2Tests extends BaseReportTest{
 		);
 
 		// Execute
-		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator2_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
+		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator1_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
 		List<Map<String,Object>> result = getReportResult(query);
 
 		// Assert
