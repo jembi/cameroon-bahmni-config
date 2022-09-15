@@ -80,7 +80,7 @@
                     "name": "Report11",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_treatment_started_12_months_ago.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_total_plwha_deaths_notified.sql"
                     }
                 },
                 {

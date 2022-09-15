@@ -223,11 +223,8 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') = "Dead" AND
+    getMostRecentProgramCompletionDate(pat.patient_id, 'HIV_PROGRAM_KEY') BETWEEN p_startDate AND p_endDate;
 
     RETURN (result);
 END$$ 
