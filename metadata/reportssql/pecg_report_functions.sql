@@ -81,8 +81,8 @@ SELECT
 FROM
     patient pat
 WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasChangedLineProtocol(pat.patient_id) AND
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
@@ -1069,5 +1069,82 @@ BEGIN
         RETURN 0;
     END IF;
 
+END$$
+DELIMITER ;
+
+-- patientHasChangedLineProtocol
+
+DROP FUNCTION IF EXISTS patientHasChangedLineProtocol;
+
+DELIMITER $$
+CREATE FUNCTION patientHasChangedLineProtocol(
+  p_patientId INT(11)) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE patientChangedProtocolLineFromAdultFUForm TINYINT(1) DEFAULT getMostRecentObsBooleanValue(p_patientId, "0e86e2e4-d6e6-45af-9a60-496639e1c5e3");
+    DECLARE possibleTherapeuticChangeFromChildFUForm VARCHAR(256) DEFAULT getMostRecenPossibleTherapeuticChange(p_patientId, "2f02df8b-3745-4864-8bf6-ccbf831c020c");
+IF(patientChangedProtocolLineFromAdultFUForm AND possibleTherapeuticChangeFromChildFUForm = "Changing ART") THEN
+  RETURN TRUE;
+ELSE
+  RETURN FALSE;
+END IF;
+END$$
+DELIMITER ;
+
+-- getMostRecentObsBooleanValue
+
+DROP FUNCTION IF EXISTS getMostRecentObsBooleanValue;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentObsBooleanValue(
+  p_patientId INT(11),
+  conceptUuid VARCHAR(38)
+  ) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+  DECLARE mostRecentObsValue VARCHAR(250);
+SELECT name INTO mostRecentObsValue
+FROM (
+       SELECT MAX(o.obs_datetime), cn.name
+       FROM obs o
+              JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+              JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale ='en'
+       WHERE o.voided = 0
+         AND o.person_id = p_patientId
+         AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
+       GROUP BY o.person_id
+     )t ;
+    IF(mostRecentObsValue = 'Yes full name')
+      RETURN TRUE;
+    ELSE
+      RETURN FALSE
+    END IF;
+END$$
+DELIMITER ;
+
+-- getMostRecenPossibleTherapeuticChange
+
+DROP FUNCTION IF EXISTS getMostRecenPossibleTherapeuticChange;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecenPossibleTherapeuticChange(
+  p_patientId INT(11),
+  conceptUuid VARCHAR(38)
+    ) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+  DECLARE mostRecenPossibleTherapeuticChange VARCHAR(250);
+SELECT value_coded INTO mostRecenPossibleTherapeuticChange
+FROM (
+       SELECT MAX(o.obs_datetime), cn.name
+       FROM obs o
+              JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+              JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale ='en'
+       WHERE o.voided = 0
+         AND o.person_id = p_patientId
+         AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
+       GROUP BY o.person_id
+     )t ;
+RETURN (mostRecenPossibleTherapeuticChange);
 END$$
 DELIMITER ;
