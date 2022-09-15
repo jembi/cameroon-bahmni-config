@@ -1,5 +1,5 @@
 SELECT
-  'Total Number of PLWHA on ARV who took treatment in the Month' AS 'Title',
+  'Number of PLWHA who passed from 1st to 2nd line protocol in the month' AS 'Title',
         PECG_Indicator4('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
         PECG_Indicator4('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
         PECG_Indicator4('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',
