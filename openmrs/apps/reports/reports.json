@@ -87,7 +87,7 @@
                     "name": "Report12",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator12_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator12_plwha_did_not_come_for_treatment_within_month.sql"
                     }
                 },
                 {
