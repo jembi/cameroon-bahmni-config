@@ -84,6 +84,7 @@ WHERE
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasChangedLineProtocol(pat.patient_id) AND
     getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
+    getNewARVProtocol(pat.patient_id, p_startDate, p_endDate) AND
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
@@ -1162,9 +1163,32 @@ CREATE FUNCTION getLastARVProtocolInPreviousMonth(
 DETERMINISTIC
 BEGIN
 BEGIN
-    DECLARE lastARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
-    DECLARE lastARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
+    DECLARE lastARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
+    DECLARE lastARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
 IF(lastARVProtocolFromAdultFUForm IS NOT NULL  OR  lastARVProtocolFromChildFUForm IS NOT NULL) THEN
+  RETURN TRUE;
+ELSE
+  RETURN FALSE;
+END IF;
+END$$
+DELIMITER ;
+
+-- getNewARVProtocol
+
+DROP FUNCTION IF EXISTS getNewARVProtocol;
+
+DELIMITER $$
+CREATE FUNCTION getNewARVProtocol(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE
+    ) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+BEGIN
+    DECLARE newARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_endDate, "880dad2e-d582-4f81-a52d-68488897328f");
+    DECLARE newARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_endDate, "880dad2e-d582-4f81-a52d-68488897328f");
+IF(newARVProtocolFromAdultFUForm IS NOT NULL  OR  newARVProtocolFromChildFUForm IS NOT NULL) THEN
   RETURN TRUE;
 ELSE
   RETURN FALSE;

@@ -435,6 +435,7 @@ DELIMITER $$
 CREATE FUNCTION getObservationTextValueWithinPeriod(
   p_patientId INT(11),
   p_startDate DATE,
+  p_endDate DATE,
   conceptUuid VARCHAR(38)
     ) RETURNS VARCHAR(255)
   DETERMINISTIC
@@ -449,7 +450,7 @@ FROM (
        WHERE o.voided = 0
          AND o.person_id = p_patientId
          AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
-         AND o.date_created BETWEEN date_add(p_startDate, interval -30 DAY) AND p_startDate
+         AND o.date_created BETWEEN date_add(p_startDate, interval -30 DAY) AND p_endDate
        GROUP BY o.person_id
      )t ;
 RETURN (observationTextValueWithinPeriod);
