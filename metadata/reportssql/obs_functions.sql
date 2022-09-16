@@ -426,3 +426,32 @@ BEGIN
     RETURN result;
 END$$
 DELIMITER ;
+
+-- getObservationTextValueWithinPeriod
+
+DROP FUNCTION IF EXISTS getObservationTextValueWithinPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getObservationTextValueWithinPeriod(
+  p_patientId INT(11),
+  p_startDate DATE,
+  conceptUuid VARCHAR(38)
+    ) RETURNS VARCHAR(255)
+  DETERMINISTIC
+BEGIN
+  DECLARE observationTextValueWithinPeriod VARCHAR(250);
+SELECT name INTO observationTextValueWithinPeriod
+FROM (
+       SELECT MAX(o.date_created), cn.name
+       FROM obs o
+              JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+              JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
+       WHERE o.voided = 0
+         AND o.person_id = p_patientId
+         AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
+         AND o.date_created BETWEEN date_add(p_startDate, interval -30 DAY) AND p_startDate
+       GROUP BY o.person_id
+     )t ;
+RETURN (observationTextValueWithinPeriod);
+END$$
+DELIMITER ;

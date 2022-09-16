@@ -83,6 +83,7 @@ FROM
 WHERE
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasChangedLineProtocol(pat.patient_id) AND
+    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
@@ -1108,7 +1109,7 @@ FROM (
        SELECT MAX(o.obs_datetime), cn.name
        FROM obs o
               JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-              JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale ='en'
+              JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
        WHERE o.voided = 0
          AND o.person_id = p_patientId
          AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
@@ -1130,21 +1131,43 @@ DELIMITER $$
 CREATE FUNCTION getMostRecenPossibleTherapeuticChange(
   p_patientId INT(11),
   conceptUuid VARCHAR(38)
-    ) RETURNS TINYINT(1)
+    ) RETURNS VARCHAR(255)
 DETERMINISTIC
 BEGIN
   DECLARE mostRecenPossibleTherapeuticChange VARCHAR(250);
-SELECT value_coded INTO mostRecenPossibleTherapeuticChange
+SELECT name INTO mostRecenPossibleTherapeuticChange
 FROM (
        SELECT MAX(o.obs_datetime), cn.name
        FROM obs o
               JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-              JOIN concept_name cn ON cn.concept_id = c.concept_id AND cn.locale ='en'
+              JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
        WHERE o.voided = 0
          AND o.person_id = p_patientId
          AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
        GROUP BY o.person_id
      )t ;
 RETURN (mostRecenPossibleTherapeuticChange);
+END$$
+DELIMITER ;
+
+-- getLastARVProtocolInPreviousMonth
+
+DROP FUNCTION IF EXISTS getLastARVProtocolInPreviousMonth;
+
+DELIMITER $$
+CREATE FUNCTION getLastARVProtocolInPreviousMonth(
+  p_patientId INT(11),
+  p_startDate DATE
+    ) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+BEGIN
+    DECLARE lastARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
+    DECLARE lastARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
+IF(lastARVProtocolFromAdultFUForm IS NOT NULL  OR  lastARVProtocolFromChildFUForm IS NOT NULL) THEN
+  RETURN TRUE;
+ELSE
+  RETURN FALSE;
+END IF;
 END$$
 DELIMITER ;
