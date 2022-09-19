@@ -118,15 +118,14 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1)
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
+    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
+    patientIsNotDead(pat.patient_Id) AND
+    patientIsNotLostToFollowUp(pat.patient_Id) AND
+    patientIsNotTransferredOut(pat.patient_Id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
 
     RETURN (result);
 END$$ 
@@ -1069,5 +1068,34 @@ BEGIN
         RETURN 0;
     END IF;
 
+END$$
+DELIMITER ;
+
+-- patientIsNotDefaulterBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsNotDefaulterBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotDefaulterBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+  DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 90 THEN
+      SET result = TRUE;
+    END IF;
+
+    RETURN (result);
 END$$
 DELIMITER ;

@@ -38,7 +38,7 @@
                     "name": "Report5",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator5_1st_line_ARV_protocol.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator5_plwha_received_inh.sql"
                     }
                 },
                 {
