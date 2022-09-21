@@ -82,19 +82,19 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
+    patientHasStartedARVTreatmentBefore(p_patientId, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasChangedLineProtocol(pat.patient_id) AND
     getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
     getNewARVProtocol(pat.patient_id, p_startDate, p_endDate) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0),
         patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0)
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotDefaulterBasedOnDays(p_patientId, p_startDate, p_endDate) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientReasonForConsultationIsUnplannedAid(p_patientId);
 
     RETURN (result);
 END$$ 
