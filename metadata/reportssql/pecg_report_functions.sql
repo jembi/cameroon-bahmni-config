@@ -81,6 +81,7 @@ SELECT
 FROM
     patient pat
 WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasChangedLineProtocol(pat.patient_id) AND
     getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
@@ -1193,5 +1194,44 @@ IF(newARVProtocolFromAdultFUForm IS NOT NULL  OR  newARVProtocolFromChildFUForm 
 ELSE
   RETURN FALSE;
 END IF;
+END$$
+DELIMITER ;
+
+-- PECG_Indicator4b
+DROP FUNCTION IF EXISTS PECG_Indicator4b;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator4b(
+  p_startDate DATE,
+  p_endDate DATE,
+  p_startAge INT(11),
+  p_endAge INT (11),
+  p_includeEndAge TINYINT(1),
+  p_gender VARCHAR(1)) RETURNS INT(11)
+  DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+  COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+  patient pat
+WHERE
+  patientGenderIs(pat.patient_id, p_gender) AND
+  patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+  patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
+  patientHasChangedLineProtocol(pat.patient_id) AND
+  getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
+  getNewARVProtocol(pat.patient_id, p_startDate, p_endDate) AND
+  IF (
+         patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0)
+    ) AND
+  patientIsNotDead(pat.patient_id) AND
+  patientIsNotLostToFollowUp(pat.patient_id) AND
+  patientIsNotTransferredOut(pat.patient_id) AND
+  patientIsNotDefaulterBasedOnDays(p_patientId, p_startDate, p_endDate) AND
+  patientReasonForConsultationIsUnplannedAid(p_patientId);
+
+RETURN (result);
 END$$
 DELIMITER ;
