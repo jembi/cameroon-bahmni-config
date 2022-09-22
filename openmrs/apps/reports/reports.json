@@ -73,7 +73,7 @@
                     "name": "Report9",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator9_not_available.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator9_plwha_with_positive_tb_sign_tested_positive_for_tb.sql"
                     }
                 },
                 {
