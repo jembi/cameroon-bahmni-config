@@ -120,15 +120,14 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1)
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
+    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
+    patientIsNotDead(pat.patient_Id) AND
+    patientIsNotLostToFollowUp(pat.patient_Id) AND
+    patientIsNotTransferredOut(pat.patient_Id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
 
     RETURN (result);
 END$$ 
