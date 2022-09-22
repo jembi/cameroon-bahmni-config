@@ -31,7 +31,14 @@
                     "name": "Report4",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_total_no_of_ARV.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_plwha_from_1st_to_2nd_line.sql"
+                    }
+                },
+                {
+                    "name": "Report4b",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4b_plwha_from_2nd_to_3rd_line.sql"
                     }
                 },
                 {
