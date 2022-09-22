@@ -520,7 +520,7 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
-    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes full name" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
     getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
     getObsCodedValue(pat.patient_id, "3dce13a8-c7e5-45ec-a6f0-8050fd4a2ca2") = "Initiated treatment" AND
     patientIsNotDead(pat.patient_id) AND
