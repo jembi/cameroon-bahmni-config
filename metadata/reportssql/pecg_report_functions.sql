@@ -255,9 +255,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, 0) AND
     NOT patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') <>  "Refused (Stopped) Treatment";
+    IFNULL (getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') <>  "Refused (Stopped) Treatment", TRUE);
     RETURN (result);
 END$$ 
 DELIMITER ;
