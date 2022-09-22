@@ -62,6 +62,7 @@ WHERE
 END$$ 
 DELIMITER ;
 
+-- PECG_Indicator4;
 DROP FUNCTION IF EXISTS PECG_Indicator4;
 
 DELIMITER $$
@@ -82,19 +83,17 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientHasStartedARVTreatmentBefore(p_patientId, p_startDate) AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasChangedLineProtocol(pat.patient_id) AND
-    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
-    getNewARVProtocol(pat.patient_id, p_startDate, p_endDate) AND
-    IF (
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0)
-    ) AND
+    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) IN ("1st line", "1st substituted line") AND
+    getNewARVProtocol(pat.patient_id, p_endDate) = "2nd line" AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotDefaulterBasedOnDays(p_patientId, p_startDate, p_endDate) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotTransferredOut(pat.patient_id) AND
-    patientReasonForConsultationIsUnplannedAid(p_patientId);
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -1084,13 +1083,14 @@ CREATE FUNCTION patientHasChangedLineProtocol(
   p_patientId INT(11)) RETURNS TINYINT(1)
 DETERMINISTIC
 BEGIN
-    DECLARE patientChangedProtocolLineFromAdultFUForm TINYINT(1) DEFAULT getMostRecentObsBooleanValue(p_patientId, "0e86e2e4-d6e6-45af-9a60-496639e1c5e3");
-    DECLARE possibleTherapeuticChangeFromChildFUForm VARCHAR(256) DEFAULT getMostRecenPossibleTherapeuticChange(p_patientId, "2f02df8b-3745-4864-8bf6-ccbf831c020c");
-IF(patientChangedProtocolLineFromAdultFUForm AND possibleTherapeuticChangeFromChildFUForm = "Changing ART") THEN
-  RETURN TRUE;
-ELSE
-  RETURN FALSE;
-END IF;
+  DECLARE patientChangedProtocolLineFromAdultFUForm TINYINT(1) DEFAULT getMostRecentObsBooleanValue(p_patientId, "0e86e2e4-d6e6-45af-9a60-496639e1c5e3");
+  DECLARE possibleTherapeuticChangeFromChildFUForm VARCHAR(256) DEFAULT getObsCodedValue(p_patientId, "2f02df8b-3745-4864-8bf6-ccbf831c020c");
+  
+  IF(patientChangedProtocolLineFromAdultFUForm OR possibleTherapeuticChangeFromChildFUForm = "Changing ART") THEN
+    RETURN TRUE;
+  ELSE
+    RETURN FALSE;
+  END IF;
 END$$
 DELIMITER ;
 
@@ -1105,50 +1105,26 @@ CREATE FUNCTION getMostRecentObsBooleanValue(
   ) RETURNS TINYINT(1)
 DETERMINISTIC
 BEGIN
-  DECLARE mostRecentObsValue VARCHAR(250);
-SELECT name INTO mostRecentObsValue
-FROM (
-       SELECT MAX(o.obs_datetime), cn.name
-       FROM obs o
-              JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-              JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
-       WHERE o.voided = 0
-         AND o.person_id = p_patientId
-         AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
-       GROUP BY o.person_id
-     )t ;
-    IF(mostRecentObsValue = 'Yes full name')
+
+    DECLARE mostRecentObsValue VARCHAR(250);
+
+    SELECT name INTO mostRecentObsValue
+    FROM (
+        SELECT MAX(o.obs_datetime), cn.name
+        FROM obs o
+            JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+            JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
+        WHERE o.voided = 0
+            AND o.person_id = p_patientId
+            AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
+        GROUP BY o.person_id
+    ) t ;
+
+    IF(mostRecentObsValue = 'Yes') THEN
       RETURN TRUE;
     ELSE
-      RETURN FALSE
+      RETURN FALSE;
     END IF;
-END$$
-DELIMITER ;
-
--- getMostRecenPossibleTherapeuticChange
-
-DROP FUNCTION IF EXISTS getMostRecenPossibleTherapeuticChange;
-
-DELIMITER $$
-CREATE FUNCTION getMostRecenPossibleTherapeuticChange(
-  p_patientId INT(11),
-  conceptUuid VARCHAR(38)
-    ) RETURNS VARCHAR(255)
-DETERMINISTIC
-BEGIN
-  DECLARE mostRecenPossibleTherapeuticChange VARCHAR(250);
-SELECT name INTO mostRecenPossibleTherapeuticChange
-FROM (
-       SELECT MAX(o.obs_datetime), cn.name
-       FROM obs o
-              JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-              JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
-       WHERE o.voided = 0
-         AND o.person_id = p_patientId
-         AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
-       GROUP BY o.person_id
-     )t ;
-RETURN (mostRecenPossibleTherapeuticChange);
 END$$
 DELIMITER ;
 
@@ -1160,17 +1136,37 @@ DELIMITER $$
 CREATE FUNCTION getLastARVProtocolInPreviousMonth(
   p_patientId INT(11),
   p_startDate DATE
-    ) RETURNS TINYINT(1)
+    ) RETURNS VARCHAR(250)
 DETERMINISTIC
 BEGIN
-BEGIN
-    DECLARE lastARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
-    DECLARE lastARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_startDate, "93abe599-63f4-4a94-9614-1d7d824e1e82");
-IF(lastARVProtocolFromAdultFUForm IS NOT NULL  OR  lastARVProtocolFromChildFUForm IS NOT NULL) THEN
-  RETURN TRUE;
-ELSE
-  RETURN FALSE;
-END IF;
+
+    DECLARE result VARCHAR(250);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    JOIN concept c ON cn.concept_id = c.concept_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND c.uuid = "93abe599-63f4-4a94-9614-1d7d824e1e82"
+        AND cn2.locale = "en"
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+        AND 
+            (
+                SELECT o2.value_datetime
+                FROM obs o2
+                WHERE
+                    o2.person_id = o.person_id
+                    AND o2.concept_id = (SELECT concept_id FROM concept WHERE uuid="a4cfd327-403b-4cf6-aec2-e96ae2b68fb2")
+                    AND o2.voided = 0
+                ORDER BY o2.value_datetime DESC
+                LIMIT 1
+            ) BETWEEN TIMESTAMPADD(DAY, -30, p_startDate) AND p_startDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -1181,19 +1177,38 @@ DROP FUNCTION IF EXISTS getNewARVProtocol;
 DELIMITER $$
 CREATE FUNCTION getNewARVProtocol(
   p_patientId INT(11),
-  p_startDate DATE,
   p_endDate DATE
-    ) RETURNS TINYINT(1)
+    ) RETURNS VARCHAR(250)
 DETERMINISTIC
 BEGIN
-BEGIN
-    DECLARE newARVProtocolFromAdultFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_endDate, "880dad2e-d582-4f81-a52d-68488897328f");
-    DECLARE newARVProtocolFromChildFUForm VARCHAR(256) DEFAULT getObservationTextValueWithinPeriod(p_patientId, p_startDate, p_endDate, "880dad2e-d582-4f81-a52d-68488897328f");
-IF(newARVProtocolFromAdultFUForm IS NOT NULL  OR  newARVProtocolFromChildFUForm IS NOT NULL) THEN
-  RETURN TRUE;
-ELSE
-  RETURN FALSE;
-END IF;
+
+    DECLARE result VARCHAR(250);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    JOIN concept c ON cn.concept_id = c.concept_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND c.uuid = "880dad2e-d582-4f81-a52d-68488897328f"
+        AND cn2.locale = "en"
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+        AND 
+            (
+                SELECT o2.value_datetime
+                FROM obs o2
+                WHERE
+                    o2.person_id = o.person_id
+                    AND o2.concept_id = (SELECT concept_id FROM concept WHERE uuid="a4cfd327-403b-4cf6-aec2-e96ae2b68fb2")
+                    AND o2.voided = 0
+                ORDER BY o2.value_datetime DESC
+                LIMIT 1
+            ) <= p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -1221,17 +1236,44 @@ WHERE
   patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
   patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
   patientHasChangedLineProtocol(pat.patient_id) AND
-  getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) AND
-  getNewARVProtocol(pat.patient_id, p_startDate, p_endDate) AND
-  IF (
-         patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0)
-    ) AND
+  getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) = "2nd line" AND
+  getNewARVProtocol(pat.patient_id, p_endDate) = "3rd line" AND
+  patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
   patientIsNotDead(pat.patient_id) AND
   patientIsNotLostToFollowUp(pat.patient_id) AND
   patientIsNotTransferredOut(pat.patient_id) AND
-  patientIsNotDefaulterBasedOnDays(p_patientId, p_startDate, p_endDate) AND
-  patientReasonForConsultationIsUnplannedAid(p_patientId);
+  patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+  patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
 RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientIsNotDefaulterBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsNotDefaulterBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotDefaulterBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 90 THEN
+      SET result = TRUE;
+    END IF;
+
+    RETURN (result);
 END$$
 DELIMITER ;
