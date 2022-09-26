@@ -3342,4 +3342,73 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
+
+	/**
+	 * Handling conditions for Patient with HIV - adult follow up form
+	 */
+
+	'Has the treatment been changed': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Has the treatment been changed'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Last ARV Protocol for the previous month");
+			conditions.show.push("New ARV protocol line");
+			
+		} else {
+			conditions.hide.push("Last ARV Protocol for the previous month");
+			conditions.hide.push("New ARV protocol line");
+		}
+		return conditions;
+	},
+
+	/**
+	 * Handling conditions for Patient with HIV - child follow up form
+	 */
+
+	'Possible therapeutic change': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Possible therapeutic change'];
+		if (value === "Changing ART" || value === "Changing ART") {
+			conditions.show.push("Last ARV Protocol for the previous month");
+			conditions.show.push("New ARV protocol line");
+			
+		} else {
+			conditions.hide.push("Last ARV Protocol for the previous month");
+			conditions.hide.push("New ARV protocol line");
+		}
+		return conditions;
+	},
+
+	/**
+	 * Handling conditions for TB form
+	 */
+
+	'TB confirmation test done ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['TB confirmation test done ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Type of investigation done");
+			conditions.show.push("MTB confirmation");
+			
+		} else {
+			conditions.hide.push("Type of investigation done");
+			conditions.hide.push("MTB confirmation");
+		}
+		return conditions;
+	},
+
+	/*
+	*  Handling conditions for LABOR AND DELIVERY Form
+	*/
+	'Prophylaxis ARV': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis ARV'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("L&D_Protocol");
+			
+		} else {
+			conditions.hide.push("L&D_Protocol");
+		}
+		return conditions;
+	}
 };
