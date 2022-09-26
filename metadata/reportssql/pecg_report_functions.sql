@@ -25,7 +25,8 @@ WHERE
     patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -56,8 +57,8 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
-
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -91,9 +92,14 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
+<<<<<<< HEAD
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
+=======
     patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotTransferredOut(pat.patient_id) AND
     patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+>>>>>>> db8c0e3c1080de73adf9b2c4e5d41c95677e565b
 
     RETURN (result);
 END$$ 
@@ -120,15 +126,17 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
-    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
-    patientIsNotDead(pat.patient_Id) AND
-    patientIsNotLostToFollowUp(pat.patient_Id) AND
-    patientIsNotTransferredOut(pat.patient_Id) AND
-    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
+    IF (
+        isOldPatient(pat.patient_id, p_startDate),
+        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1),
+        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1)
+    ) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
     patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
-
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -159,7 +167,8 @@ WHERE
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -194,7 +203,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -260,7 +270,8 @@ WHERE
     patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -320,7 +331,8 @@ WHERE
     patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -351,7 +363,8 @@ WHERE
     patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -383,7 +396,8 @@ WHERE
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -416,7 +430,8 @@ WHERE
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -452,7 +467,8 @@ WHERE
     ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -484,7 +500,8 @@ WHERE
     patientIsVirallySuppressed3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -517,7 +534,8 @@ WHERE
     patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -551,7 +569,8 @@ WHERE
     patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -583,7 +602,8 @@ WHERE
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -829,10 +849,11 @@ CREATE FUNCTION patientIsNotDead(
     DETERMINISTIC
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-    SELECT p.dead INTO result
-    FROM person p
-    WHERE p.person_id = p_patientId AND p.voided = 0;
+    IF (programOutcome IS NOT NULL AND programOutcome = "Dead") THEN
+    SET result = TRUE;
+    END IF
 
     RETURN (!result );
 
@@ -850,14 +871,17 @@ CREATE FUNCTION patientIsNotLostToFollowUp(
 BEGIN 
     DECLARE patientLostToFollowUp TINYINT(1) DEFAULT 0;
 
-    DECLARE uuidPatientLostToFollowUp VARCHAR(38) DEFAULT "7ca4f879-4862-4cd5-84b3-e1ead8ff54ff";
+    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
+    DECLARE ltfuDays INT(11);
 
-    SELECT TRUE INTO patientLostToFollowUp
-    FROM person p
-    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
-    WHERE p.person_id = p_patientId AND p.voided = 0
-        AND c.uuid = uuidPatientLostToFollowUp;
+    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
+
+    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
+        SET ltfuDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
+    END IF;
+    IF ltfuDays >= 90 THEN
+      SET patientLostToFollowUp = TRUE;
+    END IF
 
     RETURN (!patientLostToFollowUp );
 END$$
@@ -874,15 +898,11 @@ CREATE FUNCTION patientIsNotTransferredOut(
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
 
-    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "c614b7a3-9ffa-4047-8c20-f42e6a347deb";
+    DECLARE programOutcome VARCHAR(250) DEFAULT getPatientMostRecentProgramOutcome(p_patientId, "en", 'HIV_DEFAULTERS_PROGRAM_KEY');
 
-    SELECT TRUE INTO patientTransferedOut
-    FROM person p
-    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
-    WHERE p.person_id = p_patientId
-        AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut;
+  IF (programOutcome IS NOT NULL AND programOutcome = "Transfert out") THEN
+    SET patientTransferedOut = TRUE;
+  END IF
 
     RETURN (!patientTransferedOut); 
 
@@ -909,7 +929,7 @@ BEGIN
     WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
         AND c.uuid = uuidPatientIsUnplannedAid
     LIMIT 1;
-    RETURN (patientIsUnplannedAid );
+    RETURN (patientIsUnplannedAid);
 END$$
 DELIMITER ;
 
@@ -1329,7 +1349,7 @@ BEGIN
     IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
         SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
     END IF;
-    IF defaulterDays > 1 AND defaulterDays < 90 THEN
+    IF defaulterDays >= 1 AND defaulterDays < 90 THEN
       SET result = TRUE;
     END IF;
 
