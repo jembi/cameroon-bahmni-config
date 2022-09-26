@@ -5,6 +5,7 @@ update program set name = 'TB_PROGRAM_KEY' where name = 'TB Program';
 update program set name = 'HIV_DEFAULTERS_PROGRAM_KEY' where name = 'HIV Defaulters Program';
 update program set name = 'INDEX_TESTING_PROGRAM_KEY' where name = 'Index Testing Program';
 update program set name = 'VL_EAC_PROGRAM_KEY' where name = 'VL EAC Program';
+update program set name = 'PMTCT_PROGRAM_KEY' where name = 'PMTCT Program';
 
 -- update existing program attribute types
 update program_attribute_type set description = 'PROGRAM_MANAGEMENT_ART_NUMBER', name = 'PROGRAM_MANAGEMENT_ART_NUMBER', datatype = 'org.openmrs.customdatatype.datatype.FreeTextDatatype', datatype_config = 'NULL' where name = 'ID_Number';
@@ -51,6 +52,9 @@ insert ignore into program_attribute_type(name, description, datatype,creator, d
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PROGRAM_MANAGEMENT_92_ART_DISPENSATION_MODEL","PROGRAM_MANAGEMENT_92_ART_DISPENSATION_MODEL","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "12afc1d3-74ba-428f-9a77-3fde76a136e4", (select concept_id from concept where uuid="ccd879e9-d9ff-4fab-b433-327e0f112387"));
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART","PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART","org.openmrs.customdatatype.datatype.DateDatatype", 1, NOW(), "6cde453d-2c27-445a-8e63-b4758d7d95e7");
 
+insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PMTCT_PROGRAM_MANAGEMENT_FP_METHOD","PMTCT_PROGRAM_MANAGEMENT_FP_METHOD","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "6d91fd1f-0198-4078-aafe-3367dd87afd3", (select concept_id from concept where uuid="58fa4284-a100-450e-91b6-e302032f6bf6"));
+insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PMTCT_PROGRAM_MANAGEMENT_ANC_CODE","PMTCT_PROGRAM_MANAGEMENT_ANC_CODE","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "d5d20829-9e46-4d50-a085-6cb98213a7ea");
+insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PMTCT_PROGRAM_MANAGEMENT_APS_NAME","PMTCT_PROGRAM_MANAGEMENT_APS_NAME","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "2af46f9c-d572-4362-aa14-43d72eacb2aa");
 -- update some of the attribute type names so that they are displayed in order
 update program_attribute_type set name = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART', description = 'PROGRAM_MANAGEMENT_1_DURATION_ON_ART' where uuid = '27441b69-84bd-4640-8682-92b6c0f449a0';
 update program_attribute_type set name = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE', description = 'PROGRAM_MANAGEMENT_2_LAST_FAILED_APPOINTMENT_DATE' where uuid = '88a312a2-51a6-47e4-b725-e5b8b545ac4c';
