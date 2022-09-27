@@ -186,15 +186,13 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3)
-    ) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
