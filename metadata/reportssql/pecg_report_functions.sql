@@ -186,15 +186,13 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3)
-    ) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -226,6 +224,40 @@ WHERE
     getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
     getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
     getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator8;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator8(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") IN ("Yes","Yes full name") AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id) AND
