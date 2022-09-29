@@ -127,7 +127,7 @@ WHERE
     patientIsNotLostToFollowUp(pat.patient_Id) AND
     patientIsNotTransferredOut(pat.patient_Id) AND
     patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
-    patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
 
     RETURN (result);
 END$$ 
