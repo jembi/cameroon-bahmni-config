@@ -92,8 +92,8 @@ WHERE
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotTransferredOut(pat.patient_id) AND NOT
-    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND 
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -1250,7 +1250,7 @@ BEGIN
                     AND o2.voided = 0
                 ORDER BY o2.value_datetime DESC
                 LIMIT 1
-            ) BETWEEN TIMESTAMPADD(DAY, -30, p_startDate) AND p_startDate
+            ) BETWEEN p_startDate AND TIMESTAMPADD(DAY, 30, p_startDate)
     ORDER BY o.date_created DESC
     LIMIT 1;
 
