@@ -118,7 +118,7 @@ SELECT
 FROM
     patient pat
 WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
+    patientGenderIs(pat.patient_id, p_gender) ANDpatientReasonForConsultationIsUnplannedAid(pat.patient_id)
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
@@ -157,9 +157,11 @@ WHERE
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
