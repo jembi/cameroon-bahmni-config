@@ -80,7 +80,7 @@
                     "name": "Report10",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator10_PLWHA_TB_investigated_documented.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator10_plwha_who_started_tb_treatment.sql"
                     }
                 },
                 {
