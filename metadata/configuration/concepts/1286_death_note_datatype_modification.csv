@@ -1,6 +1,6 @@
 Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_order:1286
 42ff2076-d570-4703-a826-53432386d529,,,"Déclaration de décès, amené mort","Death Note, Brought dead","Déclaration de décès, amené mort","Death Note, Brought dead",Misc,Boolean,
-01cd61d8-c854-4746-a369-b83dbc080574,,,"Déclaration de décès, cause tertiaire de décès","Death Note, Tertiary Cause of Death","Déclaration de décès, cause tertiaire de décès","Death Note, Tertiary Cause of Death",Misc,Text,
+01cd61d8-c854-4746-a369-b83dbc080574,,,"Cause tertiaire de décès","Tertiary Cause of Death","Cause tertiaire de décès","Tertiary Cause of Death",Misc,Text,
 6d18b9d9-f237-4cd3-9adf-f13ae400d74d,,,"Déclaration de décès, cause secondaire du décès","Death Note, Secondary Cause of Death","Déclaration de décès, cause secondaire du décès","Death Note, Secondary Cause of Death",Misc,Text,
 2007f389-084d-4c81-af8f-2f862197b951,,,"Déclaration de décès, principale cause de décès","Death Note, Primary Cause of Death","Déclaration de décès, principale cause de décès","Death Note, Primary Cause of Death",Misc,Text,
 67d7ed45-8c77-4cce-8bc2-03ea5d15490f,,,"Déclaration de décès, date et heure de décès prononcées","Death Note, Pronounced Death Date and Time","Déclaration de décès, date et heure de décès prononcées","Death Note, Pronounced Death Date and Time",Misc,Datetime,
