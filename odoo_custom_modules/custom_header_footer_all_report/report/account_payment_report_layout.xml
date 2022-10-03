@@ -21,7 +21,7 @@
 		<template id="account_payment_report_layout_header">
 			<div class="header">
                 <div class="row" style="margin-top:-20px;">
-                    <div class="col-xs-5" style="font-size:15px;font-weight:bold;">
+                    <div class="col-xs-5" style="font-size:14px;font-weight:bold;">
                         <center>
                             <t t-if="company.country_eng"><br/><span t-field="company.country_eng" style="border-bottom:1px dotted;"/></t>
                             <t t-if="company.ministry_partner_eng"><br/><span t-field="company.ministry_partner_eng" style="border-bottom:1px dotted;"/></t>
@@ -34,12 +34,12 @@
                     <div class="col-xs-2">
                         <center>
                         <br/>
-                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px;max-width: 120px; margin-left: -20px;" width="120px;" height="100px;"/>
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px;max-width: 120px; margin-left: -20px;" width="120px;" height="63px;"/>
                         <br/>
                         <br/>
                         </center>
                     </div>
-                    <div class="col-xs-5" style="font-size:15px;font-weight:bold;">
+                    <div class="col-xs-5" style="font-size:14px;font-weight:bold;">
                         <center>
                         <t t-if="company.country_frn"><br/><span t-field="company.country_frn" style="border-bottom:1px dotted;"/></t>
                         <t t-if="company.ministry_partner_frn"><br/><span t-field="company.ministry_partner_frn" style="border-bottom:1px dotted;"/></t>
@@ -62,7 +62,7 @@
 
 		<template id="account_payment_report_layout_footer">
 			<div class="footer">
-			    <div class="text-center" style="border-top: 1px solid black;"/>
+			    <!-- <div class="text-center" style="border-top: 1px solid black;"/> -->
 			</div>
 		</template>
 	</data>
