@@ -118,7 +118,7 @@ SELECT
 FROM
     patient pat
 WHERE
-    patientGenderIs(pat.patient_id, p_gender) ANDpatientReasonForConsultationIsUnplannedAid(pat.patient_id)
+    patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
