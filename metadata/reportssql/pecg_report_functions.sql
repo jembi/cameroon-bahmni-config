@@ -1134,7 +1134,7 @@ CREATE FUNCTION patientHadTBExaminationDuringReportingPeriod(
     DETERMINISTIC
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE tbScreenedUuid VARCHAR(38) DEFAULT "b5e95e00-b0bc-411b-993b-50ace78cdaf6";
+    DECLARE tbScreenedUuid VARCHAR(38) DEFAULT "f0447183-d13f-463d-ad0f-1f45b99d97cc";
     DECLARE tbScreenedDateUuid VARCHAR(38) DEFAULT "55185e73-e634-4dfc-8ec0-02086e8c54d0";
     DECLARE yesFullNameUuid VARCHAR(38) DEFAULT "8f864633-beb0-4bd7-a75c-703affdcd93d";
     DECLARE tbScreened TINYINT(1) DEFAULT 0;
