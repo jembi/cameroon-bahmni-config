@@ -4,7 +4,7 @@ deaedc5b-df3d-4b16-9c8e-8273204d06ed,,,Nom et Prénom,Name and Surname,Nom et Pr
 bba56cfe-24ca-45b2-800a-e5ad8848327a,,,En activité,Inactive,En activité,Inactive,Misc,N/A,,
 ecb5b769-9b5e-4e67-9861-49c51ed6246f,,Inactive;Unemployed;Retired,Profession 2,Occupation 2,Profession,Occupation,Misc,Coded,,
 62bebc82-ec99-4f21-9c4a-86d7a9dd9a66,,,Quartier de rèsidence,Area of ​​Residence,Quartier de rèsidence,Area of ​​Residence,Misc,Text,,
-7e919f25-0e0f-43e3-ad5b-1672edde58aa,,,Tèlèphone,Telephone,Tèlèphone,Telephone,Misc,Text,,
+7e919f25-0e0f-43e3-ad5b-1672edde58aa,,,Téléphone,Telephone,Téléphone,Telephone,Misc,Text,,
 d7413d04-a67a-4be1-acd1-8c5577847dc8,,Negative;Positive;Indeterminate;Unknown,Statut sèrologique,Serological status,Statut sèrologique,Serological status,Misc,Coded,,
 a731e98d-627c-4641-9848-9731f85e7f09,,Yes full name;No full name,Traitement ARV,ARV treatment,Traitement ARV,ARV treatment,Misc,Coded,,
 bebdb27d-995c-4724-9e85-22473fbbecc4,,,Si Oui depuis le,If Yes since,Si Oui depuis le,If Yes since,Misc,Date,,
