@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="account_payment_report_layout">
+			<!-- Multicompany-->
+			<t t-if="o and 'company_id' in o">
+				<t t-set="company" t-value="o.company_id"></t>
+			</t>
+			<t t-if="not o or not 'company_id' in o">
+				<t t-set="company" t-value="res_company"></t>
+			</t>
+			
+			<t t-foreach="docs" t-as="docs" style="border-width:6px; border-style:outset;">
+				<t t-call="custom_header_footer_all_report.account_payment_report_layout_header" />
+				<t t-raw="0" />
+				<t t-call="custom_header_footer_all_report.account_payment_report_layout_footer" />
+				<!-- t t-call="report.external_layout_footer" /-->
+			</t>
+		</template>
+
+		<template id="account_payment_report_layout_header">
+			<div class="header">
+                <div class="row" style="margin-top:-20px;">
+                    <div class="col-xs-5" style="font-size:14px;font-weight:bold;">
+                        <center>
+                            <t t-if="company.country_eng"><br/><span t-field="company.country_eng" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.ministry_partner_eng"><br/><span t-field="company.ministry_partner_eng" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.hf_level_eng"><br/><span t-field="company.hf_level_eng" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.district_eng"><br/><span t-field="company.district_eng" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.area_eng"><br/><span t-field="company.area_eng" style="border-bottom:1px dotted;"/></t>
+                            <t t-if="company.hf_name_eng"><br/><span t-field="company.hf_name_eng" style="border-bottom:1px dotted;"/></t>
+                        </center>
+                    </div>
+                    <div class="col-xs-2">
+                        <center>
+                        <br/>
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px;max-width: 120px; margin-left: -20px;" width="120px;" height="63px;"/>
+                        <br/>
+                        <br/>
+                        </center>
+                    </div>
+                    <div class="col-xs-5" style="font-size:14px;font-weight:bold;">
+                        <center>
+                        <t t-if="company.country_frn"><br/><span t-field="company.country_frn" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.ministry_partner_frn"><br/><span t-field="company.ministry_partner_frn" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.hf_level_frn"><br/><span t-field="company.hf_level_frn" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.district_frn"><br/><span t-field="company.district_frn" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.area_frn"><br/><span t-field="company.area_frn" style="border-bottom:1px dotted;"/></t>
+                        <t t-if="company.hf_name_frn"><br/><span t-field="company.hf_name_frn" style="border-bottom:1px dotted;"/></t>
+                        </center>
+                    </div>
+                    <!--div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/-->
+                </div>
+                <div class="row zero_min_height">
+                    <div class="col-xs-12">
+                        <div style="border-bottom: 1px solid black;"></div>
+                    </div>
+                </div>
+            </div>
+		
+		</template>
+
+		<template id="account_payment_report_layout_footer">
+			<div class="footer">
+			    <!-- <div class="text-center" style="border-top: 1px solid black;"/> -->
+			</div>
+		</template>
+	</data>
+</openerp>

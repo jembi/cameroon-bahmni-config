@@ -16,7 +16,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-public class PecgIndicator2Tests extends BaseReportTest{
+public class PecgIndicator1Tests extends BaseReportTest{
 	@Test
 	public void shouldCountPatient() throws Exception {
 		// Prepare
@@ -39,7 +39,7 @@ public class PecgIndicator2Tests extends BaseReportTest{
 		);
 
 		// Execute
-		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator2_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
+		String query = readReportQuery(ReportEnum.PECG_REPORT, "indicator1_ARV_old_treatment.sql", new LocalDate(2019, 9, 1), new LocalDate(2019, 9, 30));
 		List<Map<String,Object>> result = getReportResult(query);
 
 		// Assert
@@ -56,8 +56,16 @@ public class PecgIndicator2Tests extends BaseReportTest{
 		assertEquals(result.get(0).get("15-19 F"), 0);
 		assertEquals(result.get(0).get("20-24 M"), 0);
 		assertEquals(result.get(0).get("20-24 F"), 0);
-		assertEquals(result.get(0).get("25-49 M"), 0);
-		assertEquals(result.get(0).get("25-49 F"), 0);
+		assertEquals(result.get(0).get("25-29 M"), 0);
+		assertEquals(result.get(0).get("25-29 F"), 0);
+		assertEquals(result.get(0).get("30-34 M"), 0);
+		assertEquals(result.get(0).get("30-34 F"), 0);
+		assertEquals(result.get(0).get("35-39 M"), 0);
+		assertEquals(result.get(0).get("35-39 F"), 0);
+		assertEquals(result.get(0).get("40-44 M"), 0);
+		assertEquals(result.get(0).get("40-44 F"), 0);
+		assertEquals(result.get(0).get("45-49 M"), 0);
+		assertEquals(result.get(0).get("45-49 F"), 0);
 		assertEquals(result.get(0).get(">=50 M"), 0);
 		assertEquals(result.get(0).get(">=50 F"), 0);
 	}
