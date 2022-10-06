@@ -622,7 +622,8 @@ WHERE
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id) AND
-    patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND 
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
     RETURN (result);
 END$$ 
 DELIMITER ;
