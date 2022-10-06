@@ -42,7 +42,7 @@
                         <div class="col-xs-6">
 		                   	<t ><strong>Nom :</strong> <span t-esc="o.partner_id.name"/><br/></t>
 		                    <t ><strong>ID :</strong> <span t-esc="o.partner_id.ref"/><br/></t>
-		                    <t ><strong>Médecin traitant : </strong> <span t-esc="data['provider_name']"/><br/></t>
+		                    <t ><strong>Médecin traitant : </strong> <span t-esc="data['provider_namet']"/><br/></t>
 	                    </div>
 		                <div class="col-xs-6">
 		                    <p>
