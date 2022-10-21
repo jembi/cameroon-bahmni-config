@@ -11,6 +11,10 @@ from pprint import pprint
 import base64
 import ast
 import itertools as it
+import requests
+from requests.auth import HTTPBasicAuth
+from flask import jsonify, make_response
+
 
 
 class ProductApi(http.Controller):
@@ -27,3 +31,4 @@ class ProductApi(http.Controller):
                     "qty_available":product_id.qty_available,
                 })
         return json.dumps(data)
+    
