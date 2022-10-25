@@ -1894,6 +1894,23 @@
         "config": {
           "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/OPENELIS/sql/pcrVlTestingReport.sql"
         }
+    },
+    "hivTestingMonthlyIndicatorReport": {
+        "name": "HIV Testing Monthly Indicator report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/template/hivtmi.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator1_CDV_TS_number_of_people_tested_in_the_month.sql"
+                    }
+                }
+                ]
+        }
+
     }
 
 }
