@@ -1,7 +1,5 @@
 SELECT
   'Number of people tested in the month' AS 'Title',
-        HIVTMI_Indicator1('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
-        HIVTMI_Indicator1('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
         HIVTMI_Indicator1('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',
         HIVTMI_Indicator1('#startDate#','#endDate#', 1, 4,  1, 'F') AS '1-4 F',
         HIVTMI_Indicator1('#startDate#','#endDate#', 5, 9,  1, 'M') AS '5-9 M',
