@@ -1909,6 +1909,13 @@
                     }
                 },
                 {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator2_CDV_TS_number_of_people_who_withdrew_their_results_in_the_month.sql"
+                    }
+                },
+                {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
                     "config": {
