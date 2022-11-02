@@ -1678,7 +1678,7 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PCR_REPORT/sql/georgetownPcrReport.sql"
                     }
-                },343
+                },
                 {
                     "name": "ReportHospitalRegion",
                     "type": "MRSGeneric",
