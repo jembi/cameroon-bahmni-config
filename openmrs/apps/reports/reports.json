@@ -1667,7 +1667,7 @@
         }
     },
     "georgetownPcrReport": {
-        "name": "PCR Line Listing Report",
+        "name": "HEI Follow-up Line Listing report",
         "type": "concatenated",
         "config": {
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PCR_REPORT/template/georgetownPcrReport.xls",
