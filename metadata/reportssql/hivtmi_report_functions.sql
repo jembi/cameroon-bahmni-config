@@ -49,7 +49,7 @@ FROM
 WHERE
   patientGenderIs(pat.patient_id, p_gender) AND
   patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    getObsCodedValue(pat.patient_id, "55d59198-1d83-45db-9e92-dc3b9af25ca6") = "Yes" AND
+  getObsCodedValue(pat.patient_id, "55d59198-1d83-45db-9e92-dc3b9af25ca6") = "True" AND
   getObsCodedValueInSectionByNames(pat.patient_id, "Final Test Result", "Final Result") IS NOT NULL;
 
 RETURN (result);
