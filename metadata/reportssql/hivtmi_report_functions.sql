@@ -165,7 +165,7 @@ DELIMITER $$
 CREATE FUNCTION HIVTMI_Indicator4_disaggregated_by_entry_point(
   p_startDate DATE,
   p_endDate DATE,
-  entryPoints VARCHAR(256)) RETURNS INT(11)
+  entryPoints TEXT) RETURNS INT(11)
                                     DETERMINISTIC
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
