@@ -50,6 +50,10 @@ public class TestDataGenerator {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId, null, stmt);
 	}
 
+	static public int recordFormBooleanValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, boolean value, Integer encounterId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.CODED, encounterId, null, stmt);
+	}
+
 	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Statement stmt) throws Exception {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value.toString(), ObsValueTypeEnum.DATE_TIME, encounterId, null, stmt);
 	}

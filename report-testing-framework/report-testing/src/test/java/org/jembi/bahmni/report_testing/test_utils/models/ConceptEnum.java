@@ -90,7 +90,8 @@ public enum ConceptEnum {
     REASON_FOR_TEST("9edf4f7c-9baf-4467-80b8-45440406ebfb"),
     RISK_GROUP("44861d4c-de67-4368-b5cf-279b754e5343"),
     SEX_WORKER("a6df013d-8850-4b6f-b523-2d793aac0279"),
-    WHO_STAGE_1("491d6883-3078-47b9-b8d0-872641bd9d27");
+    WHO_STAGE_1("491d6883-3078-47b9-b8d0-872641bd9d27"),
+    RESULT_RECEIVED("55d59198-1d83-45db-9e92-dc3b9af25ca6");
 
     private String value;
 

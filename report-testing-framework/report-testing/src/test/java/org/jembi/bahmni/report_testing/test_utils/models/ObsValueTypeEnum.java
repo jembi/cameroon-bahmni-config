@@ -4,7 +4,8 @@ public enum ObsValueTypeEnum {
     CODED("value_coded"),
     DATE_TIME("value_datetime"),
     TEXT("value_text"),
-    NUMERIC("value_numeric");
+    NUMERIC("value_numeric"),
+	BOOLEAN("value_boolean");
 
     private String value;
 
