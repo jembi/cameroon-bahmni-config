@@ -30,14 +30,16 @@ public class HivtmiIndicator1Tests extends BaseReportTest {
 		int encounterId = testDataGenerator.startVisit(
             patientId,
             new LocalDate(2022, 11, 1),
-            VisitTypeEnum.VISIT_TYPE_OPD);
+            VisitTypeEnum.VISIT_TYPE_OPD
+		);
 
         testDataGenerator.program.enrollPatientIntoHIVProgram(
 			patientId,
 			new LocalDate(2022, 11, 3),
 			ConceptEnum.WHO_STAGE_1,
 			TherapeuticLineEnum.FIRST_LINE,
-			new LocalDate(2022, 11, 3));
+			new LocalDate(2022, 11, 3)
+		);
 
 		testDataGenerator.ancInitialForm.recordAtAncEnrolmentHivTestDateAndResult(
 			patientId,
@@ -51,7 +53,8 @@ public class HivtmiIndicator1Tests extends BaseReportTest {
 				patientId,
 				new LocalDateTime(2022, 11, 5, 8, 0),
 				new LocalDate(2022, 11, 5),
-				encounterId);
+				encounterId
+		);
 
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
