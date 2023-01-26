@@ -40,7 +40,7 @@ public class HivtmiIndicator1ByEntrypointsTests extends BaseReportTest {
 			TherapeuticLineEnum.FIRST_LINE,
 			new LocalDate(2022, 11, 3)
 		);
-        
+
         testDataGenerator.ancInitialForm.recordAtAncEnrolmentHivTestDateAndResult(
 			patientId,
 			new LocalDateTime(2022, 11, 3, 8, 0),
@@ -77,7 +77,7 @@ public class HivtmiIndicator1ByEntrypointsTests extends BaseReportTest {
 		assertEquals(result.get(0).get("Emergency"), 0);
 		assertEquals(result.get(0).get("CPN / ANC"), 0);
 		assertEquals(result.get(0).get("SA/Maternité / Delivery room/Postpartumn"), 0);
-		assertEquals(result.get(0).get("VCT"), 0);
+		assertEquals(result.get(0).get("VCT"), 1);
 		assertEquals(result.get(0).get("Hospitalization"), 0);
 		assertEquals(result.get(0).get("Pediatrics"), 0);
 		assertEquals(result.get(0).get("Other testing at TB Unit"), 0);
