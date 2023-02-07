@@ -65,8 +65,8 @@ public class RegistrationTestDataGenerator {
     public void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
         int identifierTypeId = TestDataGenerator.getQueryIntResult("SELECT patient_identifier_type_id FROM patient_identifier_type WHERE name = '" + identifierType +"'", stmt);
         String queryPatientIdentifer = "INSERT INTO patient_identifier " +
-            "(patient_id, identifier, identifier_type, preferred, creator, date_created, voided, uuid) VALUES " +
-            "(" + patientId + ",'" + value + "'," + identifierTypeId + "," + (preferred ? 1:0) + ",4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
+            "(patient_id, identifier, identifier_type, preferred, location_id, creator, date_created, voided, uuid) VALUES " +
+            "(" + patientId + ",'" + value + "'," + identifierTypeId + "," + (preferred ? 1:0) + "," + 18 + ",4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
         stmt.executeUpdate(queryPatientIdentifer);
     }
 
