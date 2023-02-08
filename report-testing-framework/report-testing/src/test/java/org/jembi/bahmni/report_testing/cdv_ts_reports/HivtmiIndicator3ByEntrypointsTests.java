@@ -58,7 +58,7 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
         testDataGenerator.hivTestingAndCounsellingForm.recordTestingEntryPointAndModality(
             patientId,
 			new LocalDateTime(2022, 11, 11, 8, 0),
-            ConceptEnum.BLOOD_BANK,
+            ConceptEnum.OPERATIVE_NOTES_EMERGENCY,
             encounterId
         );
 
@@ -71,16 +71,16 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
         List<Map<String,Object>> result = getReportResult(query);
 
         // Assert
-		assertEquals(result.get(0).get("Title"), "Number of people tested in the month disaggregated by entry point");
+		assertEquals(result.get(0).get("Title"), "Number of people tested positive in the month disaggregated by entry point");
 		assertEquals(result.get(0).get("Index"), 0);
-		assertEquals(result.get(0).get("Emergency"), 0);
+		assertEquals(result.get(0).get("Emergency"), 1);
 		assertEquals(result.get(0).get("CPN / ANC"), 0);
 		assertEquals(result.get(0).get("SA/Maternité / Delivery room/Postpartumn"), 0);
 		assertEquals(result.get(0).get("VCT"), 0);
 		assertEquals(result.get(0).get("Hospitalization"), 0);
 		assertEquals(result.get(0).get("Pediatrics"), 0);
 		assertEquals(result.get(0).get("Other testing at TB Unit"), 0);
-		assertEquals(result.get(0).get("Blood Bank"), 1);
+		assertEquals(result.get(0).get("Blood Bank"), 0);
 		assertEquals(result.get(0).get("Screening Campaign"), 0);
 		assertEquals(result.get(0).get("Other entry Points"), 0);
 
