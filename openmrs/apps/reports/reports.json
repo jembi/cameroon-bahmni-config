@@ -1916,7 +1916,7 @@
                     }
                 },
                 {
-                    "name": "Report1",
+                    "name": "Report5",
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator5_CDV_TS_number_of_indeterminate_results_in_the_month.sql"
