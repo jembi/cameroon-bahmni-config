@@ -19,16 +19,20 @@ import org.junit.Test;
 public class HivtmiIndicator4Tests extends BaseReportTest {
     @Test
     public void shouldCountPatientWhenHIVResultIsPositive() throws Exception {
+        // register a new patient
         int patientId = testDataGenerator.registration.createPatient(
                 GenderEnum.MALE,
                 new LocalDate(2000, 9, 1),
                 "John",
                 "Doe");
+
+        // start a new visit
         int encounterId = testDataGenerator.startVisit(
                 patientId,
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
+        // enrol patient into hiv program
         testDataGenerator.program.enrollPatientIntoHIVProgram(
                 patientId,
                 new LocalDate(2022, 11, 3),
@@ -36,30 +40,35 @@ public class HivtmiIndicator4Tests extends BaseReportTest {
                 TherapeuticLineEnum.FIRST_LINE,
                 new LocalDate(2022, 11, 3));
 
+        // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
                 patientId,
                 new LocalDateTime(2022, 11, 5, 8, 0),
                 new LocalDate(2022, 11, 5),
                 encounterId);
 
+        // set hiv final result
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set htc result
         testDataGenerator.hivTestingAndCounsellingForm.recordHTCResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set start treatment to yes
         testDataGenerator.hivTestingAndCounsellingForm.recordStartTreatment(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.TRUE,
                 encounterId);
 
+        // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
                 "indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month.sql",
                 new LocalDate(2022, 11, 1),
@@ -97,16 +106,20 @@ public class HivtmiIndicator4Tests extends BaseReportTest {
 
     @Test
     public void shouldNotCountPatientWhenHIVResultIsNotPositive() throws Exception {
+        // register a new patient
         int patientId = testDataGenerator.registration.createPatient(
                 GenderEnum.MALE,
                 new LocalDate(2000, 9, 1),
                 "John",
                 "Doe");
+
+        // start a new visit        
         int encounterId = testDataGenerator.startVisit(
                 patientId,
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
+         // enrol patient into hiv program
         testDataGenerator.program.enrollPatientIntoHIVProgram(
                 patientId,
                 new LocalDate(2022, 11, 3),
@@ -114,19 +127,28 @@ public class HivtmiIndicator4Tests extends BaseReportTest {
                 TherapeuticLineEnum.FIRST_LINE,
                 new LocalDate(2022, 11, 3));
 
+        // set hiv test date
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
+                patientId,
+                new LocalDateTime(2022, 11, 5, 8, 0),
+                new LocalDate(2022, 11, 5),
+                encounterId);
+
+        // set hiv final result
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set htc result
         testDataGenerator.hivTestingAndCounsellingForm.recordHTCResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.NEGATIVE,
                 encounterId);
 
-
+        // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
                 "indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month.sql",
                 new LocalDate(2023, 1, 1),
@@ -164,16 +186,20 @@ public class HivtmiIndicator4Tests extends BaseReportTest {
 
     @Test
     public void shouldNotCountPatientWhenHIVTestDateIsOutsideReportingPeriod() throws Exception {
+        // register a new patient
         int patientId = testDataGenerator.registration.createPatient(
                 GenderEnum.MALE,
                 new LocalDate(2000, 9, 1),
                 "John",
                 "Doe");
+
+        // start a new visit        
         int encounterId = testDataGenerator.startVisit(
                 patientId,
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
+         // enrol patient into hiv program
         testDataGenerator.program.enrollPatientIntoHIVProgram(
                 patientId,
                 new LocalDate(2022, 11, 3),
@@ -181,24 +207,35 @@ public class HivtmiIndicator4Tests extends BaseReportTest {
                 TherapeuticLineEnum.FIRST_LINE,
                 new LocalDate(2022, 11, 3));
 
+        // set hiv test date
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
+                patientId,
+                new LocalDateTime(2022, 11, 5, 8, 0),
+                new LocalDate(2022, 11, 5),
+                encounterId);
+
+        // set hiv final result
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set htc result
         testDataGenerator.hivTestingAndCounsellingForm.recordHTCResult(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set start treatment to yes
         testDataGenerator.hivTestingAndCounsellingForm.recordStartTreatment(
                 patientId,
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.TRUE,
                 encounterId);
 
+        // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
                 "indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month.sql",
                 new LocalDate(2023, 1, 1),
