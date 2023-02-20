@@ -1902,7 +1902,7 @@
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/template/hivtmi.xls",
             "reports": [
                 {
-                    "name": "Report",
+                    "name": "Indicator1A",
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator1_CDV_TS_number_of_people_tested_in_the_month.sql"
@@ -1913,6 +1913,13 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator2_CDV_TS_number_of_people_who_withdrew_their_results_in_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Indicator5A",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator5_CDV_TS_number_of_indeterminate_results_in_the_month.sql"
                     }
                 },
                 {
@@ -1942,7 +1949,8 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/data_collection.sql"
                     }
-                },{
+                },
+                {
                     "name": "Report1a",
                     "type": "MRSGeneric",
                     "config": {
@@ -1955,9 +1963,8 @@
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator3_CDV_TS_number_of_people_tested_positive_in_the_month_disaggregation_entry_point.sql"
                     }
                 }
-                ]
+            ]
         }
-
     }
 
 }
