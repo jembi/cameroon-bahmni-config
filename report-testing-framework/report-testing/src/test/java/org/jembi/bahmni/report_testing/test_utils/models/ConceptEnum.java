@@ -47,6 +47,7 @@ public enum ConceptEnum {
     HIV_TESTING_AND_COUNSELING("6bfd85ce-22c8-4b54-af0e-ab0af24240e3"),
     POST_TEST_COUNSELING("d53c7292-577d-441c-b6f4-e11b768781fe"),
     HTC_RESULT("85dadffe-5714-4210-8632-6fb51ef593b6"),
+    RESULT_RECEIVED("55d59198-1d83-45db-9e92-dc3b9af25ca6"),
     START_TREATMENT("f0e2f06c-7280-412b-b8c9-03be037ce81e"),
     REASON_FOR_NOT_STARTING_TREATMENT("3447254f-501f-4b07-815c-cd0f6da98158"),
     PATIENT_REFUSED("3f1c0531-02ee-4e3b-ac5e-a35264fe3053"),
@@ -92,7 +93,6 @@ public enum ConceptEnum {
     RISK_GROUP("44861d4c-de67-4368-b5cf-279b754e5343"),
     SEX_WORKER("a6df013d-8850-4b6f-b523-2d793aac0279"),
     WHO_STAGE_1("491d6883-3078-47b9-b8d0-872641bd9d27"),
-    RESULT_RECEIVED("55d59198-1d83-45db-9e92-dc3b9af25ca6"),
     VCT("2edaf35f-e1c9-4ca7-afcb-b64972116fa5");
 
     private String value;

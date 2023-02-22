@@ -66,7 +66,7 @@ public class TestDataGenerator {
 		Integer conceptId = getConceptId(codedValue, stmt);
 		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, null, stmt);
 	}
-
+	
 	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
 		Integer conceptId = getConceptId(codedValue, stmt);
 		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, groupId, stmt);

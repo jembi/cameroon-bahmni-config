@@ -254,8 +254,8 @@ public class HivtmiIndicator1ByEntrypointsTests extends BaseReportTest {
         // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
                 "indicator1_CDV_TS_number_of_people_tested_in_the_month_disaggregation_entry_point.sql",
-                new LocalDate(2023, 01, 1),
-                new LocalDate(2023, 01, 31));
+                new LocalDate(2022, 11, 1),
+                new LocalDate(2022, 11, 30));
 
         List<Map<String, Object>> result = getReportResult(query);
 
