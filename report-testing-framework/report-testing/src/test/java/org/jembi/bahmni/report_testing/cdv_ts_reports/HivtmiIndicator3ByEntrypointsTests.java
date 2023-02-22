@@ -186,6 +186,13 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
                 ConceptEnum.POSITIVE,
                 encounterId);
 
+        // set entrypoints
+        testDataGenerator.hivTestingAndCounsellingForm.recordTestingEntryPointAndModality(
+                patientId,
+                new LocalDateTime(2022, 11, 11, 8, 0),
+                ConceptEnum.BLOOD_BANK,
+                encounterId);
+
         // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
                 "indicator3_CDV_TS_number_of_people_tested_positive_in_the_month_disaggregation_entry_point.sql",
