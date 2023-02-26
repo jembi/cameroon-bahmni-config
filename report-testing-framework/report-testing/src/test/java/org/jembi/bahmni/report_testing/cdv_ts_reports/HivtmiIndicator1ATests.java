@@ -16,7 +16,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-public class HivtmiIndicator1Tests extends BaseReportTest {
+public class HivtmiIndicator1ATests extends BaseReportTest {
     @Test
     public void shouldCountPatientThatHasBeenTestedForHIV() throws Exception {
         // register a new patient
@@ -31,14 +31,6 @@ public class HivtmiIndicator1Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
@@ -104,15 +96,6 @@ public class HivtmiIndicator1Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
 
 
         // set hiv test date
