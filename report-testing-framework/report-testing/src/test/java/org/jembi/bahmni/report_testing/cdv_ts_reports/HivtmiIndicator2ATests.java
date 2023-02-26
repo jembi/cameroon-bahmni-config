@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
@@ -16,7 +15,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-public class HivtmiIndicator2Tests extends BaseReportTest {
+public class HivtmiIndicator2ATests extends BaseReportTest {
     @Test
     public void shouldCountPatientWhoWithdrewHIVResults() throws Exception {
         // register a new patient
@@ -31,14 +30,6 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
@@ -94,7 +85,6 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
         assertEquals(result.get(0).get("45-49 F"), 0);
         assertEquals(result.get(0).get(">=50 M"), 0);
         assertEquals(result.get(0).get(">=50 F"), 0);
-
     }
 
     @Test
@@ -111,15 +101,6 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
 
 
         // set hiv test date
@@ -180,16 +161,6 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
 
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
-
-
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
@@ -197,18 +168,18 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
             new LocalDate(2022, 11, 5),
             encounterId);
 
-        // set hiv result received to True
-        testDataGenerator.hivTestingAndCounsellingForm.setHTCResultReceived(
-            patientId,
-            new LocalDateTime(2022, 11, 5, 8, 0),
-            ConceptEnum.TRUE,
-            encounterId);
-
         // set hiv final result
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
             patientId,
             new LocalDateTime(2022, 11, 11, 8, 0),
             ConceptEnum.NEGATIVE,
+            encounterId);
+
+        // set hiv result received to True
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCResultReceived(
+            patientId,
+            new LocalDateTime(2022, 11, 5, 8, 0),
+            ConceptEnum.TRUE,
             encounterId);
 
         // execute
@@ -261,14 +232,6 @@ public class HivtmiIndicator2Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
