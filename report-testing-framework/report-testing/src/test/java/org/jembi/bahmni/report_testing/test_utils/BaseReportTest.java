@@ -140,7 +140,7 @@ public class BaseReportTest {
 		for (Map<String,Object> state : patientStateResult) {
 			executeUpdateQuery("DELETE FROM patient_state WHERE patient_state_id=" + state.get("patient_state_id"));
 		}
-
+		
 		// Remove orders
 		executeUpdateQuery("DELETE FROM orders");
 
