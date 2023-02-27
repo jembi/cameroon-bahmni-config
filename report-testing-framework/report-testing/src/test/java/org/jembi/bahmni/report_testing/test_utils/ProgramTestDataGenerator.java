@@ -35,7 +35,7 @@ public class ProgramTestDataGenerator {
 
     public int enrollPatientIntoHIVProgram(int patientId, LocalDate enrollmentDate, ConceptEnum patientClinicalStage, TherapeuticLineEnum therapeuticLine, LocalDate treatmentStartDate, String apsName) throws Exception {
 		int patientProgramId = enrollPatientIntoProgram(patientId, enrollmentDate, ProgramNameEnum.HIV_PROGRAM_KEY);
-
+		
 		if (patientClinicalStage != null) {
 			addPatientClinicalStage(patientId, patientProgramId, patientClinicalStage);
 		}
