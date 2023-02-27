@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
@@ -28,13 +27,6 @@ public class HivtmiIndicator5Tests extends BaseReportTest {
                 patientId,
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
-
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-                patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
 
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
                 patientId,
@@ -93,12 +85,11 @@ public class HivtmiIndicator5Tests extends BaseReportTest {
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
                 patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
+                new LocalDateTime(2022, 11, 5, 8, 0),
+                new LocalDate(2022, 11, 5),
+                encounterId);
 
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
                 patientId,
@@ -151,12 +142,11 @@ public class HivtmiIndicator5Tests extends BaseReportTest {
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
+        testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
                 patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
+                new LocalDateTime(2022, 11, 5, 8, 0),
+                new LocalDate(2022, 11, 5),
+                encounterId);
 
         testDataGenerator.hivTestingAndCounsellingForm.setHTCFinalResult(
                 patientId,
