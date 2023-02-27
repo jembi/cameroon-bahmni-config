@@ -58,6 +58,32 @@ RETURN (result);
 END$$
 DELIMITER ;
 
+
+-- Number of people tested positive started on ART among people tested positive in the month
+DROP FUNCTION IF EXISTS HIVTMI_Indicator4_disaggregated_by_entry_point;
+
+DELIMITER $$
+CREATE FUNCTION HIVTMI_Indicator4_disaggregated_by_entry_point(
+  p_startDate DATE,
+  p_endDate DATE,
+  entryPoints TEXT) RETURNS INT(11)
+                                    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+  COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+  patient pat
+WHERE
+  getObsDatetimeValueInSection(pat.patient_id, "c6c08cdc-18dc-4f42-809c-959621bc9a6c", "b70dfca0-db21-4533-8c08-4626ff0de265") BETWEEN p_startDate AND p_endDate AND
+  getObsCodedValueInSectionByNames(pat.patient_id, "Final Test Result", "Final Result") = "Positive" AND
+  FIND_IN_SET(getObsCodedValue(pat.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888"), entryPoints) > 0;
+
+RETURN (result);
+END$$
+DELIMITER ;
+
 -- Number of people tested positive in the month - desegregate by entry point
 DROP FUNCTION IF EXISTS HIVTMI_Indicator3_disaggregated_by_entry_point;
 

@@ -1962,6 +1962,13 @@
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator3_CDV_TS_number_of_people_tested_positive_in_the_month_disaggregation_entry_point.sql"
                     }
+                },
+                {
+                    "name": "Indicator4B",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month_disaggregated_by_entry_point.sql"
+                    }
                 }
             ]
         }
