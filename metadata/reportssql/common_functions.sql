@@ -29,6 +29,35 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientAgeWhenTestedForHivIsBetween
+
+DROP FUNCTION IF EXISTS patientAgeWhenTestedForHivIsBetween;  
+
+DELIMITER $$ 
+CREATE FUNCTION patientAgeWhenTestedForHivIsBetween(
+    p_patientId INT(11),
+    p_startAge INT(11),
+    p_endAge INT(11),
+    p_includeEndAge TINYINT(1)) RETURNS TINYINT(1) 
+    DETERMINISTIC 
+BEGIN 
+    DECLARE result TINYINT(1) DEFAULT 0; 
+    DECLARE hivTestDate DATE DEFAULT getObsDatetimeValueInSection(p_patientId, "c6c08cdc-18dc-4f42-809c-959621bc9a6c", "b70dfca0-db21-4533-8c08-4626ff0de265");
+
+    SELECT  
+        IF (p_includeEndAge, 
+            timestampdiff(YEAR, p.birthdate, hivTestDate) BETWEEN p_startAge AND p_endAge, 
+            timestampdiff(YEAR, p.birthdate, hivTestDate) >= p_startAge
+                AND timestampdiff(YEAR, p.birthdate, hivTestDate) < p_endAge
+        ) INTO result  
+    FROM person p 
+    WHERE p.person_id = p_patientId AND p.voided = 0 
+    LIMIT 1;
+
+    RETURN (result); 
+END$$ 
+DELIMITER ;
+
 -- patientAgeAtHivEnrollment
 
 DROP FUNCTION IF EXISTS patientAgeAtHivEnrollment;  
