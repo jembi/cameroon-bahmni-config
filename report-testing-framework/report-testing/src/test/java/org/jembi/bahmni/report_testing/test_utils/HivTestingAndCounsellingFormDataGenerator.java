@@ -47,6 +47,14 @@ public class HivTestingAndCounsellingFormDataGenerator {
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
     }
 
+    public int recordResultReceived(int patientId, LocalDateTime obsDateTime, boolean result, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.RESULT_RECEIVED);
+        return TestDataGenerator.recordFormBooleanValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
+    }
+
     public int recordStartTreatment(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
 		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
         conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);

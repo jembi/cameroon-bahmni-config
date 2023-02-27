@@ -93,7 +93,8 @@ public enum ConceptEnum {
     RISK_GROUP("44861d4c-de67-4368-b5cf-279b754e5343"),
     SEX_WORKER("a6df013d-8850-4b6f-b523-2d793aac0279"),
     WHO_STAGE_1("491d6883-3078-47b9-b8d0-872641bd9d27"),
-    BLOOD_BANK("c279a4bc-7304-4ca0-9e99-2414137f6912");
+    BLOOD_BANK("c279a4bc-7304-4ca0-9e99-2414137f6912"),
+    VCT("2edaf35f-e1c9-4ca7-afcb-b64972116fa5");
 
     private String value;
 

@@ -6,7 +6,6 @@ import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.PatientIdenfierTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.RelationshipEnum;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 public class RegistrationTestDataGenerator {
