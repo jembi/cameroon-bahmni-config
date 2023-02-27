@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.jembi.bahmni.report_testing.test_utils.BaseReportTest;
 import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
-import org.jembi.bahmni.report_testing.test_utils.models.TherapeuticLineEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.VisitTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.ReportEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
@@ -32,13 +31,6 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-                patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
@@ -101,14 +93,6 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
 
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-                patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
-
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
                 patientId,
@@ -122,7 +106,6 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
                 new LocalDateTime(2022, 11, 11, 8, 0),
                 ConceptEnum.POSITIVE,
                 encounterId);
-
 
         // execute
         String query = readReportQuery(ReportEnum.CDV_TS_REPORT,
@@ -163,14 +146,6 @@ public class HivtmiIndicator3ByEntrypointsTests extends BaseReportTest {
                 patientId,
                 new LocalDate(2022, 11, 1),
                 VisitTypeEnum.VISIT_TYPE_OPD);
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-                patientId,
-                new LocalDate(2022, 11, 3),
-                ConceptEnum.WHO_STAGE_1,
-                TherapeuticLineEnum.FIRST_LINE,
-                new LocalDate(2022, 11, 3));
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
