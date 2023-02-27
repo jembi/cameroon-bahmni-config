@@ -32,14 +32,6 @@ public class HivtmiIndicator3Tests extends BaseReportTest {
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
 
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
-
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
@@ -105,16 +97,6 @@ public class HivtmiIndicator3Tests extends BaseReportTest {
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
 
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
-
-
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
             patientId,
@@ -172,16 +154,6 @@ public class HivtmiIndicator3Tests extends BaseReportTest {
             patientId,
             new LocalDate(2022, 11, 1),
             VisitTypeEnum.VISIT_TYPE_OPD);
-
-
-        // enrol patient into hiv program
-        testDataGenerator.program.enrollPatientIntoHIVProgram(
-            patientId,
-            new LocalDate(2022, 11, 3),
-            ConceptEnum.WHO_STAGE_1,
-            TherapeuticLineEnum.FIRST_LINE,
-            new LocalDate(2022, 11, 3));
-
 
         // set hiv test date
         testDataGenerator.hivTestingAndCounsellingForm.setHTCHivTestDate(
