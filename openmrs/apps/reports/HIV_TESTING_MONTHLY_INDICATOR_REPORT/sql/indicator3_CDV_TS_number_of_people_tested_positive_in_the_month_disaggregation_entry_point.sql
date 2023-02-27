@@ -1,7 +1,7 @@
 SELECT
   'Number of people tested positive in the month disaggregated by entry point' AS 'Title',
         HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#', 'Index') AS 'Index',
-        HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#','LOCATION_EMERGENCY') AS 'Emergency',
+        HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#','Emergency') AS 'Emergency',
         HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#','PMTCT [ANC1-Only],PMTCT [Post ANC1],Other testing at ANC') AS 'CPN / ANC',
         HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#','Labor and delivery,PNC') AS 'SA/Maternité / Delivery room/Postpartumn',
         HIVTMI_Indicator3_disaggregated_by_entry_point('#startDate#','#endDate#','VCT') AS 'VCT',
