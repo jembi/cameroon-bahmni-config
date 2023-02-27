@@ -110,7 +110,8 @@ FROM
   patient pat
 WHERE
   patientGenderIs(pat.patient_id, p_gender) AND
-  patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+  patientAgeWhenTestedForHivIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+  getObsDatetimeValueInSection(pat.patient_id, "c6c08cdc-18dc-4f42-809c-959621bc9a6c", "b70dfca0-db21-4533-8c08-4626ff0de265") BETWEEN p_startDate AND p_endDate AND
   getObsCodedValueInSectionByNames(pat.patient_id, "Final Test Result", "Final Result") = "Positive" AND
   getObsCodedValue(pat.patient_id, "85dadffe-5714-4210-8632-6fb51ef593b6") = "Positive" AND
   getObsCodedValue(pat.patient_id, "f0e2f06c-7280-412b-b8c9-03be037ce81e") = "True";
@@ -139,7 +140,8 @@ FROM
 WHERE
   getObsDatetimeValueInSection(pat.patient_id, "c6c08cdc-18dc-4f42-809c-959621bc9a6c", "b70dfca0-db21-4533-8c08-4626ff0de265") BETWEEN p_startDate AND p_endDate AND
   getObsCodedValueInSectionByNames(pat.patient_id, "Final Test Result", "Final Result") = "Positive" AND
-  FIND_IN_SET(getObsCodedValue(pat.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888"), entryPoints) > 0;
+  FIND_IN_SET(getObsCodedValue(pat.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888"), entryPoints) > 0 AND
+  getObsCodedValue(pat.patient_id, "f0e2f06c-7280-412b-b8c9-03be037ce81e") = "True";
 
 RETURN (result);
 END$$
