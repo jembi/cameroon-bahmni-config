@@ -174,10 +174,10 @@ END$$
 DELIMITER ;
 
 
-DROP FUNCTION IF EXISTS HIVTMI_Indicator1_disaggregated_by_other_entry_points;
+DROP FUNCTION IF EXISTS HIVTMI_Indicator1_disaggregated_by_entry_point;
 
 DELIMITER $$
-CREATE FUNCTION HIVTMI_Indicator1_disaggregated_by_other_entry_points(
+CREATE FUNCTION HIVTMI_Indicator1_disaggregated_by_entry_point(
   p_startDate DATE,
   p_endDate DATE
   ) RETURNS INT(11)
@@ -192,7 +192,7 @@ FROM
 WHERE
   getObsDatetimeValueInSection(pat.patient_id, "c6c08cdc-18dc-4f42-809c-959621bc9a6c", "b70dfca0-db21-4533-8c08-4626ff0de265") BETWEEN p_startDate AND p_endDate AND
   getObsCodedValueInSectionByNames(pat.patient_id, "Final Test Result", "Final Result") IS NOT NULL AND
-  getObsCodedValue(pat.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888") IN("Malnutrition", "Operative Notes, OPD", "Other PITC", "STI", "VMMC", "LOCATION_LABORATORY", "Community Testing-Outreach", "Community Testing-Satellite Site", "Treatment Unit (UPEC)", "Partners of PW", "Partners of BFW", "PITC (Outpatient Department - casuality)");
+  FIND_IN_SET(getObsCodedValue(pat.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888"), entryPoints) > 0;
 
 RETURN (result);
 END$$
