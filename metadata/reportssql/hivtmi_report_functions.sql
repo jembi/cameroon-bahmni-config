@@ -179,7 +179,8 @@ DROP FUNCTION IF EXISTS HIVTMI_Indicator1_disaggregated_by_entry_point;
 DELIMITER $$
 CREATE FUNCTION HIVTMI_Indicator1_disaggregated_by_entry_point(
   p_startDate DATE,
-  p_endDate DATE
+  p_endDate DATE,
+  entryPoints TEXT
   ) RETURNS INT(11)
 DETERMINISTIC
 BEGIN
