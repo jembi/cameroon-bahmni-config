@@ -3090,6 +3090,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	/**
 	 * Handling conditions for CHILD EXPOSED TO HIV form
 	 */
+	'Prophylaxis (Cotrimoxazole)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis (Cotrimoxazole)'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("CTX at 6 weeks");
+		} else {
+			conditions.hide.push("CTX at 6 weeks");
+		}
+		return conditions;
+
+	},
 	'Rapid Test 1 (9 to 18 months)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Rapid Test 1 (9 to 18 months)'];
