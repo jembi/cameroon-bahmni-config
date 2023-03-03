@@ -3119,6 +3119,20 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		return conditions;	
 	},
 	/**
+	 * Handling conditions for CHILD EXPOSED TO HIV FOLLOWUP form
+	 */
+	 'Prophylaxis (Cotrimoxazole)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis (Cotrimoxazole)'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("CTX at 6 weeks");
+		} else {
+			conditions.hide.push("CTX at 6 weeks");
+		}
+		return conditions;
+
+	},
+	/**
 	 * Handling conditions for ANC forms
 	 */
 	'HIV Tested': function(formName, formFieldValues) {
