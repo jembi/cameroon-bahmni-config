@@ -694,6 +694,69 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getINHStartDate
+
+DROP FUNCTION IF EXISTS getINHStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getINHStartDate(
+    p_patientId INT(11)
+    ) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        DATE(o.scheduled_date) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND o.scheduled_date
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
+-- getINHDuration
+
+DROP FUNCTION IF EXISTS getINHDuration;
+
+DELIMITER $$
+CREATE FUNCTION getINHDuration(
+    p_patientId INT(11)
+    ) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT 
+        (CASE
+            WHEN do.duration_units = 76 THEN do.duration
+            WHEN do.duration_units = 93 THEN do.duration * 7
+            ELSE do.duration * 30
+        END) INTO result
+                
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND o.scheduled_date
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
 -- selectINHFollowUpReport
 
 DROP PROCEDURE IF EXISTS selectINHFollowUpReport;
