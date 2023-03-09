@@ -34,7 +34,7 @@ SELECT
     getViralLoadTestResult(p.patient_id) as "lastViralLoadResult",
     getReasonLastVLExam(p.patient_id) as "reasonOfLastVL",
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
-    -- getReasonLastVLExam(p.patient_id) as "disclosureStatus",
+    getObsCodedValue(p.patient_id, "76a912af-702e-47a0-83c4-246900861296") as "disclosureStatus",
     getTBScreeningStatus(p.patient_id) as "tbScreening",
     getINHStartDate(p.patient_id) as "inhDispenseDate",
     getINHDuration(p.patient_id) as "inhDuration",
