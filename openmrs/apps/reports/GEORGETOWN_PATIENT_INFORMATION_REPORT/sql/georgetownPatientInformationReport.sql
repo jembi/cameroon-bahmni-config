@@ -17,7 +17,7 @@ SELECT
     getPatientMostRecentProgramTrackingStateValue(p.patient_id,"en","HIV_PROGRAM_KEY") as "clinicalWhoStage",
     getFirstARVPrescribed(p.patient_id) as "regimentAtArtInitiation",
     getARVTherapeuticLineAtInitiation(p.patient_id) as "lineAtInitiation",
-    getActiveARVWithLowestDispensationPeriod(p.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
+    concatenateARTDrugs(p.patient_id, "2000-01-01", "2100-01-01")as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(p.patient_id), "Yes", "No") as "eligibilityForVl",
     getDateLatestARVRelatedVisit(p.patient_id) as "dateOfLastVisit",
@@ -35,7 +35,7 @@ SELECT
     getReasonLastVLExam(p.patient_id) as "reasonOfLastVL",
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
     getObsCodedValue(p.patient_id, "76a912af-702e-47a0-83c4-246900861296") as "disclosureStatus",
-    getTBScreeningStatus(p.patient_id) as "tbScreening",
+    getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") as "tbScreening",
     getINHStartDate(p.patient_id) as "inhDispenseDate",
     getINHDuration(p.patient_id) as "inhDuration",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id,"12afc1d3-74ba-428f-9a77-3fde76a136e4", "en") as "artDSDModels"
