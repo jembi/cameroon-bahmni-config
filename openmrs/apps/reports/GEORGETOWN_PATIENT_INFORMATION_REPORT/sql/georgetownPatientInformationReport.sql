@@ -35,7 +35,7 @@ SELECT
     getReasonLastVLExam(p.patient_id) as "reasonOfLastVL",
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
     getObsCodedValue(p.patient_id, "76a912af-702e-47a0-83c4-246900861296") as "disclosureStatus",
-    getObsCodedValue(p.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") as "tbScreening",
+    getObsCodedValueInSectionByNames(p.patient_id, "Screened", "TB Form") as "tbScreening",
     getINHStartDate(p.patient_id) as "inhDispenseDate",
     getINHDuration(p.patient_id) as "inhDuration",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id,"12afc1d3-74ba-428f-9a77-3fde76a136e4", "en") as "artDSDModels"

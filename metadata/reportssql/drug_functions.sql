@@ -712,10 +712,9 @@ BEGIN
         JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId
-        AND o.scheduled_date
         AND d.name LIKE "INH%"
         AND drugOrderIsDispensed(p_patientId, o.order_id)
-    ORDER BY o.scheduled_date ASC
+    ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
     RETURN result;
@@ -736,20 +735,19 @@ BEGIN
     DECLARE result INT(11);
 
     SELECT 
-        (CASE
-            WHEN do.duration_units = 76 THEN do.duration
-            WHEN do.duration_units = 93 THEN do.duration * 7
-            ELSE do.duration * 30
-        END) INTO result
+        calculateDurationInMonths(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
                 
     FROM drug_order do
         JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
     WHERE o.patient_id = p_patientId
-        AND o.scheduled_date
         AND d.name LIKE "INH%"
         AND drugOrderIsDispensed(p_patientId, o.order_id)
-    ORDER BY o.scheduled_date ASC
+    ORDER BY o.scheduled_date DESC
     LIMIT 1;
 
     RETURN result;
@@ -987,9 +985,7 @@ BEGIN
                 o.scheduled_date,
                 do.duration,
                 c.uuid)
-            )
-    ORDER BY calculateDurationInDays(o.scheduled_date,do.duration,c.uuid) ASC,
-        o.scheduled_date DESC;
+            );
     RETURN result;
 END$$
 DELIMITER ;
