@@ -16,7 +16,7 @@ SELECT
     getActiveARVWithLowestDispensationPeriod(pat.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
-    getDateMostRecentARVAppointmentWhereStatusMissed(pat.patient_id, "#endDate#") as "lastAppointmentDate",
+    getARTAppointmentOnOrAfterDate(pat.patient_id, GREATEST("#startDate#", getLastArvPickupDate(pat.patient_id, "2000-01-01", "#endDate#"))) as "lastAppointmentDate",
     getPatientARTStatus(pat.patient_id, "#startDate#", "#endDate#") as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
@@ -42,24 +42,22 @@ SELECT
 FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
     (
-        (
-            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#") AND
-            patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
-        )
+        patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
         OR
         (
-            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
+            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
+            AND
             (
-                patientPrescribedARTBeforeTheReportingPeriod(pat.patient_id,"#startDate#", IF(LAST_DAY("#startDate#") > "#endDate#", "#endDate#" , LAST_DAY("#startDate#"))) OR
-                patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
+                patientHasBeenDispensedARVDuringFullMonth(pat.patient_id, "#startDate#", "#endDate#")
+                OR
+                (
+                    patientIsNotLostToFollowUpBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
+                    AND
+                    patientIsNotDefaulterBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
+                )
             )
         )
     ) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotDead(pat.patient_id) AND
-    getPatientDispensationFullAndHalfPeriod(pat.patient_id, "#startDate#", "#endDate#") AND
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
-    (
-        patientIsNotTransferredOut(pat.patient_id) OR
-        patientPrescribedARTDuringPartOfReportingPeriod(pat.patient_id, "#startDate#")
-    );
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);

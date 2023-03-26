@@ -828,6 +828,50 @@ END$$
 DELIMITER ;
 
 
+-- patientHasBeenDispensedARVDuringFullMonth
+
+DROP FUNCTION IF EXISTS patientHasBeenDispensedARVDuringFullMonth;
+
+DELIMITER $$
+CREATE FUNCTION patientHasBeenDispensedARVDuringFullMonth(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT 
+        TRUE INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND (
+            DAY(GREATEST(DATE(o.scheduled_date), p_startDate)) = 1
+            OR
+            TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 2
+        )
+        AND TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 1
+    LIMIT 1;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
 -- patientPickedARVDrugDuringReportingPeriodAndDurationBetween
 
 DROP FUNCTION IF EXISTS patientPickedARVDrugDuringReportingPeriodAndDurationBetween;
