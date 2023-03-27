@@ -694,6 +694,67 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getINHStartDate
+
+DROP FUNCTION IF EXISTS getINHStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getINHStartDate(
+    p_patientId INT(11)
+    ) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        DATE(o.scheduled_date) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
+-- getINHDuration
+
+DROP FUNCTION IF EXISTS getINHDuration;
+
+DELIMITER $$
+CREATE FUNCTION getINHDuration(
+    p_patientId INT(11)
+    ) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11);
+
+    SELECT 
+        calculateDurationInMonths(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+                
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
 -- selectINHFollowUpReport
 
 DROP PROCEDURE IF EXISTS selectINHFollowUpReport;
@@ -890,6 +951,41 @@ BEGIN
     ORDER BY calculateDurationInDays(o.scheduled_date,do.duration,c.uuid) ASC,
         o.scheduled_date DESC
     LIMIT 1;
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- concatenateARTDrugs
+
+DROP FUNCTION IF EXISTS concatenateARTDrugs;
+
+DELIMITER $$
+CREATE FUNCTION concatenateARTDrugs(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TEXT
+    DETERMINISTIC
+BEGIN
+    DECLARE result TEXT;
+    
+    SELECT GROUP_CONCAT(d.name SEPARATOR ";") INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND treatmentIsWithinReportingPeriod(
+            p_startDate,
+            p_endDate,
+            o.scheduled_date,
+            calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid)
+            );
     RETURN result;
 END$$
 DELIMITER ;

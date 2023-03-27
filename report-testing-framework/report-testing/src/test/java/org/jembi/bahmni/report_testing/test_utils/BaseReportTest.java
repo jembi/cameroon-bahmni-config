@@ -150,6 +150,12 @@ public class BaseReportTest {
 		// Remove encounters
 		executeUpdateQuery("DELETE FROM encounter");
 
+		// Remove episode patient program
+		executeUpdateQuery("DELETE FROM episode_patient_program");
+
+		// Remove audit log
+		executeUpdateQuery("DELETE FROM audit_log");
+
 		// Remove patient program attributes
 		executeUpdateQuery("DELETE FROM patient_program_attribute");
 
