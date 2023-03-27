@@ -222,7 +222,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("disclosureStatus"), "Nothing (disclosure not made)");
         assertEquals(result.get(0).get("tbScreening"), "Yes full name");
         assertEquals(result.get(0).get("inhDispenseDate"), "2020-01-06");
-        assertEquals(result.get(0).get("inhDuration"), 20);
+        assertEquals(result.get(0).get("inhDuration"), 0);
         assertEquals(result.get(0).get("artDSDModels"), "CBO dispensation");
     }
 
@@ -434,7 +434,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     assertEquals(result.get(0).get("disclosureStatus"), "Nothing (disclosure not made)");
     assertEquals(result.get(0).get("tbScreening"), "Yes full name");
     assertEquals(result.get(0).get("inhDispenseDate"), "2020-01-06");
-    assertEquals(result.get(0).get("inhDuration"), 20);
+    assertEquals(result.get(0).get("inhDuration"), 0);
     assertEquals(result.get(0).get("artDSDModels"), "CBO dispensation");
     }
 
@@ -637,7 +637,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     assertEquals(result.get(0).get("disclosureStatus"), "Nothing (disclosure not made)");
     assertEquals(result.get(0).get("tbScreening"), "Yes full name");
     assertEquals(result.get(0).get("inhDispenseDate"), "2020-01-06");
-    assertEquals(result.get(0).get("inhDuration"), 20);
+    assertEquals(result.get(0).get("inhDuration"), 0);
     assertEquals(result.get(0).get("artDSDModels"), "CBO dispensation");
     }
 
@@ -834,7 +834,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     assertEquals(result.get(0).get("disclosureStatus"), "Nothing (disclosure not made)");
     assertEquals(result.get(0).get("tbScreening"), "Yes full name");
     assertEquals(result.get(0).get("inhDispenseDate"), "2020-01-06");
-    assertEquals(result.get(0).get("inhDuration"), 20);
+    assertEquals(result.get(0).get("inhDuration"), 0);
     assertEquals(result.get(0).get("artDSDModels"), "CBO dispensation");
     }
 

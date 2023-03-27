@@ -162,6 +162,9 @@ public class BaseReportTest {
 		// Remove program attribute history
 		executeUpdateQuery("DELETE FROM patient_program_attribute_history");
 
+		// Remove episode patient program 
+		executeUpdateQuery("DELETE FROM episode_patient_program");
+
 		// Remove patient programs
 		executeUpdateQuery("DELETE FROM patient_program");
 

@@ -61,6 +61,11 @@ public class RegistrationTestDataGenerator {
         return patientId;
     }
 
+    public void markPatientAsDead(int patientId, LocalDate deathDate, ConceptEnum causeOfDeath) throws Exception {
+        String query = "UPDATE person SET dead = 1, death_date = '" + deathDate + "', cause_of_death = (SELECT concept_id FROM concept WHERE uuid = '" + causeOfDeath + "') WHERE person_id = " + patientId + ";";
+        stmt.executeUpdate(query);
+    }
+
     public void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
         int identifierTypeId = TestDataGenerator.getQueryIntResult("SELECT patient_identifier_type_id FROM patient_identifier_type WHERE name = '" + identifierType +"'", stmt);
         String queryPatientIdentifer = "INSERT INTO patient_identifier " +

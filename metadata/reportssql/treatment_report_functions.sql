@@ -767,6 +767,111 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientPrescribedARTBeforeTheReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTBeforeTheReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTBeforeTheReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date <= p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date IS NOT NULL
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientARTPrescriptionEndDate
+
+DROP FUNCTION IF EXISTS patientARTPrescriptionEndDate;
+
+DELIMITER $$
+CREATE FUNCTION patientARTPrescriptionEndDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND drugOrderIsDispensed(p_patientId, o.order_id);
+        
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
+-- patientHasBeenDispensedARVDuringFullMonth
+
+DROP FUNCTION IF EXISTS patientHasBeenDispensedARVDuringFullMonth;
+
+DELIMITER $$
+CREATE FUNCTION patientHasBeenDispensedARVDuringFullMonth(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT 
+        TRUE INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND (
+            DAY(GREATEST(DATE(o.scheduled_date), p_startDate)) = 1
+            OR
+            TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 2
+        )
+        AND TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 1
+    LIMIT 1;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
 -- patientPickedARVDrugDuringReportingPeriodAndDurationBetween
 
 DROP FUNCTION IF EXISTS patientPickedARVDrugDuringReportingPeriodAndDurationBetween;
@@ -1418,5 +1523,45 @@ BEGIN
 
     RETURN result;
 
+END$$
+DELIMITER ;
+
+-- getPatientDispensationFullAndHalfPeriod
+
+DROP FUNCTION IF EXISTS getPatientDispensationFullAndHalfPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getPatientDispensationFullAndHalfPeriod(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE duration1 int;
+    DECLARE duration2 int;
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+    SET duration1 = DATEDIFF(endDateOfARTPrescription, p_startDate);
+    SET duration2 = DATEDIFF(p_endDate, endDateOfARTPrescription);
+
+    IF duration1 >= 30 THEN
+        SET result = TRUE;
+    
+    ELSE 
+        IF duration2 <= 0 THEN
+            IF (duration1 + duration2) >= 30 THEN
+                SET result = TRUE;
+            ELSE 
+                SET result = FALSE;
+            END IF;
+        ELSE
+            SET result = FALSE; 
+        END IF;
+    END IF;
+
+    RETURN (result);
 END$$
 DELIMITER ;

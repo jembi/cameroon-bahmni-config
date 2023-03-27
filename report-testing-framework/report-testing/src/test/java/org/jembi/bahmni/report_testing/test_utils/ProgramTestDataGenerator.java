@@ -71,6 +71,18 @@ public class ProgramTestDataGenerator {
 		return patientProgramId;
 	}
 
+	public void markPatientAsTransferredOut(int patientId, LocalDate outcomeDate) throws Exception {
+		String query = "SELECT patient_program_id FROM patient_program WHERE patient_id = " + patientId + " AND program_id = (SELECT p.program_id FROM program p WHERE p.name = 'HIV_PROGRAM_KEY') LIMIT 1";
+		int patientProgramId = TestDataGenerator.getQueryIntResult(query, stmt);
+		recordProgramOutcome(patientProgramId, ConceptEnum.TRANSFERRED_OUT, outcomeDate);
+	}
+
+	public void markPatientAsUnplannedAid(int patientId, LocalDate outcomeDate) throws Exception {
+		String query = "SELECT patient_program_id FROM patient_program WHERE patient_id = " + patientId + " AND program_id = (SELECT p.program_id FROM program p WHERE p.name = 'HIV_PROGRAM_KEY') LIMIT 1";
+		int patientProgramId = TestDataGenerator.getQueryIntResult(query, stmt);
+		recordProgramAttributeCodedValue(patientProgramId, "PROGRAM_MANAGEMENT_5_PATIENT_STAGE", "Unplanned Aid", outcomeDate);
+	}
+
 	public void recordProgramOutcome(int patientProgramId, ConceptEnum outcome, LocalDate dateCompleted) throws Exception {
 		int conceptId = TestDataGenerator.getConceptId(outcome, stmt);
 		String stringDateCompleted = dateCompleted != null ? "'" + dateCompleted + "'" : "NOW()";
