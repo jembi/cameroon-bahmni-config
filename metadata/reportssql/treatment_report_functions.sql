@@ -821,8 +821,9 @@ BEGIN
     WHERE o.patient_id = p_patientId
         AND drugIsARV(d.concept_id)
         AND o.order_action <> "DISCONTINUE"
-        AND drugOrderIsDispensed(p_patientId, o.order_id);
-        
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    LIMIT 1;
+
     RETURN (result);
 END$$ 
 DELIMITER ;
