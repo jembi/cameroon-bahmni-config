@@ -100,7 +100,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 patientId,
                 encounterIdOpdVisit,
                 DrugNameEnum.ABC_3TC_60_30MG,
-                new LocalDateTime(2020, 2, 5, 8, 0, 0),
+                new LocalDateTime(2020, 1, 5, 8, 0, 0),
                 1,
                 DurationUnitEnum.MONTH,
                 true);
@@ -311,7 +311,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     patientId,
     encounterIdOpdVisit,
     DrugNameEnum.ABC_3TC_60_30MG,
-    new LocalDateTime(2020, 2, 5, 8, 0, 0),
+    new LocalDateTime(2020, 1, 5, 8, 0, 0),
     1,
     DurationUnitEnum.MONTH,
     true
@@ -522,7 +522,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
     patientId,
     encounterIdOpdVisit,
     DrugNameEnum.ABC_3TC_60_30MG,
-    new LocalDateTime(2020, 2, 5, 8, 0, 0),
+    new LocalDateTime(2020, 1, 5, 8, 0, 0),
     1,
     DurationUnitEnum.MONTH,
     true
