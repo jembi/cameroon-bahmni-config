@@ -977,15 +977,8 @@ BEGIN
         AND drugIsARV(d.concept_id)
         AND o.order_action <> "DISCONTINUE"
         AND o.date_stopped IS NULL
-        AND treatmentIsWithinReportingPeriod(
-            p_startDate,
-            p_endDate,
-            o.scheduled_date,
-            calculateTreatmentEndDate(
-                o.scheduled_date,
-                do.duration,
-                c.uuid)
-            );
+        AND o.scheduled_date BETWEEN p_startDate AND p_endDate;
+        
     RETURN result;
 END$$
 DELIMITER ;
