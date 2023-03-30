@@ -17,7 +17,7 @@ SELECT
     getPatientMostRecentProgramTrackingStateValue(p.patient_id,"en","HIV_PROGRAM_KEY") as "clinicalWhoStage",
     getFirstARVPrescribed(p.patient_id) as "regimentAtArtInitiation",
     getARVTherapeuticLineAtInitiation(p.patient_id) as "lineAtInitiation",
-    concatenateARTDrugs(p.patient_id, "2000-01-01", "2100-01-01")as "currentRegimen",
+    concatenateARTDrugs(p.patient_id, getMostRecentArvPickupDateBeforeReportEndDate(p.patient_id, "#endDate#"), getMostRecentArvPickupDateBeforeReportEndDate(p.patient_id, "#endDate#"))as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(p.patient_id), "Yes", "No") as "eligibilityForVl",
     getDateLatestARVRelatedVisit(p.patient_id) as "dateOfLastVisit",
