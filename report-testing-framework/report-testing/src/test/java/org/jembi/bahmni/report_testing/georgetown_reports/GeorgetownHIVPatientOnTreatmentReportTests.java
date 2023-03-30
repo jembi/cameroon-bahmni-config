@@ -451,7 +451,7 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
             new LocalDate(2023, 3, 31));
 
         // Assert
-        assertEquals(null, result.get(0).get("lastAppointmentDate"));
+        assertEquals("2023-05-15", result.get(0).get("lastAppointmentDate"));
     }
 
     @Test

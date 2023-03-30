@@ -913,7 +913,7 @@ CREATE FUNCTION patientIsNotTransferredOut(
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
 
-    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "c614b7a3-9ffa-4047-8c20-f42e6a347deb";
+    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "b949cd75-97cb-4de2-9553-e6d335696f07";
 
     SELECT TRUE INTO patientTransferedOut
     FROM person p

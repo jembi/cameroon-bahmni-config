@@ -16,7 +16,7 @@ SELECT
     getActiveARVWithLowestDispensationPeriod(pat.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
-    getARTAppointmentOnOrAfterDate(pat.patient_id, GREATEST("#startDate#", getLastArvPickupDate(pat.patient_id, "2000-01-01", "#endDate#"))) as "lastAppointmentDate",
+    getARTAppointmentOnOrAfterDate(pat.patient_id, COALESCE(GREATEST("#startDate#", getLastArvPickupDate(pat.patient_id, "2000-01-01", "#endDate#")),"#startDate#")) as "lastAppointmentDate",
     getPatientARTStatus(pat.patient_id, "#startDate#", "#endDate#") as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
