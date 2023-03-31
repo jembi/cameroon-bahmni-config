@@ -896,7 +896,8 @@ BEGIN
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
     JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId AND p.voided = 0
-        AND c.uuid = uuidPatientLostToFollowUp;
+        AND c.uuid = uuidPatientLostToFollowUp
+    LIMIT 1;
 
     RETURN (!patientLostToFollowUp );
 END$$
@@ -921,7 +922,8 @@ BEGIN
     JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId
         AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut;
+        AND c.uuid = uuidPatientTransferredOut
+    LIMIT 1;
 
     RETURN (!patientTransferedOut); 
 
