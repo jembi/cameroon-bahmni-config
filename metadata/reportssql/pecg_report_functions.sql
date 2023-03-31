@@ -923,6 +923,7 @@ BEGIN
     WHERE p.person_id = p_patientId
         AND p.voided = 0 
         AND c.uuid = uuidPatientTransferredOut
+    ORDER BY pp.patient_program_id DESC
     LIMIT 1;
 
     RETURN (!patientTransferedOut); 
@@ -949,6 +950,7 @@ BEGIN
     JOIN concept c ON c.concept_id = ppt.value_reference
     WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
         AND c.uuid = uuidPatientIsUnplannedAid
+    ORDER BY pp.patient_program_id DESC
     LIMIT 1;
     RETURN (patientIsUnplannedAid );
 END$$
