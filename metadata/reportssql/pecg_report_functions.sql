@@ -913,20 +913,20 @@ CREATE FUNCTION patientIsNotTransferredOut(
     DETERMINISTIC
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
+    DECLARE conceptIdTransferredOut INT;
 
     DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "b949cd75-97cb-4de2-9553-e6d335696f07";
+    SELECT concept_id INTO conceptIdTransferredOut FROM concept WHERE uuid = uuidPatientTransferredOut;
 
-    SELECT TRUE INTO patientTransferedOut
+    SELECT pp.outcome_concept_id = conceptIdTransferredOut INTO patientTransferedOut
     FROM person p
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId
         AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut
     ORDER BY pp.patient_program_id DESC
     LIMIT 1;
 
-    RETURN (!patientTransferedOut); 
+    RETURN COALESCE(!patientTransferedOut, 1); 
 
 END$$
 DELIMITER ;
