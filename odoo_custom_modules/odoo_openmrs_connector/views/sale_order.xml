@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 	<data>
+
 		<record id="add_location_name_view_order_form" model="ir.ui.view">
 			<field name="name">sale.order.inherit</field>
 			<field name="model">sale.order</field>

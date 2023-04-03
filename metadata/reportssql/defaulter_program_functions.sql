@@ -267,3 +267,63 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientIsNotDefaulterBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsNotDefaulterBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotDefaulterBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 1;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+
+    IF endDateOfARTPrescription IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, endDateOfARTPrescription);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 90 THEN
+      SET result = 0;
+    END IF;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientIsNotLostToFollowUpBasedOnDays
+
+DROP FUNCTION IF EXISTS patientIsNotLostToFollowUpBasedOnDays;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotLostToFollowUpBasedOnDays(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 1;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE ltfuDays INT(11);
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+
+    IF endDateOfARTPrescription IS NOT NULL THEN
+        SET ltfuDays = DATEDIFF(p_endDate, endDateOfARTPrescription);
+    END IF;
+    IF ltfuDays >= 90 THEN
+      SET result = 0;
+    END IF;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+
+

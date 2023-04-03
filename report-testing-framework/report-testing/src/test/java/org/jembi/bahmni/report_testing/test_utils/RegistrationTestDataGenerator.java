@@ -6,7 +6,6 @@ import org.jembi.bahmni.report_testing.test_utils.models.ConceptEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.GenderEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.PatientIdenfierTypeEnum;
 import org.jembi.bahmni.report_testing.test_utils.models.RelationshipEnum;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 public class RegistrationTestDataGenerator {
@@ -62,11 +61,16 @@ public class RegistrationTestDataGenerator {
         return patientId;
     }
 
+    public void markPatientAsDead(int patientId, LocalDate deathDate, ConceptEnum causeOfDeath) throws Exception {
+        String query = "UPDATE person SET dead = 1, death_date = '" + deathDate + "', cause_of_death = (SELECT concept_id FROM concept WHERE uuid = '" + causeOfDeath + "') WHERE person_id = " + patientId + ";";
+        stmt.executeUpdate(query);
+    }
+
     public void addPatientIdentifier(int patientId, PatientIdenfierTypeEnum identifierType, String value, boolean preferred) throws Exception {
         int identifierTypeId = TestDataGenerator.getQueryIntResult("SELECT patient_identifier_type_id FROM patient_identifier_type WHERE name = '" + identifierType +"'", stmt);
         String queryPatientIdentifer = "INSERT INTO patient_identifier " +
-            "(patient_id, identifier, identifier_type, preferred, creator, date_created, voided, uuid) VALUES " +
-            "(" + patientId + ",'" + value + "'," + identifierTypeId + "," + (preferred ? 1:0) + ",4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
+            "(patient_id, identifier, identifier_type, preferred, location_id, creator, date_created, voided, uuid) VALUES " +
+            "(" + patientId + ",'" + value + "'," + identifierTypeId + "," + (preferred ? 1:0) + "," + 18 + ",4,now(),0,'" + TestDataGenerator.generateUUID() + "')";
         stmt.executeUpdate(queryPatientIdentifer);
     }
 

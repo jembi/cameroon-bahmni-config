@@ -35,7 +35,7 @@ public class BaseReportTest {
 	}
 
 	@After
-	public void closeDatabaseConnection() throws SQLException {
+	public void closeDatabaseConnection() throws Exception {
 		cleanTestingData();
 		stmt.close();
 		con.close();
@@ -102,7 +102,7 @@ public class BaseReportTest {
 		};
 	}
 
-	private void cleanTestingData() throws SQLException {
+	private void cleanTestingData() throws Exception {
 		// Remove appointments
 		executeUpdateQuery("DELETE FROM patient_appointment WHERE patient_id > 72");
 
@@ -125,13 +125,36 @@ public class BaseReportTest {
 		executeUpdateQuery("DELETE FROM drug_order");
 
 		// Remove observations
-		executeUpdateQuery("DELETE FROM obs");
+		String obsQuery = "SELECT obs_id FROM obs ORDER BY obs_id DESC";
 
+		List<Map<String,Object>> result = getReportResult(obsQuery);
+
+		for (Map<String,Object> obs : result) {
+			executeUpdateQuery("DELETE FROM obs WHERE obs_id=" + obs.get("obs_id"));
+		}
+		//Remove patient state
+		String patientStateQuery = "SELECT patient_state_id FROM patient_state ORDER BY patient_state_id DESC";
+
+		List<Map<String,Object>> patientStateResult = getReportResult(patientStateQuery);
+
+		for (Map<String,Object> state : patientStateResult) {
+			executeUpdateQuery("DELETE FROM patient_state WHERE patient_state_id=" + state.get("patient_state_id"));
+		}
+		
 		// Remove orders
 		executeUpdateQuery("DELETE FROM orders");
 
+		// Remove encounter providers
+		executeUpdateQuery("DELETE FROM encounter_provider");
+
 		// Remove encounters
 		executeUpdateQuery("DELETE FROM encounter");
+
+		// Remove episode patient program
+		executeUpdateQuery("DELETE FROM episode_patient_program");
+
+		// Remove audit log
+		executeUpdateQuery("DELETE FROM audit_log");
 
 		// Remove patient program attributes
 		executeUpdateQuery("DELETE FROM patient_program_attribute");
@@ -139,17 +162,23 @@ public class BaseReportTest {
 		// Remove program attribute history
 		executeUpdateQuery("DELETE FROM patient_program_attribute_history");
 
+		// Remove episode patient program 
+		executeUpdateQuery("DELETE FROM episode_patient_program");
+
 		// Remove patient programs
 		executeUpdateQuery("DELETE FROM patient_program");
+
+		// Remove visit attributes
+		executeUpdateQuery("DELETE FROM visit_attribute");
 
 		// Remove visits
 		executeUpdateQuery("DELETE FROM visit");
 
 		// Remove patients
-		executeUpdateQuery("DELETE FROM patient WHERE patient_id > 72");
+		executeUpdateQuery("DELETE FROM patient WHERE patient_id > 73");
 
 		// Remove persons
-		executeUpdateQuery("DELETE FROM person WHERE person_id > 72");
+		executeUpdateQuery("DELETE FROM person WHERE person_id > 73");
 
 	}
 

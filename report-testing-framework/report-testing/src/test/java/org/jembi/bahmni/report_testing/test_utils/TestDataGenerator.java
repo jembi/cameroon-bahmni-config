@@ -26,6 +26,7 @@ public class TestDataGenerator {
 	public DrugDataGenerator drug;
 	public EACFormDataGenerator eacForm;
 	public AncInitialFormDataGenerator ancInitialForm;
+	public PatientWithHivChildFollowUpForm  patientWithHivChildFollowUpForm;
 
 	public void setStatement(Statement stmt) {
 		this.stmt = stmt;
@@ -40,6 +41,7 @@ public class TestDataGenerator {
 		eacForm = new EACFormDataGenerator(stmt);
 		drug = new DrugDataGenerator(stmt);
 		ancInitialForm = new AncInitialFormDataGenerator(stmt);
+		patientWithHivChildFollowUpForm = new PatientWithHivChildFollowUpForm(stmt);
 	}
 
 	static public int recordFormTextValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, String value, Integer encounterId, Statement stmt) throws Exception {
@@ -48,6 +50,10 @@ public class TestDataGenerator {
 
 	static public int recordFormNumericValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, int value, Integer encounterId, Statement stmt) throws Exception {
 		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.NUMERIC, encounterId, null, stmt);
+	}
+
+	static public int recordFormBooleanValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, boolean value, Integer encounterId, Statement stmt) throws Exception {
+		return recordFormValue(patientId, observationDateTime, conceptTree, value + "", ObsValueTypeEnum.CODED, encounterId, null, stmt);
 	}
 
 	static public int recordFormDatetimeValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, LocalDate value, Integer encounterId, Statement stmt) throws Exception {
@@ -62,7 +68,7 @@ public class TestDataGenerator {
 		Integer conceptId = getConceptId(codedValue, stmt);
 		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, null, stmt);
 	}
-
+	
 	static public int recordFormCodedValue(int patientId, LocalDateTime observationDateTime, List<ConceptEnum> conceptTree, ConceptEnum codedValue, Integer encounterId, Integer groupId, Statement stmt) throws Exception {
 		Integer conceptId = getConceptId(codedValue, stmt);
 		return recordFormValue(patientId, observationDateTime, conceptTree, conceptId.toString(), ObsValueTypeEnum.CODED, encounterId, groupId, stmt);

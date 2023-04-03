@@ -896,7 +896,8 @@ BEGIN
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
     JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId AND p.voided = 0
-        AND c.uuid = uuidPatientLostToFollowUp;
+        AND c.uuid = uuidPatientLostToFollowUp
+    LIMIT 1;
 
     RETURN (!patientLostToFollowUp );
 END$$
@@ -912,18 +913,20 @@ CREATE FUNCTION patientIsNotTransferredOut(
     DETERMINISTIC
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
+    DECLARE conceptIdTransferredOut INT;
 
-    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "c614b7a3-9ffa-4047-8c20-f42e6a347deb";
+    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "b949cd75-97cb-4de2-9553-e6d335696f07";
+    SELECT concept_id INTO conceptIdTransferredOut FROM concept WHERE uuid = uuidPatientTransferredOut;
 
-    SELECT TRUE INTO patientTransferedOut
+    SELECT pp.outcome_concept_id = conceptIdTransferredOut INTO patientTransferedOut
     FROM person p
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId
         AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut;
+    ORDER BY pp.patient_program_id DESC
+    LIMIT 1;
 
-    RETURN (!patientTransferedOut); 
+    RETURN COALESCE(!patientTransferedOut, 1); 
 
 END$$
 DELIMITER ;
@@ -947,6 +950,7 @@ BEGIN
     JOIN concept c ON c.concept_id = ppt.value_reference
     WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
         AND c.uuid = uuidPatientIsUnplannedAid
+    ORDER BY pp.patient_program_id DESC
     LIMIT 1;
     RETURN (patientIsUnplannedAid );
 END$$
@@ -1347,31 +1351,3 @@ RETURN (result);
 END$$
 DELIMITER ;
 
--- patientIsNotDefaulterBasedOnDays
-
-DROP FUNCTION IF EXISTS patientIsNotDefaulterBasedOnDays;
-
-DELIMITER $$
-CREATE FUNCTION patientIsNotDefaulterBasedOnDays(
-  p_patientId INT(11),
-  p_startDate DATE,
-  p_endDate DATE) RETURNS TINYINT(1)
-DETERMINISTIC
-BEGIN
-    DECLARE result TINYINT(1) DEFAULT 0;
-
-    DECLARE dateOfLastARVPickupWithinReportingPeriod DATE;
-    DECLARE defaulterDays INT(11);
-
-    SET dateOfLastARVPickupWithinReportingPeriod = getDateMostRecentARVPickupWithinReportingPeriod(p_patientId, p_startDate, p_endDate);
-
-    IF dateOfLastARVPickupWithinReportingPeriod IS NOT NULL THEN
-        SET defaulterDays = DATEDIFF(p_endDate, dateOfLastARVPickupWithinReportingPeriod);
-    END IF;
-    IF defaulterDays > 1 AND defaulterDays < 90 THEN
-      SET result = TRUE;
-    END IF;
-
-    RETURN (result);
-END$$
-DELIMITER ;

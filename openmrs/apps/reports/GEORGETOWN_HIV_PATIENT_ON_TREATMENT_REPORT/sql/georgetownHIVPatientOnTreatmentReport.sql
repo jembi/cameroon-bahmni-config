@@ -16,7 +16,7 @@ SELECT
     getActiveARVWithLowestDispensationPeriod(pat.patient_id, "2000-01-01", "2100-01-01") as "currentRegimen",
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
-    getDateARVAppointmentWithinReportingPeriod(pat.patient_id, "2000-01-01", "#endDate#") as "lastAppointmentDate",
+    getARTAppointmentOnOrAfterDate(pat.patient_id, COALESCE(GREATEST("#startDate#", getLastArvPickupDate(pat.patient_id, "2000-01-01", "#endDate#")),"#startDate#")) as "lastAppointmentDate",
     getPatientARTStatus(pat.patient_id, "#startDate#", "#endDate#") as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
@@ -35,7 +35,7 @@ SELECT
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonForInitiation",
     IF(patientIsNotTransferredOut(pat.patient_id),"No","Yes") as "patientIsTransferedOut",
     IF(getObsCodedValue(pat.patient_id, "211f0857-61a3-4049-9777-374c4a592453") IS NOT NULL, "True", "False") as "kp",
-    getObsCodedValue(pat.patient_id, "211f0857-61a3-4049-9777-374c4a592453") as "kpType",
+    getObsCodedValue(pat.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") as "kpType",
     getViralLoadTestDate(pat.patient_id) as "lastViralLoadResultDate",
     getViralLoadTestResult(pat.patient_id) as "lastViralLoadResult",
     getReasonLastVLExam(pat.patient_id) as "reasonOfLastVL"
@@ -43,21 +43,27 @@ FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
     (
         (
-            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#") AND
-            patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
+            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
+            AND
+            getLastArvPickupDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
         )
         OR
         (
-            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#") AND
+            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
+            AND
+            getLastArvPickupDate(pat.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL
+            AND
             (
-                patientPrescribedARTForEntireReportingPeriod(pat.patient_id,"#startDate#", IF(LAST_DAY("#startDate#") > "#endDate#", "#endDate#" , LAST_DAY("#startDate#"))) OR
-                patientWasPrescribedARVDrugDuringReportingPeriod(pat.patient_id,"#startDate#", "#endDate#")
+                patientHasBeenDispensedARVDuringFullMonth(pat.patient_id, "#startDate#", "#endDate#")
+                OR
+                (
+                    patientIsNotLostToFollowUpBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
+                    AND
+                    patientIsNotDefaulterBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
+                )
             )
         )
     ) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotDead(pat.patient_id) AND
-    (
-        patientIsNotTransferredOut(pat.patient_id) OR
-        patientPrescribedARTDuringPartOfReportingPeriod(pat.patient_id, "#startDate#")
-    );
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);

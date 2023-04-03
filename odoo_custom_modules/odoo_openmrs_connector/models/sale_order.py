@@ -8,6 +8,8 @@ import logging
 _logger = logging.getLogger(__name__)
 import json
 import MySQLdb
+import requests
+from requests.auth import HTTPBasicAuth
 
 class ProviderProvider(models.Model):
     _name = "provider.provider"
@@ -35,6 +37,20 @@ class ProductTempalte(models.Model):
 class OrderSaveService(models.Model):
     _inherit = 'order.save.service'
     
+    @api.model
+    def _id_facture(self):
+        data = requests.get('https://127.0.0.1/openmrs/ws/rest/v1/provider?v=custom:(display,uuid,person)',verify=False,auth=HTTPBasicAuth('superman', 'Admin123'),headers={'Content-Type':'application/json'})
+        datatwo = data.json()
+        for results in datatwo['results']:
+            per = results.get("display")
+            if(per):
+                uuid = results.get("uuid")
+                provider_name =results.get("person").get("display")
+                provider_exit = self.env['provider.provider'].search([('name', '=', str(provider_name))], limit=1)
+                if not provider_exit:
+                    provider_vals = {'name': provider_name,'uuid': uuid}
+                    provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+
     @api.model
     def _create_sale_order_line_function(self, sale_order, order):
         stored_prod_ids = self._get_product_ids(order)
@@ -189,6 +205,7 @@ class OrderSaveService(models.Model):
                             provider_vals = {'name': provider_name}
                             provider_id = self.env['provider.provider'].sudo().create(provider_vals)
                             sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
+                                    
                         if shop_obj.pricelist_id:
                             sale_order_vals.update({'pricelist_id': shop_obj.pricelist_id.id})
                         sale_order = self.env['sale.order'].create(sale_order_vals)
@@ -329,7 +346,23 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     location_name = fields.Char('Location Name')
-    provider_name = fields.Many2one('provider.provider', string="Provider Name", required=True)
+    provider_name = fields.Many2one('provider.provider', string="Provider Name", required=True,  onchange="_onchange_provider_name")
+
+    
+    @api.onchange('provider_name')
+    def _onchange_provider_name(self):
+        data = requests.get('https://127.0.0.1/openmrs/ws/rest/v1/provider?v=custom:(display,uuid,person)',verify=False,auth=HTTPBasicAuth('superman', 'Admin123'),headers={'Content-Type':'application/json'})
+        datatwo = data.json()
+        for results in datatwo['results']:
+            per = results.get("display")
+            if(per):
+                uuid = results.get("uuid")
+                provider_name =results.get("person").get("display")
+                provider_exit = self.env['provider.provider'].search([('name', '=', str(provider_name))], limit=1)
+                if not provider_exit:
+                    provider_vals = {'name': provider_name,'uuid': uuid}
+                    provider_id = self.env['provider.provider'].sudo().create(provider_vals)
+
 
     @api.multi
     def action_confirm(self):
