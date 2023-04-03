@@ -21,7 +21,7 @@ import org.junit.Test;
 public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 
     @Test
-    public void aNewPatient_withHIVTreatmentStartingWithinReportingPeriod_shouldBeReported() throws Exception {
+    public void aNewPatient_withHIVTreatmentStartingWithinReportingPeriod_andDispensedWithinReportingPeriod_shouldBeReported() throws Exception {
         // Prepare
         createAPatientEnrolledInHIVWithTreatmentStartingOn(new LocalDate(2023, 1, 01));
 
@@ -32,6 +32,42 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 
         // Assert
         assertThatThePatientIsReported(result);
+    }
+
+    @Test
+    public void aNewPatient_withHIVTreatmentStartingWithinReportingPeriod_butNotDispensed_shouldNotBeReported() throws Exception {
+        // Prepare
+        createAPatientEnrolledInHIVWithTreatmentStartingOn(
+            new LocalDate(2023, 1, 01),
+            null,
+            0
+        );
+
+        // Execute
+        List<Map<String,Object>> result = runPatientOnTreatmentReport(
+            new LocalDate(2023, 1, 1),
+            new LocalDate(2023, 1, 31));
+
+        // Assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void aNewPatient_withHIVTreatmentStartingWithinReportingPeriod_butDispensedAfterReportingPeriod_shouldNotBeReported() throws Exception {
+        // Prepare
+        createAPatientEnrolledInHIVWithTreatmentStartingOn(
+            new LocalDate(2023, 1, 01),
+            new LocalDate(2023, 2, 01),
+            1
+        );
+
+        // Execute
+        List<Map<String,Object>> result = runPatientOnTreatmentReport(
+            new LocalDate(2023, 1, 1),
+            new LocalDate(2023, 1, 31));
+
+        // Assert
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -634,15 +670,17 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
         );
 
         /* dispense ARV */
-        testDataGenerator.drug.orderDrug(
-			patientId,
-			encounterIdOpdVisit,
-			DrugNameEnum.TDF_FTC_300_200MG,
-			new LocalDateTime(drugStartDate.getYear(), drugStartDate.getMonthOfYear(), drugStartDate.getDayOfMonth(), 8, 0, 0),
-			drugDurationInMonths,
-			DurationUnitEnum.MONTH,
-			true
-        );
+        if (drugStartDate != null && drugDurationInMonths > 0) {
+            testDataGenerator.drug.orderDrug(
+                patientId,
+                encounterIdOpdVisit,
+                DrugNameEnum.TDF_FTC_300_200MG,
+                new LocalDateTime(drugStartDate.getYear(), drugStartDate.getMonthOfYear(), drugStartDate.getDayOfMonth(), 8, 0, 0),
+                drugDurationInMonths,
+                DurationUnitEnum.MONTH,
+                true
+            );
+        }
 
         return patientId;
     }
