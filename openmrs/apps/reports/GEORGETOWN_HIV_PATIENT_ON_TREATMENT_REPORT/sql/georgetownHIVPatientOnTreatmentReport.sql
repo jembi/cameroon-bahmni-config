@@ -51,6 +51,8 @@ WHERE
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
             AND
+            getLastArvPickupDate(pat.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL
+            AND
             (
                 patientHasBeenDispensedARVDuringFullMonth(pat.patient_id, "#startDate#", "#endDate#")
                 OR

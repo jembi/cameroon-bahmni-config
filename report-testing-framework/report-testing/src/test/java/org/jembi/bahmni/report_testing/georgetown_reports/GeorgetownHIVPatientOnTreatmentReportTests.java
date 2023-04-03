@@ -101,6 +101,24 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
     }
 
     @Test
+    public void anOldPatient_withHIVTreatmentStartingBeforeReportingPeriod_andNeverBeenDispensedARV_shouldNotBeReported() throws Exception {
+        // Prepare
+        createAPatientEnrolledInHIVWithTreatmentStartingOn(
+            new LocalDate(2022, 10, 01),
+            null,
+            0
+        );
+
+        // Execute
+        List<Map<String,Object>> result = runPatientOnTreatmentReport(
+            new LocalDate(2023, 1, 1),
+            new LocalDate(2023, 1, 31));
+
+        // Assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
     public void aPatientOnUnplannedAid_shouldNotBeReported() throws Exception {
         // Prepare
         int patientId = createAPatientEnrolledInHIVWithTreatmentStartingOn(new LocalDate(2023, 1, 01));
