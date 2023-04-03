@@ -42,7 +42,11 @@ SELECT
 FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
     (
-        patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
+        (
+            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
+            AND
+            getLastArvPickupDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
+        )
         OR
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
