@@ -1556,7 +1556,7 @@
         }
     },
     "georgetownTbReport": {
-        "name": "TB Service Line Listing Report",
+        "name": "TB screening Line listing report",
         "type": "concatenated",
         "config": {
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_TB_REPORT/template/georgetownTbReport.xls",
