@@ -210,7 +210,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("eligibilityForVl"), "No");
                 assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
                 assertEquals(result.get(0).get("lastAppointmentDate"), "2020-01-15");
-                assertEquals(result.get(0).get("transferredIn"), "Initiation of ART");
+                assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
                 assertEquals(result.get(0).get("kpType"), "Migrant");
@@ -416,7 +416,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("eligibilityForVl"), "No");
                 assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
                 assertEquals(result.get(0).get("lastAppointmentDate"), "2020-01-15");
-                assertEquals(result.get(0).get("transferredIn"), "Initiation of ART");
+                assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
                 assertEquals(result.get(0).get("kpType"), "Migrant");
@@ -613,7 +613,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("eligibilityForVl"), "No");
                 assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
                 assertEquals(result.get(0).get("lastAppointmentDate"), "2020-01-15");
-                assertEquals(result.get(0).get("transferredIn"), "Initiation of ART");
+                assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "False");
                 assertEquals(result.get(0).get("kpType"), null);
@@ -806,7 +806,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("eligibilityForVl"), "Yes");
                 assertEquals(result.get(0).get("dateOfLastVisit"), "2019-12-30");
                 assertEquals(result.get(0).get("lastAppointmentDate"), "2020-01-15");
-                assertEquals(result.get(0).get("transferredIn"), "Initiation of ART");
+                assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
                 assertEquals(result.get(0).get("kpType"), "Migrant");

@@ -23,7 +23,7 @@ SELECT
     getDateLatestARVRelatedVisit(p.patient_id) as "dateOfLastVisit",
     getDateMostRecentARVAppointment(p.patient_id) as "lastAppointmentDate",
     getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY") as "hivOutcome",
-    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "transferredIn",
+    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonsForConsultation",
     IF(getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY")="Transferred Out", "Yes", "No") as "transfertOut",
     IF(getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") IS NOT NULL, "True", "False") as "kp",
     getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") as "kpType",
