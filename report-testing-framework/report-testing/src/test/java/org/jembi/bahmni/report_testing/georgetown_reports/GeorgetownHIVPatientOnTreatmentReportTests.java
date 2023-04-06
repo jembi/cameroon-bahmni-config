@@ -507,6 +507,16 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 			true
         );
 
+        testDataGenerator.drug.orderDrug(
+			patientId,
+			encounterIdOpdVisit,
+			DrugNameEnum.TDF_FTC_300_300MG,
+			new LocalDateTime(2023, 1, 10, 8, 30, 0),
+			1,
+			DurationUnitEnum.MONTH,
+			true
+        );
+
         /* record an ART Dispensation appointment */
         testDataGenerator.appointment.recordAppointment(
             patientId,
@@ -537,13 +547,12 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 		assertEquals(result.get(0).get("artStartDate"), "2023-01-10");
         assertEquals(result.get(0).get("regimentAtArtInitiation"), "TDF/FTC 300/200mg");
 		assertEquals(result.get(0).get("currentLine"), "1st line");
-		assertEquals(result.get(0).get("currentRegimen"), "TDF/FTC 300/200mg");
+		assertEquals(result.get(0).get("currentRegimen"), "TDF/FTC 300/200mg;TDF/FTC 300/300mg");
 		assertEquals(result.get(0).get("currentLine"), "1st line");
 		assertEquals(result.get(0).get("eligibilityForVl"), "No");
 		assertEquals(result.get(0).get("lastAppointmentDate"), "2023-02-13");
-		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/200mg");
+		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/300mg");
 		assertEquals(result.get(0).get("lastARVDispenseDate"), "2023-01-10");
-		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/200mg");
 		assertEquals(result.get(0).get("durationMostRecentArv"), 31);
 		assertEquals(result.get(0).get("kp"), "False");
     }
@@ -601,6 +610,16 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 			true
         );
 
+        testDataGenerator.drug.orderDrug(
+			patientId,
+			encounterIdOpdVisit,
+			DrugNameEnum.TDF_FTC_300_300MG,
+			new LocalDateTime(2022, 12, 10, 8, 30, 0),
+			60,
+			DurationUnitEnum.DAY,
+			true
+        );
+
         /* record an ART Dispensation appointment */
         testDataGenerator.appointment.recordAppointment(
             patientId,
@@ -631,13 +650,12 @@ public class GeorgetownHIVPatientOnTreatmentReportTests extends BaseReportTest {
 		assertEquals(result.get(0).get("artStartDate"), "2022-12-10");
         assertEquals(result.get(0).get("regimentAtArtInitiation"), "TDF/FTC 300/200mg");
 		assertEquals(result.get(0).get("currentLine"), "1st line");
-		assertEquals(result.get(0).get("currentRegimen"), "TDF/FTC 300/200mg");
+		assertEquals(result.get(0).get("currentRegimen"), "TDF/FTC 300/200mg;TDF/FTC 300/300mg");
 		assertEquals(result.get(0).get("currentLine"), "1st line");
 		assertEquals(result.get(0).get("eligibilityForVl"), "No");
 		assertEquals(result.get(0).get("lastAppointmentDate"), "2023-02-09");
-		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/200mg");
+		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/300mg");
 		assertEquals(result.get(0).get("lastARVDispenseDate"), "2022-12-10");
-		assertEquals(result.get(0).get("getLastARVDispensed"), "TDF/FTC 300/200mg");
 		assertEquals(result.get(0).get("durationMostRecentArv"), 60);
 		assertEquals(result.get(0).get("kp"), "False");
     }
