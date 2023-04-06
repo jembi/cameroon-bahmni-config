@@ -127,10 +127,10 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                                                 null);
 
                 /* record the sexual orientation */
-                testDataGenerator.hivAdultInitialForm.setSexualOrientation(
+                testDataGenerator.hivAdultInitialForm.setKpType(
                                 patientId,
                                 new LocalDateTime(2020, 1, 8, 8, 0, 0),
-                                ConceptEnum.HETEROSEXUAL,
+                                ConceptEnum.MIGRANT,
                                 encounterIdAdultHivForm);
 
                 /* record an ART Dispensation appointment */
@@ -213,7 +213,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
-                assertEquals(result.get(0).get("kpType"), "Heterosexual");
+                assertEquals(result.get(0).get("kpType"), "Migrant");
                 assertEquals(result.get(0).get("profession"), "Private sector employee");
                 assertEquals(result.get(0).get("preTrackingOutcome"), "7 to 30 days");
                 assertEquals(result.get(0).get("trackingOutcome"), "Calls not picked up");
@@ -334,10 +334,10 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                                                 null);
 
                 /* record the sexual orientation */
-                testDataGenerator.hivAdultInitialForm.setSexualOrientation(
+                testDataGenerator.hivAdultInitialForm.setKpType(
                                 patientId,
                                 new LocalDateTime(2020, 1, 8, 8, 0, 0),
-                                ConceptEnum.HETEROSEXUAL,
+                                ConceptEnum.MIGRANT,
                                 encounterIdChildHivForm);
 
                 /* record an ART Dispensation appointment */
@@ -419,7 +419,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
-                assertEquals(result.get(0).get("kpType"), "Heterosexual");
+                assertEquals(result.get(0).get("kpType"), "Migrant");
                 assertEquals(result.get(0).get("profession"), "Private sector employee");
                 assertEquals(result.get(0).get("preTrackingOutcome"), "7 to 30 days");
                 assertEquals(result.get(0).get("trackingOutcome"), "Calls not picked up");
@@ -726,10 +726,10 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                                                 null);
 
                 /* record the sexual orientation */
-                testDataGenerator.hivAdultInitialForm.setSexualOrientation(
+                testDataGenerator.hivAdultInitialForm.setKpType(
                                 patientId,
                                 new LocalDateTime(2020, 1, 8, 8, 0, 0),
-                                ConceptEnum.HETEROSEXUAL,
+                                ConceptEnum.MIGRANT,
                                 encounterIdAdultHivForm);
 
                 /* record an ART Dispensation appointment */
@@ -809,7 +809,7 @@ public class GeorgetownPatientInformationReportTests extends BaseReportTest {
                 assertEquals(result.get(0).get("reasonsForConsultation"), "Initiation of ART");
                 assertEquals(result.get(0).get("transfertOut"), "No");
                 assertEquals(result.get(0).get("kp"), "True");
-                assertEquals(result.get(0).get("kpType"), "Heterosexual");
+                assertEquals(result.get(0).get("kpType"), "Migrant");
                 assertEquals(result.get(0).get("profession"), "Private sector employee");
                 assertEquals(result.get(0).get("preTrackingOutcome"), "7 to 30 days");
                 assertEquals(result.get(0).get("trackingOutcome"), "Calls not picked up");
