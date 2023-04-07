@@ -977,7 +977,7 @@ BEGIN
         AND drugIsARV(d.concept_id)
         AND o.order_action <> "DISCONTINUE"
         AND o.date_stopped IS NULL
-        AND o.scheduled_date BETWEEN p_startDate AND p_endDate;
+        AND o.scheduled_date BETWEEN p_startDate AND DATE_ADD(p_endDate + INTERVAL 1 DAY, INTERVAL -1 SECOND);
         
     RETURN result;
 END$$
