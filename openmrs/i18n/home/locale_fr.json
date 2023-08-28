@@ -56,5 +56,6 @@
     "LOCATION_OPHTHALMOLOGY" : "Ophtalmologie",
     "LOCATION_RADIOLOGY" : "Radiologie",
     "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
-    "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile"
+    "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile",
+    "MODULE_LABEL_BED_MANAGEMENT_KEY": "Gestion des lits"
 }

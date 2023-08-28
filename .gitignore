@@ -10,3 +10,5 @@ target
 data-agent-ui/node_modules/*
 e2e/node_modules/*
 e2e/db_cleanup_service/node_modules/*
+*.pyc
+.pyc
