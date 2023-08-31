@@ -7,6 +7,7 @@
     "MODULE_LABEL_ADMIN_KEY": "Administration",
     "MODULE_LABEL_REPORTS_KEY": "Rapports",
     "MODULE_LABEL_APOOINTMENTS_KEY": "Rendez-Vous",
+    "MODULE_LABEL_OT_KEY": "Bloc Opératoire",
     "MODULE_LABEL_ORDERS_KEY": "Examens",
     "MODULE_LABEL_PROGRAMS_KEY": "Programmes",
     "MODULE_LABEL_IMPLEMENTER_INTERFACE_KEY": "Interface d'implémentation",
@@ -56,5 +57,6 @@
     "LOCATION_OPHTHALMOLOGY" : "Ophtalmologie",
     "LOCATION_RADIOLOGY" : "Radiologie",
     "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
-    "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile"
+    "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile",
+    "MODULE_LABEL_BED_MANAGEMENT_KEY": "Gestion des lits"
 }
