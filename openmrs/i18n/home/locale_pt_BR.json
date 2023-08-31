@@ -9,5 +9,7 @@
     "MODULE_LABEL_APOOINTMENTS_KEY": "Agendamentos",
     "MODULE_LABEL_ORDERS_KEY": "Pedidos",
     "MODULE_LABEL_PROGRAMS_KEY": "Programas",
-    "MODULE_LABEL_BED_MANAGEMENT_KEY": "Bed Management"
+    "MODULE_LABEL_BED_MANAGEMENT_KEY": "Bed Management",
+    "MODULE_LABEL_OT_KEY": "Bloc Opératoire"
+
 }

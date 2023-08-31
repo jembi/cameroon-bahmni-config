@@ -32,6 +32,7 @@
   "DASHBOARD_TAB_GENERAL_KEY": "Général",
   "MODULE_LABEL_BED_MANAGEMENT_KEY": "Gestion des lits",
   "PATIENT_LISTING_QUEUES_HEADER_NAME": "Nom",
+  "MODULE_LABEL_OT_KEY": "Bloc Opératoire",
   "DASHBOARD_TITLE_SURGICAL_APPOINTMENTS_KEY": "Rendez-vous chirurgicaux",
   "DASHBOARD_TITLE_PATIENT_MOVEMENT_HISTORY_KEY": "Historique des mouvements du patient",
   "DASHBOARD_TITLE_WARD_NURSING_NOTE_KEY": "Notes de soins de la salle d'hospitalisation",
