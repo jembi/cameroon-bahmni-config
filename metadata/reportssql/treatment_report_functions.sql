@@ -1211,6 +1211,7 @@ CREATE PROCEDURE retrieveTBScreeningDateAndResult(
 END$$ 
 DELIMITER ;
 
+
 -- getTBScreeningStatus
 
 DROP FUNCTION IF EXISTS getTBScreeningStatus;
@@ -1224,10 +1225,34 @@ BEGIN
     DECLARE tbScreeningDate DATE;
     
     CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
-
-    RETURN tbScreeningStatus;
+    IF tbScreeningStatus = 'Not Suspected' THEN
+        RETURN 'Negative';
+    ELSEIF tbScreeningStatus = 'Suspected / Probable' THEN
+        RETURN 'Positive';
+    ELSE
+        RETURN '';
+    END IF;
 END$$
 DELIMITER ;
+
+-- getTBScreeningDate
+
+DROP FUNCTION IF EXISTS getTBScreeningDate;
+
+DELIMITER $$
+CREATE FUNCTION getTBScreeningDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE tbScreeningDate DATE;
+    DECLARE tbScreeningStatus VARCHAR(250);
+
+    CALL retrieveTBScreeningDateAndResult(p_patientId, tbScreeningDate, tbScreeningStatus);
+
+    RETURN tbScreeningDate;
+END$$
+DELIMITER ;
+
 
 -- getTBScreeningStatusAtLastARVRefill
 
