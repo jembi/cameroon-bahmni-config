@@ -2,7 +2,7 @@ Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:
 5c573660-f9ea-4182-8ec5-49b9c3563a8b,,,Programme IPT,IPT Program,Programme IPT,IPT Program,Misc,Text,,
 df6d48fb-bd9b-4ead-98a7-c4a6712f6844,,,Résultat du programme IPT,IPT Program Outcomes,Résultat du programme IPT,IPT Program Outcomes,Misc,Coded,,
 f05f9905-ee9e-4dbf-a193-cfc7c8721e46,,,Flux de travail du programme IPT,IPT Program Workflow,Flux de travail du programme IPT,IPT Program Workflow,Misc,N/A,,
-03f3fbd7-d814-44db-865d-b1c3ffb80945,,Month 1; Month 2; Month 3; Month 4; Month 5; Month 6,Clinical Stage,Clinical Stage,Clinical Stage,Clinical Stage,Misc,Coded,,
+03f3fbd7-d814-44db-865d-b1c3ffb80945,,Month 1; Month 2; Month 3; Month 4; Month 5; Month 6,Stade clinique,Clinical Stage,Stade clinique,Clinical Stage,Misc,Coded,,
 0b4646ec-0048-4901-914c-76dcc934de68,,,Nouvelle Initiation à la TPI,Newly initiated on IPT,Nouvelle Initiation à la TPI,Newly initiated on IPT,Misc,Text,,
 addc44d0-dd57-4b2d-bd53-1e4ea2190da2,,,Reprise après avoir été PDV à la TPI,Restart after Lost to LTFU on IPT ,Reprise après avoir été PDV à la TPI,Restart after Lost to LTFU on IPT ,Misc,Text,,
 71540c7b-5e36-491f-a735-8dd74e2146cc,,,Reprise après échec à la TPI,Restart after IPT Tx failure,Reprise après échec à la TPI,Restart after IPT Tx failure,Misc,Text,,
