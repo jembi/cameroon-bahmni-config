@@ -116,5 +116,7 @@
   "LOCATION_OPHTHALMOLOGY" : "Ophtalmologie",
   "LOCATION_RADIOLOGY" : "Radiologie",
   "VISIT_TYPE_OPD": "Consultation",
-  "REGISTRATION_SERVICE_REQUIRED_KEY": "Service requis"
+  "REGISTRATION_SERVICE_REQUIRED_KEY": "Service requis",
+  "UHC Unique ID": "Identifiant Unique CSU"
+
 }

@@ -1,0 +1,13 @@
+Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_order:1360
+5c573660-f9ea-4182-8ec5-49b9c3563a8b,,,Programme IPT,IPT Program,Programme IPT,IPT Program,Misc,Text,,
+f05f9905-ee9e-4dbf-a193-cfc7c8721e46,,,Flux de travail du programme IPT,IPT Program Workflow,Flux de travail du programme IPT,IPT Program Workflow,Misc,N/A,,
+0b4646ec-0048-4901-914c-76dcc934de68,,,Nouvelle Initiation à la TPI,Newly initiated on IPT,Nouvelle Initiation à la TPI,Newly initiated on IPT,Misc,Text,,
+addc44d0-dd57-4b2d-bd53-1e4ea2190da2,,,Reprise après avoir été PDV à la TPI,Restart after Lost to LTFU on IPT ,Reprise après avoir été PDV à la TPI,Restart after Lost to LTFU on IPT ,Misc,Text,,
+71540c7b-5e36-491f-a735-8dd74e2146cc,,,Reprise après échec à la TPI,Restart after IPT Tx failure,Reprise après échec à la TPI,Restart after IPT Tx failure,Misc,Text,,
+3ecf18d3-2cbf-45a0-9927-a872eae68ab5,,, Reprise après arrêt volontaire de la TPI,Restart after Stop IPT, Reprise après arrêt volontaire de la TPI,Restart after Stop IPT,Misc,Text,,
+fca6a600-a445-4d85-a08f-473022e11b2f,,,Continuation TPI,Continuation of IPT Program,Continuation TPI,Continuation of IPT Program,Misc,Text,,
+18181e9e-3fdb-4008-96fa-cd3ed7f5f4e2,,Newly initiated on IPT; Restart after Lost to LTFU on IPT; Restart after IPT Tx failure; Restart after Stop IPT; Continuation of IPT Program,Reason for Initiation,Reason for Initiation,Reason for Initiation,Reason for Initiation,Misc,Coded,,
+2843c445-30b9-4658-b24f-be9744682a73,,,Continuer le TPI,Continued on Treatment,Continuer le TPI,Continued on Treatment,Misc,Text,,
+e984ad38-8152-48c3-a34a-01b614e0aae3,,,TPI Complété,IPT Completed,TPI Complété,IPT Completed,Misc,Text,,
+aa3192ad-ac08-4d6a-8cfd-abb2dd102120,,,Echec thérapeutique,Treatment failure,Echec thérapeutique,Treatment failure,Misc,Text,,
+df6d48fb-bd9b-4ead-98a7-c4a6712f6844,Continued on Treatment;IPT Completed;Stopped;Treatment failure;Dead;Transferred Out;Lost to Follow-up,,Résultat du programme IPT,IPT Program Outcomes,Résultat du programme PTME,IPT Program Outcomes,Misc,Coded,,
