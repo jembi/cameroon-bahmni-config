@@ -657,6 +657,76 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateFullINHCourse
+
+DROP FUNCTION IF EXISTS getDateFullINHCourse;
+
+DELIMITER $$
+CREATE FUNCTION getDateFullINHCourse(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND o.scheduled_date >= p_startDate
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND timestampdiff(
+            MONTH,
+            p_startDate,
+            calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid)
+            ) >= 6
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
+-- getDateofINHdrugOrderDispensed
+
+DROP FUNCTION IF EXISTS getDateofINHdrugOrderDispensed;
+
+DELIMITER $$
+CREATE FUNCTION `getDateofINHdrugOrderDispensed`(
+    p_patientId INT(11)) RETURNS date
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDispensedConcept VARCHAR(38) DEFAULT "ff0d6d6a-e276-11e4-900f-080027b662ec";
+
+    SELECT
+    o.obs_datetime INTO result
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    JOIN patient p ON o.person_id = p.patient_id
+    WHERE o.voided = 0
+        AND o.person_id = p.patient_id
+        AND c.uuid = uuidDispensedConcept
+        AND d.name LIKE "INH%"
+        ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END
+
 -- retrieveINHStartAndEndDate
 
 DROP PROCEDURE IF EXISTS retrieveINHStartAndEndDate;
