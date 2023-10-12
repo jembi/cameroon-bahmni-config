@@ -30,4 +30,13 @@ public class HivAdultInitialForm {
         conceptTree.add(ConceptEnum.SEXUAL_ORIENTATION);
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
 	}
+
+    
+    public int setKpType(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.PATIENT_WITH_HIV_ADULT_INITIAL);
+        conceptTree.add(ConceptEnum.SOCIO_DEMOGRAPHIC_INFORMATION);
+        conceptTree.add(ConceptEnum.KP_TYPE);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, value, encounterId, stmt);
+	}
 }

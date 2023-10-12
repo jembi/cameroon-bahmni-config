@@ -24,6 +24,20 @@
         "order": 1,
         "requiredPrivilege": "Edit Visits"
     },
+    "vitals":{
+        "id": "bahmni.registration.conceptSetGroup.vitals",
+        "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+        "type": "config",
+        "extensionParams": {
+        "conceptName": "Vitals",
+        "translationKey": "VITALS_LOCALE_KEY",
+        "conceptNames": ["Pulse Data", "Diabetes, Blood Pressure", "Temperature Data", "RR Data", "SPO2 Data", "IMAM, Height", "IMAM, Weight", "State", "Fundal Height", "Gestational Age", "Abdominal Circumference", "Hip Circumference"],
+        "required":true,
+        "showLatest": true
+        },
+        "order": 1,
+        "requiredPrivilege": "Edit Visits"
+    },
     "createNew":{
         "id": "bahmni.registration.navigation.patient.create",
         "extensionPointId": "org.bahmni.registration.navigation",

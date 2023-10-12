@@ -27,6 +27,35 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientHasEnrolledIntoProgramDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasEnrolledIntoProgramDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasEnrolledIntoProgramDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_program VARCHAR(250)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT
+        TRUE INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND DATE(pp.date_enrolled) BETWEEN p_startDate AND p_endDate
+        AND pro.name = p_program
+    GROUP BY pro.name;
+
+    RETURN (result );
+END$$
+DELIMITER ;
+
 -- getMostRecentProgramEnrollmentDate
 
 DROP FUNCTION IF EXISTS getMostRecentProgramEnrollmentDate;
@@ -115,7 +144,7 @@ CREATE FUNCTION getPatientARVStartDate(
     p_patientId INT(11)) RETURNS DATE
     DETERMINISTIC
 BEGIN
-    RETURN getPatientProgramTreatmentStartDate(p_patientId);
+    RETURN getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
 END$$
 DELIMITER ;
 
@@ -212,13 +241,14 @@ DROP FUNCTION IF EXISTS getPatientProgramTreatmentStartDate;
 
 DELIMITER $$
 CREATE FUNCTION getPatientProgramTreatmentStartDate(
-    p_patientId INT(11)) RETURNS DATE
+    p_patientId INT(11),
+    p_program VARCHAR(250)) RETURNS DATE
     DETERMINISTIC
 BEGIN
     DECLARE result DATE;
     DECLARE uuidProgramTreatmentStartDate VARCHAR(38) DEFAULT "2dc1aafd-a708-11e6-91e9-0800270d80ce";
 
-    SET result = getPatientMostRecentProgramAttributeValue(p_patientId, uuidProgramTreatmentStartDate);
+    SET result = getPatientMostRecentProgramAttributeValueInProgram(p_patientId, uuidProgramTreatmentStartDate, p_program);
 
     RETURN (result);
 END$$
@@ -613,7 +643,7 @@ CREATE FUNCTION arvInitiationDateSpecified(
     p_patientId INT(11)) RETURNS VARCHAR(3)
     DETERMINISTIC
 BEGIN
-    IF getPatientProgramTreatmentStartDate(p_patientId) IS NOT NULL THEN
+    IF getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY") IS NOT NULL THEN
         RETURN "Yes";
     ELSE
         RETURN "No";

@@ -1,0 +1,12 @@
+Uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1370
+b2722382-f514-42d6-ac43-476d45e668f3,,,Programme PTME,PMTCT Program,Programme PTME,PMTCT Program,Misc,Text,,
+b3d04698-0ea3-4ae1-bc1a-e52eb80f081e,,,Active dans la cohorte PTME,Active in the PMTCT cohort,Active dans la cohorte PTME,Active in the PMTCT cohort,Misc,N/A,,
+634b8d09-88e1-4b47-8acc-e4718c8ae015,,,Transférer dans une autre cohorte PTME (Nouvelle grossesse),Transfer to another PMTCT cohort (New pregnancy),Transférer dans une autre cohorte PTME (Nouvelle grossesse),Transfer to another PMTCT cohort (New pregnancy),Misc,N/A,,
+4b12a9ed-70de-40ea-940b-ea2ccb9d5e48,,,Initié au Traitement ARV (enfant),Initiated on ARV Treatment (child),Initié au Traitement ARV (enfant),Initiated on ARV Treatment (child),Misc,N/A,,
+95abfc55-1a2f-4cc3-a173-42c0cbb4dbc7,,,Non initié au traitement ARV (enfant),Not initiated on ARV treatment (child),Non initié au traitement ARV (enfant),Not initiated on ARV treatment (child),Misc,N/A,,
+b043630e-623f-4406-8f6b-2f66cf8b6269,,,VIH neg n'est Plus sous allaitement maternel (enfant),HIV neg no longer breastfeeding (child),VIH neg n'est Plus sous allaitement maternel (enfant),HIV neg no longer breastfeeding (child),Misc,N/A,,
+723e3e00-5846-4001-a68f-cb474ca11122,,,VIH neg est toujours allaité (enfant),HIV neg still breastfed (child),VIH neg est toujours allaité (enfant),HIV neg still breastfed (child),Misc,N/A,,
+5c46e4e3-ec62-4f4b-b08e-1623fced4688,,,Flux de travail du programme PMTCT,PMTCT Program Workflow,Flux de travail du programme PMTCT,PMTCT Program Workflow,Misc,N/A,,
+58fa4284-a100-450e-91b6-e302032f6bf6,,Depo;None;Condoms;Pills;Injection;Implants;IUCD;cb279713-3373-44be-91bf-ead37122d098,"PF, Méthode de Planification Familiale","FP, Family Planning Method",Méthode de planification familiale fournie,Family Planning Method Provided,Misc,Coded,,
+d5d20829-9e46-4d50-a085-6cb98213a7ea,,,ID Grossesse,ANC code  (Preg ID),ID Grossesse,ANC code  (Preg ID),Misc,Text,,
+8a3684ad-1ae0-47fd-b7bd-2f2cb1b97e5a,Active in the PMTCT cohort;a1ffcbd2-3372-45ea-8177-562c42af081d;Transfer to another PMTCT cohort (New pregnancy);1ac3320d-4f0b-4502-925d-01889ce7a1a4;7ca4f879-4862-4cd5-84b3-e1ead8ff54ff;Died;Initiated on ARV Treatment (child);Not initiated on ARV treatment (child);HIV neg no longer breastfeeding (child);HIV neg still breastfed (child),,Résultat du programme PTME,PMTCT Program Outcomes,Résultat du programme PTME,PMTCT Program Outcomes,Misc,Coded,,

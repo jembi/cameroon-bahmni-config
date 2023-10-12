@@ -16,6 +16,63 @@ CREATE FUNCTION Testing_Indicator1(
 BEGIN
     DECLARE result INT(11) DEFAULT 0;
 
+    DECLARE uuidHIVTestDate VARCHAR(38) DEFAULT "c6c08cdc-18dc-4f42-809c-959621bc9a6c";
+    DECLARE uuidCounselingForm VARCHAR(38) DEFAULT "6bfd85ce-22c8-4b54-af0e-ab0af24240e3";
+
+    DECLARE uuidHIVTestFinalResult VARCHAR(38) DEFAULT "41e48d08-2235-47d5-af12-87a009057603";
+    DECLARE uuidHIVTestSection VARCHAR(38) DEFAULT "b70dfca0-db21-4533-8c08-4626ff0de265";
+
+    SELECT
+        COUNT(DISTINCT pat.patient_id) INTO result
+    FROM patient pat
+    WHERE
+        (
+            SELECT p.gender = p_gender
+            FROM person p
+            WHERE p.person_id = pat.patient_id AND p.voided = 0
+        ) AND
+        (
+            (
+                SELECT
+                    cn.name = p_hivResult
+                FROM obs o
+                    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+                    JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+                WHERE o.voided = 0
+                    AND o.person_id = pat.patient_id
+                    AND c.uuid = uuidHIVTestFinalResult
+                    AND o.date_created BETWEEN p_startDate AND p_endDate
+                ORDER BY o.date_created DESC
+                LIMIT 1
+            ) AND
+            getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate
+            AND getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) IS NOT NULL
+        ) AND
+        getTestingEntryPoint(pat.patient_id) = p_testingEntryPoint AND
+        patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- Testing Report
+
+DROP FUNCTION IF EXISTS Testing_Indicator;
+
+DELIMITER $$
+CREATE FUNCTION Testing_Indicator(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1),
+    p_hivResult VARCHAR(8),
+    p_testingEntryPoint VARCHAR(50)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
     SELECT
         COUNT(DISTINCT pat.patient_id) INTO result
     FROM
@@ -1749,9 +1806,7 @@ DROP FUNCTION IF EXISTS getTestingEntryPointWithinRepPeriod;
 
 DELIMITER $$
 CREATE FUNCTION getTestingEntryPointWithinRepPeriod(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS VARCHAR(50)
+    p_patientId INT(11)) RETURNS VARCHAR(50)
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(50);
@@ -1765,7 +1820,6 @@ BEGIN
     WHERE o.voided = 0
         AND o.person_id = p_patientId
         AND c.uuid = uuidTestingEntryPoint
-        AND o.date_created BETWEEN p_startDate AND p_endDate
     ORDER BY o.date_created DESC
     LIMIT 1;
 
@@ -2096,3 +2150,111 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getHistoricalDateOfNotification
+
+DROP FUNCTION IF EXISTS getHistoricalDateOfNotification;
+
+DELIMITER $$
+CREATE FUNCTION getHistoricalDateOfNotification(
+    p_patientProgramId INT(11),
+    p_maxDate DATETIME) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+    JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+    WHERE ppah.patient_program_id = p_patientProgramId
+        AND ppah.date_created <= p_maxDate
+        AND pat.name = "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getMostRecentDateOfNotification
+
+DROP FUNCTION IF EXISTS getMostRecentDateOfNotification;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentDateOfNotification(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN patient_program pp ON pp.patient_program_id = ppah.patient_program_id
+        JOIN program p ON p.program_id = pp.program_id
+    WHERE
+        ppah.date_created BETWEEN p_startDate AND p_endDate AND
+        pat.name = "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE" AND
+        p.name = "INDEX_TESTING_PROGRAM_KEY"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getMostRecentNotificationOutcome
+
+DROP FUNCTION IF EXISTS getMostRecentNotificationOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentNotificationOutcome(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(ppah.value_reference) INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN patient_program pp ON pp.patient_program_id = ppah.patient_program_id
+        JOIN program p ON p.program_id = pp.program_id
+    WHERE
+        ppah.date_created BETWEEN p_startDate AND p_endDate AND
+        pat.name = "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME" AND
+        p.name = "INDEX_TESTING_PROGRAM_KEY"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getNotificationOutcome
+
+DROP FUNCTION IF EXISTS getNotificationOutcome;
+
+DELIMITER $$
+CREATE FUNCTION getNotificationOutcome(
+    p_patientProgramId INT(11),
+    p_maxDate DATETIME) RETURNS VARCHAR(250)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(250);
+    
+    SELECT cn.name INTO result
+    FROM patient_program_attribute_history ppah
+        JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppah.attribute_type_id
+        JOIN concept_name cn ON cn.concept_id = ppah.value_reference AND cn.locale = "en"
+    WHERE ppah.patient_program_id = p_patientProgramId
+        AND ppah.date_created <= p_maxDate
+        AND pat.name = "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME"
+    ORDER BY ppah.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;

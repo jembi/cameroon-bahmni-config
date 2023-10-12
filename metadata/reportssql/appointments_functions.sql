@@ -1,4 +1,4 @@
--- patientHasScheduledAnARTAppointmentDuringReportingPeriod
+-- patientHasScheduledAnARTAppointment
 
 DROP FUNCTION IF EXISTS patientHasScheduledAnARTAppointment;
 
@@ -22,6 +22,22 @@ BEGIN
     GROUP BY pa.patient_id;
 
     RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- getDayBetweenLastAppointmentAndLastArvPickupDate
+
+DROP FUNCTION IF EXISTS getDayBetweenLastAppointmentAndLastArvPickupDate;
+
+DELIMITER $$
+CREATE FUNCTION getDayBetweenLastAppointmentAndLastArvPickupDate(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+    SET result = DATEDIFF(getDateLatestARVRelatedVisit(p_patientId), getDateMostRecentARVAppointmentBeforeOrEqualToDate(p_patientId, p_endDate));
+    RETURN (result);
 END$$ 
 DELIMITER ;
 
@@ -147,6 +163,36 @@ BEGIN
             AND (aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
             AND pa.start_date_time > lastArvPickupDate
         ORDER BY pa.start_date_time DESC
+        LIMIT 1);
+END$$ 
+DELIMITER ;
+
+
+-- getARTAppointmentOnOrAfterDate
+
+DROP FUNCTION IF EXISTS getARTAppointmentOnOrAfterDate;
+
+DELIMITER $$
+CREATE FUNCTION getARTAppointmentOnOrAfterDate(
+    p_patientId INT(11),
+    p_date DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+
+    IF p_date IS NULL THEN
+        RETURN NULL;
+    END IF;
+
+    RETURN(
+        SELECT pa.start_date_time
+        FROM patient_appointment pa
+        JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+        WHERE pa.voided = 0
+            AND pa.patient_id = p_patientId
+            AND (aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY")
+            AND pa.status <> "Cancelled"
+            AND pa.start_date_time >= p_date
+        ORDER BY pa.start_date_time ASC
         LIMIT 1);
 END$$ 
 DELIMITER ;

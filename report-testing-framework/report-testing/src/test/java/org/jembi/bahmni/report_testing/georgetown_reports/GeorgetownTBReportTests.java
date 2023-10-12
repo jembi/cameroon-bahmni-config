@@ -73,11 +73,23 @@ public class GeorgetownTBReportTests extends BaseReportTest {
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.YES,
             encounterId);
-        
+
+        testDataGenerator.tbForm.setTBScreeningResult(
+            patientId,
+            new LocalDateTime(2020, 1, 6, 10, 0),
+            ConceptEnum.SUSPECTED_PROBABLE,
+            encounterId);
+
         testDataGenerator.tbForm.setMTBConfirmation(
             patientId,
             new LocalDateTime(2020, 1, 6, 10, 0),
             ConceptEnum.MTB_BACTERIOLOGICALLY_CONFIRMED,
+            encounterId);
+        
+        testDataGenerator.tbForm.setMethodOfConfirmation(
+            patientId,
+            new LocalDateTime(2020, 1, 6, 10, 0),
+            ConceptEnum.SMEAR,
             encounterId);
 
         // Execute
@@ -92,7 +104,9 @@ public class GeorgetownTBReportTests extends BaseReportTest {
         // Assert
 		assertEquals(result.get(0).get("serialNumber"), "1");
 		assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
+		assertEquals(result.get(0).get("Facility Name"), "CENTRE");
 		assertEquals(result.get(0).get("telephone"), "081234567");
+		assertEquals(result.get(0).get("Type of Exam"), "Smear");
 		assertEquals(result.get(0).get("dateTBPosDiag"), "2020-01-06");
 		assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 1, 15), LocalDate.now()).getYears()+"");
 		assertEquals(result.get(0).get("dateOfBirth"), "2000-01-15");

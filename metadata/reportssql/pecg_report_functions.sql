@@ -1,9 +1,9 @@
 -- PECG Report
 
-DROP FUNCTION IF EXISTS PECG_Indicator2;
+DROP FUNCTION IF EXISTS PECG_Indicator1;
 
 DELIMITER $$
-CREATE FUNCTION PECG_Indicator2(
+CREATE FUNCTION PECG_Indicator1(
     p_startDate DATE,
     p_endDate DATE,
     p_startAge INT(11),
@@ -31,10 +31,10 @@ WHERE
 END$$ 
 DELIMITER ;
 
-DROP FUNCTION IF EXISTS PECG_Indicator3;
+DROP FUNCTION IF EXISTS PECG_Indicator2;
 
 DELIMITER $$
-CREATE FUNCTION PECG_Indicator3(
+CREATE FUNCTION PECG_Indicator2(
     p_startDate DATE,
     p_endDate DATE,
     p_startAge INT(11),
@@ -62,6 +62,7 @@ WHERE
 END$$ 
 DELIMITER ;
 
+-- PECG_Indicator4;
 DROP FUNCTION IF EXISTS PECG_Indicator4;
 
 DELIMITER $$
@@ -82,16 +83,17 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0)
-    ) AND
+    patientHasChangedLineProtocol(pat.patient_id) AND
+    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) IN ("1st line", "1st substituted line") AND
+    getNewARVProtocol(pat.patient_id, p_endDate) = "2nd line" AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotTransferredOut(pat.patient_id) AND 
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -118,15 +120,14 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 1)
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
+    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
+    patientIsNotDead(pat.patient_Id) AND
+    patientIsNotLostToFollowUp(pat.patient_Id) AND
+    patientIsNotTransferredOut(pat.patient_Id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
 
     RETURN (result);
 END$$ 
@@ -152,16 +153,15 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, 0) AND
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 2),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 2)
-    ) AND
+    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -188,15 +188,82 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    IF (
-        isOldPatient(pat.patient_id, p_startDate),
-        patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3),
-        patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 3)
-    ) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator9;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator9(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator8;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator8(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") IN ("Yes","Yes full name") AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -223,11 +290,40 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') = "Dead" AND
+    getMostRecentProgramCompletionDate(pat.patient_id, 'HIV_PROGRAM_KEY') BETWEEN p_startDate AND p_endDate;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator12;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator12(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    NOT patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    IFNULL (getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') <>  "Refused (Stopped) Treatment", TRUE) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -254,9 +350,9 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    patientHadViralLoadTest3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
+    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -517,13 +613,17 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    getObsCodedValue(pat.patient_id, "3dce13a8-c7e5-45ec-a6f0-8050fd4a2ca2") = "Initiated treatment" AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
-
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND 
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -740,15 +840,17 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND IF (
             patientIsAdult(p_patientId),
             drugIsAdultProphylaxis(d.concept_id),
             drugIsChildProphylaxis(d.concept_id))
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     GROUP BY o.patient_id;
 
@@ -794,7 +896,8 @@ BEGIN
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
     JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId AND p.voided = 0
-        AND c.uuid = uuidPatientLostToFollowUp;
+        AND c.uuid = uuidPatientLostToFollowUp
+    LIMIT 1;
 
     RETURN (!patientLostToFollowUp );
 END$$
@@ -810,18 +913,20 @@ CREATE FUNCTION patientIsNotTransferredOut(
     DETERMINISTIC
 BEGIN
     DECLARE patientTransferedOut TINYINT(1) DEFAULT 0;
+    DECLARE conceptIdTransferredOut INT;
 
-    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "c614b7a3-9ffa-4047-8c20-f42e6a347deb";
+    DECLARE uuidPatientTransferredOut VARCHAR(38) DEFAULT "b949cd75-97cb-4de2-9553-e6d335696f07";
+    SELECT concept_id INTO conceptIdTransferredOut FROM concept WHERE uuid = uuidPatientTransferredOut;
 
-    SELECT TRUE INTO patientTransferedOut
+    SELECT pp.outcome_concept_id = conceptIdTransferredOut INTO patientTransferedOut
     FROM person p
     JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
-    JOIN concept c ON c.concept_id = pp.outcome_concept_id
     WHERE p.person_id = p_patientId
         AND p.voided = 0 
-        AND c.uuid = uuidPatientTransferredOut;
+    ORDER BY pp.patient_program_id DESC
+    LIMIT 1;
 
-    RETURN (!patientTransferedOut); 
+    RETURN COALESCE(!patientTransferedOut, 1); 
 
 END$$
 DELIMITER ;
@@ -845,6 +950,7 @@ BEGIN
     JOIN concept c ON c.concept_id = ppt.value_reference
     WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
         AND c.uuid = uuidPatientIsUnplannedAid
+    ORDER BY pp.patient_program_id DESC
     LIMIT 1;
     RETURN (patientIsUnplannedAid );
 END$$
@@ -888,11 +994,13 @@ BEGIN
 
     SELECT TRUE INTO drugNotDispensed
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND patientHasTherapeuticLine(p_patientId, p_protocolLineNumber)
         AND o.scheduled_date BETWEEN TIMESTAMPADD(MONTH,p_monthOffset,p_startDate) AND TIMESTAMPADD(MONTH,p_monthOffset,p_endDate)
         AND !drugOrderIsDispensed(p_patientId, o.order_id)
@@ -900,12 +1008,14 @@ BEGIN
 
     SELECT FALSE INTO drugNotOrdered
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND patientHasTherapeuticLine(p_patientId, p_protocolLineNumber)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN TIMESTAMPADD(MONTH,p_monthOffset,p_startDate) AND TIMESTAMPADD(MONTH,p_monthOffset,p_endDate)
     GROUP BY o.patient_id;
 
@@ -924,7 +1034,7 @@ CREATE FUNCTION patientHasStartedARVTreatment12MonthsAgo(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -996,13 +1106,15 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND patientHasTherapeuticLine(p_patientId, p_protocolLineNumber)
         AND o.scheduled_date < p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -1027,8 +1139,8 @@ CREATE FUNCTION patientHadTBExaminationDuringReportingPeriod(
     DETERMINISTIC
 BEGIN
     DECLARE result TINYINT(1) DEFAULT 0;
-    DECLARE tbScreenedUuid VARCHAR(38) DEFAULT "b5e95e00-b0bc-411b-993b-50ace78cdaf6";
-    DECLARE tbScreenedDateUuid VARCHAR(38) DEFAULT "55185e73-e634-4dfc-8ec0-02086e8c54d0";
+    DECLARE tbScreenedUuid VARCHAR(38) DEFAULT "f0447183-d13f-463d-ad0f-1f45b99d97cc";
+    DECLARE tbScreenedDateUuid VARCHAR(38) DEFAULT "1d4a6dc4-c478-4021-982b-62e3c84f7857";
     DECLARE yesFullNameUuid VARCHAR(38) DEFAULT "8f864633-beb0-4bd7-a75c-703affdcd93d";
     DECLARE tbScreened TINYINT(1) DEFAULT 0;
     DECLARE tbScreenedDate DATE;
@@ -1063,3 +1175,179 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+-- patientHasChangedLineProtocol
+
+DROP FUNCTION IF EXISTS patientHasChangedLineProtocol;
+
+DELIMITER $$
+CREATE FUNCTION patientHasChangedLineProtocol(
+  p_patientId INT(11)) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+  DECLARE patientChangedProtocolLineFromAdultFUForm TINYINT(1) DEFAULT getMostRecentObsBooleanValue(p_patientId, "0e86e2e4-d6e6-45af-9a60-496639e1c5e3");
+  DECLARE possibleTherapeuticChangeFromChildFUForm VARCHAR(256) DEFAULT getObsCodedValue(p_patientId, "2f02df8b-3745-4864-8bf6-ccbf831c020c");
+  
+  IF(patientChangedProtocolLineFromAdultFUForm OR possibleTherapeuticChangeFromChildFUForm = "Changing ART") THEN
+    RETURN TRUE;
+  ELSE
+    RETURN FALSE;
+  END IF;
+END$$
+DELIMITER ;
+
+-- getMostRecentObsBooleanValue
+
+DROP FUNCTION IF EXISTS getMostRecentObsBooleanValue;
+
+DELIMITER $$
+CREATE FUNCTION getMostRecentObsBooleanValue(
+  p_patientId INT(11),
+  conceptUuid VARCHAR(38)
+  ) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+
+    DECLARE mostRecentObsValue VARCHAR(250);
+
+    SELECT name INTO mostRecentObsValue
+    FROM (
+        SELECT MAX(o.obs_datetime), cn.name
+        FROM obs o
+            JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+            JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale ='en'
+        WHERE o.voided = 0
+            AND o.person_id = p_patientId
+            AND o.concept_id = (SELECT co.concept_id FROM concept co WHERE co.uuid = conceptUuid)
+        GROUP BY o.person_id
+    ) t ;
+
+    IF(mostRecentObsValue = 'Yes') THEN
+      RETURN TRUE;
+    ELSE
+      RETURN FALSE;
+    END IF;
+END$$
+DELIMITER ;
+
+-- getLastARVProtocolInPreviousMonth
+
+DROP FUNCTION IF EXISTS getLastARVProtocolInPreviousMonth;
+
+DELIMITER $$
+CREATE FUNCTION getLastARVProtocolInPreviousMonth(
+  p_patientId INT(11),
+  p_startDate DATE
+    ) RETURNS VARCHAR(250)
+DETERMINISTIC
+BEGIN
+
+    DECLARE result VARCHAR(250);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    JOIN concept c ON cn.concept_id = c.concept_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND c.uuid = "93abe599-63f4-4a94-9614-1d7d824e1e82"
+        AND cn2.locale = "en"
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+        AND 
+            (
+                SELECT o2.value_datetime
+                FROM obs o2
+                WHERE
+                    o2.person_id = o.person_id
+                    AND o2.concept_id = (SELECT concept_id FROM concept WHERE uuid="a4cfd327-403b-4cf6-aec2-e96ae2b68fb2")
+                    AND o2.voided = 0
+                ORDER BY o2.value_datetime DESC
+                LIMIT 1
+            ) BETWEEN p_startDate AND TIMESTAMPADD(DAY, 30, p_startDate)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- getNewARVProtocol
+
+DROP FUNCTION IF EXISTS getNewARVProtocol;
+
+DELIMITER $$
+CREATE FUNCTION getNewARVProtocol(
+  p_patientId INT(11),
+  p_endDate DATE
+    ) RETURNS VARCHAR(250)
+DETERMINISTIC
+BEGIN
+
+    DECLARE result VARCHAR(250);
+
+    SELECT cn2.name INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.concept_id
+    JOIN concept_name cn2 ON cn2.concept_id = o.value_coded
+    JOIN concept c ON cn.concept_id = c.concept_id
+    WHERE o.person_id = p_patientId
+        AND o.voided = 0
+        AND c.uuid = "880dad2e-d582-4f81-a52d-68488897328f"
+        AND cn2.locale = "en"
+        AND cn2.concept_name_type = "FULLY_SPECIFIED"
+        AND 
+            (
+                SELECT o2.value_datetime
+                FROM obs o2
+                WHERE
+                    o2.person_id = o.person_id
+                    AND o2.concept_id = (SELECT concept_id FROM concept WHERE uuid="a4cfd327-403b-4cf6-aec2-e96ae2b68fb2")
+                    AND o2.voided = 0
+                ORDER BY o2.value_datetime DESC
+                LIMIT 1
+            ) <= p_endDate
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
+-- PECG_Indicator4b
+DROP FUNCTION IF EXISTS PECG_Indicator4b;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator4b(
+  p_startDate DATE,
+  p_endDate DATE,
+  p_startAge INT(11),
+  p_endAge INT (11),
+  p_includeEndAge TINYINT(1),
+  p_gender VARCHAR(1)) RETURNS INT(11)
+  DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+  COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+  patient pat
+WHERE
+  patientGenderIs(pat.patient_id, p_gender) AND
+  patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+  patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
+  patientHasChangedLineProtocol(pat.patient_id) AND
+  getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) = "2nd line" AND
+  getNewARVProtocol(pat.patient_id, p_endDate) = "3rd line" AND
+  patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+  patientIsNotDead(pat.patient_id) AND
+  patientIsNotLostToFollowUp(pat.patient_id) AND
+  patientIsNotTransferredOut(pat.patient_id) AND
+  patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+  NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+RETURN (result);
+END$$
+DELIMITER ;
+

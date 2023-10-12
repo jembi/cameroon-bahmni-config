@@ -1293,13 +1293,13 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},	
-	'Neutrolphils': function(formName, formFieldValues) {
+	'Neutrophils': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Neutrolphils'];
+		var value = formFieldValues['Neutrophils'];
 		if (value && value !== "") {	
-			conditions.show.push("Neutrolphils Test Date");
+			conditions.show.push("Neutrophils Test Date");
 		} else {	
-			conditions.hide.push("Neutrolphils Test Date");
+			conditions.hide.push("Neutrophils Test Date");
 		}	
 		return conditions;	
 	},	
@@ -2589,9 +2589,9 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Gama GT': function(formName, formFieldValues) {
+	'GGT (Gamma-Glutamyl Transferase) Test': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Gama GT'];
+		var value = formFieldValues['GGT (Gamma-Glutamyl Transferase) Test'];
 		if (value && value !== "") {	
 			conditions.show.push("Gama GT Test Date");
 		} else {	
@@ -3090,6 +3090,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 	/**
 	 * Handling conditions for CHILD EXPOSED TO HIV form
 	 */
+	'Prophylaxis (Cotrimoxazole)': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis (Cotrimoxazole)'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("CTX at 6 weeks");
+		} else {
+			conditions.hide.push("CTX at 6 weeks");
+		}
+		return conditions;
+
+	},
 	'Rapid Test 1 (9 to 18 months)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Rapid Test 1 (9 to 18 months)'];
@@ -3342,4 +3353,73 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}
 		return conditions;
 	},
+
+	/**
+	 * Handling conditions for Patient with HIV - adult follow up form
+	 */
+
+	'Has the treatment been changed': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Has the treatment been changed'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Last ARV Protocol for the previous month");
+			conditions.show.push("New ARV protocol line");
+			
+		} else {
+			conditions.hide.push("Last ARV Protocol for the previous month");
+			conditions.hide.push("New ARV protocol line");
+		}
+		return conditions;
+	},
+
+	/**
+	 * Handling conditions for Patient with HIV - child follow up form
+	 */
+
+	'Possible therapeutic change': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Possible therapeutic change'];
+		if (value === "Changing ART" || value === "Changing ART") {
+			conditions.show.push("Last ARV Protocol for the previous month");
+			conditions.show.push("New ARV protocol line");
+			
+		} else {
+			conditions.hide.push("Last ARV Protocol for the previous month");
+			conditions.hide.push("New ARV protocol line");
+		}
+		return conditions;
+	},
+
+	/**
+	 * Handling conditions for TB form
+	 */
+
+	'TB confirmation test done ?': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['TB confirmation test done ?'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Type of investigation done");
+			conditions.show.push("MTB confirmation");
+			
+		} else {
+			conditions.hide.push("Type of investigation done");
+			conditions.hide.push("MTB confirmation");
+		}
+		return conditions;
+	},
+
+	/*
+	*  Handling conditions for LABOR AND DELIVERY Form
+	*/
+	'Prophylaxis ARV': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};
+		var value = formFieldValues['Prophylaxis ARV'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("L&D_Protocol");
+			
+		} else {
+			conditions.hide.push("L&D_Protocol");
+		}
+		return conditions;
+	}
 };

@@ -4,7 +4,7 @@ deaedc5b-df3d-4b16-9c8e-8273204d06ed,,,Nom et Prénom,Name and Surname,Nom et Pr
 bba56cfe-24ca-45b2-800a-e5ad8848327a,,,En activité,Inactive,En activité,Inactive,Misc,N/A,,
 ecb5b769-9b5e-4e67-9861-49c51ed6246f,,Inactive;Unemployed;Retired,Profession 2,Occupation 2,Profession,Occupation,Misc,Coded,,
 62bebc82-ec99-4f21-9c4a-86d7a9dd9a66,,,Quartier de rèsidence,Area of ​​Residence,Quartier de rèsidence,Area of ​​Residence,Misc,Text,,
-7e919f25-0e0f-43e3-ad5b-1672edde58aa,,,Tèlèphone,Telephone,Tèlèphone,Telephone,Misc,Text,,
+7e919f25-0e0f-43e3-ad5b-1672edde58aa,,,Téléphone,Telephone,Téléphone,Telephone,Misc,Text,,
 d7413d04-a67a-4be1-acd1-8c5577847dc8,,Negative;Positive;Indeterminate;Unknown,Statut sèrologique,Serological status,Statut sèrologique,Serological status,Misc,Coded,,
 a731e98d-627c-4641-9848-9731f85e7f09,,Yes full name;No full name,Traitement ARV,ARV treatment,Traitement ARV,ARV treatment,Misc,Coded,,
 bebdb27d-995c-4724-9e85-22473fbbecc4,,,Si Oui depuis le,If Yes since,Si Oui depuis le,If Yes since,Misc,Date,,
@@ -42,6 +42,7 @@ f51cb3ed-1e31-4709-8354-a30223e76ac9,Age Sibling 7;Living/DCD;Tested;On treatmen
 06cdee43-3dc7-45cc-9b19-2b0a36d9ea63,,,Consultation de PTME,PMTCT Consultation,Consultation de PTME,PMTCT Consultation,Misc,N/A,,
 cd8dd320-a4ac-4ed8-be65-369ac10ccd67,,,Dépistage après un cas indexé,Screening after an indexed case,Dépistage après un cas indexé,Screening after an indexed case,Misc,N/A,,
 7b70c5a3-5950-46ee-a011-4ccc6351b86c,,,Service des urgences,Emergency Department,Service des urgences,Emergency Department,Misc,N/A,,
+
 a6534470-c3df-474c-adaf-b6924d66615c,,,Consultation extemes,External Consultation,Consultation extemes,External Consultation,Misc,N/A,,
 d009d68e-04ac-4d6c-81bc-488a5ebe7e55,,,Prise en charge nutritionnelle,Nutritional Management,Prise en charge nutritionnelle,Nutritional Management,Misc,N/A,,
 e3af6d64-8652-43e8-9d57-4edeebefb2bd,,,Prise en charge de la tuberculose,Management of tuberculosis,Prise en charge de la tuberculose,Management of tuberculosis,Misc,N/A,,
@@ -120,7 +121,9 @@ a39acdbf-02f1-4bad-ab30-805e40e3e7ae,,,Allergies,Allergies,Allergies,Allergies,M
 6624a3e9-abb2-42ff-8b5c-92bcdae1c928,,,Duration in hospital (day),Duration in hospital (day),Duration in hospital (day),Duration in hospital (day),Misc,Numeric,,
 ef95725f-cfe3-435d-9443-c0e858d39802,,,MOTIF,Pattern,MOTIF,Pattern,Misc,Text,,
 30dcc74a-5554-482f-a5a0-9f6fb3c2a556,Has the child ever been hospitalized for more than 24 hours;Date of hospitalization;Duration in hospital (day);Pattern,,Hospitalisation,Inpatient,Hospitalisation,Inpatient,Misc,N/A,,
+
 735e2bec-ea5b-48bb-8deb-e1926999023f,,PMTCT Consultation;Screening after an indexed case;Inpatient;Emergency Department;External Consultation;Nutritional Management;Management of tuberculosis;cb279713-3373-44be-91bf-ead37122d098,Porte d'entrée,Entry Point,Porte d'entrée,Entry Point,Misc,Coded,,
+
 d788d341-9144-42a7-aa70-8b4fa0fb92af,,,Transféré d'une UPEC (laquelle),Transferred to a UPEC (which),Transféré d'une UPEC (laquelle),Transferred to a UPEC (which),Misc,Text,,
 f056289f-85bb-45c7-8977-497fa8062e33,"735e2bec-ea5b-48bb-8deb-e1926999023f;If other specify;Transferred to a UPEC (which);Provider Initiated Testing and Couseling;Circumstance initial screening;Other circumstances;The diagnosis is based on;Date of diagnosis;Path of transmission;If other routes specify;Exposure to ARVs other than PMTCT? (Post-exposure prophylaxis, rape, etc.);If yes, select ARV used",,Histoire de l'exposition,History of the HIV exposure,Histoire de l'exposition,History of the HIV exposure,Misc,N/A,,
 bd4439cc-bdaf-4868-a777-e359282b0db7,,,BCG - Naissance,BCG - Birth,BCG,BCG,Misc,Date,,

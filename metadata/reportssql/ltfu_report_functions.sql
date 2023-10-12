@@ -63,6 +63,37 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+-- getDateMostRecentARVAppointmentWhereStatusMissed
+
+DROP FUNCTION IF EXISTS getDateMostRecentARVAppointmentWhereStatusMissed;
+
+DELIMITER $$
+CREATE FUNCTION getDateMostRecentARVAppointmentWhereStatusMissed(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(pa.start_date_time) INTO result
+    FROM patient_appointment pa
+    JOIN appointment_service aps ON aps.appointment_service_id = pa.appointment_service_id AND aps.voided = 0
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+        AND (pa.status = "Scheduled" OR pa.status = "Missed")
+        AND (
+            aps.name = "APPOINTMENT_SERVICE_ANC_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_ART_DISPENSARY_KEY" OR
+            aps.name = "APPOINTMENT_SERVICE_OPD_KEY")
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getDateMostRecentHIVRelatedEncounterWithinReportingPeriod
 
 DROP FUNCTION IF EXISTS getDateMostRecentHIVRelatedEncounterWithinReportingPeriod;
@@ -110,11 +141,13 @@ BEGIN
 
     SELECT o.scheduled_date INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     ORDER BY o.scheduled_date DESC
     LIMIT 1;

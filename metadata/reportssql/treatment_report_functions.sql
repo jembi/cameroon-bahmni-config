@@ -19,15 +19,16 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNewlyInitiatingART(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsPregnant(pat.patient_id) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    (
+        patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
+        patientIsNewlyInitiatingART(pat.patient_id)
+    ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
+
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -52,12 +53,12 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramBefore(pat.patient_id, p_startDate) AND
-    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
-    patientAlreadyOnART(pat.patient_id, p_startDate) AND
-    patientIsPregnant(pat.patient_id) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    patientAgeAtReportEndDateIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge, p_endDate) AND
+    patientDateOfFirstANCVisitOnANCFormWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    (
+        patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) OR
+        patientAlreadyOnART(pat.patient_id)
+    ) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -92,7 +93,7 @@ WHERE
     patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
-        (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_minDuration, p_maxDuration) OR
+        (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration) OR
             patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)),
         patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)
     ) AND
@@ -100,7 +101,7 @@ WHERE
     patientIsNotLostToFollowUp(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
     );
 
     RETURN (result);
@@ -129,7 +130,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding) = 'true') AND
+    (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding, "HIV_PROGRAM_KEY") = 'true') AND
     patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
@@ -138,7 +139,7 @@ WHERE
     patientIsNotLostToFollowUp(pat.patient_id) AND
     (
         patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, 0, 2000)
+        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
     );
 
     RETURN (result);
@@ -548,15 +549,49 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
     GROUP BY o.patient_id;
 
     RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- patientIsEligibleForCommunityDispensation
+
+DROP FUNCTION IF EXISTS patientIsEligibleForCommunityDispensation;
+
+DELIMITER $$
+CREATE FUNCTION patientIsEligibleForCommunityDispensation(
+    p_patientId INT(11),
+    p_endDate DATE) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE dateEligibleCommunityART DATE;
+    DECLARE dateStoppedCommunityART DATE;
+
+    SET dateEligibleCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_90_DATE_ELIGIBLE_COMMUNITY_ART');
+    SET dateStoppedCommunityART = getPatientMostRecentProgramAttributeDateValueFromName(p_patientId, 'PROGRAM_MANAGEMENT_93_DATE_STOPPED_COMMUNITY_ART');
+
+    IF (
+        dateEligibleCommunityART IS NOT NULL AND
+        dateEligibleCommunityART < p_endDate AND
+        ( dateStoppedCommunityART IS NULL OR
+          dateStoppedCommunityART < dateEligibleCommunityART OR
+          dateStoppedCommunityART > p_endDate
+        )
+       ) THEN
+        RETURN "Yes";
+    ELSE
+        RETURN "No";
+    END IF;
 END$$ 
 DELIMITER ;
 
@@ -578,12 +613,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date < p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -609,8 +646,65 @@ DELIMITER $$
 CREATE FUNCTION patientOnARTDuringPartOfReportingPeriodAndDurationBetween(
     p_patientId INT(11),
     p_startDate DATE,
+    p_endDate DATE,
     p_minDuration INT(11),
     p_maxDuration INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE orderIdMostRecentDispense INT(11);
+
+    SELECT o.order_id INTO orderIdMostRecentDispense
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date IS NOT NULL
+        AND o.scheduled_date <= p_endDate
+    ORDER BY o.scheduled_date
+    LIMIT 1;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date < p_startDate
+        AND calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid -- uuid of the duration unit concept
+            ) >= p_startDate
+        AND o.scheduled_date IS NOT NULL
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration
+        AND orderIdMostRecentDispense IS NOT NULL
+        AND o.order_id = orderIdMostRecentDispense
+    GROUP BY o.patient_id;
+
+    RETURN (result );
+END$$ 
+DELIMITER ;
+
+-- patientPrescribedARTDuringPartOfReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTDuringPartOfReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTDuringPartOfReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
 
@@ -618,29 +712,166 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
-        AND drugOrderIsDispensed(o.patient_id, o.order_id)
-        AND o.scheduled_date < p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
             ) >= p_startDate
+        AND o.scheduled_date IS NOT NULL
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientPrescribedARTForEntireReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTForEntireReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTForEntireReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date <= p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
             c.uuid -- uuid of the duration unit concept
-            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
-                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))    
+            ) >= p_endDate
+        AND o.scheduled_date IS NOT NULL
     GROUP BY o.patient_id;
 
-    RETURN (result );
+    RETURN (result);
 END$$ 
 DELIMITER ;
+
+-- patientPrescribedARTBeforeTheReportingPeriod
+
+DROP FUNCTION IF EXISTS patientPrescribedARTBeforeTheReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientPrescribedARTBeforeTheReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND o.scheduled_date <= p_startDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date IS NOT NULL
+    GROUP BY o.patient_id;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+-- patientARTPrescriptionEndDate
+
+DROP FUNCTION IF EXISTS patientARTPrescriptionEndDate;
+
+DELIMITER $$
+CREATE FUNCTION patientARTPrescriptionEndDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+    LIMIT 1;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
+-- patientHasBeenDispensedARVDuringFullMonth
+
+DROP FUNCTION IF EXISTS patientHasBeenDispensedARVDuringFullMonth;
+
+DELIMITER $$
+CREATE FUNCTION patientHasBeenDispensedARVDuringFullMonth(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT 
+        TRUE INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND (
+            DAY(GREATEST(DATE(o.scheduled_date), p_startDate)) = 1
+            OR
+            TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 2
+        )
+        AND TIMESTAMPDIFF(
+                MONTH,
+                GREATEST(DATE(o.scheduled_date), p_startDate),
+                LEAST(calculateTreatmentEndDate(DATE(o.scheduled_date), do.duration, c.uuid), p_endDate) + INTERVAL 1 DAY
+            ) >= 1
+    LIMIT 1;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 
 -- patientPickedARVDrugDuringReportingPeriodAndDurationBetween
 
@@ -657,22 +888,39 @@ CREATE FUNCTION patientPickedARVDrugDuringReportingPeriodAndDurationBetween(
 BEGIN
 
     DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE orderIdMostRecentDispense INT(11);
 
-    SELECT TRUE INTO result
+    SELECT o.order_id INTO orderIdMostRecentDispense
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date IS NOT NULL
+        AND o.scheduled_date <= p_endDate
+    ORDER BY o.scheduled_date
+    LIMIT 1;
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(o.patient_id, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+        AND o.scheduled_date IS NOT NULL
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
-        AND calculateTreatmentEndDate(
-            o.scheduled_date,
-            do.duration,
-            c.uuid -- uuid of the duration unit concept
-            ) BETWEEN DATE(timestampadd(MONTH, p_minDuration, o.scheduled_date))
-                AND DATE(timestampadd(DAY, -1, timestampadd(MONTH, p_maxDuration, o.scheduled_date)))
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) >= p_minDuration
+        AND calculateDurationInMonths(o.scheduled_date, do.duration,c.uuid) < p_maxDuration
+        AND orderIdMostRecentDispense IS NOT NULL
+        AND o.order_id = orderIdMostRecentDispense
     GROUP BY o.patient_id;
 
     RETURN (result );
@@ -688,7 +936,8 @@ CREATE FUNCTION getProgramAttributeValueWithinReportingPeriod(
     p_patientId INT(11),
     p_startDate DATE,
     p_endDate DATE,
-    p_uuidProgramAttribute VARCHAR(38)) RETURNS VARCHAR(250)
+    p_uuidProgramAttribute VARCHAR(38),
+    p_program VARCHAR(240)) RETURNS VARCHAR(250)
     DETERMINISTIC
 BEGIN
     DECLARE result VARCHAR(250);
@@ -697,10 +946,12 @@ BEGIN
     FROM patient_program_attribute ppa
         JOIN program_attribute_type pat ON pat.program_attribute_type_id = ppa.attribute_type_id AND pat.retired = 0
         JOIN patient_program pp ON ppa.patient_program_id = pp.patient_program_id AND pp.voided = 0
+        JOIN program p ON pp.program_id = p.program_id
     WHERE
         ppa.voided = 0 AND
         pp.patient_id = p_patientId AND
         pat.uuid = p_uuidProgramAttribute AND
+        p.name = p_program AND
         ppa.date_created BETWEEN p_startDate AND p_endDate
     ORDER BY ppa.date_created DESC
     LIMIT 1;
@@ -742,19 +993,15 @@ DROP FUNCTION IF EXISTS patientIsNewlyInitiatingART;
 
 DELIMITER $$
 CREATE FUNCTION patientIsNewlyInitiatingART(
-    p_patientId INT(11),
-    p_startDate DATE,
-    p_endDate DATE) RETURNS TINYINT(1)
+    p_patientId INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE isNewlyInitiatingART TINYINT(1) DEFAULT 0;
-    DECLARE artStartedDuringReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
     DECLARE uuidNewlyInitiatingART VARCHAR(38) DEFAULT "31314c4c-c0b9-4b86-bd68-3449ff0ad20c";
-    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
 
     SELECT
-        TRUE INTO isNewlyInitiatingART
+        TRUE INTO result
     FROM obs o
     JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
     WHERE o.voided = 0
@@ -763,17 +1010,7 @@ BEGIN
         AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidNewlyInitiatingART)
     LIMIT 1;
 
-    SELECT
-        TRUE INTO artStartedDuringReportingPeriod
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidStartDate
-        AND cast(o.value_datetime AS DATE) BETWEEN p_startDate AND p_endDate
-    LIMIT 1;
-
-    RETURN (isNewlyInitiatingART && artStartedDuringReportingPeriod);
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -793,12 +1030,14 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
         AND o.scheduled_date BETWEEN p_startDate AND p_endDate
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND drugOrderIsDispensed(p_patientId, o.order_id)
     GROUP BY o.patient_id;
 
@@ -821,11 +1060,13 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM orders o
-    JOIN drug_order do ON do.order_id = o.order_id
-    JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
-    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN concept c ON do.duration_units = c.concept_id AND c.retired = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
     WHERE o.patient_id = p_patientId AND o.voided = 0
         AND drugIsARV(d.concept_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
         AND calculateTreatmentEndDate(
             o.scheduled_date,
             do.duration,
@@ -848,7 +1089,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -863,18 +1104,15 @@ DROP FUNCTION IF EXISTS patientAlreadyOnART;
 
 DELIMITER $$
 CREATE FUNCTION patientAlreadyOnART(
-    p_patientId INT(11),
-    p_startDate DATE) RETURNS TINYINT(1)
+    p_patientId INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE isAlreadyOnART TINYINT(1) DEFAULT 0;
-    DECLARE artStartedBeforeReportingPeriod TINYINT(1) DEFAULT 0;
+    DECLARE result TINYINT(1) DEFAULT 0;
     DECLARE uuidARTStatus VARCHAR(38) DEFAULT "f961ec41-cd5d-4b45-91e0-0f5a408fea4b";
     DECLARE uuidAlreadyOnART VARCHAR(38) DEFAULT "6122279f-93a8-4e5a-ac5e-b347b60c989b";
-    DECLARE uuidStartDate VARCHAR(38) DEFAULT "d986e715-14fd-4ae1-9ef2-7a60e3a6a54e";
 
     SELECT
-        TRUE INTO isAlreadyOnART
+        TRUE INTO result
     FROM obs o
     JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
     WHERE o.voided = 0
@@ -883,17 +1121,7 @@ BEGIN
         AND o.value_coded = (SELECT concept_id FROM concept WHERE uuid = uuidAlreadyOnART)
     LIMIT 1;
 
-    SELECT
-        TRUE INTO artStartedBeforeReportingPeriod
-    FROM obs o
-    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-    WHERE o.voided = 0
-        AND o.person_id = p_patientId
-        AND c.uuid = uuidStartDate
-        AND cast(o.value_datetime AS DATE) < p_startDate
-    LIMIT 1;
-
-    RETURN (isAlreadyOnART && artStartedBeforeReportingPeriod);
+    RETURN result;
 END$$
 DELIMITER ;
 
@@ -907,7 +1135,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBefore(
     p_startDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -926,7 +1154,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentAfter(
     p_date DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -946,7 +1174,7 @@ CREATE FUNCTION patientHasStartedARVTreatmentBeforeExtendedEndDate(
     p_extendedMonths INT(11)) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
@@ -1052,12 +1280,69 @@ CREATE FUNCTION patientHasStartedARVTreatmentDuringReportingPeriod(
     p_endDate DATE) RETURNS TINYINT(1)
     DETERMINISTIC
 BEGIN
-    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId);
+    DECLARE enrolmentDate DATE DEFAULT getPatientProgramTreatmentStartDate(p_patientId, "HIV_PROGRAM_KEY");
     IF enrolmentDate IS NULL THEN
         RETURN 0;
     ELSE
         RETURN enrolmentDate BETWEEN p_startDate AND p_endDate;
     END IF;
+END$$
+DELIMITER ;
+
+-- patientHadViralLoadTestDuringReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHadViralLoadTestDuringReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHadViralLoadTestDuringReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE routineViralLoadTestDateUuid VARCHAR(38) DEFAULT 'cac6bf44-f671-4f85-ab76-71e7f099d3cb';
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE targetedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac479522-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestDateUuid VARCHAR(38) DEFAULT 'ac4797de-c891-11e9-a32f-2a2ae2dbcce4';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE testDateFromForm DATE;
+    DECLARE testDateFromOpenElis DATE;
+
+    -- Read and store latest test date from form "LAB RESULTS - ADD MANUALLY"
+    SELECT o.value_datetime INTO testDateFromForm
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NULL
+        AND o.value_datetime IS NOT NULL
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestDateUuid OR c.uuid = targetedViralLoadTestDateUuid OR c.uuid = notDocumentedViralLoadTestDateUuid)
+    ORDER BY o.value_datetime DESC, o.obs_datetime DESC
+    LIMIT 1;
+
+    -- read and store latest test date from elis
+    SELECT o.obs_datetime INTO testDateFromOpenElis
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    WHERE o.voided = 0
+        AND o.order_id IS NOT NULL
+        AND o.value_numeric IS NOT NULL
+        AND o.obs_datetime BETWEEN p_startDate AND p_endDate
+        AND o.person_id = p_patientId
+        AND (c.uuid = routineViralLoadTestUuid OR c.uuid = targetedViralLoadTestUuid OR c.uuid = notDocumentedViralLoadTestUuid)
+    ORDER BY o.obs_datetime DESC
+    LIMIT 1;
+
+    -- if both dates are null, return NULL
+    IF (testDateFromForm IS NULL AND testDateFromOpenElis IS NULL) THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
+
 END$$
 DELIMITER ;
 
@@ -1186,7 +1471,7 @@ CREATE FUNCTION getDateOfVLEligibility(
     DETERMINISTIC
 BEGIN
     DECLARE dateOfLastVLExam DATE DEFAULT getViralLoadTestDate(p_patientId);
-    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce"));
+    DECLARE initiationDate DATE DEFAULT DATE(getProgramAttributeValueWithinReportingPeriod(p_patientId, "2000-01-01","2100-01-01", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY"));
     DECLARE eacProgramStartDate DATE DEFAULT getMostRecentProgramEnrollmentDate(p_patientId, "VL_EAC_PROGRAM_KEY");
     DECLARE eacProgramEndDate DATE DEFAULT getMostRecentProgramCompletionDate(p_patientId, "VL_EAC_PROGRAM_KEY");
 
@@ -1211,5 +1496,73 @@ BEGIN
 
     RETURN NULL;
 
+END$$
+DELIMITER ;
+
+-- thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod
+
+DROP FUNCTION IF EXISTS thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION thereExistsAnANCFollowUpFormCapturedWithinReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE
+) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE uuidANCFollowUpForm VARCHAR(38) DEFAULT "bf0c145e-5e7a-41a2-a081-a98fc3723ffd";
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM obs o
+    WHERE
+        o.voided = 0 AND
+        o.person_id = p_patientId AND
+        o.obs_datetime BETWEEN p_startDate AND p_endDate
+    LIMIT 1;
+
+    RETURN result;
+
+END$$
+DELIMITER ;
+
+-- getPatientDispensationFullAndHalfPeriod
+
+DROP FUNCTION IF EXISTS getPatientDispensationFullAndHalfPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getPatientDispensationFullAndHalfPeriod(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE duration1 int;
+    DECLARE duration2 int;
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+    SET duration1 = DATEDIFF(endDateOfARTPrescription, p_startDate);
+    SET duration2 = DATEDIFF(p_endDate, endDateOfARTPrescription);
+
+    IF duration1 >= 30 THEN
+        SET result = TRUE;
+    
+    ELSE 
+        IF duration2 <= 0 THEN
+            IF (duration1 + duration2) >= 30 THEN
+                SET result = TRUE;
+            ELSE 
+                SET result = FALSE;
+            END IF;
+        ELSE
+            SET result = FALSE; 
+        END IF;
+    END IF;
+
+    RETURN (result);
 END$$
 DELIMITER ;

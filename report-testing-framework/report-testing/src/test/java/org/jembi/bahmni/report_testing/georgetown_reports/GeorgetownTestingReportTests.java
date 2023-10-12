@@ -105,7 +105,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");
@@ -199,7 +198,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");
@@ -297,7 +295,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");
@@ -402,7 +399,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");
@@ -507,7 +503,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");
@@ -681,7 +676,6 @@ public class GeorgetownTestingReportTests extends BaseReportTest {
         assertEquals(result.get(0).get("serialNumber"), "1");
         assertEquals(result.get(0).get("uniquePatientId"), "BAH203001");
         assertEquals(result.get(0).get("healthFacility"), "CENTRE");
-        assertEquals(result.get(0).get("clientsName"), "Tambwe Marie");
         assertEquals(result.get(0).get("telOfClient"), "081234567");
         assertEquals(result.get(0).get("clientsAddress"), "14 BAMBI STR, NKUM");
         assertEquals(result.get(0).get("age"), Years.yearsBetween(new LocalDate(2000, 01, 15), LocalDate.now()).getYears() + "");

@@ -52,4 +52,5 @@ public class DrugDataGenerator {
 		stmt.executeUpdate(createObservationQuery);
 	}
 
+
 }

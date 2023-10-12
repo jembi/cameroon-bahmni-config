@@ -141,14 +141,14 @@ CREATE FUNCTION getFirstIndexID(
     p_contactPatientId INT(11)) RETURNS INT(11)
     DETERMINISTIC
 BEGIN
-    DECLARE result TEXT DEFAULT 0;
+    DECLARE result INT(11);
 
     SELECT p.patient_id INTO result
     FROM patient p
     WHERE patientsAreRelated(p_contactPatientId, p.patient_id) AND
         patientIsIndex(p.patient_id)
-        ORDER BY p.date_created ASC 
-        LIMIT 1;
+    ORDER BY p.date_created ASC 
+    LIMIT 1;
 
     RETURN (result);
 END$$
@@ -191,10 +191,9 @@ BEGIN
 
     SELECT TRUE INTO result
     FROM relationship r
-    JOIN person pIndex ON (r.person_a = p_contactId AND r.person_b = pIndex.person_id) OR
-            (r.person_a = pIndex.person_id AND r.person_b = p_contactId)
-    WHERE 
-        patientIsIndex(pIndex.person_id)
+    JOIN person pIndex ON (r.person_a = p_contactId AND r.person_b = pIndex.person_id AND patientIsIndex(r.person_b)) OR
+            (r.person_a = pIndex.person_id AND r.person_b = p_contactId AND patientIsIndex(r.person_a))
+    WHERE r.voided = 0
     LIMIT 1;
 
     RETURN (result);
@@ -312,6 +311,29 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getNumberSexualContactsOfIndex
+
+DROP FUNCTION IF EXISTS getNumberSexualContactsOfIndex;
+
+DELIMITER $$
+CREATE FUNCTION getNumberSexualContactsOfIndex(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+
+    SELECT count(r.relationship_id) INTO result
+    FROM relationship r
+        JOIN relationship_type rt ON r.relationship = rt.relationship_type_id  AND retired = 0
+    WHERE r.voided = 0 AND
+        rt.a_is_to_b = "RELATIONSHIP_PARTNER" AND
+        (r.person_b = p_patientId OR r.person_a = p_patientId)
+    LIMIT 1;
+
+    RETURN result;
+END$$
+DELIMITER ;
+
 -- patientWithIndexChild
 
 DROP FUNCTION IF EXISTS patientWithIndexChild;
@@ -386,7 +408,7 @@ BEGIN
     DECLARE daysBetweenHIVPosAndART INT(11) DEFAULT getDaysBetweenHIVPosAndART(p_patientId);
     DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
 
-IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
+    IF (daysBetweenHIVPosAndART > 0 AND daysBetweenHIVPosAndART <= 30) THEN
         RETURN 'Index Case New HTS POS and initiated on treatment this month';
     ELSEIF (viralLoadResult > 1000) THEN
         RETURN 'Index Case virally unsuppressed clients';

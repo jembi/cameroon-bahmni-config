@@ -31,12 +31,28 @@ public class HivTestingAndCounsellingFormDataGenerator {
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, testResult, encounterId, stmt);
     }
 
+    public int setHTCResultReceived(int patientId, LocalDateTime obsDateTime, ConceptEnum testResult, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.RESULT_RECEIVED);
+        return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, testResult, encounterId, stmt);
+    }
+
     public int recordHTCResult(int patientId, LocalDateTime obsDateTime, ConceptEnum result, Integer encounterId) throws Exception {
 		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
         conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
         conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
         conceptTree.add(ConceptEnum.HTC_RESULT);
         return TestDataGenerator.recordFormCodedValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
+    }
+
+    public int recordResultReceived(int patientId, LocalDateTime obsDateTime, boolean result, Integer encounterId) throws Exception {
+		List<ConceptEnum> conceptTree= new ArrayList<ConceptEnum>();
+        conceptTree.add(ConceptEnum.HIV_TESTING_AND_COUNSELING);
+        conceptTree.add(ConceptEnum.POST_TEST_COUNSELING);
+        conceptTree.add(ConceptEnum.RESULT_RECEIVED);
+        return TestDataGenerator.recordFormBooleanValue(patientId, obsDateTime, conceptTree, result, encounterId, stmt);
     }
 
     public int recordStartTreatment(int patientId, LocalDateTime obsDateTime, ConceptEnum value, Integer encounterId) throws Exception {

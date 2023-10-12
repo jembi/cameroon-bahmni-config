@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="add_location_name_view_order_form" model="ir.ui.view">
+			<field name="name">sale.order.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/group/group[1]/field[@name='partner_id']" position="after">
+					<field name="location_name" invisible="1"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="inherit_sale_order_form_provider" model="ir.ui.view">
+			<field name="name">sale.order.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="bahmni_sale.inherit_sale_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='provider_name']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+			</field>
+		</record>
+		
+		<record id="pt_drug_type_form_view" model="ir.ui.view">
+			<field name="name">product.template.drug_type.form.view</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_form_view"/>
+			<field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="drug_type" attrs="{'invisible': [('type', '!=', 'product')],'required':[('type','=','product')]}"/>
+                </xpath>
+			</field>
+		</record>
+		
+		<!-- Provider Views-->
+		<record id="tree_provider_provider" model="ir.ui.view">
+		    <field name="name">tree.provider.provider</field>
+		    <field name="model">provider.provider</field>
+		    <field name="arch" type="xml">
+			    <tree string="Provider">
+				    <field name="name"/>
+			    </tree>
+		    </field>
+	    </record>
+	
+	    <record id="form_provider_provider" model="ir.ui.view">
+		    <field name="name">form.provider.provider</field>
+		    <field name="model">provider.provider</field>
+		    <field name="arch" type="xml">
+			    <form string="Provider">
+				    <group>
+					    <field name="name"/>
+					    <field name="uuid" readonly="1"/>
+				    </group>
+			    </form>
+		    </field>
+	    </record>
+	
+	    <record id="action_provider_provider" model="ir.actions.act_window">
+		    <field name="name">Provider</field>
+		    <field name="res_model">provider.provider</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form</field>
+	    </record>
+	
+	    <menuitem id="menu_provider_provider" 
+		action="action_provider_provider"
+		parent="sales_team.menu_sale_config"/>
+		
+		
+	</data>
+</odoo>

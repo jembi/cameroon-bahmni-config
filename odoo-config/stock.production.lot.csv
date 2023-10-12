@@ -1,0 +1,5 @@
+id,cost_price,life_date,name,mrp,product_id/id,sale_price,product_uom_id/id
+stock_production_lot_5,1,31/12/2021,Bwww-1,2,__export__.product_product_1171,2,product.product_uom_unit
+stock_production_lot_6,1,30/06/2022,Bwww-2,2,__export__.product_product_1171,2,product.product_uom_unit
+stock_production_lot_7,2,30/06/2023,ACi-1,3,__export__.product_product_1170,3,product.product_uom_unit
+stock_production_lot_8,2,30/06/2023,Aci-2,3,__export__.product_product_1170,3,product.product_uom_unit

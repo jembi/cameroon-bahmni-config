@@ -6,7 +6,7 @@ c3949eb6-3f10-11e4-adec-0800271c1b75,c3959ab5-3f10-11e4-adec-0800271c1b75;Non-Co
 c398a4be-3f10-11e4-adec-0800271c1b75,,,Plainte remarques,Chief Complaint Notes,Plainte remarques,Chief Complaint Notes,Misc,Text,,
 c3998f6b-3f10-11e4-adec-0800271c1b75,,,Notes d'histoire,History Notes,Notes d'histoire,History Notes,Misc,Text,,
 c39a35e2-3f10-11e4-adec-0800271c1b75,,,Notes d'examen,Examination Notes,Notes d'examen,Examination Notes,Misc,Text,,
-c2a43174-c9db-4e54-8516-17372c83537f,,,Histoire de fumer,Smoking History,Histoire de fumer,Smoking History,Misc,Boolean,,
+c2a43174-c9db-4e54-8516-17372c83537f,,,Antécédents de tabagisme,Smoking History,Antécédents de tabagisme,Smoking History,Misc,Boolean,,
 93b9cd42-8fb5-4fbd-b57b-637e157530c5,,Yes full name;No full name;Unknown,Prison ?,Prison ?,Prison ?,Prison ?,Misc,Coded,,
 d1afa5a4-dc02-4e14-9205-d35fc31103ee,,,Actuellement,Currently,Actuellement,Currently,Misc,N/A,,
 4ef86b38-2b68-429e-8f11-71adee61ebaf,,,Dans le passé,In the past,Dans le passé,In the past,Misc,N/A,,
