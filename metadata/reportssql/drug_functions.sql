@@ -725,7 +725,8 @@ BEGIN
     LIMIT 1;
 
     RETURN (result);
-END
+END$$
+DELIMITER ;
 
 -- retrieveINHStartAndEndDate
 
@@ -845,8 +846,12 @@ BEGIN
         getPatientAge(o.patient_id) as "age",
         getPatientBirthdate(o.patient_id) as "dateOfBirth",
         getPatientGender(o.patient_id) as "sex",
+        IF(getObsCodedValue(o.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "screenForTB",
+        getObsDatetimeValue(o.patient_id, "f79780e8-72de-4162-be89-dd908ab2e5bb") as "TB Screening Date",
+        getObsCodedValue(o.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") as "TB Screening Result",
         DATE(getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "dateOfArtInitiation",
         o.scheduled_date AS "inhStartDate",
+        DATEDIFF(p_endDate,getDateofINHdrugOrderDispensed(o.patient_id)) as 'Days Completed',
         @prev_inh_end_date :=  getDateFullINHCourse(o.patient_id, o.scheduled_date) AS "inhEndDate",
         getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
         @prev_patient_id := o.patient_id AS "patient_id"
