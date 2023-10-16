@@ -59,5 +59,10 @@
     "LOCATION_RADIOLOGY" : "Radiology",
     "LOCATION_COMMUNITY_HOME": "Community Home",
     "LOCATION_COMMUNITY_MOBILE": "Community Mobile",
-    "LOCATION_MEDECINE_A": "Medicine A"
+    "LOCATION_MEDECINE_A": "Medicine A",
+    "LOCATION_VACCINATION": "Vaccination",
+    "LOCATION_PNEUMO_PHYSIOLOGY_CENTER":"Pneumo-Physioloy Center",
+    "LOCATION_MORTUARY": "Mortuary",
+    "LOCATION_OTO_RHINO_LARYNGOLOGY":"OTO-Rhino Laryngology",
+    "LOCATION_ODONTO_STOMATOLOGY":"Odonto Stomalogy"
 }

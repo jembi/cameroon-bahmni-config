@@ -59,5 +59,10 @@
     "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
     "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile",
     "LOCATION_MEDECINE_A": "Medecine A",
+    "LOCATION_VACCINATION": "Vaccination",
+    "LOCATION_PNEUMO_PHYSIOLOGY_CENTER":"Centre De Pneumo Physiologie",
+    "LOCATION_MORTUARY": "Morgue",
+    "LOCATION_OTO_RHINO_LARYNGOLOGY":"OTO-Rhino Laryngologie",
+    "LOCATION_ODONTO_STOMATOLOGY":"Odonto Stomalogie",
     "MODULE_LABEL_BED_MANAGEMENT_KEY": "Gestion des lits"
 }

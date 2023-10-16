@@ -116,6 +116,11 @@
   "LOCATION_OPHTHALMOLOGY": "Ophthalmology",
   "LOCATION_RADIOLOGY": "Radiology",
   "LOCATION_MEDECINE_A": "Medicine A",
+  "LOCATION_VACCINATION": "Vaccination",
+  "LOCATION_PNEUMO_PHYSIOLOGY_CENTER":"Pneumo-Physioloy Center",
+  "LOCATION_MORTUARY": "Mortuary",
+  "LOCATION_OTO_RHINO_LARYNGOLOGY":"OTO-Rhino Laryngology",
+  "LOCATION_ODONTO_STOMATOLOGY":"Odonto Stomalogy",
   "VISIT_TYPE_OPD": "Outpatient",
   "REGISTRATION_SERVICE_REQUIRED_KEY": "Service required"
 }
