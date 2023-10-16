@@ -76,5 +76,6 @@
   "LOCATION_DENTISTRY" : "Dentistry",
   "LOCATION_GYNAECOLOGY" : "Gynaecology",
   "LOCATION_OPHTHALMOLOGY" : "Ophthalmology",
-  "LOCATION_RADIOLOGY" : "Radiology"
+  "LOCATION_RADIOLOGY" : "Radiology",
+  "LOCATION_MEDECINE_A": "Medicine A"
 }

@@ -58,5 +58,6 @@
     "LOCATION_RADIOLOGY" : "Radiologie",
     "LOCATION_COMMUNITY_HOME": "Communauté Domicile",
     "LOCATION_COMMUNITY_MOBILE": "Communauté Mobile",
+    "LOCATION_MEDECINE_A": "Medecine A",
     "MODULE_LABEL_BED_MANAGEMENT_KEY": "Gestion des lits"
 }
