@@ -837,6 +837,7 @@ BEGIN
         getTptEligibility(o.patient_id) AS "Eligible for TPT",
         o.scheduled_date AS "inhStartDate",
         DATEDIFF(p_endDate,getDateofINHdrugOrderDispensed(o.patient_id)) as 'Days Completed',
+        getPatientMostRecentProgramTrackingStateValue(o.patient_id,"en","IPT_PROGRAM_KEY") as "IPT Clinical Stage",
         @prev_inh_end_date :=  getDateFullINHCourse(o.patient_id, o.scheduled_date) AS "inhEndDate",
         getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
         @prev_patient_id := o.patient_id AS "patient_id"
