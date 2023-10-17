@@ -738,48 +738,29 @@ CREATE FUNCTION getTptEligibility(
 DETERMINISTIC
 BEGIN
     DECLARE tptEligibilityStatus VARCHAR(50);
+    DECLARE additionalCriteriaMet INT DEFAULT 0;
 
     SET tptEligibilityStatus = 'Not Eligible';
 
-    -- Check if the patient has been screened for TB ("Screened = Yes")
-    IF EXISTS (
-        SELECT 1
-        FROM obs o
-        JOIN concept c ON o.concept_id = c.concept_id
-        WHERE
-            o.voided = 0 AND
-            o.person_id = patientId AND
-            c.uuid = 'f0447183-d13f-463d-ad0f-1f45b99d97cc' -- "Screened = Yes"
-            AND -- "Screened = Yes"
-            o.value_coded = (SELECT concept_id FROM concept WHERE uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc') -- "Yes"
-    ) THEN
-        -- If screened for TB, check for additional concepts
-        IF EXISTS (
-            SELECT 1
-            FROM obs o
-            JOIN concept c ON o.concept_id = c.concept_id
-            WHERE
-                o.voided = 0 AND
-                o.person_id = patientId AND
-                (
-                    c.uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc' OR -- "Yes"
-                    c.uuid = '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15' OR -- "Cough > 2 weeks"
-                    c.uuid = 'dcad76c8-699b-4648-b1db-d915b293d52b' OR -- "Fever > 2 weeks"
-                    c.uuid = '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5' OR -- "Weight Loss"
-                    c.uuid = '886c7ef0-b104-49bf-bd54-23429eec070d' OR -- "Night Sweats"
-                    c.uuid = '04dbd117-99c8-4c7a-9679-d8fce2d95920' OR -- "TB Contact"
-                    c.uuid = '4727b427-b8ac-4f8a-aa31-796e19d5ed1a'   -- "Malnutrition"
-                )  AND
-                o.value_coded = (SELECT concept_id FROM concept WHERE uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc') -- "Yes"
-        ) THEN
-            -- If additional criteria are met, set the eligibility status to 'Eligible'
+    IF getObsCodedValue(patientId, 'f0447183-d13f-463d-ad0f-1f45b99d97cc') LIKE 'Yes%' THEN
+        IF getObsCodedValue(patientId, 'a2065636-5326-40f5-aed6-0cc2cca81ccc') = 'Cough > 2 weeks' OR
+           getObsCodedValue(patientId, '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15') = 'Fever > 2 weeks' OR
+           getObsCodedValue(patientId, 'dcad76c8-699b-4648-b1db-d915b293d52b') = 'Weight Loss' OR
+           getObsCodedValue(patientId, '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5') = 'Night Sweats' OR
+           getObsCodedValue(patientId, '886c7ef0-b104-49bf-bd54-23429eec070d') = 'TB Contact' OR
+           getObsCodedValue(patientId, '04dbd117-99c8-4c7a-9679-d8fce2d95920') = 'Malnutrition' THEN
+            SET additionalCriteriaMet = 1;
+        END IF;
+
+        IF additionalCriteriaMet = 1 THEN
             SET tptEligibilityStatus = 'Eligible';
         END IF;
     END IF;
 
     RETURN tptEligibilityStatus;
-END$$ 
+END$$
 DELIMITER ;
+
 
 -- getDateFullINHCourse
 
