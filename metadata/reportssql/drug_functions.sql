@@ -886,6 +886,130 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- getDateFullINHCourse
+
+DROP FUNCTION IF EXISTS getDateFullINHCourse;
+
+DELIMITER $$
+CREATE FUNCTION getDateFullINHCourse(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT 
+        calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM drug_order do
+        JOIN orders o ON o.order_id = do.order_id  AND o.voided = 0
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId
+        AND o.scheduled_date >= p_startDate
+        AND d.name LIKE "INH%"
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND timestampdiff(
+            MONTH,
+            p_startDate,
+            calculateTreatmentEndDate(
+                o.scheduled_date,
+                do.duration,
+                c.uuid)
+            ) >= 6
+    ORDER BY o.scheduled_date ASC
+    LIMIT 1;
+
+    RETURN result;
+    
+END$$
+DELIMITER ;
+
+-- getDateofINHdrugOrderDispensed
+
+DROP FUNCTION IF EXISTS getDateofINHdrugOrderDispensed;
+
+DELIMITER $$
+CREATE FUNCTION `getDateofINHdrugOrderDispensed`(
+    p_patientId INT(11)) RETURNS date
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDispensedConcept VARCHAR(38) DEFAULT "ff0d6d6a-e276-11e4-900f-080027b662ec";
+
+    SELECT
+    o.obs_datetime INTO result
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    JOIN patient p ON o.person_id = p.patient_id
+    WHERE o.voided = 0
+        AND o.person_id = p.patient_id
+        AND c.uuid = uuidDispensedConcept
+        AND d.name LIKE "INH%"
+        ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS getTptEligibility;
+
+DELIMITER $$
+CREATE FUNCTION getTptEligibility(
+    patientId INT(11)
+) RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE tptEligibilityStatus VARCHAR(50);
+
+    SET tptEligibilityStatus = 'Not Eligible';
+
+    -- Check if the patient has been screened for TB ("Screened = Yes")
+    IF EXISTS (
+        SELECT 1
+        FROM obs o
+        JOIN concept c ON o.concept_id = c.concept_id
+        WHERE
+            o.voided = 0 AND
+            o.person_id = patientId AND
+            c.uuid = 'f0447183-d13f-463d-ad0f-1f45b99d97cc' -- "Screened = Yes"
+            AND -- "Screened = Yes"
+            o.value_coded = (SELECT concept_id FROM concept WHERE uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc') -- "Yes"
+    ) THEN
+        -- If screened for TB, check for additional concepts
+        IF EXISTS (
+            SELECT 1
+            FROM obs o
+            JOIN concept c ON o.concept_id = c.concept_id
+            WHERE
+                o.voided = 0 AND
+                o.person_id = patientId AND
+                (
+                    c.uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc' OR -- "Yes"
+                    c.uuid = '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15' OR -- "Cough > 2 weeks"
+                    c.uuid = 'dcad76c8-699b-4648-b1db-d915b293d52b' OR -- "Fever > 2 weeks"
+                    c.uuid = '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5' OR -- "Weight Loss"
+                    c.uuid = '886c7ef0-b104-49bf-bd54-23429eec070d' OR -- "Night Sweats"
+                    c.uuid = '04dbd117-99c8-4c7a-9679-d8fce2d95920' OR -- "TB Contact"
+                    c.uuid = '4727b427-b8ac-4f8a-aa31-796e19d5ed1a'   -- "Malnutrition"
+                )  AND
+                o.value_coded = (SELECT concept_id FROM concept WHERE uuid = 'a2065636-5326-40f5-aed6-0cc2cca81ccc') -- "Yes"
+        ) THEN
+            -- If additional criteria are met, set the eligibility status to 'Eligible'
+            SET tptEligibilityStatus = 'Eligible';
+        END IF;
+    END IF;
+
+    RETURN tptEligibilityStatus;
+END$$ 
+DELIMITER ;
+
 
 -- retrieveINHStartAndEndDate
 
