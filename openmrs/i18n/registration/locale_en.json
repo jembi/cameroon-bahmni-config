@@ -121,6 +121,15 @@
   "LOCATION_MORTUARY": "Mortuary",
   "LOCATION_OTO_RHINO_LARYNGOLOGY":"OTO-Rhino Laryngology",
   "LOCATION_ODONTO_STOMATOLOGY":"Odonto Stomalogy",
+  "LOCATION_PLASTER_SURGERY":"Plaster Surgery",
+  "LOCATION_DIABETOLOGY_&_HTA":"Diabetology & HTA",
+  "LOCATION_HYPERTENSION":"Hypertension",
+  "LOCATION_NON_OBSTETRICAL_PATHOLOGY":"Non-Obstetrical Pathology",
+  "LOCATION_MATERNITY_OPERATING_ROOM":"Maternity Operating Room",
+  "LOCATION_GYNECO_OBSTETRICS":"Gyneco-Obstetrics",
+  "LOCATION_ANESTHESIOLOGY":"Anesthesiology",
+  "LOCATION_MOTHER_AND_CHILD_SERVICE":"Mother And Child Service",
+  "LOCATION_INFECTIOLOGY":"Infectiology",
   "VISIT_TYPE_OPD": "Outpatient",
   "REGISTRATION_SERVICE_REQUIRED_KEY": "Service required"
 }
