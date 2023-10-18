@@ -701,13 +701,13 @@ BEGIN
 
     SET tptEligibilityStatus = 'Not Eligible';
 
-    IF getObsCodedValue(patientId, 'f0447183-d13f-463d-ad0f-1f45b99d97cc') LIKE '%Yes%' THEN
-        IF getObsCodedValue(patientId, '4727b427-b8ac-4f8a-aa31-796e19d5ed1a') = 'Yes' OR -- Malnutrition
-           getObsCodedValue(patientId, '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15') = 'Yes' OR -- Cough > 2 weeks
-           getObsCodedValue(patientId, 'dcad76c8-699b-4648-b1db-d915b293d52b') = 'Yes' OR -- Fever > 2 weeks
-           getObsCodedValue(patientId, '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5') = 'Yes' OR -- Weight Loss
-           getObsCodedValue(patientId, '886c7ef0-b104-49bf-bd54-23429eec070d') = 'Yes' OR -- Night Sweats
-           getObsCodedValue(patientId, '04dbd117-99c8-4c7a-9679-d8fce2d95920') = 'Yes' THEN -- TB Contact
+    IF getObsCodedValue(patientId, 'f0447183-d13f-463d-ad0f-1f45b99d97cc') LIKE 'Yes%' THEN
+        IF getObsCodedValue(patientId, '4727b427-b8ac-4f8a-aa31-796e19d5ed1a') = 'Yes%' OR -- Malnutrition
+           getObsCodedValue(patientId, '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15') = 'Yes%' OR -- Cough > 2 weeks
+           getObsCodedValue(patientId, 'dcad76c8-699b-4648-b1db-d915b293d52b') = 'Yes%' OR -- Fever > 2 weeks
+           getObsCodedValue(patientId, '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5') = 'Yes%' OR -- Weight Loss
+           getObsCodedValue(patientId, '886c7ef0-b104-49bf-bd54-23429eec070d') = 'Yes%' OR -- Night Sweats
+           getObsCodedValue(patientId, '04dbd117-99c8-4c7a-9679-d8fce2d95920') = 'Yes%' THEN -- TB Contact
             SET additionalCriteriaMet = 1;
         END IF;
 
