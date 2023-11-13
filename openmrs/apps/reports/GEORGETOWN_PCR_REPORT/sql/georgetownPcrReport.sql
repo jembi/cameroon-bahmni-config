@@ -10,7 +10,7 @@ SELECT
     getPatientPhoneNumber(r.person_b) as "mothersContact",
     getMostRecentTestResultDate(r.person_a,"a5239a85-6f75-4882-9b9b-60168e54b7da","9bb7b360-3790-4e1a-8aca-0d1341663040") as "resultDatePcr",
     getTestResultWithinReportingPeriod(r.person_a,"2000-01-01","2100-01-01","a5239a85-6f75-4882-9b9b-60168e54b7da","9bb7b360-3790-4e1a-8aca-0d1341663040") as "pcrResult",
-    getProgramAttributeDateValueFromAttributeAndProgramName(r.person_a, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "artInitiationDate",
+	getProgramAttributeDateValueFromAttributeAndProgramName(r.person_a, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "artInitiationDate",
     getObsCodedValue(r.person_a, "9644653a-b9af-11ed-afa1-0242ac120002") as "CTXAt6Weeks",
     getObsCodedValue(r.person_a, "0b9b6e25-e0fe-4c65-b9af-2fd5f6cbb150") as "ModeOfFeeding",
     getObsCodedValue(r.person_a, "7b7fe0c1-067a-42ac-bd9d-effec7855637") as "rapidTest1Result",
@@ -22,8 +22,8 @@ SELECT
     getObsCodedValue(r.person_a, "3447254f-501f-4b07-815c-cd0f6da98158") as "reasonOfNonInitiation",
     getProgramAttributeDateValueFromAttributeAndProgramName(r.person_a, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "dateOfInitiation"
 FROM (SELECT @a:= 0) AS a, relationship r
-                               JOIN relationship_type rt ON rt.relationship_type_id = r.relationship AND rt.a_is_to_b = "RELATIONSHIP_BIO_MOTHER"
-                               JOIN patient_identifier pi ON pi.patient_id = r.person_a AND pi.preferred = 1
+    JOIN relationship_type rt ON rt.relationship_type_id = r.relationship AND rt.a_is_to_b = "RELATIONSHIP_BIO_MOTHER"
+    JOIN patient_identifier pi ON pi.patient_id = r.person_a AND pi.preferred = 1
 WHERE
-        getPatientAgeInMonthsAtDate(r.person_a, NOW()) <= 24 AND
-        patientHasEnrolledIntoHivProgram(r.person_b) = "Yes";
+    getPatientAgeInMonthsAtDate(r.person_a, NOW()) <= 24 AND
+    patientHasEnrolledIntoHivProgram(r.person_b) = "Yes";
