@@ -6,7 +6,7 @@ SELECT
     getObsDatetimeValueInSection(r.person_b, "0da273f6-92ee-4ddb-8a37-5e18cdc35441", "85177a85-f412-42eb-a81e-22f2d8eab1ef") as "dateOfDelivery",
     CONCAT(getPatientPreciseLocation(r.person_b),", ",getPatientVillage(r.person_b)) as "address",
     getPatientPhoneNumber(r.person_b) as "contactTelephone",
-    getObsCodedValue(r.person_b, "235ce45c-0b24-40cb-9d49-72de6566f36e") as "HIVTestedBeforeDelivery?",
+    IF(getObsCodedValue(r.person_b, "235ce45c-0b24-40cb-9d49-72de6566f36e") IS NOT NULL, "Yes", "No") as "HIVTestedBeforeDelivery?",
     getPatientBirthdate(r.person_a) as "dateOfBirth",
     getObsCodedValueInSectionByNames(r.person_b, "d7b99d69-a262-4fdd-b46c-e47919ae13df", "ca285ab0-7714-41f9-a7cd-16711322c808") as "resultOfHIVTestDoneBeforeDelivery",
     getObsCodedValue(r.person_b, "0da273f6-92ee-4ddb-8a37-5e18cdc35441") as "dateOfHIVTestDuringDelivery",
