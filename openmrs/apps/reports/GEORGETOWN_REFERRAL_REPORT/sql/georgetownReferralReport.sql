@@ -16,4 +16,4 @@ SELECT
     getObsCodedValue(p.patient_id, "57a5de55-acf0-4695-bbc2-a2acc1721de7") as "referredBy"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
-    getObsCodedValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN "#startDate#" AND "#endDate#";
+    getObsDatetimeValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN "#startDate#" AND "#endDate#";
