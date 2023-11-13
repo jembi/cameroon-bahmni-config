@@ -1237,6 +1237,7 @@
         }
     },
 
+
     "HIV lost to followup patients": {
         "name": "HIV lost to followup patients",
         "type": "concatenated",
@@ -1982,6 +1983,23 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month_disaggregated_by_entry_point.sql"
+                    }
+                }
+            ]
+        }
+    },
+
+    "virologyReport": {
+        "name": "Virology Report Test",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_COMPLETENESS_CHECK/template/hiv_completeness_check.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIROLOGY_RESULTS_REPORT/sql/virologyReport.sql"
                     }
                 }
             ]

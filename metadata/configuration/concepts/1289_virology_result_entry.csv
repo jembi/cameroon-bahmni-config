@@ -1,0 +1,15 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1289
+fb48a592-ee98-45aa-8e18-365e62ada7d5,,,Date de résultats,Date of Results,Date de résultats,Date of Results,Misc,Date,,
+7094d79a-85da-4491-8256-cee2ad08ddba,,,Prescription CV,Prescriber,Prescription CV,Prescriber,Misc,Text,,
+869680d9-a633-4d69-b9eb-6fc1d26908d3,,,Charge virale VIH-1 indétectable,Undetectable HIV-1 Viral Load,Charge virale VIH-1 indétectable,Undetectable HIV-1 Viral Load,Misc,N/A,,
+0698169a-02ca-417e-94de-66d92ba23dbf,,,Charge virale VIH-1 détectable,Detectable HIV-1 Viral Load,Charge virale VIH-1 détectable,Detectable HIV-1 Viral Load,Misc,N/A,,
+d30ecaa5-7fff-46ee-8d87-7ee669047767,,,Résultat non valide,Invalid Result,Résultat non valide,Invalid Result,Misc,N/A,,
+dbcf12b3-047d-47cf-a1af-95a77f4c8c0f,,,Valeur CV (cp/mL),Value VL (cp/mL),Valeur CV (cp/mL),Value VL (cp/mL) ,Misc,Numeric,,
+e605f93d-035b-4ca9-8d10-98e4b1f70352,,,Valeur CV (log10 cp/mL),Value VL (log10 cp/mL),Valeur CV (log10 cp/mL),Value VL (log10 cp/mL),Misc,Numeric,,
+24c50bee-cb17-44ee-b50a-e68372670ed1,,,Analysé par,Processed by,Analysé par,Processed by,Misc,Text,,
+e43570f1-3a83-4c93-9144-3a7d5e326ace,,,Vérifié par,Verified by,Vérifié par ,Verified by,Misc,Text,,
+2361e271-ba80-4054-b9ff-254c62466bd8,,,Approuvé par,Approved by,Approuvé par,Approved by,Misc,Text,,
+89b49551-f052-444f-8fb4-4d74544bef74,,Undetectable HIV-1 Viral Load;Detectable HIV-1 Viral Load;Invalid Result,Résultats Charge Virale,VL Result,Résultats Charge Virale,VL Result,Misc,Coded,,
+25e95f59-ab8a-4684-9288-51ab54b489f0,"Date of Results;Prescriber;VL Result;Value VL (cp/mL);Value VL (log10 cp/mL);Comments;Processed by;Verified by;Approved by ",,Result de l’echantillon,Sample results,Result de l’echantillon,Sample results,Misc,N/A,,
+77d6977d-a6da-46cc-9a31-d69d7eeb5608,"Sample results",,Formulaire Virologie - Saisie des Résultats,Virology Result Entry Form,Formulaire Virologie - Saisie des Résultats,Virology Result Entry Form,Misc,N/A,,
+
