@@ -8,7 +8,7 @@ SELECT
     getPatientPhoneNumber(r.person_b) as "contactTelephone",
     getObsCodedValue(r.person_b, "235ce45c-0b24-40cb-9d49-72de6566f36e") as "HIVTestedBeforeDelivery?",
     getPatientBirthdate(r.person_a) as "dateOfBirth",
-    getObsCodedValue(r.person_b, "d7b99d69-a262-4fdd-b46c-e47919ae13df") as "resultOfHIVTestDoneBeforeDelivery",
+    getObsCodedValueInSectionByNames(r.person_b, "d7b99d69-a262-4fdd-b46c-e47919ae13df", "ca285ab0-7714-41f9-a7cd-16711322c808") as "resultOfHIVTestDoneBeforeDelivery",
     getObsCodedValue(r.person_b, "0da273f6-92ee-4ddb-8a37-5e18cdc35441") as "dateOfHIVTestDuringDelivery",
     getObsCodedValue(r.person_b, "d475c2f2-d9b4-4a42-95ad-3ed0fb7045e6") as "resultOfHIVTestDuringDelivery",
     getObsCodedValue(r.person_b, "3f41c8e5-ce72-4395-83a3-61248b0e83bd") as "dateOfARTInitiation",
