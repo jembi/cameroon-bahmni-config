@@ -6,7 +6,7 @@ SELECT
     getPatientAge(p.patient_id) as "ageAtEnrollment",
     getPatientBirthdate(p.patient_id) as "birthDate",
     getPatientGender(p.patient_id) as "sex",
-    IF(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "PatientIsBreastfeeding",
+    IF(getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
     getPatientHIVTestDate(p.patient_id) as "HIVTestDate",
     getPatientARVStartDate(p.patient_id) as "dateOfArtInitiation",
     CONCAT(getPatientVillage(p.patient_id),",",getPatientPreciseLocation(p.patient_id)) as "address",
