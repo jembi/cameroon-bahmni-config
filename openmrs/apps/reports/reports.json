@@ -2117,7 +2117,7 @@
             "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PATIENT_OUTCOME_REPORT/template/georgetownPatientOutcomeReport.xls",
             "reports": [
                 {
-                    "name": "ReportDeath",
+                    "name": "Report",
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PATIENT_OUTCOME_REPORT/sql/georgetownPatientOutcomeReport.sql"
