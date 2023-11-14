@@ -11,6 +11,8 @@ SELECT
     getPatientARVStartDate(p.patient_id) as "dateOfArtInitiation",
     CONCAT(getPatientVillage(p.patient_id),",",getPatientPreciseLocation(p.patient_id)) as "address",
     getPatientPhoneNumber(p.patient_id) as "contactTelephone",
+    getObsNumericValue(p.patient_id,"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA") as "Weight(Kg)",
+    getObsNumericValue(p.patient_id,"5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA") as "Height(Cm)",
     getPatientMostRecentProgramTrackingStateValue(p.patient_id,"en","HIV_PROGRAM_KEY") as "clinicalWhoStage",
     getFirstARVPrescribed(p.patient_id) as "regimentAtArtInitiation",
     getARVTherapeuticLineAtInitiation(p.patient_id) as "lineAtInitiation",
@@ -19,6 +21,7 @@ SELECT
     getDurationMostRecentArvTreatmentInDays(p.patient_id,"2000-01-01", "#endDate#") as "numberOdDaysDispensed",
     getARTAppointmentOnOrAfterDate(p.patient_id, COALESCE(GREATEST("#startDate#", getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#")),"#startDate#")) as "lastAppointmentDate",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonForARTDispensation",
+    getPatientMostRecentProgramAttributeCodedValue(p.patient_id, '12afc1d3-74ba-428f-9a77-3fde76a136e4', "en") as "ARTDispensationModel",
     IF(getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") IS NOT NULL, "True", "False") as "kp",
     getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") as "kpType",
     getViralLoadTestDate(p.patient_id) as "lastVLSampleCollectionDate",
@@ -26,8 +29,4 @@ SELECT
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "#startDate#", "#endDate#", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "apsInCharge"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
-    (
-        patientHasStartedARVTreatmentDuringReportingPeriod(p.patient_id, "#startDate#", "#endDate#")
-        AND
-        getLastArvPickupDate(p.patient_id, "#startDate#", "#endDate#") IS NOT NULL
-    );
+    patientHasStartedARVTreatmentDuringReportingPeriod(p.patient_id, "#startDate#", "#endDate#");
