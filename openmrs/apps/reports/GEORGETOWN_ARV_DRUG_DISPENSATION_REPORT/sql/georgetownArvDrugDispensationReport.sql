@@ -18,7 +18,7 @@ SELECT
     getARVTherapeuticLineAtInitiation(p.patient_id) as "lineAtInitiation",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     getLastARVDispensed(p.patient_id,"2000-01-01", "#endDate#") as "lastARTDispensed",
-    getDurationMostRecentArvTreatmentInDays(p.patient_id,"2000-01-01", "#endDate#") as "numberOdDaysDispensed",
+    getDurationMostRecentArvTreatmentInDays(p.patient_id,"2000-01-01", "#endDate#") as "numberOfDaysDispensed",
     getARTAppointmentOnOrAfterDate(p.patient_id, COALESCE(GREATEST("#startDate#", getLastArvPickupDate(p.patient_id, "2000-01-01", "#endDate#")),"#startDate#")) as "lastAppointmentDate",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, "39202f47-a709-11e6-91e9-0800270d80ce", "en") as "reasonForARTDispensation",
     getPatientMostRecentProgramAttributeCodedValue(p.patient_id, '12afc1d3-74ba-428f-9a77-3fde76a136e4', "en") as "ARTDispensationModel",
