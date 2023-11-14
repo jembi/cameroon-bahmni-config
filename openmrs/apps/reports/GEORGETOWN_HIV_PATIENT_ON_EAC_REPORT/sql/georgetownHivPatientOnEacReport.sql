@@ -29,4 +29,4 @@ SELECT
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APSInCharge"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
-    getViralLoadTestDate(p.patient_id) BETWEEN "#startDate#" AND "#endDate#";
+    patientHadActiveVLTestLessThanAMonthAgoWithinReportingPeriod(p.patient_id,"#startDate#","#endDate#");
