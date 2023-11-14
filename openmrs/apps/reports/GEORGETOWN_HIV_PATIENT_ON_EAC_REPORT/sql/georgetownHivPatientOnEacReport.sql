@@ -18,9 +18,14 @@ SELECT
     getDateSecondMostRecentARVAppointmentBeforeOrEqualToDate(p.patient_id, "#endDate#") as "lastAppointmentDate",
     getViralLoadTestDate(p.patient_id) as "lastVLSampleCollectionDate",
     getViralLoadTestResult(p.patient_id) as "VLResultValue",
-    getEacDate(p.patient_id, 1) as "DateEAC1",
-    getEacDate(p.patient_id, 2) as "DateEAC2",
-    getEacDate(p.patient_id, 3) as "DateEAC3",
+    getEacDate(p.patient_id, 1) as "dateEAC1",
+    getEacDate(p.patient_id, 2) as "dateEAC2",
+    getEacDate(p.patient_id, 3) as "dateEAC3",
+    getObsCodedValue(p.patient_id, 'b636bdf8-c054-4d6e-81ee-1cf6d04c798f') as "Assessment",
+    getObsDatetimeValue(p.patient_id, "377fdf0b-9259-4197-9cf1-697e513e92cb") as "1stEACExtended",
+    getObsDatetimeValue(p.patient_id, "377fdf0b-9259-4197-9cf1-697e513e92cb") as "2ndEACExtended",
+    getObsDatetimeValue(p.patient_id, "377fdf0b-9259-4197-9cf1-697e513e92cb") as "3rdEACExtended",
+    getObsCodedValue(p.patient_id, "32adf7f8-2ca0-4e35-b9b5-e68522f7bab0") as "EACOutcome",
     getProgramAttributeValueWithinReportingPeriod(p.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APSInCharge"
 FROM patient p, (SELECT @a:= 0) AS a
 WHERE
