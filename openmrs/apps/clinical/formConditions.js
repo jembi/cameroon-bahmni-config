@@ -1453,6 +1453,17 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
+	'Cephalin-Kaolin time': function(formName, formFieldValues) {
+			var conditions = { show: [], hide: [] };
+			var value = formFieldValues['Cephalin-Kaolin time'];
+			if (value && value !== "") {
+				conditions.show.push("Cephalin-Kaolin time Test Date");
+			} else {
+				conditions.hide.push("Cephalin-Kaolin time Test Date");
+			} 
+
+			return conditions;
+	},
 	'APTT test': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['APTT test'];
@@ -1463,16 +1474,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		}	
 		return conditions;	
 	},
-	'Cephalin-Kaolin time': function(formName, formFieldValues) {
-		var conditions = {show: [], hide: []};	
-		var value = formFieldValues['Cephalin-Kaolin time'];
-		if (value && value !== "") {	
-			conditions.show.push("Cephalin-Kaolin time Test Date");
-		} else {	
-			conditions.hide.push("Cephalin-Kaolin time Test Date");
-		}	
-		return conditions;	
-	},
+
 	'Emmel test (P/N)': function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};	
 		var value = formFieldValues['Emmel test (P/N)'];
@@ -1896,6 +1898,7 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.show.push("Amylase Test Date");
 		} else {	
 			conditions.hide.push("Amylase Test Date");
+		
 		}	
 		return conditions;	
 	},
