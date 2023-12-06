@@ -45,13 +45,13 @@ WHERE
         (
             patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
             AND
-            getLastArvPickupDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
+            getARVDrugDispenseDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
         )
         OR
         (
             patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
             AND
-            getLastArvPickupDate(pat.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL
+            getARVDrugDispenseDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
             AND
             (
                 patientHasBeenDispensedARVDuringFullMonth(pat.patient_id, "#startDate#", "#endDate#")
