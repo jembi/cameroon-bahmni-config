@@ -1237,6 +1237,7 @@
         }
     },
 
+
     "HIV lost to followup patients": {
         "name": "HIV lost to followup patients",
         "type": "concatenated",
@@ -1888,6 +1889,265 @@
             ]
         }
     },
+    "georgetownLabourAndDeliveryReport": {
+        "name": "Labour and Delivery Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_LABOUR_AND_DELIVERY_REPORT/template/georgetownLabourAndDeliveryReport.xls",
+            "reports": [
+                {
+                    "name": "ReportLabourAndDelivery",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_LABOUR_AND_DELIVERY_REPORT/sql/georgetownLabourAndDeliveryReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownReferralReport": {
+        "name": "Referral Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_REFERRAL_REPORT/template/georgetownReferralReport.xls",
+            "reports": [
+                {
+                    "name": "ReportGeorgetownReferral",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_REFERRAL_REPORT/sql/georgetownReferralReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownDeathReport": {
+        "name": "Death Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_DEATH_REPORT/template/georgetownDeathReport.xls",
+            "reports": [
+                {
+                    "name": "ReportDeath",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_DEATH_REPORT/sql/georgetownDeathReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownBirthReport": {
+        "name": "Birth Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_BIRTH_REPORT/template/georgetownBirthReport.xls",
+            "reports": [
+                {
+                    "name": "ReportBirth",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_BIRTH_REPORT/sql/georgetownBirthReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownHivPatientOnEacReport": {
+        "name": "HIV Patients on EAC Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_EAC_REPORT/template/georgetownHivPatientOnEacReport.xls",
+            "reports": [
+                {
+                    "name": "ReportHivPatientOnEac",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_EAC_REPORT/sql/georgetownHivPatientOnEacReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownArvDrugDispensationReport": {
+        "name": "ARV Drug Dispensation Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_ARV_DRUG_DISPENSATION_REPORT/template/georgetownArvDrugDispensationReport.xls",
+            "reports": [
+                {
+                    "name": "ReportArvDrugDispensation",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_ARV_DRUG_DISPENSATION_REPORT/sql/georgetownArvDrugDispensationReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "georgetownPatientOutcomeReport": {
+        "name": "Patient Outcome Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PATIENT_OUTCOME_REPORT/template/georgetownPatientOutcomeReport.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_PATIENT_OUTCOME_REPORT/sql/georgetownPatientOutcomeReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     "pcrVlTestingReport": {
         "name": "PCR and VL testing report",
         "type": "ElisGeneric",
@@ -1982,6 +2242,23 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/HIV_TESTING_MONTHLY_INDICATOR_REPORT/sql/indicator4_CDV_TS_number_of_people_tested_positive_started_on_ART_among_people_tested_positive_in_the_month_disaggregated_by_entry_point.sql"
+                    }
+                }
+            ]
+        }
+    },
+
+    "virologyReport": {
+        "name": "Virology Report Test",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/VIROLOGY_RESULTS_REPORT/template/virologyResultsReport.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIROLOGY_RESULTS_REPORT/sql/virologyReport.sql"
                     }
                 }
             ]

@@ -271,11 +271,11 @@ class OrderSaveService(models.Model):
                                            }
                         provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
                         if provider_exit:
-                            sale_order_vals.update({'provider_name': provider_exit and provider_exit.id or False})
+                            sale_order_dict.update({'provider_name': provider_exit and provider_exit.id or False})
                         else:
                             provider_vals = {'name': provider_name}
                             provider_id = self.env['provider.provider'].sudo().create(provider_vals)
-                            sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
+                            sale_order_dict.update({'provider_name': provider_id and provider_id.id or False})
                         if shop_obj.pricelist_id:
                             sale_order_dict.update({'pricelist_id': shop_obj.pricelist_id.id})
                         new_sale_order = self.env['sale.order'].create(sale_order_dict)
@@ -315,11 +315,11 @@ class OrderSaveService(models.Model):
                                                'origin': 'ATOMFEED SYNC'}
                             provider_exit = self.env['provider.provider'].search([('name', '=', provider_name)], limit=1)
                             if provider_exit:
-                                sale_order_vals.update({'provider_name': provider_exit and provider_exit.id or False})
+                                sales_order_obj.update({'provider_name': provider_exit and provider_exit.id or False})
                             else:
                                 provider_vals = {'name': provider_name}
                                 provider_id = self.env['provider.provider'].sudo().create(provider_vals)
-                                sale_order_vals.update({'provider_name': provider_id and provider_id.id or False})
+                                sales_order_obj.update({'provider_name': provider_id and provider_id.id or False})
 
                             if shop_obj.pricelist_id:
                                 sales_order_obj.update({'pricelist_id': shop_obj.pricelist_id.id})

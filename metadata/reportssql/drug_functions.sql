@@ -657,6 +657,69 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getDateofINHdrugOrderDispensed
+
+DROP FUNCTION IF EXISTS getDateofINHdrugOrderDispensed;
+
+DELIMITER $$
+CREATE FUNCTION `getDateofINHdrugOrderDispensed`(
+    p_patientId INT(11)) RETURNS date
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE uuidDispensedConcept VARCHAR(38) DEFAULT "ff0d6d6a-e276-11e4-900f-080027b662ec";
+
+    SELECT
+    o.obs_datetime INTO result
+    FROM obs o
+    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+    JOIN drug_order do ON do.order_id = o.order_id
+    JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    JOIN patient p ON o.person_id = p.patient_id
+    WHERE o.voided = 0
+        AND o.person_id = p.patient_id
+        AND c.uuid = uuidDispensedConcept
+        AND d.name LIKE "INH%"
+        ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS getTptEligibility;
+
+DELIMITER $$
+CREATE FUNCTION getTptEligibility(
+    patientId INT(11)
+) RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE tptEligibilityStatus VARCHAR(50);
+    DECLARE additionalCriteriaMet INT DEFAULT 0;
+
+    SET tptEligibilityStatus = 'Not Eligible';
+
+    IF getObsCodedValue(patientId, 'f0447183-d13f-463d-ad0f-1f45b99d97cc') LIKE 'Yes%' THEN
+        IF getObsCodedValue(patientId, '4727b427-b8ac-4f8a-aa31-796e19d5ed1a') LIKE 'Yes%' OR -- Malnutrition
+           getObsCodedValue(patientId, '77c6d0f1-ad0d-4a02-8b5c-698e6e636d15') LIKE 'Yes%' OR -- Cough > 2 weeks
+           getObsCodedValue(patientId, 'dcad76c8-699b-4648-b1db-d915b293d52b') LIKE 'Yes%' OR -- Fever > 2 weeks
+           getObsCodedValue(patientId, '1fc47a4b-e35d-4f89-953e-52c4c6a69eb5') LIKE 'Yes%' OR -- Weight Loss
+           getObsCodedValue(patientId, '886c7ef0-b104-49bf-bd54-23429eec070d') LIKE 'Yes%' OR -- Night Sweats
+           getObsCodedValue(patientId, '04dbd117-99c8-4c7a-9679-d8fce2d95920') LIKE 'Yes%' THEN -- TB Contact
+            SET additionalCriteriaMet = 1;
+        END IF;
+
+        IF additionalCriteriaMet = 1 THEN
+            SET tptEligibilityStatus = 'Eligible';
+        END IF;
+    END IF;
+
+    RETURN tptEligibilityStatus;
+END$$
+DELIMITER ;
+
 -- retrieveINHStartAndEndDate
 
 DROP PROCEDURE IF EXISTS retrieveINHStartAndEndDate;
@@ -771,12 +834,19 @@ BEGIN
     SELECT
         CAST(@a:=@a+1 AS CHAR) AS "serialNumber",
         getPatientIdentifier(o.patient_id) AS "uniquePatientId",
+        getFacilityName() as "facilityName",
         getPatientARTNumber(o.patient_id) AS "artCode",
         getPatientAge(o.patient_id) as "age",
         getPatientBirthdate(o.patient_id) as "dateOfBirth",
         getPatientGender(o.patient_id) as "sex",
+        IF(getObsCodedValue(o.patient_id, "f0447183-d13f-463d-ad0f-1f45b99d97cc") LIKE "Yes%", "Yes", "No") as "screenForTB",
+        getObsDatetimeValue(o.patient_id, "f79780e8-72de-4162-be89-dd908ab2e5bb") as "TB Screening Date",
+        getObsCodedValue(o.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") as "TB Screening Result",
         DATE(getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "2dc1aafd-a708-11e6-91e9-0800270d80ce", "HIV_PROGRAM_KEY")) as "dateOfArtInitiation",
+        getTptEligibility(o.patient_id) AS "Eligible for TPT",
         o.scheduled_date AS "inhStartDate",
+        DATEDIFF(p_endDate,getDateofINHdrugOrderDispensed(o.patient_id)) as 'Days Completed',
+        getPatientMostRecentProgramTrackingStateValue(o.patient_id,"en","IPT_PROGRAM_KEY") as "IPT Clinical Stage",
         @prev_inh_end_date :=  getDateFullINHCourse(o.patient_id, o.scheduled_date) AS "inhEndDate",
         getProgramAttributeValueWithinReportingPeriod(o.patient_id, "2000-01-01", "2100-12-31", "8bb0bdc0-aaf3-4501-8954-d1b17226075b", "HIV_PROGRAM_KEY") as "APS Name",
         @prev_patient_id := o.patient_id AS "patient_id"
@@ -785,7 +855,7 @@ BEGIN
         JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
         JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
         , (SELECT @a:= 0) AS a
-    WHERE 
+    WHERE
         getDateFullINHCourse(o.patient_id, o.scheduled_date) IS NOT NULL
         AND getDateFullINHCourse(o.patient_id, o.scheduled_date) BETWEEN p_startDate AND p_endDate
         AND d.name LIKE "INH%"
@@ -796,9 +866,38 @@ BEGIN
                 OR @prev_inh_end_date  <=  o.scheduled_date
                 OR @prev_patient_id <> o.patient_id
             )
+
     ORDER BY o.patient_id ASC, o.scheduled_date ASC;
 
 END$$
+DELIMITER ;
+
+-- check if patient is screened for tb
+
+DROP FUNCTION IF EXISTS screenedForTB;
+
+DELIMITER $$
+CREATE FUNCTION screenedForTB(
+    p_patientId INT(11)
+) RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE tbScreeninguuid VARCHAR(38) DEFAULT 'f0447183-d13f-463d-ad0f-1f45b99d97cc';
+    DECLARE result VARCHAR(50);
+
+    SELECT SUBSTRING_INDEX(cn.name, ' ', 1) INTO result
+    FROM obs o
+    JOIN concept_name cn ON cn.concept_id = o.value_coded AND cn.locale = "en" AND cn.locale_preferred = 1
+    WHERE
+        o.voided = 0 AND
+        o.person_id = p_patientId AND
+        o.value_coded IS NOT NULL AND
+        o.concept_id = (SELECT c.concept_id FROM concept c WHERE c.uuid = tbScreeninguuid)
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$ 
 DELIMITER ;
 
 -- getLastARVPrescribed
