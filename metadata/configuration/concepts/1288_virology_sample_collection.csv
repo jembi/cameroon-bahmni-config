@@ -1,7 +1,7 @@
 uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1288
 637f3ae4-ecce-43c6-a001-ce48c1919a69,"Date of Initiation;Protocol;Other Notes",,Virology Traitement,Virology Treatment,Virology Traitement,Virology Treatment,Misc,N/A,,
 8efd308d-5635-4618-9e7c-9d34aa805aa6,,,Date de collecte,Sample collection date,Date de collecte,Sample collection date,Misc,Date,,
-12c6a9a2-3fad-4de3-b824-b29e87ac6965,,,Date de text,Test date,Date de text,Test date,Misc,Date,,
+12c6a9a2-3fad-4de3-b824-b29e87ac6965,,,Date de réception,Reception date,Date de réception,Reception date,Misc,Date,,
 f39f9513-3478-4b48-b983-57d03160efcd,,,Heure de collecte,Collection hour,Heure de collecte,Collection hour,Misc,Text,,
 7560d3b9-5b3e-41a1-bc34-e4ddbfb04c0c,,,DSB,DSB,DSB,DSB,Misc,N/A,,
 6fc0fcac-5ce8-4fa6-bef2-c4ef77c189af,,,Sang EDTA,Blood EDTA,Sang EDTA,Blood EDTA,Misc,N/A,,
