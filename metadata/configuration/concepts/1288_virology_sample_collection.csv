@@ -37,7 +37,8 @@ f2d55135-58bd-4028-8026-f02203c1b093,,,Arrow-QuantStudio 7 Flex,Arrow-QuantStudi
 be1fe6cf-a0be-4bd4-95df-10749fbd9ce6,,,Extraction manuelle-Lightcycler,Manual Extraction-Lightcycler,Extraction manuelle-Lightcycler,Manual Extraction-Lightcycler,Misc,N/A,,
 99dc8f56-1359-4227-afd9-741f05e32639,,,M2000SP-M2000RT,M2000SP-M2000RT,M2000SP-M2000RT,M2000SP-M2000RT,Misc,N/A,,
 3c2735ee-4ba4-4306-8d2c-f3e8528a5951,,,Ext Lab Sample Code,Ext Lab Sample Code,Ext Lab Sample Code,Ext Lab Sample Code,Misc,Text,,
+20bd51d3-76cb-4c33-92df-8413855e3f3b,,,Code PLVT,Code PLVT,Code PLVT,Code PLVT,Misc,Text,,
 78f6e9aa-8282-4135-85f8-ade2b7f88455,,Arrow-QuantStudio 7 Flex;Manual Extraction-Lightcycler;M2000SP-M2000RT;Point Of Care,Machines utilisées,Machine used,Machines utilisées,Machine used,Misc,Coded,,
 227a62aa-ad7d-4c1d-8d7b-6c50826c663d,"Technique;Machine used",,Méthode,Processing Method,Méthode,Processing Method,Misc,N/A,,
-adf1fa68-336a-4c1f-b26e-8b77b305e487,"Health Facility;Ext Lab Sample Code;Virology Treatment;Virology Lab samples;Other inform;Processing Method",,Formulaire Virologie Collection Echantillon,Virology Sample collection Form,Formulaire Virologie Collection Echantillon,Virology Sample collection Form,Misc,N/A,,
+adf1fa68-336a-4c1f-b26e-8b77b305e487,"Health Facility;Ext Lab Sample Code;20bd51d3-76cb-4c33-92df-8413855e3f3b;Virology Treatment;Virology Lab samples;Other inform;Processing Method",,Formulaire Virologie Collection Echantillon,Virology Sample collection Form,Formulaire Virologie Collection Echantillon,Virology Sample collection Form,Misc,N/A,,
 
