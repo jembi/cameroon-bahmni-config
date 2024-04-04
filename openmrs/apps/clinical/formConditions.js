@@ -3235,6 +3235,46 @@ Bahmni.ConceptSet.FormConditions.rules = {
 
 		return conditions;
 	},
+	'What is the outcome of the test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['What is the outcome of the test'];
+		if (value === "Positive") {
+			conditions.show.push("patient linked for treatment");
+		} else {	
+			conditions.hide.push("patient linked for treatment");
+		}	
+		return conditions;	
+	},
+	'Has the person to be vaccinated ever received a dose of COVID-19 vaccine': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Has the person to be vaccinated ever received a dose of COVID-19 vaccine'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("which vaccine was administered");
+		} else {	
+			conditions.hide.push("which vaccine was administered");
+		}	
+		return conditions;	
+	},
+	'Have you had an AEFI after receiving the COVID-19 vaccine': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Have you had an AEFI after receiving the COVID-19 vaccine'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("different types of AEFI");
+		} else {	
+			conditions.hide.push("different types of AEFI");
+		}	
+		return conditions;	
+	},
+	'Did the person eligible accept to be vaccinated': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Did the person eligible accept to be vaccinated'];
+		if (value === "No full name" || value === "No") {
+			conditions.show.push("reason that applies to their refusal");
+		} else {	
+			conditions.hide.push("reason that applies to their refusal");
+		}	
+		return conditions;	
+	},
 	"Start treatment ?": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues["Start treatment ?"];
