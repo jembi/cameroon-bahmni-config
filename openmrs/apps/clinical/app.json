@@ -392,6 +392,12 @@
             },"Person who assisted the mother at the time of childbirth": {
                 "multiSelect": true
             },
+            "Signs and symptoms": {
+                "multiSelect": true
+            },
+            "Covid-19 Risk factors": {
+                "multiSelect": true
+            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [
