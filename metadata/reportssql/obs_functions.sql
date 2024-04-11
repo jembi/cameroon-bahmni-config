@@ -87,6 +87,7 @@ END$$
 DELIMITER ;
 
 -- getObsCodedValuesInSectionByNames for multi-select concepts
+DROP FUNCTION IF EXISTS getObsCodedValuesInSectionByNames;
 DELIMITER $$
 CREATE FUNCTION getObsCodedValuesInSectionByNames(
     p_patientId INT(11),
