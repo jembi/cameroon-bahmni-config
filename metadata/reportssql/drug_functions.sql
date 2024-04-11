@@ -197,6 +197,36 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getLastArvStartDate
+
+DROP FUNCTION IF EXISTS getLastArvStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getLastArvStartDate(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT DATE(o.date_created) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+        AND drugIsARV(d.concept_id)
+        AND drugOrderIsDispensed(p_patientId, o.order_id)
+        AND o.order_action <> "DISCONTINUE"
+        AND o.date_stopped IS NULL
+    ORDER BY o.date_created DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- getMostRecentArvPickupDateBeforeReportEndDate
 
 DROP FUNCTION IF EXISTS getMostRecentArvPickupDateBeforeReportEndDate;

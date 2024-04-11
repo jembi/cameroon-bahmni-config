@@ -2263,6 +2263,22 @@
                 }
             ]
         }
+    },
+    "covid19Report": {
+        "name": "Covid-19 line listing Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/COVID-19_TESTING_REPORT/template/hiv_completeness_check.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/COVID-19_TESTING_REPORT/sql/covid-19_line_listing_report.sql"
+                    }
+                }
+            ]
+        }
     }
 
 }

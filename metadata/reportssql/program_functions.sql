@@ -148,6 +148,19 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientTBStartDate
+
+DROP FUNCTION IF EXISTS getPatientTBStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientTBStartDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    RETURN getPatientProgramTreatmentStartDate(p_patientId, "TB_PROGRAM_KEY");
+END$$
+DELIMITER ;
+
 -- getPatientMostRecentProgramAttributeCodedValue
 
 DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeCodedValue;
