@@ -1476,3 +1476,89 @@ BEGIN
     RETURN (result);
 END$$
 DELIMITER ;
+
+-- checkIfPatientStartedTreatmentOnAppointment
+
+DROP FUNCTION IF EXISTS checkIfPatientStartedTreatmentOnAppointment;
+
+DELIMITER $$
+CREATE FUNCTION checkIfPatientStartedTreatmentOnAppointment(
+    p_patientId INT(11),
+    p_startDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 0;
+    DECLARE patientAppointmentDate DATE;
+
+    SET patientAppointmentDate = getARTAppointmentOnOrAfterDate(p_patientId, p_startDate);
+
+    SELECT TRUE INTO result
+    FROM orders o
+        JOIN encounter e ON o.encounter_id = e.encounter_id
+    WHERE e.patient_id = p_patientId
+        AND e.encounter_datetime >= patientAppointmentDate
+        AND e.encounter_datetime < DATE_ADD(patientAppointmentDate, INTERVAL 1 DAY)
+        AND o.voided = 0
+        AND o.order_type_id IN (
+            SELECT order_type_id FROM order_type
+            WHERE name = 'Drug Order')
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientDrugDispenseDateOnAppointment
+
+DROP FUNCTION IF EXISTS patientDrugDispenseDateOnAppointment;
+
+DELIMITER $$
+CREATE FUNCTION patientDrugDispenseDateOnAppointment(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+    DECLARE appointmentDate DATE;
+    DECLARE checkIfDispensed TINYINT(1);
+
+    SET appointmentDate = getARTAppointmentOnOrAfterDate(p_patientId, p_startDate);
+    SET checkIfDispensed = checkIfPatientStartedTreatmentOnAppointment(p_patientId, appointmentDate);
+
+    IF checkIfDispensed = 1 THEN
+        SET result = appointmentDate;
+    ELSE
+        SET result = NULL;
+    END IF;
+    
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientDispensationEndDate
+
+DROP FUNCTION IF EXISTS patientDispensationEndDate;
+
+DELIMITER $$
+CREATE FUNCTION patientDispensationEndDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT calculateTreatmentEndDate(
+            o.scheduled_date,
+            do.duration,
+            c.uuid) INTO result
+    FROM orders o
+        JOIN drug_order do ON do.order_id = o.order_id
+        JOIN drug d ON d.drug_id = do.drug_inventory_id AND d.retired = 0
+        JOIN concept c ON c.concept_id = do.duration_units AND c.retired = 0
+    WHERE o.patient_id = p_patientId AND o.voided = 0
+    ORDER BY o.scheduled_date DESC
+    LIMIT 1;
+    
+    RETURN (result);
+END$$
+DELIMITER ;
