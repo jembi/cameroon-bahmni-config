@@ -1852,6 +1852,43 @@
             ]
         }
     },
+    "georgetownHIVPatientOnTreatmentInformationReport": {
+        "name": "HIV Patient on Treatment Information Line Listing Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_TREATMENT_INFORMATION_REPORT/template/georgetownHIVPatientOnTreatmentInformationReport.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_TREATMENT_INFORMATION_REPORT/sql/georgetownHIVPatientOnTreatmentInformationReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     "georgetownAppointmentReport": {
         "name": "Appointment Line Listing Report",
         "type": "concatenated",
