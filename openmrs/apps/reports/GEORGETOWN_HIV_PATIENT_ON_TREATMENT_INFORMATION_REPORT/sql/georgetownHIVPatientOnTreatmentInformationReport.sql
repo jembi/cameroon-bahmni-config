@@ -45,5 +45,5 @@ SELECT
 FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
     getPatientARVStartDate(pat.patient_id) IS NOT NULL
-    AND patientDrugDispenseDateOnAppointment(pat.patient_id, "#startDate#", "#endDate#") BETWEEN "#startDate#" AND "#endDate#";
+     AND getARTAppointmentOnOrAfterDate(pat.patient_id, "#startDate#") IS NOT NULL;
     
