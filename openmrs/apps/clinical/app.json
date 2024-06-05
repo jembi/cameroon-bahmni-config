@@ -398,6 +398,9 @@
             "Covid-19 Risk factors": {
                 "multiSelect": true
             },
+            "Other diseases AHD": {
+                "allowAddMore": true
+            },
             "defaults": {
                 "Number of living children": 1,
                 "Accepted Family Planning methods": [
