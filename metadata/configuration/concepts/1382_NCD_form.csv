@@ -1,0 +1,67 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1382
+f5b558ea-c92d-420e-be69-2980d7d0f9eb,,,Date d'enrégistrement,Registration date,Date d'enrégistrement,Registration date,Misc,Date,,
+69beb5ff-df4b-4882-8b2f-113c60eaa2f7,,Yes full name;No full name,Test de CD4,Test for CD4,Test de CD4,Test for CD4,Misc,Coded,,
+5e4b3b12-1e06-48fd-b665-d8204be100e4,,,Count de CD4,CD4 Count,Count de CD4,CD4 Count,Misc,Numeric,,
+82898345-2e16-42cc-84f7-906b8d93900b,,,Glycemie,Blood sugar (FBS),Glycemie,Blood sugar (FBS),Misc,Numeric,,
+
+353aa860-2d58-47e3-a0b8-12617f38bfcf,Registration date,,Socio demographics,Socio demographics,Socio demographics,Socio demographics,Misc,N/A,,
+234450b6-6d37-4403-a7f1-bf0a4bbc47cc,Test for CD4;CD4 Count;Blood sugar (FBS),,Information du cas classé Maladie Avancée,AHD status information,Information du cas classé Maladie Avancée,AHD status information,Misc,N/A,,
+
+68313693-000a-425e-a7f2-b6ac57b0b0df,,,Fièvre Misc,Fever Misc,Fièvre,Fever,Misc,N/A,,
+ef643d31-546b-49bf-8655-d55f2476dd6a,,,Diarrhée Chronique Misc,Chronic Diarrhea Misc,Diarrhée Chronique,Chronic Diarrhea,Misc,N/A,,
+2772a390-c504-4306-af94-622c3c0e3eb1,,,Perte de Poids Misc,Weight Loss Misc,Perte de Poids,Weight Loss,Misc,N/A,,
+a794afbb-6e23-4bac-a7c1-f816a4887bd3,,,Fatigue Misc,Fatigue Misc,Fatigue,Fatigue,Misc,N/A,,
+1a9e8463-0b1d-4162-8c35-256fbe4b31ad,,,Perte de connaissance Misc,"Confusion, fitting or COMA Misc",Perte de connaissance,"Confusion, fitting or COMA",Misc,N/A,,
+0c77367b-bb71-467a-9cfb-8eddc7fd8724,,,maux de tête chronique,Chronic headache,maux de tête chronique,Chronic headache,Misc,N/A,,
+
+e7664be9-f483-4fd0-aed6-7783d7e56dcd,,"Cough full name;Anaemia;Sweating, excessive;Other;Fever Misc;Chronic Diarrhea Misc;Weight Loss Misc;Fatigue Misc;Confusion, fitting or COMA Misc;Chronic headache",NCD Signes et symptômes,NCD Signs and symptoms,Signes et symptômes,Signs and symptoms,Misc,Coded,,
+69beb5ff-df4b-4882-8b2f-113c60eaa2f7,,Yes full name;No full name,Présence d'au moins un symptôme de la TB,At least one TB Symptoms,Présence d'au moins un symptôme de la TB,At least one TB Symptoms,Misc,Coded,,
+28745a71-e4ad-478c-a9d4-353c90fbc3e1,,Yes full name;No full name,Examen de TB effectué,TB Exam done,Examen de TB effectué,TB Exam done,Misc,Coded,,
+
+9df0c434-a15a-4f96-987c-b3cd85a7710a,,Yes full name;No full name,Initié aux anti-TB,Initiated on TB Tx,Initié aux anti-TB,Initiated on TB Tx,Misc,Coded,,
+f42905c1-9a71-4bdc-9b52-bb74af78ab75,,Yes full name;No full name,Initié a la prophyl. INH Indicate if cotrim,Initiated on TPT,Initié a la prophyl. INH Indicate if cotrim,Initiated on TPT,Misc,Coded,,
+ba6ed423-330b-4773-a849-90998f69403f,,Yes full name;No full name,Traitement terminé,Treatment completed,Traitement terminé,Treatment completed,Misc,Coded,,
+
+d15eb92e-269d-48a5-aa30-133d228f4a70,,,Date de début de la TB,TB Initiation date,Date de début de la TB,TB Initiation date,Misc,Date,,
+f298a162-0e7d-4fcf-aab4-1addebc4ede1,,,Date de début de la TPT,TPT Initiation date,Date de début de la TB,TPT Initiation date,Misc,Date,,
+7436b821-cc3f-4c1c-b78c-af95736422ec,,Yes full name;No full name,Traitement terminé TB,TB Treatment completed,Traitement terminé,Treatment completed,Misc,Coded,,
+
+
+f0d73a34-5947-4a7c-abb5-ca555155e2b7,"At least one TB Symptoms;TB Exam done;Test Type;Tuberculosis, Type;Initiated on TB Tx;TB Initiation date;Initiated on TPT;TPT Initiation date;TB Treatment completed;End date of treatment",,Recherche de la TB et initiation aux anti-TB,TB screening and initiation on TB-drugs,Recherche de la TB et initiation aux anti-TB,TB screening and initiation on TB-drugs,Misc,N/A,,
+
+fb9450f3-210b-474a-9ac7-6b97ffffcbb0,,,En utilisant l'Ag Cr resultat (LCR),Using Ag Cr result (CSF),En utilisant l'Ag Cr resultat (LCR),Using Ag Cr result (CSF),Misc,N/A,,
+0e1793a9-6fea-412e-957b-a5f94be3135c,,,En utilisant l'Ag Cr résultat (Sérum),Using Ag Cr result (Serum),En utilisant l'Ag Cr résultat (Sérum),Using Ag Cr result (Serum),Misc,N/A,,
+32bbe256-d88b-4050-af28-19c4bc151931,,Positive;Negative,Ag Cr résultat (Sérum),Ag Cr  result (Serum),Ag Cr résultat (Sérum),Ag Cr  result (Serum),Misc,Coded,,
+28e1a41e-3d2b-45d7-8456-0df3c64c334c,,Positive;Negative,Ag Cr résultat (LCR),Ag Cr result (CSF),Ag Cr résultat (LCR),Ag Cr result (CSF),Misc,Coded,,
+0037d883-9129-428f-8b1f-6cf3ed0c9c9b,,Using Ag Cr result (CSF);Using Ag Cr result (Serum),Type de diagnostic,Type of diagnosis,Type de diagnostic,Type of diagnosis,Misc,Coded,,
+8986bac0-f228-4014-a87d-d00123d8e7d1,,Yes full name;No full name,Initié,Initiated,Initié,Initiated,Misc,Coded,,
+
+30dbad56-47c8-4c0a-9300-ccbcf5a78875,,,Phase intensive,Intensive phase,Phase intensive,Intensive phase,Misc,N/A,,
+6598b733-06c8-4431-8398-53a4f342484b,,,Phase de consolidation,Consolidation phase,Phase de consolidation,Consolidation phase,Misc,N/A,,
+52a4ed67-1aaa-4808-98a6-3ff42f906ee1,,,Phase de maintien (Prophylaxie),Maintainance phase (Prophylaxis),Phase de maintien (Prophylaxie),Maintainance phase (Prophylaxis),Misc,N/A,,
+9431a025-7e42-43e8-b2b2-26e2045b18ae,,Intensive phase;Consolidation phase;Maintainance phase (Prophylaxis),Type de Traitement,Type of Treatment,Type de Traitement,Type of Treatment,Misc,Coded,,
+1c008df7-009a-4ff9-a6c6-be202c518b1f,Ag Cr  result (Serum);Ag Cr result (CSF);Type of diagnosis;Initiated;Date of Initiation;Type of Treatment;TB Treatment completed;End date of treatment,,Recherche de l'infection cryptococcique,Search of cryptococcus infection,Recherche de l'infection cryptococcique,Search of cryptococcus infection,Misc,N/A,,
+
+36445bb3-b536-4231-85b4-bbf1aee6fdd9,,,Diagnostic serologique,Serological diagnostic,Diagnostic serologique,Serological diagnostic,Misc,N/A,,
+d85a0b18-7f20-4ce3-8f68-29fe0f36f496,,,Diagnostic radiologique ( scanner cerebral ),Radiologic diagnostic ( TDM),Diagnostic radiologique ( scanner cerebral ),Radiologic diagnostic ( TDM),Misc,N/A,,
+885fa6cf-3ee2-466d-aa45-d36c79dfdec1,,Serological diagnostic;Radiologic diagnostic ( TDM),Type de diagnostic toxoplasmose cerebrale,Type of cerebral toxoplasmosis diagnosis,Type de diagnostic toxoplasmose cerebrale,Type of cerebral toxoplasmosis diagnosis,Misc,Coded,,
+3a8e9c8b-f2f9-4bba-b7dd-a86b16f42eac,,Positive;Negative,Serologie toxoplasmosique (IgM/ IgG),Toxoplasmosis serology (IgM/ IgG),Serologie toxoplasmosique (IgM/ IgG),Toxoplasmosis serology (IgM/ IgG),Misc,Coded,,
+de9032c4-f7b3-474e-9928-be8a4b2614b1,,Positive;Negative,Result of the cerebral scanner( TDM),Result of the cerebral scanner( TDM),Result of the cerebral scanner( TDM),Result of the cerebral scanner( TDM),Misc,Coded,,
+
+4c4d2fe5-3930-4533-8fe1-61d69c9ab88c,Type of cerebral toxoplasmosis diagnosis;Toxoplasmosis serology (IgM/ IgG);Result of the cerebral scanner( TDM);Initiated;Date of Initiation;TB Treatment completed;End date of treatment,,Recherche de la toxoplasmose cerebrale,Search of cerebral toxoplasmosis,Recherche de la toxoplasmose cerebrale,Search of cerebral toxoplasmosis,Misc,N/A,,
+c3368a16-b472-450f-bfe5-c774211db45e,,,Sarcome de Kaposi,Kaposi Sarcoma,Sarcome de Kaposi,Kaposi Sarcoma,Misc,N/A,,
+d3c9142e-2e2d-4f28-b3bd-b9dbf2c3914d,,,Candidose Buccale,Oral Candidiasis,Phase intensive,Candidose Buccale,Misc,N/A,,
+aabf0e4e-42d3-4235-ab56-83ddb90107cf,,,Infection Bactérienne Sévère,Severe Bacterial Infection,Infection Bactérienne Sévère,Severe Bacterial Infection,Misc,N/A,,
+50ecb373-5f5e-47a5-a06f-0d796369718a,,,Malnutrition Misc,Malnutrition Misc,Malnutrition,Malnutrition,Misc,N/A,,
+ae7df6a8-496b-4176-8281-15e464bd4d84,,,Pneumocystose,Pneumocystis,Pneumocystose,Pneumocystis,Misc,N/A,,
+1981282e-18ec-4817-a393-f85d6f217fcb,,,Cancer du col,Cervical cancer,Cancer du col,Cervical cancer,Misc,N/A,,
+
+1c73cda7-e087-4b2d-b066-2e71944a9168,,Kaposi Sarcoma;Oral Candidiasis;Severe Bacterial Infection;Malnutrition Misc;Pneumocystis;Cervical cancer;Other,Maladie suspectée,Suspected disease,Maladie suspectée,Suspected disease,Misc,Coded,,
+d00d5f7d-5f9b-4369-bbb2-4015d5a950c6,,Yes full name;No full name,Confirmée par un test,Confirmed by a test,Confirmée par un test,Confirmed by a test,Misc,Coded,,
+22e5f32e-e1fb-4a48-9a69-15c989cb923b,,,Date de test,Date of test,Date de test,Date of test,Misc,Date,,
+
+
+1a6f1ec8-c610-4b04-8184-cff563077128,Suspected disease;Confirmed by a test;Date of test,,Autres Maladies AHD,Other diseases AHD,Autres Maladies,Other diseases,Misc,N/A,,
+
+
+b7a1d593-ab83-41b8-907a-9811ac0d6c42,Socio demographics;AHD status information;NCD Signs and symptoms;TB screening and initiation on TB-drugs;Search of cryptococcus infection;Search of cerebral toxoplasmosis;Other diseases AHD,,NCD Form,NCD Form,NCD Form,NCD Form,Misc,N/A,,
