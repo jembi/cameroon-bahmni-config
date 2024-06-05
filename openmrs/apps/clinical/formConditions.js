@@ -3529,4 +3529,15 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		return conditions;
 	},
 
+	'Test for CD4': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Test for CD4'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("HTC, CD4 Count");
+		} else {
+			conditions.hide.push("HTC, CD4 Count");
+		}
+		return conditions;
+	},
+
 };
