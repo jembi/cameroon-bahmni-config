@@ -58,8 +58,18 @@ insert ignore into program_attribute_type(name, description, datatype,creator, d
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PMTCT_PROGRAM_MANAGEMENT_FP_METHOD","PMTCT_PROGRAM_MANAGEMENT_FP_METHOD","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "6d91fd1f-0198-4078-aafe-3367dd87afd3", (select concept_id from concept where uuid="58fa4284-a100-450e-91b6-e302032f6bf6"));
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PMTCT_PROGRAM_MANAGEMENT_ANC_CODE","PMTCT_PROGRAM_MANAGEMENT_ANC_CODE","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "d5d20829-9e46-4d50-a085-6cb98213a7ea");
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PMTCT_PROGRAM_MANAGEMENT_APS_NAME","PMTCT_PROGRAM_MANAGEMENT_APS_NAME","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "2af46f9c-d572-4362-aa14-43d72eacb2aa");
-insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("IPT_PROGRAM_MANAGEMENT_PROTOCOL","IPT_PROGRAM_MANAGEMENT_PROTOCOL","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "be31afc6-7546-4be2-898d-0ab3340cb323", (select concept_id from concept where uuid="c4e7476f-2386-486a-ab4d-0fa8820d3110"));
-insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("IPT_PROGRAM_MANAGEMENT_REASON_FOR_INITIATION","IPT_PROGRAM_MANAGEMENT_REASON_FOR_INITIATION","org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "fd2695a4-366e-49ab-95d1-121112cba2f2", (select concept_id from concept where uuid="18181e9e-3fdb-4008-96fa-cd3ed7f5f4e2"));
+
+INSERT INTO program_attribute_type (name, description, datatype, creator, date_created, uuid, datatype_config)
+VALUES
+    ("IPT_PROGRAM_MANAGEMENT_PROTOCOL", "IPT_PROGRAM_MANAGEMENT_PROTOCOL", "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "be31afc6-7546-4be2-898d-0ab3340cb323", (SELECT concept_id FROM concept WHERE uuid="c4e7476f-2386-486a-ab4d-0fa8820d3110")),
+    ("IPT_PROGRAM_MANAGEMENT_REASON_FOR_INITIATION", "IPT_PROGRAM_MANAGEMENT_REASON_FOR_INITIATION", "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype", 1, NOW(), "fd2695a4-366e-49ab-95d1-121112cba2f2", (SELECT concept_id FROM concept WHERE uuid="18181e9e-3fdb-4008-96fa-cd3ed7f5f4e2"))
+ON DUPLICATE KEY UPDATE
+    name = VALUES(name),
+    description = VALUES(description),
+    datatype = VALUES(datatype),
+    creator = VALUES(creator),
+    date_created = VALUES(date_created),
+    datatype_config = VALUES(datatype_config);
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_FACILITY_TRANSFERED_TO","PROGRAM_MANAGEMENT_FACILITY_TRANSFERED_TO","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "8b2287d1-b5f0-4a1c-9334-134c1a511b3e");
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid, datatype_config) values("PROGRAM_MANAGEMENT_REASON_FOR_OUTCOME","PROGRAM_MANAGEMENT_REASON_FOR_OUTCOME","org.openmrs.customdatatype.datatype.FreeTextDatatype", 1, NOW(), "bda8a9a7-f81a-466d-949b-ec0b684301b7", (select concept_id from concept where uuid="b72d94c6-ab70-47ef-b8c9-0eb7d0c0100f"));
 insert ignore into program_attribute_type(name, description, datatype,creator, date_created, uuid) values("PROGRAM_MANAGEMENT_OUTCOME_DATE","PROGRAM_MANAGEMENT_OUTCOME_DATE","org.openmrs.customdatatype.datatype.DateDatatype", 1, NOW(), "9c20e3b0-6bc1-45e8-a733-baa57340764c");
