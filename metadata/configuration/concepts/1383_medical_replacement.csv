@@ -1,0 +1,5 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1383
+5e3405e8-458e-4610-b3cd-658b6ad7735b,,,Date de l'examen,Date of Examination,Date de l'examen,Date of Examination,Misc,Date,,
+517624d3-5f89-4a1e-947e-b151bf227eb1,,,Nombre de jours,Number of Days,Nombre de jours,Number of Days,Misc,Numeric,,
+898421f7-de27-4fcf-8086-e58346c0ac0e,,,Date de début du congé maladie,Sick Leave Start,Date de début du congé maladie,Sick Leave Start,Misc,Date,,
+d49f1ac6-6619-4105-a44e-c3cceb14dec4, Physician’s name; Date of Examination; Number of Days; Sick Leave Start,,Formulaire de remplacement médical,Medical Replacemen Form,Formulaire de remplacement médical,Medical Replacemen Form,Misc,N/A,,
