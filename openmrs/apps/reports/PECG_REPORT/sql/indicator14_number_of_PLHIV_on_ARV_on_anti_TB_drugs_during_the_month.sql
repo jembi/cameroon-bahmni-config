@@ -1,5 +1,5 @@
  SELECT
-  'Number of PLWHA with a suppressed viral load 12 months after the initiation of ART during the month' AS 'Title',
+  'Number of PLHIV on ARVs put on anti-TB drugs during the month' AS 'Title',
   PECG_Indicator14('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator14('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator14('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

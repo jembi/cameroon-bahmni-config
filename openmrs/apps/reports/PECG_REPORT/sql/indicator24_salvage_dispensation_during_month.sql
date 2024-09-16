@@ -1,5 +1,5 @@
 SELECT
-  'Number of accidents of exposure (AES) during the month' AS 'Title',
+  'Salvage dispensation (PLHIV not followed by the HF but came to pick-up treatment during the month)' AS 'Title',
   PECG_Indicator20('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator20('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator20('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

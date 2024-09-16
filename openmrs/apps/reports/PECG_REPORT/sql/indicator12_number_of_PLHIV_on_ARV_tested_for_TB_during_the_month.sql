@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLHIV who did not come for treatment within one month (1 and 2 month absents)' AS 'Title',
+  'Number of PLHIV on ARVs tested for TB during the month' AS 'Title',
   PECG_Indicator12('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator12('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator12('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

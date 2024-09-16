@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLWHA who did not come for treatment within one month' AS 'Title',
+  'Number of PLHIV who did not pick-up treatment during the month (2 months defaulters)' AS 'Title',
   PECG_Indicator17('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator17('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator17('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

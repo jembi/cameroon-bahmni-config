@@ -1,6 +1,6 @@
 SELECT
-   'Number of PLHIV deaths notified during the month' AS 'Title',
-PECG_Indicator11('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
+   'Number of PLHIV screened positive for any one of the signs of TB' AS 'Title',
+  PECG_Indicator11('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator11('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator11('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',
   PECG_Indicator11('#startDate#','#endDate#', 1, 4,  1, 'F') AS '1-4 F',

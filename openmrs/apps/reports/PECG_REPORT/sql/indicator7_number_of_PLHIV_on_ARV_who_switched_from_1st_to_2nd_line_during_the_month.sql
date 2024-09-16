@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLHIV on ART to whom one of TB clinical signs was positive' AS 'Title',
+  'Number of PLHIV on ARVs who switched from 1st line to 2nd ARVs line during the month' AS 'Title',
   PECG_Indicator7('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator7('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator7('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

@@ -22,7 +22,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
-    patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+ -- patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -53,7 +54,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+ -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -85,15 +87,17 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasChangedLineProtocol(pat.patient_id) AND
-    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) IN ("1st line", "1st substituted line") AND
-    getNewARVProtocol(pat.patient_id, p_endDate) = "2nd line" AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+ -- patientHasChangedLineProtocol(pat.patient_id) AND
+ -- getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) IN ("1st line", "1st substituted line") AND
+    patientHasTherapeuticLineFirstLine(pat.patient_id) AND
+ -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotTransferredOut(pat.patient_id) AND 
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -119,15 +123,25 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
-    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
-    patientIsNotDead(pat.patient_Id) AND
-    patientIsNotLostToFollowUp(pat.patient_Id) AND
-    patientIsNotTransferredOut(pat.patient_Id) AND
-    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientHasTherapeuticLineSecondLine(pat.patient_id) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND 
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate, 0) AND
+    -- patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
+    -- patientIsNotDead(pat.patient_Id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_Id) AND
+    -- patientIsNotTransferredOut(pat.patient_Id) AND
+    -- patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
 
     RETURN (result);
 END$$ 
@@ -153,15 +167,25 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, 0) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
-    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientHasTherapeuticLineThirdLine(pat.patient_id) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id) AND
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND 
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, 0) AND
+    -- patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
+    -- patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    -- patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id) AND
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -187,49 +211,27 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    patientHasChangedLineProtocol(pat.patient_id) AND
+    getLastARVProtocolInPreviousMonth(pat.patient_id, p_startDate) IN ("1st line", "1st substituted line") AND
+    getNewARVProtocol(pat.patient_id, p_endDate) = "2nd line" AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotTransferredOut(pat.patient_id) AND 
     NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
-
-DROP FUNCTION IF EXISTS PECG_Indicator9;
-
-DELIMITER $$
-CREATE FUNCTION PECG_Indicator9(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-
-SELECT
-    COUNT(DISTINCT pat.patient_id) INTO result
-FROM
-    patient pat
-WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
-    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
-    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id) AND
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+--     patientGenderIs(pat.patient_id, p_gender) AND
+--     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+--  -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+--     getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+--     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+--     getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+--     patientIsNotDead(pat.patient_id) AND
+--     patientIsNotLostToFollowUp(pat.patient_id) AND
+--     patientIsNotTransferredOut(pat.patient_id) AND
+--     NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -256,15 +258,117 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
-    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") IN ("Yes","Yes full name") AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    -- patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    -- getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") IN ("Yes","Yes full name") AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id) AND
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator9;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator9(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+     patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+    patientHasBeenPrescribedDrug(pat.patient_id, "INH","#startDate#", "#endDate#") = "Yes" AND
+    patientIsNotDead(pat.patient_Id) AND
+    patientIsNotLostToFollowUp(pat.patient_Id) AND
+    patientIsNotTransferredOut(pat.patient_Id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_Id, p_startDate, p_endDate) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_Id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    -- patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    -- getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    -- getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id) AND
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator10;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator10(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, 0) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id) AND
     NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    -- patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    -- getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    -- getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    -- getObsCodedValue(pat.patient_id, "3dce13a8-c7e5-45ec-a6f0-8050fd4a2ca2") = "Initiated treatment" AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id) AND
+    -- patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND 
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -290,8 +394,18 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') = "Dead" AND
-    getMostRecentProgramCompletionDate(pat.patient_id, 'HIV_PROGRAM_KEY') BETWEEN p_startDate AND p_endDate;
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') = "Dead" AND
+    -- getMostRecentProgramCompletionDate(pat.patient_id, 'HIV_PROGRAM_KEY') BETWEEN p_startDate AND p_endDate;
 
     RETURN (result);
 END$$ 
@@ -318,12 +432,24 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    NOT patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    IFNULL (getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') <>  "Refused (Stopped) Treatment", TRUE) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+ -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") IN ("Yes","Yes full name") AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id) AND
     NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- NOT patientWasOnARVTreatmentOrHasPickedUpADrugWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    -- IFNULL (getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') <>  "Refused (Stopped) Treatment", TRUE) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id) AND
+    -- NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -350,12 +476,71 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
-    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
+ -- patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientIsNotTransferredOut(pat.patient_id) AND
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
+    -- patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator14;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator14(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
+    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
+    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
+    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
+    getObsCodedValue(pat.patient_id, "3dce13a8-c7e5-45ec-a6f0-8050fd4a2ca2") = "Initiated treatment" AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND 
+    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
+    -- patientIsVirallySuppressed3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -382,8 +567,44 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
+    getPatientMostRecentProgramOutcome(pat.patient_id, 'en', 'HIV_PROGRAM_KEY') = "Dead" AND
+    getMostRecentProgramCompletionDate(pat.patient_id, 'HIV_PROGRAM_KEY') BETWEEN p_startDate AND p_endDate;
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator16;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator16(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientIsNotDefaulterFor1Month(pat.patient_id, p_startDate, p_endDate) AND
+    patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
@@ -413,6 +634,7 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientIsNotDefaulterFor2Month(pat.patient_id, p_startDate, p_endDate) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientDidntCollectARV(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
@@ -445,13 +667,210 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientDidntCollectARV(pat.patient_id, p_startDate, p_endDate, 0, -1) AND
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, -1) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator19;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator19(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
+    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator20;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator20(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
+    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator21;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator21(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
+    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS PECG_Indicator22;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator22(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
+    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator23;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator23(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
+    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
+DROP FUNCTION IF EXISTS PECG_Indicator24;
+
+DELIMITER $$
+CREATE FUNCTION PECG_Indicator24(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
+    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotLostToFollowUp(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    -- patientGenderIs(pat.patient_id, p_gender) AND
+    -- patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    -- patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
+    -- patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -493,140 +912,17 @@ WHERE
 END$$ 
 DELIMITER ;
 
-DROP FUNCTION IF EXISTS PECG_Indicator14;
 
-DELIMITER $$
-CREATE FUNCTION PECG_Indicator14(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-
-SELECT
-    COUNT(DISTINCT pat.patient_id) INTO result
-FROM
-    patient pat
-WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatment12MonthsAgo(pat.patient_id, p_startDate, p_endDate) AND
-    patientOnARVOrHasPickedUpADrugWithinExtendedPeriod(pat.patient_id, p_startDate, p_endDate, 0, 3) AND
-    patientIsVirallySuppressed3MonthsBeforeOrAfterReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
 
 -- Accidents of Exposure (AES)
 
-DROP FUNCTION IF EXISTS PECG_Indicator20;
 
-DELIMITER $$
-CREATE FUNCTION PECG_Indicator20(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-
-SELECT
-    COUNT(DISTINCT pat.patient_id) INTO result
-FROM
-    patient pat
-WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
-    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
-
-    RETURN (result);
-END$$ 
-DELIMITER ;
 
 -- Punctual Aid (PA)
 
-DROP FUNCTION IF EXISTS PECG_Indicator19;
 
-DELIMITER $$
-CREATE FUNCTION PECG_Indicator19(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
 
-SELECT
-    COUNT(DISTINCT pat.patient_id) INTO result
-FROM
-    patient pat
-WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
-    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
 
-    RETURN (result);
-END$$ 
-DELIMITER ; 
-
-DROP FUNCTION IF EXISTS PECG_Indicator10;
-
-DELIMITER $$
-CREATE FUNCTION PECG_Indicator10(
-    p_startDate DATE,
-    p_endDate DATE,
-    p_startAge INT(11),
-    p_endAge INT (11),
-    p_includeEndAge TINYINT(1),
-    p_gender VARCHAR(1)) RETURNS INT(11)
-    DETERMINISTIC
-BEGIN
-    DECLARE result INT(11) DEFAULT 0;
-
-SELECT
-    COUNT(DISTINCT pat.patient_id) INTO result
-FROM
-    patient pat
-WHERE
-    patientGenderIs(pat.patient_id, p_gender) AND
-    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientWithTherapeuticLinePickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate, 0) AND
-    patientHadTBExaminationDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    getObsCodedValue(pat.patient_id, "61931c8b-0637-40f9-97dc-07796431dd3b") = "Suspected / Probable" AND
-    getObsCodedValue(pat.patient_id, "63ac8070-fc26-4121-a05e-11e5a6b56ad0") = "Yes" AND
-    getObsCodedValue(pat.patient_id, "6ab25a03-6ac3-45f1-aa04-af54186411e0") = "Positive" AND
-    getObsCodedValue(pat.patient_id, "3dce13a8-c7e5-45ec-a6f0-8050fd4a2ca2") = "Initiated treatment" AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id) AND
-    patientIsNotDefaulterBasedOnDays(pat.patient_id, p_startDate, p_endDate) AND 
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
-    RETURN (result);
-END$$ 
-DELIMITER ;
 
 -- isOldPatient
 
