@@ -603,10 +603,10 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientDidntCollectARV(pat.patient_id, p_startDate, p_endDate, 0, 0) AND
     patientIsNotDefaulterFor1Month(pat.patient_id, p_startDate, p_endDate) AND
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
@@ -640,7 +640,12 @@ WHERE
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, 0) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+
+
+
+
+
+
 
     RETURN (result);
 END$$ 
@@ -672,7 +677,6 @@ WHERE
     patientDidntCollectARV(pat.patient_id, p_startDate, p_endDate, 0, -1) AND
     patientHasScheduledAnARTAppointment(pat.patient_id, p_startDate, p_endDate, -1) AND
     patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
     patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
@@ -700,12 +704,10 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND
-    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsDatetimeValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN p_startDate AND p_endDate
+    -- patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND must change to transfer in
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -795,11 +797,12 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasNotBeenEnrolledIntoHivProgram(pat.patient_id) AND
-    patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    getObsDatetimeValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN p_startDate AND p_endDate
+    -- patientHasPickedProphylaxisDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
+    -- patientIsNotDead(pat.patient_id) AND
+    -- patientIsNotLostToFollowUp(pat.patient_id) AND
+    -- patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
 END$$ 
