@@ -641,12 +641,6 @@ WHERE
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
 
-
-
-
-
-
-
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -704,10 +698,11 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    getObsDatetimeValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN p_startDate AND p_endDate
-    -- patientReasonForConsultationIsUnplannedAid(pat.patient_id) AND must change to transfer in
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_Id, p_startDate, p_endDate) AND
+    patientReasonForConsultationIsTransferIn(pat.patient_id) AND
+    getObsTextValue(pat.patient_id, "39296a1c-bd96-404e-976a-5186da7c4690") LIKE "Cameroon" AND
+    getObsDatetimeValue(p.patient_id, "c5b20e93-56c8-45e5-b65b-2b42ee49ecb0") BETWEEN p_startDate AND p_endDate AND
     patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
 
     RETURN (result);
 END$$ 
@@ -1252,6 +1247,31 @@ BEGIN
     ORDER BY pp.patient_program_id DESC
     LIMIT 1;
     RETURN (patientIsUnplannedAid );
+END$$
+DELIMITER ;
+
+-- patientReasonForConsultationIsTransferIn
+
+DROP FUNCTION IF EXISTS patientReasonForConsultationIsTransferIn;
+
+DELIMITER $$
+CREATE FUNCTION patientReasonForConsultationIsTransferIn(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN 
+    DECLARE patientIsTransferIn TINYINT(1) DEFAULT 0;
+
+    DECLARE uuidPatientIsTransferIn VARCHAR(38) DEFAULT "cf180299-f6e2-4b08-8b80-2e9125a97230";
+
+    SELECT TRUE INTO patientIsTransferIn
+    FROM  patient_program pp  
+    JOIN patient_program_attribute ppt ON ppt.patient_program_id = pp.patient_program_id
+    JOIN concept c ON c.concept_id = ppt.value_reference
+    WHERE  ppt.voided = 0 AND p_patientId = pp.patient_id
+        AND c.uuid = uuidPatientIsTransferIn
+    ORDER BY pp.patient_program_id DESC
+    LIMIT 1;
+    RETURN (patientIsTransferIn );
 END$$
 DELIMITER ;
 
