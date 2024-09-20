@@ -385,5 +385,36 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientHasReturnedToTreatmentWithinTheReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasReturnedToTreatmentWithinTheReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasReturnedToTreatmentWithinTheReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM patient_program pp
+        JOIN program p ON pp.program_id = p.program_id
+        JOIN patient_identifier pi ON pp.patient_id = pi.patient_id
+        JOIN person pe ON pp.patient_id = pe.person_id
+        JOIN obs o ON o.person_id = pe.person_id
+        JOIN concept_name cn ON o.concept_id = cn.concept_id
+    WHERE
+        p.name = 'HIV_DEFAULTERS_PROGRAM_KEY'
+        AND cn.name = 'PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE'
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.voided = 0
+        ORDER BY pp.patient_id, o.value_datetime;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 
 
