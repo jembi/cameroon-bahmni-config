@@ -24,10 +24,7 @@ WHERE
     (
         patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) OR
         patientIsNewlyInitiatingART(pat.patient_id)
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    );
 
     RETURN (result);
 END$$ 
@@ -58,10 +55,8 @@ WHERE
     (
         patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) OR
         patientAlreadyOnART(pat.patient_id)
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id);
+    );
+    
     RETURN (result);
 END$$ 
 DELIMITER ;
@@ -90,19 +85,16 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgramDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
-    patientHasStartedARVTreatmentDuringOrBeforeReportingPeriod(pat.patient_id, p_endDate) AND
     IF (
         isOldPatient(pat.patient_id, p_startDate),
         (patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration) OR
             patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)),
         patientPickedARVDrugDuringReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, p_minDuration, p_maxDuration)
     ) AND
+    getARTAppointmentOnOrAfterDate(pat.patient_id, p_startDate) AND
     patientIsNotDead(pat.patient_id) AND
     patientIsNotLostToFollowUp(pat.patient_id) AND
-    (
-        patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
-    );
+    patientIsNotTransferredOut(pat.patient_id);
 
     RETURN (result);
 END$$ 
@@ -131,16 +123,8 @@ FROM
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     (!p_includeOnlyBreastfeeding OR getProgramAttributeValueWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate, uuidIsBreastfeeding, "HIV_PROGRAM_KEY") = 'true') AND
-    patientHasEnrolledIntoHivProgramDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
-    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientPickedARVDrugDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotLostToFollowUp(pat.patient_id) AND
-    (
-        patientIsNotTransferredOut(pat.patient_id) OR
-        patientOnARTDuringPartOfReportingPeriodAndDurationBetween(pat.patient_id, p_startDate, p_endDate, 0, 2000)
-    );
+    patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
 END$$ 
@@ -168,10 +152,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
     patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
-    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
     (
         patientHasProgramOutcomeDeadWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate)
         OR
@@ -204,10 +186,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
     patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
-    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
     patientHasProgramOutcomeTransferredOutWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
@@ -236,10 +216,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
     patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
-    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
     patientHasProgramOutcomeRefusedTreatmentWithinReportingPeriod(pat.patient_id, p_startDate, p_endDate);
 
     RETURN (result);
@@ -268,10 +246,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
     patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
-    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
     patientHasStartedARVTreatmentAfter(pat.patient_id, TIMESTAMPADD(MONTH, -3, CURDATE()));
 
     RETURN (result);
@@ -300,10 +276,8 @@ WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
-    patientHasTherapeuticLine(pat.patient_id, 0) AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
     patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
-    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
     NOT patientHasStartedARVTreatmentAfter(pat.patient_id, TIMESTAMPADD(MONTH, -3, CURDATE()));
 
     RETURN (result);
@@ -330,7 +304,7 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") < p_endDate AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") BETWEEN p_startDate AND p_endDate AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
     patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, p_startDate, p_endDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
@@ -359,13 +333,46 @@ FROM
     patient pat
 WHERE
     patientGenderIs(pat.patient_id, p_gender) AND
-    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") < p_endDate AND
+    getPatientDateOfEnrolmentInProgram(pat.patient_id, "TB_PROGRAM_KEY") BETWEEN p_startDate AND p_endDate AND
     patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
     patientHasStartedARVTreatmentBefore(pat.patient_id, p_startDate) AND
     patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
 
     RETURN (result);
 END$$
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS TREATMENT_Indicator6;
+
+DELIMITER $$
+CREATE FUNCTION TREATMENT_Indicator6(
+    p_startDate DATE,
+    p_endDate DATE,
+    p_startAge INT(11),
+    p_endAge INT (11),
+    p_includeEndAge TINYINT(1),
+    p_gender VARCHAR(1)) RETURNS INT(11)
+    DETERMINISTIC
+BEGIN
+    DECLARE result INT(11) DEFAULT 0;
+
+SELECT
+    COUNT(DISTINCT pat.patient_id) INTO result
+FROM
+    patient pat
+WHERE
+    patientGenderIs(pat.patient_id, p_gender) AND
+    patientAgeWhenRegisteredForHivProgramIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge) AND
+    patientHasEnrolledIntoHivProgram(pat.patient_id) = "Yes" AND
+    patientHasStartedARVTreatmentBefore(pat.patient_id, p_endDate) AND
+    patientWasOnARVTreatmentByDate(pat.patient_id, p_startDate) AND
+    patientIsLostToFollowUp(pat.patient_id, p_startDate, p_endDate) AND
+    patientIsNotDead(pat.patient_id) AND
+    patientIsNotTransferredOut(pat.patient_id);
+
+    RETURN (result);
+END$$ 
 DELIMITER ;
 
 DROP FUNCTION IF EXISTS TREATMENT_Indicator7a;
