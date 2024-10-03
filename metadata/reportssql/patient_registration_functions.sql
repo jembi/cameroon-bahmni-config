@@ -448,6 +448,18 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientUHCCode
+DROP FUNCTION IF EXISTS getPatientUHCNumber;
+
+DELIMITER $$
+CREATE FUNCTION getPatientUHCNumber(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    RETURN getPatientIdentifierValue(p_patientId, 'UHC Unique ID');
+END$$
+DELIMITER ;
+
 -- getPatientCNINumber
 DROP FUNCTION IF EXISTS getPatientCNINumber;
 

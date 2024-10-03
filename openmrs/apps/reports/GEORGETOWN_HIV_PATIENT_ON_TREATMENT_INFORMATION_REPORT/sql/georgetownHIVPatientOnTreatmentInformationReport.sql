@@ -1,6 +1,7 @@
 SELECT
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
     getPatientARTNumber(pat.patient_id) as "ArtCode",
+    getPatientUHCNumber(pat.patient_id) as "UHCCode",
     getFacilityName() as "facilityName",
     getPatientIdentifier(pat.patient_id) as "uniquePatientID",
     getPatientAgeInYearsAtDate(pat.patient_id,"#endDate#") as "age",
