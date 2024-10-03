@@ -1,5 +1,5 @@
 SELECT
-  'Number of new PLHIV on ART who received INH during the month' AS 'Title',
+  'Total number of PLHIV on 2nd line ARVs who received treatment during the month (Active file on 2nd line)' AS 'Title',
   PECG_Indicator5('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator5('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator5('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLWHA who missed treatment in previous month and have come to take treatment during the month' AS 'Title',
+  'Number of LTFU during the month (absent for 03 months and more)' AS 'Title',
   PECG_Indicator18('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator18('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator18('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',
