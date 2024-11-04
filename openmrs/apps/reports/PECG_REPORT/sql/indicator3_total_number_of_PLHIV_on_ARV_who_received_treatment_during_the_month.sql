@@ -1,4 +1,5 @@
-SELECT 'Not Available' AS '-',
+SELECT
+   'Total number of PLHIV on ARVs who received treatment during the month (Active File)' AS 'Title',
    0 AS '<1 M',
    0 AS '<1 F',
    0 AS '1-4 M',

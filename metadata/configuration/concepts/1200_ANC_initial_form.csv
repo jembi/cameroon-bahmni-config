@@ -31,6 +31,18 @@ c6c08cdc-18dc-4f42-809c-959621bc9a6c,,,Date du test VIH,HIV Test Date,Date du te
 9fda317c-9fd4-4423-a09b-dd4ba86a8a61,,Yes full name;No full name,Éligible pour le retest du VIH?,Eligible for HIV Repeat Test?,Éligible pour le retest du VIH?,Eligible for HIV Repeat Test?,Misc,Coded,,
 1bddb328-f0c2-46b0-b5f9-6d66c7726573,,,Raison,Reason,Raison,Reason,Misc,Text,,
 d6cc3709-ffa0-42eb-b388-d7def4df30cf,"Eligible for HIV Repeat Test?;Reason;HIV Tested;HIV Test Date;HTC, Result;Repeat Test done if (P);Repeat Test Date;Repeat Test Result",,(b) Pendant l'enrolement en CPN,At ANC Enrolment,(b) Pendant l'enrolement en CPN,At ANC Enrolment,Misc,N/A,,
+
+018c6f2d-6f2f-4236-ab02-75fc17b209af,,Yes full name;No full name;Unknown;Refused;Stock Out,Testé Syphilis,Tested for Syphilis,Testé Syphilis,Tested for Syphilis,Misc,Coded,,
+0f4f700b-6f6c-414a-9369-adb1a39b43a1,,, Date du Test Syphilis,Syphilis Testing Date, Date du Test Syphilis,Syphilis Testing Date,Misc,Date,,
+5dccd6bf-00fd-48d1-a9d1-1d102679375a,,Positive;Negative;Indeterminate,Resultat du Test Syphilis,Syphilis Duo Test Result,Resultat du Test Syphilis,Resultat du Test Syphilis,Misc,Coded,,
+
+48732de2-3a7c-45b6-9abd-5e67b6903390,,,1ere dose benzylpen,1st dose benzylpen,1ere dose benzylpen,1st dose benzylpen,Misc,N/A,,
+d96cf53f-866e-4c2f-b945-1020be3e334b,,,2ieme dose benzylpen,2nd dose benzylpen,2ieme dose benzylpen,2nd dose benzylpen,Misc,N/A,,
+1e28f91d-e608-4f10-b51d-8242e2fbd1c4,,,3ieme dose benzylpen,3rd dose benzylpen,3ieme dose benzylpen,3rd dose benzylpen,Misc,N/A,,
+11b273fc-80f8-4454-be1c-8e6e19374dec,,1st dose benzylpen;2nd dose benzylpen;3rd dose benzylpen; Refused; Stock Out,Traitement Syphilis,Syphilis Treatment With Benzathine Penicillin,Traitement Syphilis,Syphilis Treatment With Benzathine Penicillin,Misc,Coded,,
+
+dc43db96-009e-4b71-888b-03810aaa7cc3,Tested for Syphilis;Syphilis Testing Date;Syphilis Duo Test Result;Syphilis Treatment With Benzathine Penicillin;Other treatments,,Dépistage syphillis (Duo Test) & Traitement,Syphilis Testing and Treatment,Dépistage syphillis (Duo Test) & Traitement,Syphilis Testing and Treatment,Misc,N/A,,
+
 fea0b509-ba01-437a-89af-eeecf9027eb2,Index Testing;Prior to ANC Enrolment;At ANC Enrolment,,Status VIH,HIV Status,Status VIH,HIV Status,Misc,N/A,,
 96d8c90a-7d81-49d9-940f-b8706e7f6afe,"HIV Tested;HIV Test Date;HTC, Result",,Statut VIH du partenaire,Partners HIV status,Statut VIH du partenaire,Partners HIV status,Misc,N/A,,
 f0447183-d13f-463d-ad0f-1f45b99d97cc,,Yes full name;No full name,Dépisté,Screened,Dépisté,Screened,Misc,Coded,,
@@ -82,4 +94,4 @@ f961ec41-cd5d-4b45-91e0-0f5a408fea4b,,Already on ART;Newly initiating ART;AZT pr
 ae4e6b70-b8ce-4672-b41b-e9bdd31fe4f8,,,Nombre de Pillules,Number of Pills,Nombre de Pillules,Number of Pills,Misc,Numeric,,
 d09552b6-302c-427a-b757-dfeeb0ec1d50,,,Code TARV,Unique ART Client ID Number,Code TARV,Unique ART Client ID Number,Misc,Text,,
 89b1cd66-c33a-4ef4-b208-5d86502f14ec,"ART, Status;HIVTC, Mothers ARV Regimen;Number of Pills;Start date;Unique ART Client ID Number",,ARVs/TAR,ARVs / ART,ARVs/TAR,ARVs / ART,Misc,N/A,, 
-14815716-7d9a-4306-8f05-f27c3ff30709,"Date of First ANC Visit;Obstetrical/Delivery History;ANC Vital Signs;Pregnancy Status at 1st Visit;HIV Status;Partners HIV status;Laboratory tests and results;LLIN/Medication received;Pregnancy complication/outcome;ARVs / ART",,Consultation prénatale (CPN) - initial,Antenatal Care (ANC) - initial,Consultation prénatale (CPN) - initial,Antenatal Care (ANC) - initial,Misc,N/A,,
+14815716-7d9a-4306-8f05-f27c3ff30709,"Date of First ANC Visit;Obstetrical/Delivery History;ANC Vital Signs;Pregnancy Status at 1st Visit;HIV Status;Syphilis Testing and Treatment;Partners HIV status;Laboratory tests and results;LLIN/Medication received;Pregnancy complication/outcome;ARVs / ART",,Consultation prénatale (CPN) - initial,Antenatal Care (ANC) - initial,Consultation prénatale (CPN) - initial,Antenatal Care (ANC) - initial,Misc,N/A,,

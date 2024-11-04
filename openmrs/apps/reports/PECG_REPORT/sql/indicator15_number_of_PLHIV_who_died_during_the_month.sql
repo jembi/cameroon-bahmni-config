@@ -1,5 +1,5 @@
  SELECT
-  'Number of PLWHA who are still on treatment 12 months after the initiation of ART during the month' AS 'Title',
+  'Number of PLHIV who died during the month' AS 'Title',
   PECG_Indicator15('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator15('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator15('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

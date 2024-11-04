@@ -29,6 +29,42 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- patientFinalHIVStatus
+DROP FUNCTION IF EXISTS isHivStatus;
+DELIMITER $$
+
+CREATE FUNCTION isHivStatus(
+    p_patientId INT,
+    p_hivResult VARCHAR(255),
+    uuidHIVTestFinalResult CHAR(38),
+    p_startDate DATETIME,
+    p_endDate DATETIME
+) RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE result BOOLEAN DEFAULT FALSE;
+
+    SELECT
+        (cn.name = p_hivResult) INTO result
+    FROM
+        obs o
+        JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
+        JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
+    WHERE
+        o.voided = 0
+        AND o.person_id = p_patientId
+        AND c.uuid = uuidHIVTestFinalResult
+        AND o.date_created BETWEEN p_startDate AND p_endDate
+    ORDER BY
+        o.date_created DESC
+    LIMIT 1;
+
+    RETURN result;
+END$$
+
+DELIMITER ;
+
+
 -- patientAgeWhenTestedForHivIsBetween
 
 DROP FUNCTION IF EXISTS patientAgeWhenTestedForHivIsBetween;  

@@ -1,6 +1,6 @@
 SELECT
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
-    getPatientARTNumber(pat.patient_id) as "existingArtCode",
+    getPatientARTNumber(pat.patient_id) as "ArtCode",
     getPatientUHCNumber(pat.patient_id) as "UHCCode",
     getFacilityName() as "facilityName",
     getPatientIdentifier(pat.patient_id) as "uniquePatientID",
@@ -18,6 +18,9 @@ SELECT
     getPatientMostRecentProgramAttributeCodedValue(pat.patient_id, "397b7bc7-13ca-4e4e-abc3-bf854904dce3", "en") as "currentLine",
     IF(patientIsEligibleForVL(pat.patient_id), "Yes", "No") as "eligibilityForVl",
     getARTAppointmentOnOrAfterDate(pat.patient_id, COALESCE(GREATEST("#startDate#", getLastArvPickupDate(pat.patient_id, "2000-01-01", "#endDate#")),"#startDate#")) as "lastAppointmentDate",
+    getPatientMostRecentProgramOutcome(pat.patient_id, "en", "HIV_PROGRAM_KEY") as "patientOutcome",
+    getMostRecentArvPickupDateBeforeReportEndDate(pat.patient_id, "#endDate#") as "dateOfARVDispensation",
+    patientDispensationEndDate(pat.patient_id) as "lastDispensationEndDate",
     getPatientARTStatus(pat.patient_id, "#startDate#", "#endDate#") as "newOrAlreadyEnrolled",
     getPregnancyStatus(pat.patient_id) as "patientIsPregnant",
     IF(getProgramAttributeValueWithinReportingPeriod(pat.patient_id, "#startDate#", "#endDate#", "242c9027-dc2d-42e6-869e-045e8a8b95cb", "HIV_PROGRAM_KEY")="true","Yes","No") as "patientIsBreastfeeding",
@@ -42,29 +45,6 @@ SELECT
     getReasonLastVLExam(pat.patient_id) as "reasonOfLastVL"
 FROM (SELECT @a:= 0) AS a, patient pat
 WHERE
-    (
-        (
-            patientHasStartedARVTreatmentDuringReportingPeriod(pat.patient_id, "#startDate#", "#endDate#")
-            AND
-            getLastArvPickupDate(pat.patient_id, "#startDate#", "#endDate#") IS NOT NULL
-        )
-        OR
-        (
-            patientHasStartedARVTreatmentBefore(pat.patient_id, "#startDate#")
-            AND
-            getLastArvPickupDate(pat.patient_id, "2000-01-01", "2100-01-01") IS NOT NULL
-            AND
-            (
-                patientHasBeenDispensedARVDuringFullMonth(pat.patient_id, "#startDate#", "#endDate#")
-                OR
-                (
-                    patientIsNotLostToFollowUpBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
-                    AND
-                    patientIsNotDefaulterBasedOnDays(pat.patient_id, "#startDate#", "#endDate#")
-                )
-            )
-        )
-    ) AND
-    patientIsNotDead(pat.patient_id) AND
-    patientIsNotTransferredOut(pat.patient_id) AND
-    NOT patientReasonForConsultationIsUnplannedAid(pat.patient_id);
+    getPatientARVStartDate(pat.patient_id) IS NOT NULL
+     AND getARTAppointmentOnOrAfterDate(pat.patient_id, "#startDate#") IS NOT NULL;
+    

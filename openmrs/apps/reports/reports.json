@@ -10,98 +10,168 @@
                     "name": "Report",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator1_ARV_old_treatment.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator1_total_number_of_old_PLHIV_on_ARV_who_received_treatment_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report2",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator2_ARV_new_treatment.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator2_number_of_newly_identified_PLHIV_placed_on_ARV_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report3",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator3_total_no_of_ARV.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator3_total_number_of_PLHIV_on_ARV_who_received_treatment_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report4",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_plwha_from_1st_to_2nd_line.sql"
-                    }
-                },
-                {
-                    "name": "Report4b",
-                    "type": "MRSGeneric",
-                    "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4b_plwha_from_2nd_to_3rd_line.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator4_total_number_of_PLHIV_on_1st_line_who_received_treatment_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report5",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator5_plwha_received_inh.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator5_total_number_of_PLHIV_on_2nd_line_who_received_treatment_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report6",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_PLWHA_TB_investigated_documented.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator6_total_number_of_PLHIV_on_3rd_line_who_received_treatment_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report7",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator7_plwha_with_positive_tb_sign.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator7_number_of_PLHIV_on_ARV_who_switched_from_1st_to_2nd_line_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report8",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator8_plwha_with_positive_tb_sign_tested_for_tb.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator8_number_of_new_PLHIV_for_whom_TB_screening_was_done_and_documented.sql"
                     }
                 },
                 {
                     "name": "Report9",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator9_plwha_with_positive_tb_sign_tested_positive_for_tb.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator9_number_of_new_PLHIV_placed_on_ARV_who_initiated_INH_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report10",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator10_plwha_who_started_tb_treatment.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator10_number_of_PLHIV_for_whom_TB_screening_was_done_and_documented.sql"
                     }
                 },
                 {
                     "name": "Report11",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_total_plwha_deaths_notified.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator11_number_of_PLHIV_screened_positive_for_any_signs_of_TB.sql"
                     }
                 },
                 {
                     "name": "Report12",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator12_plwha_did_not_come_for_treatment_within_month.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator12_number_of_PLHIV_on_ARV_tested_for_TB_during_the_month.sql"
                     }
                 },
                 {
                     "name": "Report13",
                     "type": "MRSGeneric",
                     "config": {
-                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator13_punctual_aids_during_the_month.sql"
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator13_number_of_PLHIV_on_ARV_diagnosed_positive_on_confirmatory_TB_test_during_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Report14",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator14_number_of_PLHIV_on_ARV_on_anti_TB_drugs_during_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Report15",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator15_number_of_PLHIV_who_died_during_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Report16",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator16_number_of_PLHIV_who_did_not_pick_up_treatment_during_the_month_1_month_defaulter.sql"
+                    }
+                },
+                {
+                    "name": "Report17",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator17_number_of_PLHIV_who_didn't_pick_up_treatment_during_the_month_2_month_defaulter.sql"
+                    }
+                },
+                {
+                    "name": "Report18",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator18_number_of_LTFU_during_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Report19",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator19_clients_transfers_in_from_an_hospital_in_the_country_during_the_month.sql"
+                    }
+                },
+                {
+                    "name": "Report20",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator20_clients_coming_out_of_the_country_during_month.sql"
+                    }
+                },
+                {
+                    "name": "Report21",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator21_clients_transferred_to_another_facility_in_the_country_during_month.sql"
+                    }
+                },
+                {
+                    "name": "Report22",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator22_clients_transferred_to_another_facility_out_of_the_country_during_month.sql"
+                    }
+                },
+                {
+                    "name": "Report23",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator23_clients_return_to_care_treatment_during_month.sql"
+                    }
+                },
+                {
+                    "name": "Report24",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/PECG_REPORT/sql/indicator24_salvage_dispensation_during_month.sql"
                     }
                 },
                 {
@@ -1852,6 +1922,43 @@
             ]
         }
     },
+    "georgetownHIVPatientOnTreatmentInformationReport": {
+        "name": "HIV Patient on Treatment Information Line Listing Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_TREATMENT_INFORMATION_REPORT/template/georgetownHIVPatientOnTreatmentInformationReport.xls",
+            "reports": [
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/GEORGETOWN_HIV_PATIENT_ON_TREATMENT_INFORMATION_REPORT/sql/georgetownHIVPatientOnTreatmentInformationReport.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalRegion",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_region.sql"
+                    }
+                },
+                {
+                    "name": "ReportHospitalDistrict",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_district.sql"
+                    }
+                },                            
+                {
+                    "name": "ReportHospitalName",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/common/hospital_name.sql"
+                    }
+                }
+            ]
+        }
+    },
     "georgetownAppointmentReport": {
         "name": "Appointment Line Listing Report",
         "type": "concatenated",
@@ -2259,6 +2366,22 @@
                     "type": "MRSGeneric",
                     "config": {
                         "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/VIROLOGY_RESULTS_REPORT/sql/virologyReport.sql"
+                    }
+                }
+            ]
+        }
+    },
+    "covid19Report": {
+        "name": "Covid-19 line listing Report",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/COVID-19_TESTING_REPORT/template/hiv_completeness_check.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/COVID-19_TESTING_REPORT/sql/covid-19_line_listing_report.sql"
                     }
                 }
             ]

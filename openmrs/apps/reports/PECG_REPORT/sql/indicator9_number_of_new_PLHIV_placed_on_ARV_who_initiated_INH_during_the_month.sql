@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLHIV on ART with a positive TB clinical signs tested positive for TB during the month' AS 'Title',
+  'Number of new PLHIV placed on ARVs who initiated INH prophylaxis during the month' AS 'Title',
   PECG_Indicator9('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator9('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator9('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

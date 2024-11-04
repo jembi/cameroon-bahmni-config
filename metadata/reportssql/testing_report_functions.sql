@@ -26,28 +26,10 @@ BEGIN
         COUNT(DISTINCT pat.patient_id) INTO result
     FROM patient pat
     WHERE
-        (
-            SELECT p.gender = p_gender
-            FROM person p
-            WHERE p.person_id = pat.patient_id AND p.voided = 0
-        ) AND
-        (
-            (
-                SELECT
-                    cn.name = p_hivResult
-                FROM obs o
-                    JOIN concept c ON c.concept_id = o.concept_id AND c.retired = 0
-                    JOIN concept_name cn ON o.value_coded = cn.concept_id AND cn.locale='en'
-                WHERE o.voided = 0
-                    AND o.person_id = pat.patient_id
-                    AND c.uuid = uuidHIVTestFinalResult
-                    AND o.date_created BETWEEN p_startDate AND p_endDate
-                ORDER BY o.date_created DESC
-                LIMIT 1
-            ) AND
-            getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate
-            AND getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) IS NOT NULL
-        ) AND
+        patientGenderIs(pat.patient_id, p_gender) AND
+        isHivStatus(pat.patient_id, p_hivResult, uuidHIVTestFinalResult, p_startDate, p_endDate) AND    
+        getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) BETWEEN p_startDate AND p_endDate AND
+        getObsDatetimeValueInSection(pat.patient_id, uuidHIVTestDate, uuidHIVTestSection) IS NOT NULL AND
         getTestingEntryPoint(pat.patient_id) = p_testingEntryPoint AND
         patientAgeIsBetween(pat.patient_id, p_startAge, p_endAge, p_includeEndAge);
 

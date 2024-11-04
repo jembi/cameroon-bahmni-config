@@ -148,6 +148,19 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientTBStartDate
+
+DROP FUNCTION IF EXISTS getPatientTBStartDate;
+
+DELIMITER $$
+CREATE FUNCTION getPatientTBStartDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    RETURN getPatientProgramTreatmentStartDate(p_patientId, "TB_PROGRAM_KEY");
+END$$
+DELIMITER ;
+
 -- getPatientMostRecentProgramAttributeCodedValue
 
 DROP FUNCTION IF EXISTS getPatientMostRecentProgramAttributeCodedValue;
@@ -275,6 +288,34 @@ BEGIN
         pp.voided = 0 AND
         pp.patient_id = p_patientId AND
         p.name = p_program
+    LIMIT 1;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- getProgramOutcomeDateDuringTheReportingPeriod
+
+DROP FUNCTION IF EXISTS getProgramOutcomeDateDuringTheReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION getProgramOutcomeDateDuringTheReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE,
+    p_program VARCHAR(250)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT
+        pp.date_enrolled INTO result
+    FROM patient_program pp
+        JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE pp.patient_id = p_patientId
+        AND pp.voided = 0
+        AND pro.name = p_program
+    ORDER BY pp.date_enrolled DESC
     LIMIT 1;
 
     RETURN (result);

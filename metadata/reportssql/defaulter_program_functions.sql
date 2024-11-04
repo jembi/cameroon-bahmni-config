@@ -296,6 +296,66 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientIsNotDefaulter for 1 month
+
+DROP FUNCTION IF EXISTS patientIsNotDefaulterFor1Month;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotDefaulterFor1Month(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 1;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+
+    IF endDateOfARTPrescription IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, endDateOfARTPrescription);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 30 THEN
+      SET result = 0;
+    END IF;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+
+-- patientIsNotDefaulterBasedOnDays for 2 month
+
+DROP FUNCTION IF EXISTS patientIsNotDefaulterFor2Month;
+
+DELIMITER $$
+CREATE FUNCTION patientIsNotDefaulterFor2Month(
+  p_patientId INT(11),
+  p_startDate DATE,
+  p_endDate DATE) RETURNS TINYINT(1)
+DETERMINISTIC
+BEGIN
+    DECLARE result TINYINT(1) DEFAULT 1;
+
+    DECLARE endDateOfARTPrescription DATE;
+    DECLARE defaulterDays INT(11);
+
+    SET endDateOfARTPrescription = patientARTPrescriptionEndDate(p_patientId);
+
+    IF endDateOfARTPrescription IS NOT NULL THEN
+        SET defaulterDays = DATEDIFF(p_endDate, endDateOfARTPrescription);
+    END IF;
+    IF defaulterDays > 1 AND defaulterDays < 60 THEN
+      SET result = 0;
+    END IF;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+
 -- patientIsNotLostToFollowUpBasedOnDays
 
 DROP FUNCTION IF EXISTS patientIsNotLostToFollowUpBasedOnDays;
@@ -320,6 +380,37 @@ BEGIN
     IF ltfuDays >= 90 THEN
       SET result = 0;
     END IF;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
+-- patientHasReturnedToTreatmentWithinTheReportingPeriod
+
+DROP FUNCTION IF EXISTS patientHasReturnedToTreatmentWithinTheReportingPeriod;
+
+DELIMITER $$
+CREATE FUNCTION patientHasReturnedToTreatmentWithinTheReportingPeriod(
+    p_patientId INT(11),
+    p_startDate DATE,
+    p_endDate DATE) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(1) DEFAULT 0;
+
+    SELECT TRUE INTO result
+    FROM patient_program pp
+        JOIN program p ON pp.program_id = p.program_id
+        JOIN patient_identifier pi ON pp.patient_id = pi.patient_id
+        JOIN person pe ON pp.patient_id = pe.person_id
+        JOIN obs o ON o.person_id = pe.person_id
+        JOIN concept_name cn ON o.concept_id = cn.concept_id
+    WHERE
+        p.name = 'HIV_DEFAULTERS_PROGRAM_KEY'
+        AND cn.name = 'PROGRAM_MANAGEMENT_9_RETURNED_TO_TREATMENT_DATE'
+        AND o.value_datetime BETWEEN p_startDate AND p_endDate
+        AND o.voided = 0
+        ORDER BY pp.patient_id, o.value_datetime;
 
     RETURN (result);
 END$$

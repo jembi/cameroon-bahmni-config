@@ -1,5 +1,5 @@
 SELECT
-  'Number of PLHIV on ART to whom TB clinical signs was investigated and documented' AS 'Title',
+  'Total number of PLHIV on 3rd line ARVs who received treatment during the month (Active File on 3rd line)' AS 'Title',
   PECG_Indicator6('#startDate#','#endDate#', 0, 1, 0, 'M') AS '<1 M',
   PECG_Indicator6('#startDate#','#endDate#', 0, 1, 0, 'F') AS '<1 F',
   PECG_Indicator6('#startDate#','#endDate#', 1, 4,  1, 'M') AS '1-4 M',

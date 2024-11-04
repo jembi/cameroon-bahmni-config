@@ -3235,6 +3235,46 @@ Bahmni.ConceptSet.FormConditions.rules = {
 
 		return conditions;
 	},
+	'What is the outcome of the test': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['What is the outcome of the test'];
+		if (value === "Positive") {
+			conditions.show.push("patient linked for treatment");
+		} else {	
+			conditions.hide.push("patient linked for treatment");
+		}	
+		return conditions;	
+	},
+	'Has the person to be vaccinated ever received a dose of COVID-19 vaccine': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Has the person to be vaccinated ever received a dose of COVID-19 vaccine'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("which vaccine was administered");
+		} else {	
+			conditions.hide.push("which vaccine was administered");
+		}	
+		return conditions;	
+	},
+	'Have you had an AEFI after receiving the COVID-19 vaccine': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Have you had an AEFI after receiving the COVID-19 vaccine'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("different types of AEFI");
+		} else {	
+			conditions.hide.push("different types of AEFI");
+		}	
+		return conditions;	
+	},
+	'Did the person eligible accept to be vaccinated': function(formName, formFieldValues) {
+		var conditions = {show: [], hide: []};	
+		var value = formFieldValues['Did the person eligible accept to be vaccinated'];
+		if (value === "No full name" || value === "No") {
+			conditions.show.push("reason that applies to their refusal");
+		} else {	
+			conditions.hide.push("reason that applies to their refusal");
+		}	
+		return conditions;	
+	},
 	"Start treatment ?": function(formName, formFieldValues) {
 		var conditions = {show: [], hide: []};
 		var value = formFieldValues["Start treatment ?"];
@@ -3424,5 +3464,80 @@ Bahmni.ConceptSet.FormConditions.rules = {
 			conditions.hide.push("L&D_Protocol");
 		}
 		return conditions;
-	}
+	},
+	'TB Exam done': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['TB Exam done'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Test Type");
+		} else {
+			conditions.hide.push("Test Type");
+		}
+		return conditions;
+	},
+	'Initiated on TB Tx': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Initiated on TB Tx'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("TB Initiation date");
+		} else {
+			conditions.hide.push("TB Initiation date");
+		}
+		return conditions;
+	},
+
+	'Initiated on TPT': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Initiated on TPT'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("TPT Initiation date");
+		} else {
+			conditions.hide.push("TPT Initiation date");
+		}
+		return conditions;
+	},
+	'TB Treatment completed': function(formName, formFieldValues, sectionName) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['TB Treatment completed'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("End date of treatment");
+		} else {
+			conditions.hide.push("End date of treatment");
+		}
+		return conditions;
+	},
+
+	'Confirmed by a test': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Confirmed by a test'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Date of test");
+		} else {
+			conditions.hide.push("Date of test");
+		}
+		return conditions;
+	},
+
+	'Initiated': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Initiated'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("Date of Initiation");
+		} else {
+			conditions.hide.push("Date of Initiation");
+		}
+		return conditions;
+	},
+
+	'Test for CD4': function(formName, formFieldValues) {
+		var conditions = { show: [], hide: [] };
+		var value = formFieldValues['Test for CD4'];
+		if (value === "Yes full name" || value === "Yes") {
+			conditions.show.push("HTC, CD4 Count");
+		} else {
+			conditions.hide.push("HTC, CD4 Count");
+		}
+		return conditions;
+	},
+
 };

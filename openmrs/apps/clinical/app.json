@@ -43,6 +43,9 @@
             "PROGRAM_MANAGEMENT_3_PATIENT_COMORBIDITES": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY","IPT_PROGRAM_KEY"]
             },
+            "PROGRAM_MANAGEMENT_COUNTRY_TRANSFERRED_TO": {
+                "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY","IPT_PROGRAM_KEY"]
+            },
             "PROGRAM_MANAGEMENT_6_LABEL_THERAPEUTIC_LINE": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY","IPT_PROGRAM_KEY"],
                 "important": true
@@ -187,6 +190,15 @@
             },
             "IPT_PROGRAM_MANAGEMENT_OUTCOME": {
                 "excludeFrom": ["TB_PROGRAM_KEY", "HIV_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_FACILITY_TRANSFERED_TO": {
+                "excludeFrom": ["IPT_PROGRAM_KEY","TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_REASON_FOR_OUTCOME": {
+                "excludeFrom": ["IPT_PROGRAM_KEY","TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY"]
+            },
+            "PROGRAM_MANAGEMENT_OUTCOME_DATE": {
+                "excludeFrom": ["IPT_PROGRAM_KEY","TB_PROGRAM_KEY", "HIV_DEFAULTERS_PROGRAM_KEY", "INDEX_TESTING_PROGRAM_KEY", "VL_EAC_PROGRAM_KEY", "PMTCT_PROGRAM_KEY"]
             }
         },
         "patientContext": {
@@ -382,6 +394,15 @@
                 "required": true
             },"Person who assisted the mother at the time of childbirth": {
                 "multiSelect": true
+            },
+            "Signs and symptoms": {
+                "multiSelect": true
+            },
+            "Covid-19 Risk factors": {
+                "multiSelect": true
+            },
+            "Other diseases AHD": {
+                "allowAddMore": true
             },
             "defaults": {
                 "Number of living children": 1,
