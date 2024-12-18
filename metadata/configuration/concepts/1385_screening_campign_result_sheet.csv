@@ -1,0 +1,8 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1385
+e8ba10e1-9740-43b3-b61e-3002a0b3d1bc,,,Frottis Cervical,Cervical Smear,Frottis Cervical,Cervical SMEAR,Misc,Text,,
+f9bcedee-ae1f-4920-9b05-a3ed0e01af51,,Positive;Negative,Villi Test,Villi Test,Villi,Villi,Misc,Coded,,
+193f7daa-bfba-4056-8427-b1ae9dc4dd79,VIA Test;Villi Test;Cervical Smear;Biopsy,,Col utérin,"Uterine Neck",Col utérin,Uterine Neck,ConvSet,N/A,,
+4fb2bace-9100-4db0-bad0-7a3b49c5e711,,,Droit,Right,Droit,Right,Misc,Text,,
+fca5849e-58cb-459f-8d2d-971ae8ca3828,,,Gauche,Left,Gauche,Left,Misc,Text,,
+577cb1c0-ca6d-4c18-a519-df57a7f1952f,Right;Left,,Seins,Breasts,Seins,Breasts,ConvSet,N/A,,
+d1a636fe-f6de-438b-9c8d-099f5ca687d9,Date;Uterine Neck;Breasts,,Formulaire de Campagne de dépistage – Fiche de résultats,Screening Campaign Result Sheet Form,Campagne de dépistage – Fiche de résultats,Screening Campaign Result Sheet,Misc,N/A,,
