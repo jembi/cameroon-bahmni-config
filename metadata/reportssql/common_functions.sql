@@ -239,6 +239,39 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getNumericLabTestResult
+
+DROP FUNCTION IF EXISTS getNumericLabTestResult;
+
+DELIMITER $$
+
+CREATE FUNCTION getNumericLabTestResult(
+    patientId INT(11),
+    labTestId VARCHAR(255)
+)
+RETURNS DECIMAL(10,2) DETERMINISTIC
+BEGIN
+    DECLARE result DECIMAL(10,2);
+    SELECT 
+        o.value_numeric
+    INTO result
+    FROM 
+        obs o
+    WHERE 
+        o.person_id = patientId
+        AND o.voided = 0
+        AND o.concept_id = labTestId
+        AND o.value_numeric IS NOT NULL
+    ORDER BY 
+        o.obs_datetime DESC
+    LIMIT 1;
+    RETURN result;
+END$$
+
+DELIMITER ;
+
+
+
 -- check if form is filled for the patient within the reporting period
 DROP FUNCTION IF EXISTS isFormFilledWithinReportingPeriod;
 DELIMITER $$
