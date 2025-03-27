@@ -200,6 +200,19 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getPatientEmergencyContactName
+
+DROP FUNCTION IF EXISTS getPatientEmergencyContactName;
+
+DELIMITER $$
+CREATE FUNCTION getPatientEmergencyContactName(
+    p_patientId INT(11)) RETURNS VARCHAR(50)
+    DETERMINISTIC
+BEGIN
+    RETURN getPatientAttribueValue(p_patientId, 'emergencyContactName');
+END$$
+DELIMITER ;
+
 -- getPatientPreciseLocation
 
 DROP FUNCTION IF EXISTS getPatientPreciseLocation;

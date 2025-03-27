@@ -2386,6 +2386,23 @@
                 }
             ]
         }
+    },
+
+    "ANC_report_Test": {
+        "name": "ANC DAMA Export",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/template/ANC.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/sql/ANC.sql"
+                    }
+                }
+            ]
+        }
     }
 
 }
