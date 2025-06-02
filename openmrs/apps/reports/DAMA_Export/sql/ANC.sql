@@ -93,3 +93,4 @@ SELECT
     CROSS JOIN (SELECT @a:= 0) AS a
 WHERE
   p.voided = 0
+  AND getDateFirstANCVisit(p.patient_id) BETWEEN "#startDate#" AND "#endDate#";
