@@ -122,6 +122,28 @@ BEGIN
 END$$ 
 DELIMITER ;
 
+-- getNextAppointmentDate
+
+DROP FUNCTION IF EXISTS getNextAppointmentDate;
+
+DELIMITER $$
+CREATE FUNCTION getNextAppointmentDate(
+    p_patientId INT(11)) RETURNS DATE
+    DETERMINISTIC
+BEGIN
+    DECLARE result DATE;
+
+    SELECT pa.start_date_time INTO result
+    FROM patient_appointment pa
+    WHERE pa.voided = 0
+        AND pa.patient_id = p_patientId
+    ORDER BY pa.start_date_time DESC
+    LIMIT 1;
+
+    RETURN (result);
+END$$ 
+DELIMITER ;
+
 -- getDateOfLastScheduledARTOrARTDispensaryAppointment
 
 DROP FUNCTION IF EXISTS getDateOfLastScheduledARTOrARTDispensaryAppointment;
