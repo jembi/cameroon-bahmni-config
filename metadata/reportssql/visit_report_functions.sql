@@ -72,6 +72,7 @@ DELIMITER ;
 
 -- getVLDateResultRecievedATFacility
 -- This functione returns the date of the VL result from OpenElis to Openmrs
+
 DROP FUNCTION IF EXISTS getVLDateResultRecievedATFacility;
 
 DELIMITER $$
@@ -80,10 +81,15 @@ CREATE FUNCTION getVLDateResultRecievedATFacility(
     DETERMINISTIC
 BEGIN
     DECLARE result DATE;
+    DECLARE targetedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee13e38-c7ce-11e9-a32f-2a2ae2dbcce4';
+    DECLARE routineViralLoadTestUuid VARCHAR(38) DEFAULT '4d80e0ce-5465-4041-9d1e-d281d25a9b50';
+    DECLARE notDocumentedViralLoadTestUuid VARCHAR(38) DEFAULT '9ee140e0-c7ce-11e9-a32f-2a2ae2dbcce4';
 
-    SELECT o.obs_datetime INTO result
+
+    SELECT 
+        o.obs_datetime INTO result
     FROM obs o
-    JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
+        JOIN concept c ON o.concept_id = c.concept_id AND c.retired = 0
     WHERE o.voided = 0
         AND o.order_id IS NOT NULL
         AND o.value_numeric IS NOT NULL
