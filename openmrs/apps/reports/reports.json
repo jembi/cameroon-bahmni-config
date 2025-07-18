@@ -2435,6 +2435,23 @@
                 }
             ]
         }
+    },
+    "damaAntenalCareVisitReport": {
+        "name": "DAMA Antenatal Care Visit",
+        "type": "concatenated",
+        "config": {
+            "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_MATERNAL_COHORT_MONITORING/template/damaMaternalCohortMonitoring.xls",
+            "reports": [    
+                {
+                    "name": "Report",
+                    "type": "MRSGeneric",
+                    "config": {
+                        "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ANTENATAL_CARE_VISIT_REPORT/sql/antenalCareVisit.sql"
+                    }
+                }
+            ]
+        }
     }
+    
 
 }

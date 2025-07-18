@@ -299,3 +299,32 @@ END$$
 
 DELIMITER ;
 
+-- getProvider
+DROP FUNCTION IF EXISTS getProvider;
+DELIMITER $$
+CREATE FUNCTION getProvider(
+    p_patientId INT(11)) RETURNS TEXT DETERMINISTIC
+BEGIN
+    DECLARE result TEXT;
+
+    SELECT 
+        CONCAT(pn.given_name, ' ', pn.family_name)
+    INTO result
+    FROM encounter e
+    JOIN encounter_provider ep ON e.encounter_id = ep.encounter_id
+    JOIN provider pr ON ep.provider_id = pr.provider_id
+    JOIN person_name pn ON pr.person_id = pn.person_id
+    WHERE e.patient_id = p_patientId
+        AND e.voided = 0
+        AND ep.voided = 0
+        AND pr.retired = 0
+        AND pn.voided = 0
+    ORDER BY e.encounter_datetime DESC  
+    LIMIT 1;
+
+    RETURN result;
+
+END$$
+
+DELIMITER ;
+
