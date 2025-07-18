@@ -120,6 +120,53 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS getObsCodedValuesInNestedSectionByNames;
+
+DELIMITER $$
+
+CREATE FUNCTION getObsCodedValuesInNestedSectionByNames(
+    p_patientId INT(11),
+    p_questionName VARCHAR(250),
+    p_parentSectionName VARCHAR(250),
+    p_childSectionName VARCHAR(250)) RETURNS VARCHAR(1024)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(1024);
+
+    SELECT
+        GROUP_CONCAT(DISTINCT cn_answer.name ORDER BY o.date_created DESC SEPARATOR ', ') INTO result
+    FROM obs o
+        JOIN concept_name cn_question ON o.concept_id = cn_question.concept_id
+        JOIN concept_name cn_answer ON o.value_coded = cn_answer.concept_id
+        -- Join to get the immediate parent (child section)
+        JOIN obs child_section_obs ON o.obs_group_id = child_section_obs.obs_id
+        JOIN concept_name child_section_cn ON child_section_obs.concept_id = child_section_cn.concept_id
+        -- Join to get the parent section
+        JOIN obs parent_section_obs ON child_section_obs.obs_group_id = parent_section_obs.obs_id
+        JOIN concept_name parent_section_cn ON parent_section_obs.concept_id = parent_section_cn.concept_id
+    WHERE o.voided = 0
+        AND o.person_id = p_patientId
+        AND cn_question.name = p_questionName
+        AND cn_question.locale = 'en' 
+        AND cn_question.concept_name_type = 'FULLY_SPECIFIED'
+        AND cn_answer.locale = 'en' 
+        AND cn_answer.concept_name_type = 'FULLY_SPECIFIED'
+        -- Child section conditions
+        AND child_section_cn.name = p_childSectionName
+        AND child_section_cn.locale = 'en'
+        AND child_section_cn.concept_name_type = 'FULLY_SPECIFIED'
+        AND child_section_obs.voided = 0
+        -- Parent section conditions
+        AND parent_section_cn.name = p_parentSectionName
+        AND parent_section_cn.locale = 'en'
+        AND parent_section_cn.concept_name_type = 'FULLY_SPECIFIED'
+        AND parent_section_obs.voided = 0;
+
+    RETURN (result);
+END$$
+
+DELIMITER ;
+
 -- getObsCodedShortNameValue
 
 DROP FUNCTION IF EXISTS getObsCodedShortNameValue;
