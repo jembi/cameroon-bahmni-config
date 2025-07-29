@@ -2431,5 +2431,22 @@
         }
       ]
     }
+  },
+
+  "damaTBTestingReport": {
+    "name": "DAMA Tubercolosis",
+    "type": "concatenated",
+    "config": {
+      "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/template/Laboratory.xls",
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/sql/DAMA_TBTesting_export.sql"
+          }
+        }
+      ]
+    }
   }
 }
