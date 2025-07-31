@@ -1,5 +1,5 @@
 SELECT
-    getPatientIndexTestingDateAccepted() as "date",
+    getPatientIndexTestingDateAccepted(p.patient_id) as "date",
     getPatientFullName(p.patient_id) as "name",
     getPatientARTNumber(p.patient_id) as "ARTCode",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "ARTStartDate",
@@ -11,7 +11,7 @@ SELECT
     " " as "siteCode",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "transDate",
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
-    getPatientARTNumber(p.patient_id) as "ARTCode" as "baselineCode",
+    getPatientARTNumber(p.patient_id) as "baselineCode",
     IF(getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") IS NOT NULL, "Yes", "No") as "isKPType",
     getObsCodedValue(p.patient_id, "248e21db-98f8-49fc-b596-fe9042b013ac") as "KPType",
     " " as "isIDP",
@@ -25,5 +25,5 @@ SELECT
     " " as "syncDate"
 FROM patient p,(SELECT @a:= 0) AS a
 WHERE
-    getPatientIndexTestingDateAccepted() BETWEEN "#startDate#" AND "#endDate#";
+    getPatientIndexTestingDateAccepted(p.patient_id) BETWEEN "#startDate#" AND "#endDate#";
   

@@ -2441,7 +2441,7 @@
           "name": "Report",
           "type": "MRSGeneric",
           "config": {
-            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/sql/damaTemplateIndex.sql"
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_TEMPLATE_INDEX/sql/damaTemplateIndex.sql"
           }
         }
       ]
