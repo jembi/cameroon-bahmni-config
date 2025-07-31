@@ -2431,5 +2431,20 @@
         }
       ]
     }
+  },
+  "damaTemplateIndexReport": {
+    "name": "DAMA Template Index",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_Export/sql/damaTemplateIndex.sql"
+          }
+        }
+      ]
+    }
   }
 }
