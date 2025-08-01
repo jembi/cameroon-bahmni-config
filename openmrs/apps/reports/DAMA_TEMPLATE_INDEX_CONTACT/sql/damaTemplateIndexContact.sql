@@ -4,26 +4,26 @@ SELECT
     getPatientPhoneNumber(p.patient_id) as "contactTelephone",
     getPatientBirthdate(p.patient_id) as "birthDate",
     getPatientGender(p.patient_id) as "sex",
-    " " as "notificationDate",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_NOTIFICATION_DATE", "INDEX_TESTING_PROGRAM_KEY") as "notificationDate",
     " " as "testDate",
     getObsCodedValue(p.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888") as "placeOfTest",
     getObsCodedValue(p.patient_id, "41e48d08-2235-47d5-af12-87a009057603") as "testResult",
     getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_2_PATIENT_TREATMENT_DATE", "HIV_PROGRAM_KEY") as "dateOfInitiation",
     getPatientARTNumber(p.patient_id) as "ARTCode",
-    " " as "contactTracer",
-    " " as "comment",
-    " " as "notificationMeans",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_4_CONTACT_TRACER", "INDEX_TESTING_PROGRAM_KEY") as "contactTracer",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_5_COMMENTS", "INDEX_TESTING_PROGRAM_KEY") as "comment",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_1_NOTIFICATION_METHOD", "INDEX_TESTING_PROGRAM_KEY") as "notificationMeans",
     getObsCodedValue(p.patient_id, "41e48d08-2235-47d5-af12-87a009057603") as "HIVStatus",
     " " as "siteCode",
     CAST(@a:=@a+1 AS CHAR) as "serialNumber",
-    " " as "NotificationOutcome",
+    getProgramAttributeDateValueFromAttributeAndProgramName(p.patient_id, "PROGRAM_MANAGEMENT_3_NOTIFICATION_OUTCOME", "INDEX_TESTING_PROGRAM_KEY") as "NotificationOutcome",
     getObsCodedValue(p.patient_id, "659ed086-730d-4ac4-910e-fea4c6507512") as "priorTestResult",
     getObsCodedValue(p.patient_id, "f8f78cc6-8453-416a-ade2-237d67a59829") as "priorTestDone",
     getObsDatetimeValue(p.patient_id, "c6c08cdc-18dc-4f42-809c-959621bc9a6c") as "priorTestDate",
     getPatientMostRecentProgramOutcome(p.patient_id, "en", "HIV_PROGRAM_KEY") as "ARTOutcome",
     " " as "indexSiteCode",
     getObsCodedValue(p.patient_id, "bc43179d-00b4-4712-a5d6-4dabd4230888") as "entryPoint",
-    " " as "dateElicited",
+    getPatientDateOfEnrolmentInProgram(p.patient_id, "INDEX_TESTING_PROGRAM_KEY")  as "dateElicited",
     " " as "testingCounselorCode",
     " " as "placeOfInitiation",
     " " as "mothersStatus",
@@ -53,4 +53,4 @@ SELECT
     " " as "syncDate"
 FROM patient p,(SELECT @a:= 0) AS a
 WHERE
-  getDateFirstANCVisit(p.patient_id) BETWEEN "#startDate#" AND "#endDate#";
+  getPatientDateOfEnrolmentInProgram(p.patient_id, "INDEX_TESTING_PROGRAM_KEY") BETWEEN "#startDate#" AND "#endDate#";
