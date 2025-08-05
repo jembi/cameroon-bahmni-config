@@ -2431,5 +2431,20 @@
         }
       ]
     }
+  },
+  "damaArtVisitReport": {
+    "name": "DAMA ART Visit Report",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ART_VISIT/sql/damaArtVisit.sql"
+          }
+        }
+      ]
+    }
   }
 }
