@@ -650,6 +650,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- getpatientTherapeuticLine
+
+DROP FUNCTION IF EXISTS getpatientTherapeuticLine;
+
+DELIMITER $$
+CREATE FUNCTION getpatientTherapeuticLine(
+    p_patientId INT(11)) RETURNS TINYINT(1)
+    DETERMINISTIC
+BEGIN
+
+    DECLARE result TINYINT(1);
+    
+    IF (patientHasTherapeuticLineFirstLine(p_patientId)) = 1 THEN
+        SET result = 01;
+    ELSEIF patientHasTherapeuticLineSecondLine(p_patientId) = 1 THEN
+        SET result = 02;
+    ELSE
+        SET result = 03;
+    END IF;
+
+    RETURN (result);
+
+END$$
+DELIMITER ;
+
 -- patientHasNotBeenEnrolledIntoHivProgram
 
 DROP FUNCTION IF EXISTS patientHasNotBeenEnrolledIntoHivProgram;

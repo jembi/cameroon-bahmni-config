@@ -2446,5 +2446,51 @@
         }
       ]
     }
+  },
+  "damaPcrReport": {
+    "name": "DAMA PCR",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_PCR_REPORT/sql/damaPCR.sql"
+          }
+        }
+      ]
+    }
+  },
+  "damaTemplateIndexReport": {
+    "name": "DAMA Template Index",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_TEMPLATE_INDEX/sql/damaTemplateIndex.sql"
+          }
+        }
+      ]
+    }
+  },
+  "damaAntenalCareReport": {
+    "name": "DAMA Antenal Care",
+    "type": "concatenated",
+    "config": {
+      "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ANTENATAL_CARE_VISIT_REPORT/template/antenalCareVisit.xls",
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ANTENATAL_CARE_VISIT_REPORT/sql/antenalCareVisit.sql"
+          }
+        }
+      ]
+    }
   }
 }
