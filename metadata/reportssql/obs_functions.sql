@@ -539,3 +539,6 @@ BEGIN
     RETURN (observationTextValueWithinPeriod);
 END$$
 DELIMITER ;
+
+
+
