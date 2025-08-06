@@ -2431,5 +2431,21 @@
         }
       ]
     }
+  },
+  "damaAntenalCareReport": {
+    "name": "DAMA Antenal Care",
+    "type": "concatenated",
+    "config": {
+      "macroTemplatePath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ANTENATAL_CARE_VISIT_REPORT/template/antenalCareVisit.xls",
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_ANTENATAL_CARE_VISIT_REPORT/sql/antenalCareVisit.sql"
+          }
+        }
+      ]
+    }
   }
 }
