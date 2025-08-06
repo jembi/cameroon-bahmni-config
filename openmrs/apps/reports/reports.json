@@ -2432,6 +2432,21 @@
       ]
     }
   },
+  "damaPcrReport": {
+    "name": "DAMA PCR",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_PCR_REPORT/sql/damaPCR.sql"
+          }
+        }
+      ]
+    }
+  },
   "damaTemplateIndexReport": {
     "name": "DAMA Template Index",
     "type": "concatenated",
