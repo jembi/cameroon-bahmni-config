@@ -62,5 +62,5 @@ SELECT
 
 FROM patient p JOIN person_name pn ON pn.person_id = p.patient_id,
  (SELECT @a:= 0) AS a
--- WHERE
-    -- patientHasStartedARVTreatmentDuringReportingPeriod(p.patient_id, "#startDate#", "#endDate#");
+WHERE
+    patientHasEnrolledIntoTBProgramDuringReportingPeriod(p.patient_id, "#startDate#", "#endDate#");
