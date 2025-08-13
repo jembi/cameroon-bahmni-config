@@ -2524,5 +2524,20 @@
         }
       ]
     }
+  },
+  "damaTemplateViralLoadVisitReport": {
+    "name": "DAMA Viral Load Visit Report",
+    "type": "concatenated",
+    "config": {
+      "reports": [
+        {
+          "name": "Report",
+          "type": "MRSGeneric",
+          "config": {
+            "sqlPath": "/var/www/bahmni_config/openmrs/apps/reports/DAMA_TEMPLATE_VIRAL_LOAD_VISIT/sql/damaTemplateViralLoadVisit.sql"
+          }
+        }
+      ]
+    }
   }
 }
