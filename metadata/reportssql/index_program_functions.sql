@@ -421,3 +421,22 @@ BEGIN
     RETURN '';
 END$$
 DELIMITER ;
+
+-- getVLSuppressedOrUnsuppressed
+
+DROP FUNCTION IF EXISTS getVLSuppressedOrUnsuppressed;
+
+DELIMITER $$
+CREATE FUNCTION getVLSuppressedOrUnsuppressed(
+    p_patientId INT(11)) RETURNS VARCHAR(255)
+    DETERMINISTIC
+BEGIN
+    DECLARE viralLoadResult INT(11) DEFAULT getViralLoadTestResult(p_patientId);
+
+    IF (viralLoadResult < 1000) THEN
+        RETURN 'Suppressed';
+    ELSE
+        RETURN 'Unsuppressed';
+    END IF;
+END$$
+DELIMITER ;

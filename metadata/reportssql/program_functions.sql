@@ -525,6 +525,31 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- patientHasEnrolledIntoEACProgram
+
+DROP FUNCTION IF EXISTS patientHasEnrolledIntoEACProgram;
+
+DELIMITER $$
+CREATE FUNCTION patientHasEnrolledIntoEACProgram(
+    p_patientId INT(11)) RETURNS VARCHAR(3)
+    DETERMINISTIC
+BEGIN
+    DECLARE result VARCHAR(3) DEFAULT "No";
+
+    SELECT
+        "Yes" INTO result
+    FROM person p
+    JOIN patient_program pp ON pp.patient_id = p.person_id AND pp.voided = 0
+    JOIN program pro ON pro.program_id = pp.program_id AND pro.retired = 0
+    WHERE p.person_id = p_patientId
+        AND p.voided = 0
+        AND pro.name = "VL_EAC_PROGRAM_KEY"
+    GROUP BY pro.name;
+
+    RETURN (result);
+END$$
+DELIMITER ;
+
 -- patientTherapeuticLineSpecified
 
 DROP FUNCTION IF EXISTS patientTherapeuticLineSpecified;
