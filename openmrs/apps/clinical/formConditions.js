@@ -3540,4 +3540,21 @@ Bahmni.ConceptSet.FormConditions.rules = {
 		return conditions;
 	},
 
+
+	/**
+	 * Handling conditions of Autorisation et les ligature des trompes Form
+	 */
+
+	'Authorize' : function(formName, formFieldValues) {
+			var conditions = { show: [], hide: [] };
+			var value = formFieldValues['Authorize'];
+			console.log(value)
+			if (value !== "My wife named") {
+				conditions.hide.push("Wife's name","Wife's NIC N°","Issued on (wife)","At (wife)");
+			} else {
+				conditions.show.push("Wife's name","Wife's NIC N°","Issued on (wife)","At (wife)");
+			}
+				return conditions;
+			
+    },
 };

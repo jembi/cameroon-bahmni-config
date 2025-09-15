@@ -1,0 +1,21 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type
+6ba6a7c5-3cb1-4661-b86e-9a04e56aadff,,,Je soussigné,I undersigned,Nom Prénom,Name,Misc,Text
+27dbb5e9-a613-489c-bfb8-fbba84623731,,,CNI N°,NIC N°,CNI,NIC,Misc,Text
+998fba72-7db7-4250-98fc-171cee3b7f6a,,,Délivrée le,Issued on,Date délivrance,Issue Date,Misc,Date
+0223fb06-d078-4807-93dd-36a76df5ca81,,,À,At,Lieu délivrance,Place of issue,Misc,Text
+05b6d56b-5abd-4385-b104-8bd846f622b8,,Myself;My wife,Autorise le Médecin à pratiquer une stérilisation définitive par ligature des trompes à,Authorize,Autorisation pour,Authorization for,Misc,Coded
+ffa4969c-c2b1-4ebe-9128-289141a91d1c,,,Moi-même,Myself,Moi-même,Myself,Misc,Coded
+76334417-995c-457b-9a40-3229b18113e7,,,Mon épouse nommée,My wife named,Mon épouse,My wife,Misc,Coded
+2bcd0d16-2413-471e-aa6b-3393778c2292,,,Nom de l'épouse,Wife's name,Nom épouse,Wife's name,Misc,Text
+bb5a9498-59c7-4a6e-9fbd-7ba14be592c9,,,CNI N° de l'épouse,Wife's NIC N°,CNI épouse,Wife's NIC,Misc,Text
+92ae18a0-f9cc-4516-bb76-479c1db9697c,,,Délivrée le (épouse),Issued on (wife),Date CNI épouse,Wife's issue date,Misc,Date
+3078070f-a949-46cc-bac5-36a25b9bcd14,,,À (épouse),At (wife),Lieu CNI épouse,Wife's issue place,Misc,Text
+cb7bff63-5046-479a-9486-950c19610387,,,Avec son plein accord,With her consent,Consentement,Consent,Misc,Text
+a1b2c3d4-e5f6-7890-1234-567890abcdef,,,Époux (signature),Husband (signature),Signature époux,Husband signature,Misc,Text
+1d1577d4-c1ac-4024-ba00-a765dccb3829,,,Autre information (spécifier),Other information (specify),Autre info,Other info,Misc,Text
+c3d4e5f6-g7h8-9012-3456-789012cdefgh,,,Date à Njombé,Date in Njombé,Date,Date,Misc,Date
+d4e5f6g7-h8i9-0123-4567-890123defghi,I undersigned;NIC N°;Issued on;Place of issue,,Section 1: Identification,Section 1: Identifications,,,ConvSet,N/A
+e5f6g7h8-i9j0-1234-5678-901234efghij,Authorization for;Wife's name;Wife's NIC N°;Issued on (wife);At (wife),,Section 2: Autorisation,Section 2: Authorization,,,ConvSet,N/A
+g7h8i9j0-k1l2-3456-7890-123456ghijkl,With her consent;Husband (signature);Other information (specify);Date in Njombé,,Section 3: Signatures et date,Section 3: Signatures and date,,,ConvSet,N/A
+h8i9j0k1-l2m3-4567-8901-234567hijklm,Section 1: Identifications;Section 2: Authorization;Section 3: Signatures and date,,Autorisation de ligature des trompes,Authorization of tubal ligation,,,Misc,N/A
+
