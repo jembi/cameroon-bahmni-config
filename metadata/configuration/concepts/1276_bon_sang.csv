@@ -1,0 +1,30 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type
+db7008a3-8ca2-4ab3-8702-c32209e2702e,,,Service,Department,Service,Dept,Misc,Text
+1ccc29fe-49e6-440e-ac14-e12d9170270c,,,Date et Heure,Date and Time,Date,Date,Misc,DateTime
+cda8c507-1bcb-451b-b5e7-b9ce5cbd5942,,,Nom du malade,Patient's Name,Nom patient,Patient Name,Misc,Text
+a956c31e-4bf5-46ad-95b5-e48f3eb90f15,,,patient de Sexe,Sex patient,patient de sexe,sex patient,Misc,Text
+ac698849-6b09-4c37-8c63-95ee2563ad60,,,Date de naissance,Date of Birth,Date naiss,DOB,Misc,Date
+8c2f1078-ebe0-4978-b5b1-0d05ca62d4c5,,,N° dossier,File Number,N° dossier,File No,Misc,Numeric
+0c03118b-de5a-4f40-9243-5af82f8dc77a,,,N° chambre,Room Number,N° chambre,Room No,Misc,Numeric
+4991c744-9260-42ce-9ed8-879b6f54a325,,,N° Lit,Bed Number,N° Lit,Bed No,Misc,Numeric
+85928f3c-2f23-4392-a589-37677f41e1df,,,Date d'hospitalisation,Date of Hospitalization,Date hosp,Hosp Date,Misc,Date
+7a779ce9-aac5-43c5-ad19-7f08b70b621c,,,Indication de la transfusion,Transfusion Indication,Indication,Indication,Misc,Text
+54d87f57-5de8-4784-8905-526e972a0820,,,Nombre d'unités(sang ou autres),Number of Units(Blood or Other),Nb unités,Units,Misc,Numeric
+dd9e63d0-9727-4920-9497-5557ed6cfa56,,,N° de poche,Pocket Number,N° poche,Pocket No,Misc,Numeric
+73402cc5-8dbb-4137-8f07-7e8c09da5d9f,,,Groupe ABO Rhesus,ABO Rhesus Group,Groupe,Group,Misc,Text
+06cf134d-6ae3-4792-b4ca-d136edd1d9d6,,,Date de péremption,Expiry Date,Date exp,Exp Date,Misc,Date
+4434ec61-3b28-4dac-a8d5-35139c39cf39,,HLD;HSJM;Other ,Provenance,Origin,Provenance,Origin,Misc,Coded
+eab1b5ac-b181-435d-a7bd-e535cf2905ba,,,"HLD","HLD","HLD","HLD",Misc,Coded
+bc9f8193-f999-4f84-bd51-7662249b97e5,,,"HSJM","HSJM","HSJM","HSJM",Misc,Coded
+e893f1b4-a3c2-48c8-b13d-0ad96ab417f0,,,Autre ,Other ,Autre ,Other ,Misc,Text
+
+a2b07618-3aff-454f-9017-4835a0510e63,,,TPHA/VDRL,TPHA/VDRL,TPHA/VDRL,TPHA/VDRL,Misc,Text
+01c99ef8-9fc6-4857-bc06-14fa28d8836c,,,AC anti VHC,HCV Ab,AC VHC,HCV Ab,Misc,Text
+9f289955-6eea-4965-8267-cfd982a5d9d8,,,AC anti VIH,HIV Ab,AC VIH,HIV Ab,Misc,Text
+77bff872-0e87-4f91-9e55-6745feb4a895,,,Test de compatibilité(Résultat),Compatibility Test (Result),Test compat,Compat Test,Misc,Text
+a1df8a4f-68fc-4104-858c-40133705e373,,,Nombre d'unités service,Number of Service Units,Nb unités serv,Service Units,Misc,Text
+109af3dd-18c3-4d32-b646-b0d831b802ff,,,Nom et signature du laborantin,Laboratory Technician's Name and Signature,Nom labo,Lab Tech,Misc,Text
+37c45b20-4df4-48e9-839c-4cecff1a6de4,,,Nom et signature du personnel soignant,Healthcare Staff's Name and Signature,Nom soignant,Healthcare Staff,Misc,Text
+3490cd48-7dfe-4b84-9e76-ce89f3eb5550,Department;Date and Time;Patient's Name;Date of Birth;Sex patient;File Number;Room Number;Bed Number;Date of Hospitalization;Transfusion Indication;ABO Rhesus Group;Number of Units(Blood or Other);Pocket Number,,information,information,,,ConvSet,N/A
+4e48965a-13fb-4b7e-9bf9-3f3adb1363fd,Origin;HBSAg ;TPHA/VDRL;HCV Ab;HIV Ab;Compatibility Test (Result);Number of Service Units;Laboratory Technician's Name and Signature;Healthcare Staff's Name and Signature,,Examen biologique,Biological exam,,,ConvSet,N/A
+eb00cf27-a39b-40fb-b68b-4d7aa08f74fb,information;Biological exam,,bon de sang,Blood order,,,Misc,N/A
