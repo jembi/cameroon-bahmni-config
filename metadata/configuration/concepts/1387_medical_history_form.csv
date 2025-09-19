@@ -1,0 +1,16 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1388
+527d125d-7645-46e3-9ce3-947be86e76da,,,a)Médicaux,a)Medical,Médicaux,Medical,Misc,Text,,
+9e0c85e0-aff6-4ea6-b353-36f6a97689a6,,,b)Chirurgicaux,b)Surgical,Chirurgicaux,Surgical,Misc,Text,,
+f3bcd5ee-6eda-4ea2-9080-a6e8efe688a7,,,c)Immuno-Allergiques,c)Immuno-Allergic,Immuno-Allergiques,Immuno-Allergic,Misc,Text,,
+3fbdb233-6b00-466b-9111-892650a7125a,,,d)Toxicologiques,d)Toxicological,Toxicologiques,Toxicological,Misc,Text,,
+2f298975-d6cb-4f70-b8a8-a93d7f77655f,,,e)Gynécologiques,e)Gynecological,Gynécologiques,Gynecological,Misc,Text,,
+5353c465-2f0b-4150-aac2-1cf891f477d9,,,f)Obstétriques,f)Obstetrical,Obstétriques,Obstetrical,Misc,Text,,
+a8149164-8157-444d-b194-a8f227558ebc,,,g)Nutritionnels,g)Nutritional,Nutritionnels,Nutritional,Misc,Text,,
+f5f1a8fd-ffd5-403a-a2cf-bb96a475a3fc,,,h)Croissance et Développement,h)Growth and Development,Croissance et Développement,Growth and Development,Misc,Text,,
+64a28dc7-c44e-44f7-ba7d-cf5a201b8442,,,i)Socio-environnementaux,i)Socio-Environmental,Socio-environnementaux,Socio-Environmental,Misc,Text,,
+
+da48f900-12d1-4cec-89cd-e3c1b35b834f,527d125d-7645-46e3-9ce3-947be86e76da;9e0c85e0-aff6-4ea6-b353-36f6a97689a6;f3bcd5ee-6eda-4ea2-9080-a6e8efe688a7;3fbdb233-6b00-466b-9111-892650a7125a;2f298975-d6cb-4f70-b8a8-a93d7f77655f;5353c465-2f0b-4150-aac2-1cf891f477d9;a8149164-8157-444d-b194-a8f227558ebc;f5f1a8fd-ffd5-403a-a2cf-bb96a475a3fc;64a28dc7-c44e-44f7-ba7d-cf5a201b8442,,1.Personnel,1.Personnal,Personnel,Personnal,Misc,N/A,,
+
+12c83155-4d0e-4d45-8459-994b9ca7c229,,,2.Familiaux,2.Family,Familiaux,Family,Misc,Text,,
+
+2e0d9bbd-6b76-4544-969c-50a6ed171ca9,da48f900-12d1-4cec-89cd-e3c1b35b834f;12c83155-4d0e-4d45-8459-994b9ca7c229,,Formulaire Des Antécédents Médicaux,Medical History Form,Formulaire Des Antécédents Médicaux,Medical History Form,Misc,N/A,,
