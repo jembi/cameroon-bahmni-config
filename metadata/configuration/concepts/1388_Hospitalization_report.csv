@@ -1,0 +1,12 @@
+uuid,Members,Answers,Fully specified name:fr,Fully specified name:en,Short name:fr,Short name:en,Data class,Data type,_version:1,_order:1388
+9a30f395-2522-4db3-9fbb-870aa64c5fa1,,,Date d'entrée,Admission Date,Date d'entrée,Admission Date,Misc,Date,,
+f9b780e2-fe16-4d7f-9792-f1facc772f41,,,Diagnostic d'entrée,Admission Diagnosis,Diagnostic d'entrée,Admission Diagnosis,Misc,Text,,
+ad3b2dcb-f504-4073-a8a2-c5739be712b9,,,Diagnotic d'admission,Admitting Diagnosis,Diagnotic d'admission,Admitting Diagnosis,Misc,Text,,
+df63a8a0-4d49-47e2-879a-866b6c18a49d,,,Compte-rendu du traitement et de l'évolution,Treatment and Progress Report,Compte-rendu du traitement et de l'évolution,Treatment and Progress Report,Misc,Text,,
+f60dc90e-54f6-4638-99b0-c8f68b53ad85,,,Date de sortie,Discharge Date,Date de sortie,Discharge Date,Misc,Date,,
+ce17b17d-37b3-4041-8de7-20f94942b21b,,,Diagnostic de sortie,Discharge Diagnosis,Diagnostic de sortie,Discharge Diagnosis,Misc,Text,,
+3a151ef5-edbd-4ceb-824f-8732e0808317,,,Traitement de sortie,Discharge Treatment,Traitement de sortie,Discharge Treatment,Misc,Text,,
+7f174a62-a97c-41a7-bcb4-be25b4a0b6c2,,,Rendez-vous,Appointment,Rendez-vous,Appointment,Misc,Date,,
+a41adf4e-7ca2-45ba-834a-ad0734b03105,,,Njombé le,Njombé the,Njombé le,Njombé the,Misc,Date,,
+
+bec749b9-d6fa-406d-9b2f-19a0eb430e20,9a30f395-2522-4db3-9fbb-870aa64c5fa1;f9b780e2-fe16-4d7f-9792-f1facc772f41;ad3b2dcb-f504-4073-a8a2-c5739be712b9;a7e8c7ba-08e2-4c5b-9da0-d56cb43910f2;df63a8a0-4d49-47e2-879a-866b6c18a49d;f60dc90e-54f6-4638-99b0-c8f68b53ad85;ce17b17d-37b3-4041-8de7-20f94942b21b;3a151ef5-edbd-4ceb-824f-8732e0808317;7f174a62-a97c-41a7-bcb4-be25b4a0b6c2;a41adf4e-7ca2-45ba-834a-ad0734b03105,,Compte-rendu d'Hospitalisation,Hospitalization Report,Compte-rendu d'Hospitalisation,Hospitalization Report,Misc,N/A,,
